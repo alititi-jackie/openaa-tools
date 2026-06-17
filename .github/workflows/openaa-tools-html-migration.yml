@@ -1,0 +1,111 @@
+name: OpenAA Tools HTML Migration
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.migration-trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Migrate HTML pages
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          files = sorted(Path('.').rglob('*.html'))
+
+          bottom_nav = '''<nav class="bottom-nav" role="navigation" aria-label="底部导航">
+    <a href="https://openaa.com/" class="bottom-nav-item active" target="_self">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg><span>首页</span>
+    </a>
+    <a href="https://openaa.com/jobs" class="bottom-nav-item" target="_self">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg><span>招聘</span>
+    </a>
+    <a href="https://openaa.com/secondhand" class="bottom-nav-item" target="_self">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12l3 5v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7l3-5Z"/><path d="M3 7h18"/><path d="M16 11a4 4 0 0 1-8 0"/></svg><span>二手</span>
+    </a>
+    <a href="https://openaa.com/news" class="bottom-nav-item" target="_self">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Z"/><path d="M4 22a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg><span>新闻</span>
+    </a>
+    <a href="https://openaa.com/profile" class="bottom-nav-item" target="_self">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>我的</span>
+    </a>
+  </nav>'''
+
+          css = '''
+
+    /* OpenAA app homepage shell override */
+    .app-shell, .app-header, .top-links-panel, .bottom-nav { max-width: 560px; }
+    .bottom-nav-item { gap: 3px; padding: 8px 4px 10px; font-size: 13px; font-weight: 500; }
+    .bottom-nav-item svg { width: 24px; height: 24px; stroke: currentColor; }
+    .bottom-nav-item.active { color: #3b82f6; font-weight: 700; }
+    @media (min-width: 768px) {
+      .app-shell, .app-header, .top-links-panel, .bottom-nav { max-width: 760px; }
+      .header-inner { height: 46px; }
+      .header-spacer { height: 46px; }
+      .top-links-panel { top: 46px; }
+    }
+    @media (min-width: 1024px) {
+      .app-shell, .app-header, .top-links-panel, .bottom-nav { max-width: 960px; }
+    }
+    @media (min-width: 1280px) {
+      .app-shell, .app-header, .top-links-panel, .bottom-nav { max-width: 1040px; }
+    }
+    @media (min-width: 601px) {
+      .back-top { right: calc(50% - min(50vw, 520px) + 16px); }
+    }
+'''
+
+          changed = []
+          for path in files:
+            if '.git' in path.parts:
+              continue
+            s = path.read_text(encoding='utf-8')
+            old = s
+            s = s.replace('https://ny.openaa.com/', 'https://openaa.com/')
+            s = s.replace('http://ny.openaa.com/', 'https://openaa.com/')
+            s = s.replace('https://www.openaa.com/', 'https://openaa.com/')
+            s = s.replace('http://www.openaa.com/', 'https://openaa.com/')
+            s = s.replace("const APP_BASE_URL = 'https://ny.openaa.com';", "const APP_BASE_URL = 'https://openaa.com';")
+            s = s.replace("url: 'https://app.openaa.com/'", "url: 'https://openaa.com/'")
+            s = s.replace('https://openaa.com/tool/', 'https://openaa.com/tools/')
+            s = re.sub(r'<nav class="bottom-nav" role="navigation" aria-label="底部导航">[\s\S]*?</nav>', bottom_nav, s, count=1)
+            if 'OpenAA app homepage shell override' not in s:
+              s = s.replace('</style>', css + '\n  </style>', 1)
+            if s != old:
+              path.write_text(s, encoding='utf-8')
+              changed.append(str(path))
+          print('Changed:', changed)
+
+          for path in files:
+            s = path.read_text(encoding='utf-8')
+            if 'ny.openaa.com' in s or 'www.openaa.com' in s:
+              raise SystemExit(f'domain leftover: {path}')
+            for needle in ['<!DOCTYPE html>', '<html', '</html>', '<head>', '</head>', '<body', '</body>']:
+              if needle not in s:
+                raise SystemExit(f'missing {needle}: {path}')
+          PY
+
+      - name: Cleanup and commit
+        shell: bash
+        run: |
+          rm -f .migration-trigger .github/workflows/openaa-tools-html-migration.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Normalize tool HTML pages to OpenAA app style"
+            git push
+          fi
