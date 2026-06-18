@@ -1,14 +1,11 @@
 {
-  "name": "OpenAA 美元人民币汇率记录",
+  "name": "美元人民币汇率记录",
   "short_name": "汇率记录",
-  "description": "本地保存、自动计算、导出 WPS 数据的美元人民币汇率记录工具。",
   "start_url": "./index.html",
-  "scope": "./",
   "display": "standalone",
   "background_color": "#f4f4f7",
   "theme_color": "#3b82f6",
   "icons": [
-    {"src": "https://img.openaa.com/apple-touch-icon.png", "sizes": "180x180", "type": "image/png"},
-    {"src": "https://img.openaa.com/logo.png", "sizes": "512x512", "type": "image/png"}
+    {"src": "https://img.openaa.com/apple-touch-icon.png", "sizes": "180x180", "type": "image/png"}
   ]
 }
