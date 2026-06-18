@@ -1,7 +1,7 @@
-const CACHE_NAME = 'openaa-usd-rmb-v1';
-const APP_FILES = ['./', './index.html', './manifest.json'];
+const CACHE_NAME = 'openaa-usd-rmb-v2';
+const ASSETS = ['./index.html', './manifest.json'];
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_FILES)).catch(() => null));
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)).catch(() => null));
   self.skipWaiting();
 });
 self.addEventListener('activate', event => {
@@ -10,5 +10,5 @@ self.addEventListener('activate', event => {
 });
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
-  event.respondWith(fetch(event.request).catch(() => caches.match(event.request).then(res => res || caches.match('./index.html'))));
+  event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request).catch(() => cached)));
 });
