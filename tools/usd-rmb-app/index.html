@@ -1,116 +1,1487 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#1677ff" />
-  <title>美元人民币记录</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>美元人民币汇率记录工具 | OpenAA 单机本地保存工具</title>
+  <meta name="description" content="OpenAA 美元人民币汇率记录工具，支持本地保存、日期输入、美金金额、汇率、人民币自动计算、月度年度汇总、导出 WPS Excel、备份恢复和手机添加到桌面。" />
+  <meta name="keywords" content="美元人民币汇率, 美金换人民币, 汇率记录, WPS 导出, 本地记账, OpenAA 工具, 华人汇率工具" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://openaa.com/tools/usd-rmb/" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="美元人民币汇率记录工具 | OpenAA" />
+  <meta property="og:description" content="手机端友好的美元人民币汇率记录工具，本地保存数据，支持导出 WPS Excel 和备份恢复。" />
+  <meta property="og:url" content="https://openaa.com/tools/usd-rmb/" />
+  <meta property="og:image" content="https://img.openaa.com/logo.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="美元人民币汇率记录工具 | OpenAA" />
+  <meta name="twitter:description" content="本地保存、自动计算、月度年度汇总、导出 WPS Excel 的手机汇率记录工具。" />
+  <meta name="twitter:image" content="https://img.openaa.com/logo.png" />
+  <link rel="icon" href="https://img.openaa.com/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://img.openaa.com/apple-touch-icon.png" />
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#3b82f6" />
+
+
+  <!-- =========================================================
+    OpenAA 通用静态页面说明
+
+    一、站长自己改的地方：只改下面 OPENAA_CONFIG
+    1. banners：广告图片地址 + 点击广告打开的链接。
+    2. modules：控制广告轮播、滚动动态、8宫格、实用工具显示或隐藏。
+       true  = 显示
+       false = 隐藏
+       隐藏后页面会自动收紧，不会留下大空白。
+    3. templateLinkMode：控制“模板固定区域”的链接打开方式。
+       "new"  = 新窗口打开（默认）
+       "same" = 当前页面打开
+       只控制：顶部 Logo、纽约快捷栏、广告图、滚动动态、8宫格、实用工具、底部导航。
+       不控制：中间正文内容里的链接。
+
+    二、发给 AI 写内容时，请告诉 AI：
+    1. 保留模板整体效果，不要重做设计。
+    2. 不要修改 OPENAA_CONFIG，广告、板块显示隐藏、链接打开方式由站长自己改。
+    3. AI 只修改 head 里的 SEO 和“页面内容开始/页面内容结束”之间的正文。
+    4. 正文直接写进本 HTML，不要做外部动态加载内容页。
+    5. 正文建议用 <article class="template-card"> 包住，保持卡片风格统一。
+    6. 正文里的链接按内容需要设置，不受 templateLinkMode 控制。
+    7. 正式页面的 title、description、keywords、canonical、OG、Twitter、结构化数据都要按当前内容改好，不要写“模板”。
+  ========================================================== -->
+  <script>
+    const OPENAA_CONFIG = {
+      // 1）广告轮播：图片地址 + 点击图片打开的链接
+      banners: [
+        {
+          image: "https://img.openaa.com/img/banners/6e374654-6816-4da8-9736-bd374ea70b04.png",
+          link: "https://openaa.com/jobs",
+          alt: "OpenAA 招聘求职"
+        },
+        {
+          image: "https://img.openaa.com/img/banners/71a8312c-c4b2-4bde-bc4e-c35032223fde.png",
+          link: "https://openaa.com/housing",
+          alt: "OpenAA 房屋租售"
+        },
+        {
+          image: "https://img.openaa.com/img/banners/1215d9b3-f38c-4173-ad87-aa0792690bd8.png",
+          link: "https://openaa.com/secondhand",
+          alt: "OpenAA 二手闲置"
+        },
+        {
+          image: "https://img.openaa.com/img/banners/17588ab5-0248-47ae-a9a2-b0e02e06ea5b.png",
+          link: "https://openaa.com/dmv",
+          alt: "OpenAA DMV 笔试模拟"
+        },
+        {
+          image: "https://img.openaa.com/img/banners/b720c8f2-d90c-451b-87fc-bec4179d7d61.png",
+          link: "https://openaa.com/services",
+          alt: "OpenAA 本地服务"
+        }
+      ],
+
+      // 2）常用板块显示 / 隐藏
+      modules: {
+        showBanner: false,   // 广告轮播：true显示，false隐藏
+        showTicker: true,   // 滚动动态：true显示，false隐藏
+        showGridMenu: false, // 8宫格：true显示，false隐藏
+        showTools: false     // 实用工具：true显示，false隐藏
+      },
+
+      // 3）模板固定区域链接打开方式
+      // "new"  = 新窗口打开
+      // "same" = 当前页面打开
+      // 只控制模板固定区域链接，不控制正文内容里的链接
+      templateLinkMode: "same"
+    };
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(90deg, #d9dce3 0%, #eef0f4 28%, #eef0f4 72%, #d9dce3 100%);
+      color: #18181b;
+      min-height: 100vh;
+      padding-bottom: calc(72px + env(safe-area-inset-bottom));
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    [hidden] { display: none !important; }
+
+    :root {
+      --app-shell-width: 560px;
+      --app-bg: #f4f4f7;
+      --app-blue: #3b82f6;
+      --app-text: #18181b;
+      --app-muted: #71717a;
+      --app-border: #e4e4e7;
+      --app-side-shadow: -32px 0 44px rgba(15, 23, 42, .14), 32px 0 44px rgba(15, 23, 42, .14);
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: var(--app-shell-width);
+      min-height: 100vh;
+      margin: 0 auto;
+      background: var(--app-bg);
+      position: relative;
+      box-shadow: var(--app-side-shadow);
+    }
+
+    .app-header {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: var(--app-shell-width);
+      z-index: 100;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(228,228,235,.8);
+      box-shadow: var(--app-side-shadow);
+    }
+    .header-inner {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      position: relative;
+    }
+    .header-location {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      color: #3f3f46;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 6px 4px;
+      border-radius: 8px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .header-location svg { width: 14px; height: 14px; color: #3b82f6; }
+    .header-location .chevron { width: 12px; height: 12px; color: #2563eb; stroke-width: 3; }
+    .header-logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+    .header-logo img {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      object-fit: contain;
+    }
+    .header-logo-text { font-size: 20px; font-weight: 800; letter-spacing: -.5px; line-height: 1; }
+    .logo-blue { color: #3b82f6; }
+    .logo-dark { color: #18181b; }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .round-btn {
+      width: 36px;
+      height: 36px;
+      border: 1px solid #e4e4e7;
+      border-radius: 50%;
+      background: #f4f4f5;
+      color: #52525b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .round-btn svg { width: 17px; height: 17px; }
+    .header-spacer { height: 56px; }
+
+
+    .top-links-panel {
+      position: fixed;
+      top: 56px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      width: 100%;
+      max-width: var(--app-shell-width);
+      z-index: 98;
+      background: rgba(255,255,255,.98);
+      border-bottom: 1px solid #e4e4e7;
+      box-shadow: 0 10px 24px rgba(15,23,42,.08);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .top-links-panel.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+    .top-links-scroller {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 12px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .top-links-scroller::-webkit-scrollbar { display: none; }
+    .top-link-chip {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      color: #334155;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .top-link-chip:active { background: #eff6ff; color: #2563eb; }
+
+    .banner-section { background: #fff; padding: 16px 16px 12px; }
+    .banner-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #e4e4e7;
+      box-shadow: 0 12px 40px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.05);
+      touch-action: pan-y;
+      user-select: none;
+    }
+    .banner-track {
+      display: flex;
+      transition: transform .42s cubic-bezier(.25,.46,.45,.94);
+      will-change: transform;
+    }
+    .banner-slide { flex: 0 0 100%; width: 100%; display: block; }
+    .banner-slide img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+      background: #e4e4e7;
+      -webkit-user-drag: none;
+    }
+    .banner-dots {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 8px;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+    }
+    .banner-dot {
+      width: 6px;
+      height: 6px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,.58);
+      transition: all .25s;
+      cursor: pointer;
+    }
+    .banner-dot.active { width: 18px; border-radius: 999px; background: #fff; }
+
+    .quick-strip {
+      margin-top: 12px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid #eef2f7;
+      box-shadow: 0 4px 16px rgba(15,23,42,.04);
+      color: #334155;
+      font-size: 14px;
+      overflow: hidden;
+    }
+    .quick-strip svg { width: 18px; height: 18px; color: #3b82f6; flex: 0 0 auto; }
+    .quick-strip-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+    .quick-strip-arrow { color: #94a3b8; font-size: 22px; line-height: 1; }
+
+    .content-wrap { padding: 14px 12px 18px; }
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 8px 4px 12px;
+      font-size: 17px;
+      font-weight: 800;
+      color: #18181b;
+    }
+    .section-title::before {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 18px;
+      border-radius: 999px;
+      background: #3b82f6;
+    }
+    .template-card {
+      background: #fff;
+      border: 1px solid #eceef3;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.05);
+    }
+    .template-card h1 { font-size: 22px; line-height: 1.28; margin-bottom: 10px; letter-spacing: -.3px; }
+    .template-card h2 { font-size: 17px; margin-bottom: 8px; }
+    .template-card p { font-size: 15px; color: #52525b; line-height: 1.75; margin-bottom: 8px; }
+    .template-card p:last-child { margin-bottom: 0; }
+    .notice-box {
+      background: linear-gradient(135deg, #eff6ff 0%, #f8fbff 100%);
+      border: 1px solid #dbeafe;
+      border-radius: 14px;
+      padding: 12px;
+      color: #334155;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+    .mini-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+    .mini-card { background: #f8fafc; border: 1px solid #eef2f7; border-radius: 14px; padding: 12px; }
+    .mini-card strong { display: block; font-size: 15px; margin-bottom: 4px; }
+    .mini-card span { display: block; color: #64748b; font-size: 13px; line-height: 1.45; }
+
+
+
+    /* ===================================================
+       OpenAA 首页 8 宫格 + 实用工具
+       样式按 openaa-app 首页效果整理
+       =================================================== */
+    .home-grid-section {
+      background: #f4f4f5;
+      border-top: 1px solid #e4e4e7;
+      border-bottom: 1px solid #e4e4e7;
+      padding: 22px 16px 20px;
+    }
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px 8px;
+    }
+    .home-grid-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: #111827;
+      font-size: 14px;
+      font-weight: 500;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .15s ease;
+    }
+    .home-grid-item:active { transform: scale(.94); }
+    .home-grid-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(15,23,42,.06);
+    }
+    .home-grid-icon svg { width: 26px; height: 26px; }
+    .home-grid-icon.blue { background:#eff6ff; border:1px solid #bfdbfe; color:#3b82f6; }
+    .home-grid-icon.green { background:#ecfdf5; border:1px solid #bbf7d0; color:#10b981; }
+    .home-grid-icon.purple { background:#f5f3ff; border:1px solid #ddd6fe; color:#8b5cf6; }
+    .home-grid-icon.yellow { background:#fffbeb; border:1px solid #fde68a; color:#f59e0b; }
+    .home-grid-icon.red { background:#fff1f2; border:1px solid #fecdd3; color:#f43f5e; }
+    .home-grid-icon.cyan { background:#ecfeff; border:1px solid #bae6fd; color:#06b6d4; }
+    .home-grid-icon.orange { background:#fff7ed; border:1px solid #fed7aa; color:#f97316; }
+    .home-grid-icon.teal { background:#f0fdfa; border:1px solid #99f6e4; color:#14b8a6; }
+
+    .tools-section {
+      background: #fff;
+      padding: 18px 16px 16px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .tools-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      font-size: 17px;
+      font-weight: 800;
+      color: #111827;
+    }
+    .tools-title::before {
+      content: '';
+      width: 4px;
+      height: 18px;
+      border-radius: 999px;
+      background: #3b82f6;
+      display: block;
+    }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .tool-card {
+      min-height: 122px;
+      border-radius: 16px;
+      padding: 12px;
+      border: 1px solid rgba(59,130,246,.12);
+      box-shadow: 0 2px 10px rgba(15,23,42,.05);
+      overflow: hidden;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .tool-card:active { transform: scale(.98); }
+    .tool-card.blue {
+      background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
+      border-color: #bfdbfe;
+    }
+    .tool-card.orange {
+      background: linear-gradient(135deg, #fff7ed 0%, #fee2e2 100%);
+      border-color: #fed7aa;
+    }
+    .tool-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .tool-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(255,255,255,.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tool-icon svg { width: 20px; height: 20px; }
+    .tool-card.blue .tool-icon { color:#2563eb; }
+    .tool-card.orange .tool-icon { color:#f97316; }
+    .tool-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      color: #2563eb;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .tool-card.orange .tool-action { color:#ea580c; }
+    .tool-name {
+      font-size: 17px;
+      line-height: 1.2;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+    .tool-desc {
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.35;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @media (max-width: 360px) {
+      .home-grid-section { padding-left: 12px; padding-right: 12px; }
+      .home-grid-icon { width: 50px; height: 50px; }
+      .home-grid-item { font-size: 13px; }
+      .tools-section { padding-left: 12px; padding-right: 12px; }
+      .tool-card { padding: 10px; }
+      .tool-name { font-size: 16px; }
+      .tool-action { font-size: 11px; }
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: var(--app-shell-width);
+      z-index: 100;
+      background: rgba(255,255,255,.97);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid #e4e4e7;
+      display: flex;
+      align-items: stretch;
+      padding-bottom: env(safe-area-inset-bottom);
+      box-shadow: -32px 0 44px rgba(15,23,42,.14), 32px 0 44px rgba(15,23,42,.14), 0 -1px 8px rgba(0,0,0,.04);
+    }
+    .bottom-nav-item {
+      flex: 1;
+      min-width: 0;
+      min-height: 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 7px 4px 9px;
+      color: var(--app-muted);
+      font-size: 13px;
+      line-height: 1.05;
+      font-weight: 500;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .bottom-nav-item svg { width: 24px; height: 24px; stroke: currentColor; flex: 0 0 auto; }
+    .bottom-nav-item.active { color: var(--app-blue); font-weight: 700; }
+
+    .back-top {
+      position: fixed;
+      right: calc((100vw - min(100vw, var(--app-shell-width))) / 2 + 14px);
+      bottom: calc(78px + env(safe-area-inset-bottom));
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid #dbeafe;
+      background: rgba(255,255,255,.95);
+      color: #2563eb;
+      box-shadow: 0 8px 24px rgba(15,23,42,.16);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 90;
+      cursor: pointer;
+    }
+    .back-top.show { display: flex; }
+    .back-top svg { width: 20px; height: 20px; }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(88px + env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      z-index: 999;
+      background: rgba(24,24,27,.9);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 999px;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    }
+
+
+    @media (min-width: 768px) { :root { --app-shell-width: 760px; } }
+    @media (min-width: 1024px) { :root { --app-shell-width: 960px; } }
+    @media (min-width: 1280px) { :root { --app-shell-width: 1040px; } }
+
+    @media (min-width: 480px) { .banner-slide img { height: 180px; } }
+    @media (min-width: 600px) { .banner-slide img { height: 200px; } }
+    @media (min-width: 768px) {
+      .header-inner { height: 46px; }
+      .header-spacer { height: 46px; }
+      .top-links-panel { top: 46px; }
+      .banner-slide img { height: 200px; }
+    }
+    @media (max-width: 600px) {
+      body { background: #f4f4f7; }
+      .app-shell, .app-header, .bottom-nav { box-shadow: none; }
+      .back-top { right: 14px; }
+    }
+    /* ===================================================
+       美元人民币汇率记录工具：正文 App 样式
+       =================================================== */
+    .fx-app { display: block; }
+    .fx-hero {
+      background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+      color: #fff;
+      border-radius: 20px;
+      padding: 20px 16px;
+      box-shadow: 0 12px 28px rgba(37,99,235,.22);
+      margin-bottom: 12px;
+    }
+    .fx-hero h1 { font-size: 23px; line-height: 1.25; margin-bottom: 8px; letter-spacing: -.4px; }
+    .fx-hero p { color: rgba(255,255,255,.92); font-size: 14px; line-height: 1.65; margin: 0; }
+    .fx-home-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin-bottom: 12px; }
+    .fx-big-btn {
+      min-height: 88px;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      background: #fff;
+      padding: 14px;
+      text-align: left;
+      box-shadow: 0 2px 10px rgba(15,23,42,.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .fx-big-btn:active { transform: scale(.98); background: #f8fafc; }
+    .fx-big-btn strong { font-size: 18px; color: #111827; }
+    .fx-big-btn span { font-size: 13px; color: #64748b; line-height: 1.35; }
+    .fx-view { display: none; }
+    .fx-view.active { display: block; }
+    .fx-page-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 2px 0 12px; }
+    .fx-page-title h2 { font-size: 20px; margin: 0; }
+    .fx-small-btn, .fx-primary-btn, .fx-danger-btn {
+      min-height: 44px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      padding: 0 16px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .fx-primary-btn { background: #2563eb; color: #fff; border-color: #2563eb; box-shadow: 0 8px 18px rgba(37,99,235,.18); }
+    .fx-danger-btn { background: #fff1f2; color: #e11d48; border-color: #fecdd3; }
+    .fx-form { display: grid; gap: 12px; }
+    .fx-field label { display: block; font-weight: 800; color: #111827; margin-bottom: 7px; font-size: 14px; }
+    .fx-input {
+      width: 100%;
+      height: 52px;
+      border-radius: 14px;
+      border: 1px solid #dbe2ea;
+      background: #fff;
+      padding: 0 13px;
+      font-size: 17px;
+      outline: none;
+    }
+    .fx-input:focus { border-color: #60a5fa; box-shadow: 0 0 0 3px rgba(96,165,250,.18); }
+    .fx-result-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .fx-result-box span { color: #64748b; font-size: 13px; }
+    .fx-result-box strong { display:block; color:#1d4ed8; font-size: 28px; margin-top:4px; }
+    .fx-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+    .fx-filter-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .fx-summary { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; margin-bottom: 12px; }
+    .fx-stat { background: #fff; border: 1px solid #eceef3; border-radius: 16px; padding: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.04); }
+    .fx-stat span { display:block; font-size:12px; color:#64748b; margin-bottom:5px; }
+    .fx-stat strong { font-size:18px; color:#111827; word-break:break-all; }
+    .fx-list { display: grid; gap: 10px; }
+    .fx-record {
+      background: #fff;
+      border: 1px solid #eceef3;
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    }
+    .fx-record-top { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px; }
+    .fx-record-date { font-weight: 900; color:#111827; }
+    .fx-record-meta { color:#64748b; font-size: 13px; line-height: 1.6; }
+    .fx-record-money { color:#2563eb; font-weight:900; font-size: 18px; }
+    .fx-record-actions { display:flex; gap:8px; margin-top:10px; }
+    .fx-chip-btn { border:0; border-radius:999px; background:#f1f5f9; color:#334155; padding:8px 12px; font-size:13px; font-weight:800; }
+    .fx-empty { text-align:center; color:#71717a; background:#fff; border:1px dashed #d4d4d8; border-radius:16px; padding:28px 12px; }
+    .fx-tools-grid { display:grid; grid-template-columns:1fr; gap:10px; }
+    .fx-help { color:#64748b; font-size:13px; line-height:1.65; margin-top:8px; }
+    @media (max-width: 360px) {
+      .fx-home-grid, .fx-summary, .fx-filter-row, .fx-actions { grid-template-columns: 1fr; }
+      .fx-big-btn { min-height: 76px; }
+    }
+
+  </style>
 </head>
 <body>
-  <div class="app">
-    <header class="topbar">
-      <button id="backBtn" class="back hidden" type="button">‹ 返回</button>
-      <div>
-        <h1 id="pageTitle">汇率记录</h1>
-        <p id="pageDesc">本机保存 · 可导出 WPS</p>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="header-inner">
+        <button class="header-location" id="topLinksToggle" type="button" aria-label="打开顶部快捷导航" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>纽约</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+
+        <a class="header-logo" href="https://openaa.com/" aria-label="OpenAA 首页">
+          <img src="https://img.openaa.com/logo.png" alt="OpenAA" />
+          <span class="header-logo-text"><span class="logo-blue">Open</span><span class="logo-dark">AA</span></span>
+        </a>
+
+        <div class="header-actions">
+          <a class="round-btn" href="https://openaa.com/search" aria-label="搜索">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </a>
+          <button class="round-btn" type="button" aria-label="分享" onclick="shareOpenAA()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98"/><path d="M15.41 6.51 8.59 10.49"/></svg>
+          </button>
+        </div>
       </div>
     </header>
 
+    <div class="top-links-panel" id="topLinksPanel" aria-label="顶部快捷导航">
+      <div class="top-links-scroller" id="topLinksScroller">
+        <a class="top-link-chip" href="https://openaa.com/navigation" target="_self">导航</a>
+        <a class="top-link-chip" href="https://openaa.com/dmv" target="_self">DMV</a>
+        <a class="top-link-chip" href="https://openaa.com/jobs" target="_self">招聘</a>
+        <a class="top-link-chip" href="https://openaa.com/housing" target="_self">房屋</a>
+        <a class="top-link-chip" href="https://openaa.com/secondhand" target="_self">二手</a>
+        <a class="top-link-chip" href="https://openaa.com/news" target="_self">新闻</a>
+        <a class="top-link-chip" href="https://openaa.com/services" target="_self">本地服务</a>
+      </div>
+    </div>
+
+    <div class="header-spacer"></div>
+
     <main>
-      <section id="home" class="page active">
-        <div class="hero">
-          <div class="hero-title">美元换人民币</div>
-          <div class="hero-sub">输入日期、美金、汇率，自动计算人民币</div>
+      <section class="banner-section" id="bannerSection" aria-label="OpenAA 广告轮播">
+        <div class="banner-wrapper" id="bannerWrapper" data-template-module="banner">
+          <div class="banner-track" id="bannerTrack"></div>
+          <div class="banner-dots" id="bannerDots"></div>
         </div>
-        <div class="grid-buttons">
-          <button class="big-btn primary" data-go="input">＋ 输入记录</button>
-          <button class="big-btn" data-go="all">📋 查看全部</button>
-          <button class="big-btn" data-go="month">📅 按月查看</button>
-          <button class="big-btn" data-go="year">📊 年度汇总</button>
-          <button class="big-btn" data-go="backup">⬇ 导出/备份</button>
-        </div>
-        <div id="homeSummary" class="summary-card"></div>
+        <a class="quick-strip" id="latestStrip" data-template-module="ticker" href="https://openaa.com/news" target="_self">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h8l-1 8 11-14h-8l1-6Z"/></svg>
+          <span class="quick-strip-text" id="latestStripText">正在读取 OpenAA 最新动态...</span>
+          <span class="quick-strip-arrow">›</span>
+        </a>
       </section>
 
-      <section id="input" class="page">
-        <form id="entryForm" class="card form-card">
-          <label>日期
-            <input id="dateInput" type="date" required />
-          </label>
-          <label>美金金额 USD
-            <input id="usdInput" type="number" inputmode="decimal" step="0.01" min="0" placeholder="例如 100" required />
-          </label>
-          <label>汇率
-            <input id="rateInput" type="number" inputmode="decimal" step="0.0001" min="0" placeholder="例如 7.2500" required />
-          </label>
-          <div class="result-box">
-            <span>人民币金额</span>
-            <strong id="cnyPreview">¥0.00</strong>
-          </div>
-          <label>备注（可不填）
-            <input id="noteInput" type="text" maxlength="50" placeholder="例如 工资、换汇、备用" />
-          </label>
-          <div class="actions two">
-            <button type="button" class="secondary" data-go="home">取消</button>
-            <button type="submit" class="primary">保存</button>
-          </div>
-        </form>
-      </section>
-
-      <section id="saved" class="page">
-        <div class="card success-card">
-          <div class="success-icon">✓</div>
-          <h2>保存成功</h2>
-          <p>记录已保存到当前手机浏览器本地。</p>
-          <div class="actions two">
-            <button type="button" class="secondary" data-go="home">返回首页</button>
-            <button type="button" class="primary" data-go="input">继续添加</button>
-          </div>
+      <!-- OpenAA 首页 8 宫格入口 -->
+      <section class="home-grid-section" data-template-module="gridMenu" aria-label="OpenAA 快捷入口">
+        <div class="home-grid">
+          <a class="home-grid-item" href="https://openaa.com/jobs" target="_self">
+            <div class="home-grid-icon blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M12 12v4"/><path d="M10 14h4"/></svg>
+            </div>
+            <span>招聘</span>
+          </a>
+          <a class="home-grid-item" href="https://openaa.com/housing" target="_self">
+            <div class="home-grid-icon green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V10.5Z"/></svg>
+            </div>
+            <span>房屋</span>
+          </a>
+          <a class="home-grid-item" href="https://openaa.com/secondhand" target="_self">
+            <div class="home-grid-icon purple">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12l3 5v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7l3-5Z"/><path d="M3 7h18"/><path d="M16 11a4 4 0 0 1-8 0"/></svg>
+            </div>
+            <span>二手</span>
+          </a>
+          <a class="home-grid-item" href="https://openaa.com/dmv" target="_self">
+            <div class="home-grid-icon yellow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13h18l-2-5a3 3 0 0 0-3-2H8a3 3 0 0 0-3 2l-2 5Z"/><path d="M5 13v5"/><path d="M19 13v5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+            </div>
+            <span>DMV</span>
+          </a>
+          <a class="home-grid-item" href="https://openaa.com/news" target="_self">
+            <div class="home-grid-icon red">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Z"/><path d="M4 22a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg>
+            </div>
+            <span>新闻</span>
+          </a>
+          <a class="home-grid-item" href="https://openaa.com/navigation" target="_self">
+            <div class="home-grid-icon cyan">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4 20-7Z"/></svg>
+            </div>
+            <span>导航</span>
+          </a>
+          <a class="home-grid-item" href="https://openaa.com/news?category=新手指南" target="_self">
+            <div class="home-grid-icon orange">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+            </div>
+            <span>新手指南</span>
+          </a>
+          <a class="home-grid-item" href="https://openaa.com/services" target="_self">
+            <div class="home-grid-icon teal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.7-3.7a6 6 0 0 1-7.8 7.8l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.8-7.8l-3.7 3.7Z"/></svg>
+            </div>
+            <span>本地服务</span>
+          </a>
         </div>
       </section>
 
-      <section id="all" class="page">
-        <div id="allSummary" class="summary-card"></div>
-        <div id="allList" class="list"></div>
-      </section>
-
-      <section id="month" class="page">
-        <div class="card compact">
-          <label>选择月份
-            <input id="monthInput" type="month" />
-          </label>
-        </div>
-        <div id="monthSummary" class="summary-card"></div>
-        <div id="monthList" class="list"></div>
-      </section>
-
-      <section id="year" class="page">
-        <div class="card compact">
-          <label>选择年份
-            <select id="yearSelect"></select>
-          </label>
-        </div>
-        <div id="yearSummary" class="summary-card"></div>
-        <div id="yearList" class="list"></div>
-      </section>
-
-      <section id="backup" class="page">
-        <div class="card form-card">
-          <button id="exportXlsx" class="primary full" type="button">导出 Excel（WPS 可打开）</button>
-          <button id="exportJson" class="secondary full" type="button">导出备份 JSON</button>
-          <label class="file-label">导入备份 JSON
-            <input id="importJson" type="file" accept="application/json,.json" />
-          </label>
-          <button id="clearData" class="danger full" type="button">清空全部数据</button>
-          <p class="tip">数据保存在本机浏览器。换手机、清缓存、换浏览器前，请先导出 JSON 备份。</p>
+      <!-- OpenAA 首页实用工具 -->
+      <section class="tools-section" data-template-module="tools" aria-label="实用工具">
+        <div class="tools-title">实用工具</div>
+        <div class="tools-grid">
+          <a class="tool-card blue" href="https://openaa.com/dmv" target="_self">
+            <div class="tool-top">
+              <div class="tool-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13h18l-2-5a3 3 0 0 0-3-2H8a3 3 0 0 0-3 2l-2 5Z"/><path d="M5 13v5"/><path d="M19 13v5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+              </div>
+              <span class="tool-action">开始练习 ›</span>
+            </div>
+            <div class="tool-name">DMV 笔试模拟</div>
+            <div class="tool-desc">纽约 Learner Permit 中文练习</div>
+          </a>
+          <a class="tool-card orange" href="https://openaa.com/dmv/tickets" target="_self">
+            <div class="tool-top">
+              <div class="tool-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+              </div>
+              <span class="tool-action">点击查询 ›</span>
+            </div>
+            <div class="tool-name">罚单查询</div>
+            <div class="tool-desc">停车 / 闯红灯 / 超速拍照</div>
+          </a>
         </div>
       </section>
+
+
+      <!-- 中间内容开始：以后只让 AI 修改这里，不要改顶部、广告轮播、8宫格、实用工具、底部导航 -->
+
+      <section class="content-wrap">
+        <div class="section-title">汇率工具</div>
+
+        <div id="fxApp" class="fx-app">
+          <section class="fx-view active" data-view="home">
+            <div class="fx-hero">
+              <h1>美元人民币汇率记录</h1>
+              <p>单机本地保存。输入日期、美金和汇率，自动计算人民币；可查看全部、月度年度汇总，并导出 WPS 可打开的数据。</p>
+            </div>
+            <div class="fx-home-grid">
+              <button class="fx-big-btn" type="button" data-goto="input"><strong>输入</strong><span>日期 / 美金 / 汇率</span></button>
+              <button class="fx-big-btn" type="button" data-goto="all"><strong>查看</strong><span>全部记录、编辑删除</span></button>
+              <button class="fx-big-btn" type="button" data-goto="month"><strong>按月</strong><span>月度合计与平均汇率</span></button>
+              <button class="fx-big-btn" type="button" data-goto="year"><strong>年度</strong><span>年度合计与记录行数</span></button>
+              <button class="fx-big-btn" type="button" data-goto="export"><strong>导出/分享</strong><span>WPS Excel、CSV、备份</span></button>
+              <button class="fx-big-btn" type="button" id="installAppBtn"><strong>下载安装到手机</strong><span>添加到桌面，像 App 一样打开</span></button>
+            </div>
+            <div class="template-card">
+              <h2>当前数据</h2>
+              <div id="homeSummary" class="fx-summary"></div>
+              <p class="fx-help">数据只保存在当前手机浏览器里。换手机或清缓存前，请先导出 JSON 备份。</p>
+            </div>
+          </section>
+
+          <section class="fx-view" data-view="input">
+            <div class="fx-page-title"><h2 id="inputTitle">输入记录</h2><button class="fx-small-btn" type="button" data-goto="home">返回</button></div>
+            <div class="template-card">
+              <form id="fxForm" class="fx-form">
+                <input type="hidden" id="editId" />
+                <div class="fx-field"><label for="fxDate">日期</label><input class="fx-input" id="fxDate" type="date" required /></div>
+                <div class="fx-field"><label for="fxUsd">美金金额</label><input class="fx-input" id="fxUsd" type="number" min="0" step="0.01" inputmode="decimal" placeholder="例如 100" required /></div>
+                <div class="fx-field"><label for="fxRate">汇率</label><input class="fx-input" id="fxRate" type="number" min="0" step="0.0001" inputmode="decimal" placeholder="例如 7.25" required /></div>
+                <div class="fx-field"><label for="fxNote">备注（可不填）</label><input class="fx-input" id="fxNote" type="text" placeholder="例如 转账、工资、兑换" /></div>
+                <div class="fx-result-box"><span>人民币金额自动计算</span><strong id="fxCnyPreview">¥0.00</strong></div>
+                <div class="fx-actions">
+                  <button class="fx-small-btn" type="button" data-goto="home">取消</button>
+                  <button class="fx-primary-btn" type="submit">保存</button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <section class="fx-view" data-view="saved">
+            <div class="template-card">
+              <h1>保存成功</h1>
+              <p>这条记录已保存到手机本地。</p>
+              <div class="fx-actions">
+                <button class="fx-small-btn" type="button" data-goto="home">返回首页</button>
+                <button class="fx-primary-btn" type="button" id="continueAddBtn">继续添加</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="fx-view" data-view="all">
+            <div class="fx-page-title"><h2>全部记录</h2><button class="fx-small-btn" type="button" data-goto="home">返回</button></div>
+            <div id="allSummary" class="fx-summary"></div>
+            <div id="allList" class="fx-list"></div>
+          </section>
+
+          <section class="fx-view" data-view="month">
+            <div class="fx-page-title"><h2>按月查看</h2><button class="fx-small-btn" type="button" data-goto="home">返回</button></div>
+            <div class="fx-filter-row">
+              <input class="fx-input" id="monthPicker" type="month" />
+              <button class="fx-small-btn" type="button" id="clearMonthBtn">全部月份</button>
+            </div>
+            <div id="monthSummary" class="fx-summary"></div>
+            <div id="monthList" class="fx-list"></div>
+          </section>
+
+          <section class="fx-view" data-view="year">
+            <div class="fx-page-title"><h2>年度汇总</h2><button class="fx-small-btn" type="button" data-goto="home">返回</button></div>
+            <div class="fx-filter-row">
+              <input class="fx-input" id="yearPicker" type="number" inputmode="numeric" placeholder="例如 2026" />
+              <button class="fx-small-btn" type="button" id="clearYearBtn">全部年份</button>
+            </div>
+            <div id="yearSummary" class="fx-summary"></div>
+            <div id="yearList" class="fx-list"></div>
+          </section>
+
+          <section class="fx-view" data-view="export">
+            <div class="fx-page-title"><h2>导出 / 分享 / 备份</h2><button class="fx-small-btn" type="button" data-goto="home">返回</button></div>
+            <div class="fx-tools-grid">
+              <button class="fx-primary-btn" type="button" id="downloadXlsBtn">导出 WPS Excel</button>
+              <button class="fx-primary-btn" type="button" id="shareXlsBtn">分享 Excel 到微信/其它 App</button>
+              <button class="fx-small-btn" type="button" id="downloadCsvBtn">导出 CSV</button>
+              <button class="fx-small-btn" type="button" id="shareTextBtn">分享文字汇总</button>
+              <button class="fx-small-btn" type="button" id="downloadJsonBtn">导出 JSON 备份</button>
+              <label class="fx-small-btn" style="display:flex;align-items:center;justify-content:center;">
+                导入 JSON 备份
+                <input id="importJsonInput" type="file" accept=".json,application/json" hidden />
+              </label>
+              <button class="fx-danger-btn" type="button" id="clearDataBtn">清空全部数据</button>
+            </div>
+            <p class="fx-help">微信分享依赖手机浏览器的系统分享菜单。iPhone 建议用 Safari 打开；Android 建议用 Chrome 打开。微信内置浏览器可能只支持下载或复制。</p>
+          </section>
+        </div>
+      </section>
+
+            <!-- 中间内容结束 -->
     </main>
   </div>
-  <template id="emptyTpl"><div class="empty">暂无数据</div></template>
-  <script src="app.js"></script>
+
+  <nav class="bottom-nav" role="navigation" aria-label="底部导航">
+    <a href="https://openaa.com/" class="bottom-nav-item active" target="_self">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg><span>首页</span>
+    </a>
+    <a href="https://openaa.com/jobs" class="bottom-nav-item" target="_self">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg><span>招聘</span>
+    </a>
+    <a href="https://openaa.com/secondhand" class="bottom-nav-item" target="_self">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12l3 5v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7l3-5Z"/><path d="M3 7h18"/><path d="M16 11a4 4 0 0 1-8 0"/></svg><span>二手</span>
+    </a>
+    <a href="https://openaa.com/news" class="bottom-nav-item" target="_self">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Z"/><path d="M4 22a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg><span>新闻</span>
+    </a>
+    <a href="https://openaa.com/profile" class="bottom-nav-item" target="_self">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>我的</span>
+    </a>
+  </nav>
+
+  <button class="back-top" id="backTop" type="button" aria-label="回到顶部">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+  </button>
+
+  <script>
+
+    function getTemplateTarget() {
+      return OPENAA_CONFIG.templateLinkMode === 'same' ? '_self' : '_blank';
+    }
+
+    function getTemplateRel() {
+      return getTemplateTarget() === '_blank' ? 'noopener noreferrer' : '';
+    }
+
+    function applyTemplateLinkMode() {
+      const target = getTemplateTarget();
+      const rel = getTemplateRel();
+      const selectors = [
+        '.app-header a',
+        '.top-links-panel a',
+        '.banner-section a',
+        '.home-grid-section a',
+        '.tools-section a',
+        '.bottom-nav a'
+      ];
+      document.querySelectorAll(selectors.join(',')).forEach(a => {
+        a.target = target;
+        if (rel) a.rel = rel;
+        else a.removeAttribute('rel');
+      });
+    }
+
+    function applyModuleVisibility() {
+      const modules = OPENAA_CONFIG.modules || {};
+      const banner = document.getElementById('bannerWrapper');
+      const ticker = document.getElementById('latestStrip');
+      const bannerSection = document.getElementById('bannerSection');
+      const grid = document.querySelector('[data-template-module="gridMenu"]');
+      const tools = document.querySelector('[data-template-module="tools"]');
+
+      if (banner) banner.hidden = modules.showBanner === false;
+      if (ticker) ticker.hidden = modules.showTicker === false;
+      if (grid) grid.hidden = modules.showGridMenu === false;
+      if (tools) tools.hidden = modules.showTools === false;
+      if (bannerSection) bannerSection.hidden = modules.showBanner === false && modules.showTicker === false;
+    }
+
+    const APP_BASE_URL = 'https://openaa.com';
+    const TOP_LINKS_API = APP_BASE_URL + '/api/top-links';
+    // 如果 openaa.com 以后提供不同的最新动态 API，只需要改这里。
+    const LATEST_API_CANDIDATES = [
+      APP_BASE_URL + '/api/latest-posts',
+      APP_BASE_URL + '/api/home-latest',
+      APP_BASE_URL + '/api/latest'
+    ];
+
+    const ADS = Array.isArray(OPENAA_CONFIG.banners) ? OPENAA_CONFIG.banners : [];
+
+    (function initBanner() {
+      const track = document.getElementById('bannerTrack');
+      const dots = document.getElementById('bannerDots');
+      const wrapper = document.getElementById('bannerWrapper');
+      if (!track || !dots || !wrapper || !ADS.length) return;
+
+      let index = 0;
+      let pos = 1;
+      let timer = null;
+      let isAnimating = false;
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let dragX = 0;
+      let dragging = false;
+      const total = ADS.length;
+
+      function slide(ad, eager) {
+        const a = document.createElement('a');
+        a.className = 'banner-slide';
+        a.href = ad.link || '#';
+        a.target = getTemplateTarget();
+        if (getTemplateRel()) a.rel = getTemplateRel();
+        const img = document.createElement('img');
+        img.src = ad.image;
+        img.alt = ad.alt || 'OpenAA 广告';
+        img.loading = eager ? 'eager' : 'lazy';
+        img.draggable = false;
+        a.appendChild(img);
+        return a;
+      }
+
+      function build() {
+        track.innerHTML = '';
+        dots.innerHTML = '';
+        track.appendChild(slide(ADS[total - 1], false));
+        ADS.forEach((ad, i) => track.appendChild(slide(ad, i === 0)));
+        track.appendChild(slide(ADS[0], false));
+        ADS.forEach((_, i) => {
+          const b = document.createElement('button');
+          b.className = 'banner-dot' + (i === 0 ? ' active' : '');
+          b.type = 'button';
+          b.setAttribute('aria-label', '第 ' + (i + 1) + ' 张广告');
+          b.addEventListener('click', () => goTo(i + 1, true));
+          dots.appendChild(b);
+        });
+        jump(1);
+      }
+
+      function updateDots() {
+        dots.querySelectorAll('.banner-dot').forEach((d, i) => d.classList.toggle('active', i === index));
+      }
+      function setTransition(on) { track.style.transition = on ? '' : 'none'; }
+      function move(p) { track.style.transform = 'translateX(-' + (p * 100) + '%)'; }
+      function jump(p) { setTransition(false); move(p); track.offsetHeight; setTransition(true); }
+      function goTo(p, user) {
+        if (isAnimating) return;
+        if (user) restart();
+        isAnimating = true;
+        pos = p;
+        if (pos === 0) index = total - 1;
+        else if (pos === total + 1) index = 0;
+        else index = pos - 1;
+        updateDots();
+        move(pos);
+      }
+      function next() { goTo(pos + 1, false); }
+      function start() { clearInterval(timer); if (total > 1) timer = setInterval(next, 4000); }
+      function restart() { start(); }
+
+      track.addEventListener('transitionend', () => {
+        if (pos === 0) { pos = total; index = total - 1; jump(pos); updateDots(); }
+        if (pos === total + 1) { pos = 1; index = 0; jump(pos); updateDots(); }
+        isAnimating = false;
+      });
+
+      wrapper.addEventListener('touchstart', e => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        dragging = false;
+        dragX = 0;
+        clearInterval(timer);
+      }, { passive: true });
+      wrapper.addEventListener('touchmove', e => {
+        const dx = e.touches[0].clientX - touchStartX;
+        const dy = e.touches[0].clientY - touchStartY;
+        if (!dragging && Math.abs(dy) > Math.abs(dx)) return;
+        dragging = true;
+        dragX = dx;
+        setTransition(false);
+        track.style.transform = 'translateX(calc(-' + (pos * 100) + '% + ' + dragX + 'px))';
+      }, { passive: true });
+      wrapper.addEventListener('touchend', () => {
+        setTransition(true);
+        if (dragging) {
+          const threshold = wrapper.offsetWidth * 0.2;
+          if (dragX < -threshold) goTo(pos + 1, true);
+          else if (dragX > threshold) goTo(pos - 1, true);
+          else move(pos);
+        }
+        dragging = false;
+        start();
+      });
+      document.addEventListener('visibilitychange', () => document.hidden ? clearInterval(timer) : start());
+
+      build();
+      applyTemplateLinkMode();
+      start();
+    })();
+
+
+    function normalizeTopLinks(payload) {
+      const raw = Array.isArray(payload) ? payload : (payload && (payload.data || payload.links || payload.items)) || [];
+      return raw
+        .filter(item => item && (item.name || item.title || item.label) && (item.url || item.href || item.link_url))
+        .map(item => ({
+          name: item.name || item.title || item.label,
+          url: item.url || item.href || item.link_url,
+          openMode: item.open_mode || item.openMode || item.target || 'auto'
+        }));
+    }
+
+    function isInternalOpenAA(url) {
+      try {
+        const u = new URL(url, location.href);
+        return u.hostname === 'openaa.com' || u.hostname.endsWith('.openaa.com');
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function renderTopLinks(links) {
+      const box = document.getElementById('topLinksScroller');
+      if (!box || !links.length) return;
+      box.innerHTML = links.map(link => {
+        const target = getTemplateTarget();
+        const rel = target === '_blank' ? ' rel="noopener noreferrer"' : '';
+        return '<a class="top-link-chip" href="' + escapeHtml(link.url) + '" target="' + target + '"' + rel + '>' + escapeHtml(link.name) + '</a>';
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>"]/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[s]));
+    }
+
+    async function initTopLinksFromApp() {
+      const toggle = document.getElementById('topLinksToggle');
+      const panel = document.getElementById('topLinksPanel');
+      if (!toggle || !panel) return;
+
+      toggle.addEventListener('click', () => {
+        const open = !panel.classList.contains('open');
+        panel.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+
+      panel.addEventListener('touchstart', e => { panel._touchStartY = e.touches[0].clientY; }, { passive: true });
+      panel.addEventListener('touchend', e => {
+        const startY = panel._touchStartY || 0;
+        const endY = e.changedTouches[0].clientY;
+        if (startY - endY > 28) {
+          panel.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      }, { passive: true });
+
+      document.addEventListener('click', e => {
+        if (!panel.classList.contains('open')) return;
+        if (panel.contains(e.target) || toggle.contains(e.target)) return;
+        panel.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+
+      try {
+        const res = await fetch(TOP_LINKS_API, { mode: 'cors', cache: 'no-store' });
+        if (!res.ok) throw new Error('top links api failed');
+        const data = await res.json();
+        const links = normalizeTopLinks(data);
+        if (links.length) { renderTopLinks(links); applyTemplateLinkMode(); }
+      } catch (e) {
+        // 读取失败时保留模板里的固定备用快捷入口。
+      }
+    }
+
+    function normalizeLatestItems(payload) {
+      const raw = Array.isArray(payload) ? payload : (payload && (payload.data || payload.items || payload.posts || payload.latest)) || [];
+      return raw
+        .filter(item => item && (item.title || item.name))
+        .map(item => ({
+          title: item.title || item.name,
+          type: item.type || item.module || item.category || '最新',
+          url: item.url || item.href || item.link || item.path || 'https://openaa.com/news',
+          location: item.location || item.region || ''
+        }));
+    }
+
+    function renderLatestStrip(items) {
+      const strip = document.getElementById('latestStrip');
+      const text = document.getElementById('latestStripText');
+      if (!strip || !text || !items.length) return;
+      let i = 0;
+      function show() {
+        const item = items[i % items.length];
+        const prefix = item.type ? '[' + item.type + '] ' : '';
+        const suffix = item.location ? ' · ' + item.location : '';
+        text.textContent = prefix + item.title + suffix;
+        strip.href = item.url;
+        strip.target = getTemplateTarget();
+        if (getTemplateRel()) strip.rel = getTemplateRel();
+        else strip.removeAttribute('rel');
+        i += 1;
+      }
+      show();
+      if (items.length > 1) setInterval(show, 3500);
+    }
+
+    async function initLatestStripFromApp() {
+      for (const api of LATEST_API_CANDIDATES) {
+        try {
+          const res = await fetch(api, { mode: 'cors', cache: 'no-store' });
+          if (!res.ok) continue;
+          const data = await res.json();
+          const items = normalizeLatestItems(data);
+          if (items.length) {
+            renderLatestStrip(items);
+            return;
+          }
+        } catch (e) {}
+      }
+      renderLatestStrip([
+        { type: 'OpenAA', title: '美国华人生活入口 · 招聘 房屋 二手 新闻 本地服务', url: 'https://openaa.com/' },
+        { type: '导航', title: '常用网站、DMV、生活工具一站整理', url: 'https://openaa.com/' }
+      ]);
+    }
+
+    function shareOpenAA() {
+      const data = { title: 'OpenAA 华人生活入口', text: 'OpenAA 美国华人生活入口', url: location.href };
+      if (navigator.share) {
+        navigator.share(data).catch(() => {});
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(location.href).then(() => showToast('链接已复制 📋'));
+      } else {
+        showToast('请复制当前页面链接');
+      }
+    }
+
+    function showToast(text) {
+      const old = document.querySelector('.toast');
+      if (old) old.remove();
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.textContent = text;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 2400);
+    }
+
+    (function initBackTop() {
+      const btn = document.getElementById('backTop');
+      if (!btn) return;
+      window.addEventListener('scroll', () => btn.classList.toggle('show', window.scrollY > 360), { passive: true });
+      btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    })();
+
+    applyModuleVisibility();
+    applyTemplateLinkMode();
+    initTopLinksFromApp();
+    initLatestStripFromApp();
+
+    /* 美元人民币汇率记录工具：本地保存 + 导出分享 */
+    (function initFxApp(){
+      const KEY = 'openaa_usd_rmb_records_v1';
+      let deferredInstallPrompt = null;
+      const $ = (id) => document.getElementById(id);
+      const views = () => Array.from(document.querySelectorAll('#fxApp .fx-view'));
+      const money = (n, prefix='') => prefix + (Number(n)||0).toLocaleString('zh-CN',{minimumFractionDigits:2, maximumFractionDigits:2});
+      const num = (v) => Number.parseFloat(v) || 0;
+      const today = () => new Date().toISOString().slice(0,10);
+      function load(){ try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e){ return []; } }
+      function save(rows){ localStorage.setItem(KEY, JSON.stringify(rows)); }
+      function calcCny(row){ return +(num(row.usd) * num(row.rate)).toFixed(2); }
+      function sorted(){ return load().sort((a,b)=> String(b.date).localeCompare(String(a.date)) || String(b.createdAt||'').localeCompare(String(a.createdAt||''))); }
+      function summarize(rows){
+        const usd = rows.reduce((s,r)=>s+num(r.usd),0);
+        const cny = rows.reduce((s,r)=>s+calcCny(r),0);
+        const rateAvg = usd > 0 ? cny / usd : 0;
+        return { count: rows.length, usd, cny, rateAvg };
+      }
+      function summaryHtml(s){
+        return [
+          ['记录行数', s.count + ' 行'],
+          ['美金总金额', money(s.usd, '$')],
+          ['平均汇率', (s.rateAvg || 0).toFixed(4)],
+          ['人民币总金额', money(s.cny, '¥')]
+        ].map(x => '<div class="fx-stat"><span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>').join('');
+      }
+      function empty(text){ return '<div class="fx-empty">'+text+'</div>'; }
+      function recordHtml(r){
+        return '<div class="fx-record"><div class="fx-record-top"><div class="fx-record-date">'+escapeHtml(r.date)+'</div><div class="fx-record-money">¥'+money(calcCny(r))+'</div></div><div class="fx-record-meta">美金：$'+money(r.usd)+' ｜ 汇率：'+num(r.rate).toFixed(4)+(r.note?' ｜ '+escapeHtml(r.note):'')+'</div><div class="fx-record-actions"><button class="fx-chip-btn" type="button" data-edit="'+r.id+'">编辑</button><button class="fx-chip-btn" type="button" data-delete="'+r.id+'">删除</button></div></div>';
+      }
+      function renderList(containerId, rows, emptyText){
+        const box = $(containerId);
+        if(!box) return;
+        box.innerHTML = rows.length ? rows.map(recordHtml).join('') : empty(emptyText);
+      }
+      function render(){
+        const rows = sorted();
+        const allS = summarize(rows);
+        if($('homeSummary')) $('homeSummary').innerHTML = summaryHtml(allS);
+        if($('allSummary')) $('allSummary').innerHTML = summaryHtml(allS);
+        renderList('allList', rows, '暂无记录，请先输入一条数据。');
+
+        const m = $('monthPicker')?.value || '';
+        const monthRows = m ? rows.filter(r => String(r.date).slice(0,7) === m) : rows;
+        if($('monthSummary')) $('monthSummary').innerHTML = summaryHtml(summarize(monthRows));
+        renderList('monthList', monthRows, m ? '这个月份暂无数据。' : '暂无记录。');
+
+        const y = String($('yearPicker')?.value || '').trim();
+        const yearRows = y ? rows.filter(r => String(r.date).slice(0,4) === y) : rows;
+        if($('yearSummary')) $('yearSummary').innerHTML = summaryHtml(summarize(yearRows));
+        renderList('yearList', yearRows, y ? '这个年份暂无数据。' : '暂无记录。');
+      }
+      function goto(name){
+        views().forEach(v => v.classList.toggle('active', v.dataset.view === name));
+        if(name === 'input' && !$('editId').value) {
+          $('fxDate').value = $('fxDate').value || today();
+        }
+        render();
+        window.scrollTo({top:0, behavior:'smooth'});
+      }
+      function resetForm(){
+        $('editId').value = '';
+        $('inputTitle').textContent = '输入记录';
+        $('fxDate').value = today();
+        $('fxUsd').value = '';
+        $('fxRate').value = '';
+        $('fxNote').value = '';
+        updatePreview();
+      }
+      function updatePreview(){
+        const cny = num($('fxUsd').value) * num($('fxRate').value);
+        $('fxCnyPreview').textContent = money(cny, '¥');
+      }
+      function editRecord(id){
+        const r = load().find(x => x.id === id);
+        if(!r) return;
+        $('editId').value = r.id;
+        $('inputTitle').textContent = '编辑记录';
+        $('fxDate').value = r.date;
+        $('fxUsd').value = r.usd;
+        $('fxRate').value = r.rate;
+        $('fxNote').value = r.note || '';
+        updatePreview();
+        goto('input');
+      }
+      function deleteRecord(id){
+        if(!confirm('确定删除这条记录吗？')) return;
+        save(load().filter(r => r.id !== id));
+        render();
+        showToast('已删除');
+      }
+      function exportRows(){
+        const rows = sorted();
+        const months = groupSummary(rows, 7);
+        const years = groupSummary(rows, 4);
+        return {rows, months, years};
+      }
+      function groupSummary(rows, len){
+        const map = {};
+        rows.forEach(r => {
+          const k = String(r.date).slice(0,len);
+          if(!map[k]) map[k] = [];
+          map[k].push(r);
+        });
+        return Object.keys(map).sort().reverse().map(k => ({period:k, ...summarize(map[k])}));
+      }
+      function table(records, type){
+        if(type === 'month' || type === 'year') {
+          return '<table><tr><th>期间</th><th>美金总金额</th><th>平均汇率</th><th>人民币总金额</th><th>记录行数</th></tr>' + records.map(r=>'<tr><td>'+r.period+'</td><td>'+r.usd.toFixed(2)+'</td><td>'+r.rateAvg.toFixed(4)+'</td><td>'+r.cny.toFixed(2)+'</td><td>'+r.count+'</td></tr>').join('') + '</table>';
+        }
+        return '<table><tr><th>日期</th><th>美金</th><th>汇率</th><th>人民币</th><th>备注</th></tr>' + records.map(r=>'<tr><td>'+r.date+'</td><td>'+num(r.usd).toFixed(2)+'</td><td>'+num(r.rate).toFixed(4)+'</td><td>'+calcCny(r).toFixed(2)+'</td><td>'+escapeHtml(r.note||'')+'</td></tr>').join('') + '</table>';
+      }
+      function makeXlsBlob(){
+        const data = exportRows();
+        const doc = '<html><head><meta charset="utf-8"><style>table{border-collapse:collapse}td,th{border:1px solid #999;padding:6px 10px}th{background:#eef2ff}</style></head><body><h2>全部记录</h2>'+table(data.rows)+'<h2>月度汇总</h2>'+table(data.months,'month')+'<h2>年度汇总</h2>'+table(data.years,'year')+'</body></html>';
+        return new Blob(['\ufeff', doc], {type:'application/vnd.ms-excel;charset=utf-8'});
+      }
+      function makeCsvBlob(){
+        const rows = sorted();
+        const csv = ['日期,美金,汇率,人民币,备注'].concat(rows.map(r => [r.date, num(r.usd).toFixed(2), num(r.rate).toFixed(4), calcCny(r).toFixed(2), '"'+String(r.note||'').replace(/"/g,'""')+'"'].join(','))).join('\n');
+        return new Blob(['\ufeff', csv], {type:'text/csv;charset=utf-8'});
+      }
+      function downloadBlob(blob, name){
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+      }
+      async function shareBlob(blob, name, title){
+        const file = new File([blob], name, {type: blob.type});
+        if(navigator.canShare && navigator.canShare({files:[file]})) {
+          await navigator.share({title, text:title, files:[file]});
+        } else {
+          downloadBlob(blob, name);
+          showToast('当前浏览器不支持直接分享文件，已改为下载');
+        }
+      }
+      function filename(ext){ return '美元人民币汇率记录_' + today().replaceAll('-','') + ext; }
+      window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredInstallPrompt = e; });
+      document.addEventListener('click', (e) => {
+        const go = e.target.closest('[data-goto]');
+        if(go){ if(go.dataset.goto === 'input') resetForm(); goto(go.dataset.goto); }
+        const edit = e.target.closest('[data-edit]');
+        if(edit) editRecord(edit.dataset.edit);
+        const del = e.target.closest('[data-delete]');
+        if(del) deleteRecord(del.dataset.delete);
+      });
+      ['fxUsd','fxRate'].forEach(id => $(id)?.addEventListener('input', updatePreview));
+      $('fxForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const rows = load();
+        const id = $('editId').value || ('r_' + Date.now() + '_' + Math.random().toString(16).slice(2));
+        const row = { id, date:$('fxDate').value, usd:num($('fxUsd').value), rate:num($('fxRate').value), note:$('fxNote').value.trim(), createdAt:new Date().toISOString() };
+        const idx = rows.findIndex(r=>r.id===id);
+        if(idx >= 0) rows[idx] = {...rows[idx], ...row}; else rows.push(row);
+        save(rows); resetForm(); goto('saved'); showToast('保存成功');
+      });
+      $('continueAddBtn')?.addEventListener('click', () => { resetForm(); goto('input'); });
+      $('monthPicker')?.addEventListener('change', render);
+      $('yearPicker')?.addEventListener('input', render);
+      $('clearMonthBtn')?.addEventListener('click', ()=>{ $('monthPicker').value=''; render(); });
+      $('clearYearBtn')?.addEventListener('click', ()=>{ $('yearPicker').value=''; render(); });
+      $('downloadXlsBtn')?.addEventListener('click', ()=> downloadBlob(makeXlsBlob(), filename('.xls')));
+      $('shareXlsBtn')?.addEventListener('click', ()=> shareBlob(makeXlsBlob(), filename('.xls'), '美元人民币汇率记录'));
+      $('downloadCsvBtn')?.addEventListener('click', ()=> downloadBlob(makeCsvBlob(), filename('.csv')));
+      $('shareTextBtn')?.addEventListener('click', async ()=>{
+        const s = summarize(sorted());
+        const text = '美元人民币汇率记录\n记录行数：'+s.count+'\n美金总金额：$'+money(s.usd)+'\n平均汇率：'+s.rateAvg.toFixed(4)+'\n人民币总金额：¥'+money(s.cny);
+        if(navigator.share) await navigator.share({title:'美元人民币汇率记录', text}); else { await navigator.clipboard.writeText(text); showToast('文字汇总已复制'); }
+      });
+      $('downloadJsonBtn')?.addEventListener('click', ()=> downloadBlob(new Blob([JSON.stringify(load(), null, 2)],{type:'application/json'}), filename('.json')));
+      $('importJsonInput')?.addEventListener('change', async (e)=>{
+        const file = e.target.files && e.target.files[0]; if(!file) return;
+        try {
+          const rows = JSON.parse(await file.text());
+          if(!Array.isArray(rows)) throw new Error('bad');
+          if(!confirm('导入会覆盖当前数据，确定继续吗？')) return;
+          save(rows); render(); showToast('导入成功'); goto('home');
+        } catch(err){ alert('导入失败，请选择正确的 JSON 备份文件。'); }
+        e.target.value = '';
+      });
+      $('clearDataBtn')?.addEventListener('click', ()=>{ if(confirm('确定清空全部数据吗？此操作不可恢复。')){ save([]); render(); showToast('已清空'); }});
+      $('installAppBtn')?.addEventListener('click', async ()=>{
+        const ua = navigator.userAgent.toLowerCase();
+        if(deferredInstallPrompt) {
+          deferredInstallPrompt.prompt();
+          await deferredInstallPrompt.userChoice;
+          deferredInstallPrompt = null;
+        } else if(/iphone|ipad|ipod/.test(ua)) {
+          alert('iPhone 安装方法：请用 Safari 打开本页，点击底部“分享”按钮，然后选择“添加到主屏幕”。\n\n如果在微信里，请先点右上角，用 Safari 打开。');
+        } else {
+          alert('请用 Chrome/Edge 打开本页，然后在浏览器菜单选择“安装应用”或“添加到主屏幕”。如果在微信里，请先用浏览器打开。');
+        }
+      });
+      resetForm();
+      render();
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').catch(()=>{});
+      }
+    })();
+
+  </script>
 </body>
 </html>
