@@ -719,37 +719,49 @@
     .fx-share-card {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       width: 100%;
       border: 1px solid #dbeafe;
       border-radius: 16px;
-      background: linear-gradient(135deg, #eff6ff 0%, #f8fbff 100%);
-      padding: 14px 16px;
-      margin-bottom: 12px;
-      box-shadow: 0 8px 22px rgba(37,99,235,.08);
+      background: linear-gradient(90deg, #eff6ff 0%, #ffffff 52%, #f0f9ff 100%);
+      padding: 16px;
+      margin: 16px 0 14px;
+      box-shadow: 0 1px 3px rgba(15,23,42,.08), 0 10px 24px rgba(37,99,235,.08);
       cursor: pointer;
       text-align: left;
       color: inherit;
+      transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
       -webkit-tap-highlight-color: transparent;
     }
-    .fx-share-card:active { transform: scale(.99); background: #eff6ff; }
+    .fx-share-card:hover {
+      border-color: #bfdbfe;
+      box-shadow: 0 12px 28px rgba(15,23,42,.12), 0 2px 8px rgba(37,99,235,.08);
+    }
+    .fx-share-card:active { transform: scale(.99); }
     .fx-share-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
       display: grid;
       place-items: center;
       flex: 0 0 auto;
       background: #fff;
       color: #2563eb;
       border: 1px solid #dbeafe;
-      box-shadow: 0 4px 14px rgba(37,99,235,.12);
+      box-shadow: 0 1px 3px rgba(15,23,42,.10), 0 8px 18px rgba(37,99,235,.10);
     }
-    .fx-share-icon svg { width: 22px; height: 22px; }
+    .fx-share-icon svg { width: 18px; height: 18px; }
     .fx-share-text { min-width: 0; flex: 1; }
-    .fx-share-text strong { display: block; font-size: 16px; color: #0f172a; margin-bottom: 4px; }
-    .fx-share-text span { display: block; font-size: 13px; line-height: 1.45; color: #64748b; }
-    .fx-share-arrow { color: #3b82f6; font-size: 28px; line-height: 1; padding-left: 4px; }
+    .fx-share-text strong { display: block; font-size: 14px; font-weight: 700; line-height: 1.25; color: #0f172a; margin-bottom: 4px; }
+    .fx-share-text span { display: block; font-size: 12px; line-height: 1.65; color: #64748b; }
+    .fx-share-arrow {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      color: #60a5fa;
+      transition: transform .2s ease;
+    }
+    .fx-share-card:hover .fx-share-arrow { transform: translateX(2px); }
 
   </style>
 </head>
@@ -993,7 +1005,7 @@
             <strong>分享给朋友</strong>
             <span>一键调用系统分享，不支持时会自动复制链接</span>
           </span>
-          <span class="fx-share-arrow" aria-hidden="true">›</span>
+          <svg class="fx-share-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
         </button>
 
         <article class="template-card fx-seo-card" aria-labelledby="fxFaqTitle">
