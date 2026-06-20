@@ -3,25 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>美元人民币汇率记录工具 | OpenAA 单机本地保存工具</title>
-  <meta name="description" content="OpenAA 美元人民币汇率记录工具，支持本地保存、日期输入、美金金额、汇率、人民币自动计算、月度年度汇总、导出 WPS Excel、备份恢复和手机添加到桌面。" />
-  <meta name="keywords" content="美元人民币汇率, 美金换人民币, 汇率记录, WPS 导出, 本地记账, OpenAA 工具, 华人汇率工具" />
+  <title>美元人民币汇率记录工具 | 美金换人民币计算器 | 汇率记录与Excel导出</title>
+  <meta name="description" content="免费美元人民币汇率记录工具，支持美金金额输入、汇率计算、人民币自动换算、月度统计、年度统计、本地保存数据和Excel导出。适合海外华人记录换汇、工资、转账和美元收入。" />
+  <meta name="keywords" content="美元人民币汇率,美金换人民币,汇率计算器,美元汇率记录,人民币换算,美元收入记录,换汇记录,汇率统计,Excel汇率表,海外华人工具,美国华人工具" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://openaa.com/tools/usd-rmb/" />
   <meta property="og:locale" content="zh_CN" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="美元人民币汇率记录工具 | OpenAA" />
-  <meta property="og:description" content="手机端友好的美元人民币汇率记录工具，本地保存数据，支持导出 WPS Excel 和备份恢复。" />
+  <meta property="og:description" content="免费美元人民币汇率记录工具，支持美金换人民币自动计算、月度年度统计、本地保存数据和Excel导出。" />
   <meta property="og:url" content="https://openaa.com/tools/usd-rmb/" />
   <meta property="og:image" content="https://img.openaa.com/logo.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="美元人民币汇率记录工具 | OpenAA" />
-  <meta name="twitter:description" content="本地保存、自动计算、月度年度汇总、导出 WPS Excel 的手机汇率记录工具。" />
+  <meta name="twitter:description" content="本地保存、自动计算、月度年度汇总、导出Excel的手机汇率记录工具。" />
   <meta name="twitter:image" content="https://img.openaa.com/logo.png" />
   <link rel="icon" href="https://img.openaa.com/favicon.ico" />
   <link rel="apple-touch-icon" href="https://img.openaa.com/apple-touch-icon.png" />
   <link rel="manifest" href="./manifest.json" />
   <meta name="theme-color" content="#3b82f6" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "美元人民币汇率记录工具",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "url": "https://openaa.com/tools/usd-rmb/",
+    "description": "免费美元人民币汇率记录工具，支持美金金额输入、人民币自动换算、月度统计、年度统计、本地保存数据和Excel导出。",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "publisher": { "@type": "Organization", "name": "OpenAA", "url": "https://openaa.com/" }
+  }
+  </script>
 
 
   <!-- =========================================================
@@ -695,6 +709,13 @@
       .fx-big-btn { min-height: 76px; }
     }
 
+
+    .fx-seo-card h2 { font-size: 18px; margin-bottom: 10px; color: #111827; }
+    .fx-seo-card h3 { font-size: 15px; margin: 14px 0 6px; color: #111827; }
+    .fx-seo-card p { font-size: 14px; line-height: 1.8; color: #52525b; margin-bottom: 9px; }
+    .fx-seo-card .faq-item { border-top: 1px solid #eef2f7; padding-top: 10px; margin-top: 10px; }
+    .fx-seo-card .faq-item:first-of-type { border-top: 0; padding-top: 0; }
+
   </style>
 </head>
 <body>
@@ -854,7 +875,7 @@
             <div class="template-card">
               <h2>当前数据</h2>
               <div id="homeSummary" class="fx-summary"></div>
-              <p class="fx-help">数据只保存在当前手机浏览器里。重要数据请定期导出 Excel 保存。</p>
+              <p class="fx-help">数据只保存在当前手机浏览器里。换手机或清缓存前，请先导出 JSON 备份。</p>
             </div>
           </section>
 
@@ -926,7 +947,38 @@
         </div>
       </section>
 
-            <!-- 中间内容结束 -->
+      
+
+        <article class="template-card fx-seo-card" aria-labelledby="fxFaqTitle">
+          <h2 id="fxFaqTitle">常见问题</h2>
+          <div class="faq-item">
+            <h3>美元换人民币怎样计算？</h3>
+            <p>人民币金额 = 美金金额 × 汇率。你只需要输入日期、美金金额和当时使用的汇率，工具会自动计算人民币金额，并保存到当前设备浏览器中。</p>
+          </div>
+          <div class="faq-item">
+            <h3>数据会上传服务器吗？</h3>
+            <p>不会。这个美元人民币汇率记录工具是单机本地保存工具，记录数据默认只保存在当前手机或电脑浏览器里，不需要登录，也不会上传到 OpenAA 服务器。</p>
+          </div>
+          <div class="faq-item">
+            <h3>可以导出 Excel 吗？</h3>
+            <p>可以。工具支持导出 Excel 文件，里面包含全部记录、月度记录和年度记录，并自动生成美金总金额、平均汇率、人民币总金额、记录行数、有记录月份和每月平均金额等汇总数据。</p>
+          </div>
+          <div class="faq-item">
+            <h3>换手机如何保留数据？</h3>
+            <p>换手机、换浏览器或清理缓存前，建议先导出 Excel 文件保存。因为数据存放在当前设备浏览器中，清除浏览器数据可能会导致本地记录丢失。</p>
+          </div>
+        </article>
+
+        <article class="template-card fx-seo-card" aria-labelledby="fxSeoTitle">
+          <h2 id="fxSeoTitle">美元人民币汇率记录与美金换人民币计算工具</h2>
+          <p>这个美元人民币汇率记录工具适合在美国生活、工作、做生意或经常需要记录美元收入的华人使用。日常生活中，很多人会遇到工资、转账、换汇、汇款、现金兑换、家庭账目或生意收入需要换算成人民币的情况。使用普通计算器虽然可以临时计算，但时间久了很难查找每一笔记录，也不方便按月份或年份统计。</p>
+          <p>通过这个美金换人民币计算器，你可以手动输入日期、美金金额和汇率，系统会自动计算人民币金额。所有记录会保存在本地浏览器中，手机打开也能使用，适合随手记录美元收入、换汇记录和人民币换算结果。工具提供全部记录、按月查看和年度记录，方便查看每个月美金总金额、平均汇率、人民币总金额和记录行数。</p>
+          <p>导出 Excel 功能适合需要长期保存数据的人使用。导出的表格包含全部记录、月度记录和年度记录，金额统一保留两位小数，数字右对齐，汇总数据加粗突出，使用 WPS 表格或 Microsoft Excel 都可以打开。对于海外华人来说，这类汇率记录表可以用于整理个人收入、家庭转账、换汇流水、工资记录和年度统计。</p>
+          <p>本工具不自动联网获取汇率，汇率由用户自己输入，适合记录真实使用的兑换汇率。不同银行、转账平台或现金兑换点使用的汇率可能不同，手动输入可以让记录更准确。建议每次换汇或转账后立即记录日期、金额和汇率，月底或年底再通过导出的 Excel 查看整体情况。</p>
+          <p>如果你在手机上使用，可以把本页面添加到主屏幕，像 App 一样打开。由于数据保存在当前浏览器中，建议定期导出 Excel 做备份，避免更换手机、清理缓存或更换浏览器后找不到历史记录。</p>
+        </article>
+
+      <!-- 中间内容结束 -->
     </main>
   </div>
 
@@ -1241,9 +1293,17 @@
     }
 
     function shareOpenAA() {
-      const data = { title: 'OpenAA 华人生活入口', text: 'OpenAA 美国华人生活入口', url: location.href };
+      const data = {
+        title: '美元人民币汇率记录工具',
+        text: '本地保存数据，支持月度统计、年度统计和 Excel 导出。',
+        url: location.href
+      };
       if (navigator.share) {
-        navigator.share(data).catch(() => {});
+        navigator.share(data).catch(() => {
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(location.href).then(() => showToast('链接已复制 📋'));
+          }
+        });
       } else if (navigator.clipboard) {
         navigator.clipboard.writeText(location.href).then(() => showToast('链接已复制 📋'));
       } else {
@@ -1571,6 +1631,11 @@
           {name:'xl/worksheets/sheet3.xml', content:sheetXmlAdvanced(buildYearSheetRows(rows))}
         ];
         return new Blob([makeZip(files)], {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+      }
+      function makeCsvBlob(){
+        const rows = sorted();
+        const csv = ['日期,美金,汇率,人民币,备注'].concat(rows.map(r => [r.date, num(r.usd).toFixed(2), fixedRate(r.rate), calcCny(r).toFixed(2), '"'+String(r.note||'').replace(/"/g,'""')+'"'].join(','))).join('\n');
+        return new Blob(['\ufeff', csv], {type:'text/csv;charset=utf-8'});
       }
       function downloadBlob(blob, name){
         const a = document.createElement('a');
