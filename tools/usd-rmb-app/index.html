@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>美元人民币汇率记录工具 | OpenAA 单机本地保存工具</title>
-  <meta name="description" content="OpenAA 美元人民币汇率记录工具，支持本地保存、日期输入、美金金额、汇率、人民币自动计算、月度年度汇总、导出 WPS Excel、复制汇总内容和手机添加到桌面。" />
+  <meta name="description" content="OpenAA 美元人民币汇率记录工具，支持本地保存、日期输入、美金金额、汇率、人民币自动计算、月度年度汇总、导出 WPS Excel、备份恢复和手机添加到桌面。" />
   <meta name="keywords" content="美元人民币汇率, 美金换人民币, 汇率记录, WPS 导出, 本地记账, OpenAA 工具, 华人汇率工具" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://openaa.com/tools/usd-rmb/" />
   <meta property="og:locale" content="zh_CN" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="美元人民币汇率记录工具 | OpenAA" />
-  <meta property="og:description" content="手机端友好的美元人民币汇率记录工具，本地保存数据，支持导出 WPS Excel、分享 Excel 和复制汇总内容。" />
+  <meta property="og:description" content="手机端友好的美元人民币汇率记录工具，本地保存数据，支持导出 WPS Excel 和备份恢复。" />
   <meta property="og:url" content="https://openaa.com/tools/usd-rmb/" />
   <meta property="og:image" content="https://img.openaa.com/logo.png" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -847,13 +847,13 @@
               <button class="fx-big-btn" type="button" data-goto="all"><strong>查看</strong><span>全部记录、编辑删除</span></button>
               <button class="fx-big-btn" type="button" data-goto="month"><strong>按月</strong><span>月度合计与平均汇率</span></button>
               <button class="fx-big-btn" type="button" data-goto="year"><strong>年度</strong><span>年度合计与记录行数</span></button>
-              <button class="fx-big-btn" type="button" data-goto="export"><strong>导出/分享</strong><span>Excel、分享、复制汇总</span></button>
+              <button class="fx-big-btn" type="button" data-goto="export"><strong>导出/分享</strong><span>WPS Excel、CSV、备份</span></button>
               <button class="fx-big-btn" type="button" id="installAppBtn"><strong>下载安装到手机</strong><span>添加到桌面，像 App 一样打开</span></button>
             </div>
             <div class="template-card">
               <h2>当前数据</h2>
               <div id="homeSummary" class="fx-summary"></div>
-              <p class="fx-help">数据只保存在当前手机浏览器里。换手机或清缓存前，请先导出 Excel 保存。</p>
+              <p class="fx-help">数据只保存在当前手机浏览器里。换手机或清缓存前，请先导出 JSON 备份。</p>
             </div>
           </section>
 
@@ -913,7 +913,7 @@
           </section>
 
           <section class="fx-view" data-view="export">
-            <div class="fx-page-title"><h2>导出 / 分享</h2><button class="fx-small-btn" type="button" data-goto="home">返回</button></div>
+            <div class="fx-page-title"><h2>导出 / 分享 / 备份</h2><button class="fx-small-btn" type="button" data-goto="home">返回</button></div>
             <div class="fx-tools-grid">
               <button class="fx-primary-btn" type="button" id="downloadXlsBtn">📊 导出 Excel</button>
               <button class="fx-primary-btn" type="button" id="shareXlsBtn">📎 分享 Excel</button>
@@ -1277,32 +1277,46 @@
     (function initFxApp(){
       const KEY = 'openaa_usd_rmb_records_v1';
       let deferredInstallPrompt = null;
+      let monthShowAll = false;
       const $ = (id) => document.getElementById(id);
       const views = () => Array.from(document.querySelectorAll('#fxApp .fx-view'));
       const money = (n, prefix='') => prefix + (Number(n)||0).toLocaleString('zh-CN',{minimumFractionDigits:2, maximumFractionDigits:2});
+      const fixedMoney = (n) => (Number(n)||0).toLocaleString('zh-CN',{minimumFractionDigits:2, maximumFractionDigits:2});
+      const fixedRate = (n) => (Number(n)||0).toLocaleString('zh-CN',{minimumFractionDigits:2, maximumFractionDigits:2});
       const num = (v) => Number.parseFloat(v) || 0;
       const today = () => new Date().toISOString().slice(0,10);
       function load(){ try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e){ return []; } }
       function save(rows){ localStorage.setItem(KEY, JSON.stringify(rows)); }
       function calcCny(row){ return +(num(row.usd) * num(row.rate)).toFixed(2); }
       function sorted(){ return load().sort((a,b)=> String(b.date).localeCompare(String(a.date)) || String(b.createdAt||'').localeCompare(String(a.createdAt||''))); }
+      function latestMonth(rows){
+        const months = Array.from(new Set((rows || sorted()).map(r => String(r.date || '').slice(0,7)).filter(Boolean))).sort().reverse();
+        return months[0] || '';
+      }
       function summarize(rows){
         const usd = rows.reduce((s,r)=>s+num(r.usd),0);
         const cny = rows.reduce((s,r)=>s+calcCny(r),0);
         const rateAvg = usd > 0 ? cny / usd : 0;
-        return { count: rows.length, usd, cny, rateAvg };
+        const months = new Set(rows.map(r => String(r.date || '').slice(0,7)).filter(Boolean));
+        const monthCount = months.size;
+        const monthAvgUsd = monthCount ? usd / monthCount : 0;
+        const monthAvgCny = monthCount ? cny / monthCount : 0;
+        return { count: rows.length, usd, cny, rateAvg, monthCount, monthAvgUsd, monthAvgCny };
       }
       function summaryHtml(s){
         return [
           ['记录行数', s.count + ' 行'],
+          ['有记录月份', (s.monthCount || 0) + ' 个月'],
           ['美金总金额', money(s.usd, '$')],
-          ['平均汇率', (s.rateAvg || 0).toFixed(4)],
-          ['人民币总金额', money(s.cny, '¥')]
+          ['每月平均美金', money(s.monthAvgUsd, '$')],
+          ['平均汇率', fixedRate(s.rateAvg)],
+          ['人民币总金额', money(s.cny, '¥')],
+          ['每月平均人民币', money(s.monthAvgCny, '¥')]
         ].map(x => '<div class="fx-stat"><span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>').join('');
       }
       function empty(text){ return '<div class="fx-empty">'+text+'</div>'; }
       function recordHtml(r){
-        return '<div class="fx-record"><div class="fx-record-top"><div class="fx-record-date">'+escapeHtml(r.date)+'</div><div class="fx-record-money">¥'+money(calcCny(r))+'</div></div><div class="fx-record-meta">美金：$'+money(r.usd)+' ｜ 汇率：'+num(r.rate).toFixed(4)+(r.note?' ｜ '+escapeHtml(r.note):'')+'</div><div class="fx-record-actions"><button class="fx-chip-btn" type="button" data-edit="'+r.id+'">编辑</button><button class="fx-chip-btn" type="button" data-delete="'+r.id+'">删除</button></div></div>';
+        return '<div class="fx-record"><div class="fx-record-top"><div class="fx-record-date">'+escapeHtml(r.date)+'</div><div class="fx-record-money">¥'+money(calcCny(r))+'</div></div><div class="fx-record-meta">美金：$'+money(r.usd)+' ｜ 汇率：'+fixedRate(r.rate)+(r.note?' ｜ '+escapeHtml(r.note):'')+'</div><div class="fx-record-actions"><button class="fx-chip-btn" type="button" data-edit="'+r.id+'">编辑</button><button class="fx-chip-btn" type="button" data-delete="'+r.id+'">删除</button></div></div>';
       }
       function renderList(containerId, rows, emptyText){
         const box = $(containerId);
@@ -1316,10 +1330,14 @@
         if($('allSummary')) $('allSummary').innerHTML = summaryHtml(allS);
         renderList('allList', rows, '暂无记录，请先输入一条数据。');
 
-        const m = $('monthPicker')?.value || '';
-        const monthRows = m ? rows.filter(r => String(r.date).slice(0,7) === m) : rows;
+        let m = $('monthPicker')?.value || '';
+        if(!monthShowAll && !m) {
+          m = latestMonth(rows);
+          if($('monthPicker')) $('monthPicker').value = m;
+        }
+        const monthRows = (!monthShowAll && m) ? rows.filter(r => String(r.date).slice(0,7) === m) : rows;
         if($('monthSummary')) $('monthSummary').innerHTML = summaryHtml(summarize(monthRows));
-        renderList('monthList', monthRows, m ? '这个月份暂无数据。' : '暂无记录。');
+        renderList('monthList', monthRows, (!monthShowAll && m) ? '这个月份暂无数据。' : '暂无记录。');
 
         const y = String($('yearPicker')?.value || '').trim();
         const yearRows = y ? rows.filter(r => String(r.date).slice(0,4) === y) : rows;
@@ -1330,6 +1348,9 @@
         views().forEach(v => v.classList.toggle('active', v.dataset.view === name));
         if(name === 'input' && !$('editId').value) {
           $('fxDate').value = $('fxDate').value || today();
+        }
+        if(name === 'month' && !monthShowAll && $('monthPicker') && !$('monthPicker').value) {
+          $('monthPicker').value = latestMonth(sorted());
         }
         render();
         window.scrollTo({top:0, behavior:'smooth'});
@@ -1467,23 +1488,29 @@
       }
       function headerRow(labels){ return labels.map(v => ({v, s:1})); }
       function blankRow(){ return ['', '', '', '', '']; }
-      function summaryRows(title, summary){
-        return [
+      function summaryRows(title, summary, includeMonthlyAverage){
+        const rows = [
           [{v:title, s:2}, '', '', '', ''],
-          [{v:'美金总金额', s:3}, {v:+summary.usd.toFixed(2), s:4}, '', '', ''],
-          [{v:'平均汇率', s:3}, {v:+summary.rateAvg.toFixed(4), s:4}, '', '', ''],
-          [{v:'人民币总金额', s:3}, {v:+summary.cny.toFixed(2), s:4}, '', '', ''],
-          [{v:'记录行数', s:3}, {v:summary.count, s:4}, '', '', '']
+          [{v:'美金总金额', s:3}, {v:fixedMoney(summary.usd), s:4}, '', '', ''],
+          [{v:'平均汇率', s:3}, {v:fixedRate(summary.rateAvg), s:4}, '', '', ''],
+          [{v:'人民币总金额', s:3}, {v:fixedMoney(summary.cny), s:4}, '', '', ''],
+          [{v:'记录行数', s:3}, {v:summary.count + ' 行', s:4}, '', '', '']
         ];
+        if(includeMonthlyAverage) {
+          rows.splice(1, 0, [{v:'有记录月份', s:3}, {v:(summary.monthCount || 0) + ' 个月', s:4}, '', '', '']);
+          rows.splice(4, 0, [{v:'每月平均美金', s:3}, {v:fixedMoney(summary.monthAvgUsd), s:4}, '', '', '']);
+          rows.splice(7, 0, [{v:'每月平均人民币', s:3}, {v:fixedMoney(summary.monthAvgCny), s:4}, '', '', '']);
+        }
+        return rows;
       }
       function recordRow(r){
-        return [r.date, +num(r.usd).toFixed(2), +num(r.rate).toFixed(4), +calcCny(r).toFixed(2), r.note || ''];
+        return [r.date, fixedMoney(r.usd), fixedRate(r.rate), fixedMoney(calcCny(r)), r.note || ''];
       }
       function buildAllSheetRows(rows){
         const out = [headerRow(['日期','美金','汇率','人民币','备注'])];
         rows.forEach(r => out.push(recordRow(r)));
         out.push(blankRow());
-        out.push(...summaryRows('总汇总', summarize(rows)));
+        out.push(...summaryRows('总汇总', summarize(rows), true));
         return out;
       }
       function buildMonthSheetRows(rows){
@@ -1501,7 +1528,7 @@
           out.push(headerRow(['日期','美金','汇率','人民币','备注']));
           groups[month].sort((a,b)=>String(b.date).localeCompare(String(a.date))).forEach(r => out.push(recordRow(r)));
           out.push(blankRow());
-          out.push(...summaryRows(monthLabel(month) + '汇总', summarize(groups[month])));
+          out.push(...summaryRows(monthLabel(month) + '汇总', summarize(groups[month]), false));
         });
         if(!out.length) out.push([{v:'暂无记录', s:2}, '', '', '', '']);
         return out;
@@ -1509,9 +1536,9 @@
       function buildYearSheetRows(rows){
         const months = groupSummary(rows, 7);
         const out = [headerRow(['月份','美金总金额','平均汇率','人民币总金额','记录行数'])];
-        months.forEach(r => out.push([monthLabel(r.period), +r.usd.toFixed(2), +r.rateAvg.toFixed(4), +r.cny.toFixed(2), r.count]));
+        months.forEach(r => out.push([monthLabel(r.period), fixedMoney(r.usd), fixedRate(r.rateAvg), fixedMoney(r.cny), r.count + ' 行']));
         out.push(blankRow());
-        out.push(...summaryRows('年度总汇总', summarize(rows)));
+        out.push(...summaryRows('年度总汇总', summarize(rows), true));
         return out;
       }
       function xlsxStylesXml(){
@@ -1541,7 +1568,7 @@
       }
       function makeCsvBlob(){
         const rows = sorted();
-        const csv = ['日期,美金,汇率,人民币,备注'].concat(rows.map(r => [r.date, num(r.usd).toFixed(2), num(r.rate).toFixed(4), calcCny(r).toFixed(2), '"'+String(r.note||'').replace(/"/g,'""')+'"'].join(','))).join('\n');
+        const csv = ['日期,美金,汇率,人民币,备注'].concat(rows.map(r => [r.date, num(r.usd).toFixed(2), fixedRate(r.rate), calcCny(r).toFixed(2), '"'+String(r.note||'').replace(/"/g,'""')+'"'].join(','))).join('\n');
         return new Blob(['\ufeff', csv], {type:'text/csv;charset=utf-8'});
       }
       function downloadBlob(blob, name){
@@ -1604,15 +1631,15 @@
         save(rows); resetForm(); goto('saved'); showToast('保存成功');
       });
       $('continueAddBtn')?.addEventListener('click', () => { resetForm(); goto('input'); });
-      $('monthPicker')?.addEventListener('change', render);
+      $('monthPicker')?.addEventListener('change', ()=>{ monthShowAll = false; render(); });
       $('yearPicker')?.addEventListener('input', render);
-      $('clearMonthBtn')?.addEventListener('click', ()=>{ $('monthPicker').value=''; render(); });
+      $('clearMonthBtn')?.addEventListener('click', ()=>{ monthShowAll = true; $('monthPicker').value=''; render(); });
       $('clearYearBtn')?.addEventListener('click', ()=>{ $('yearPicker').value=''; render(); });
       $('downloadXlsBtn')?.addEventListener('click', ()=> downloadBlob(makeXlsxBlob(), filename('.xlsx')));
       $('shareXlsBtn')?.addEventListener('click', ()=> shareBlob(makeXlsxBlob(), filename('.xlsx'), '美元人民币汇率记录'));
       async function copySummary(){
         const s = summarize(sorted());
-        const text = '美元人民币汇率记录\n\n记录行数：'+s.count+'\n美金总金额：$'+money(s.usd)+'\n平均汇率：'+s.rateAvg.toFixed(4)+'\n人民币总金额：¥'+money(s.cny);
+        const text = '美元人民币汇率记录\n\n记录行数：'+s.count+' 行\n有记录月份：'+(s.monthCount || 0)+' 个月\n美金总金额：$'+money(s.usd)+'\n每月平均美金：$'+money(s.monthAvgUsd)+'\n平均汇率：'+fixedRate(s.rateAvg)+'\n人民币总金额：¥'+money(s.cny)+'\n每月平均人民币：¥'+money(s.monthAvgCny);
         await copyText(text);
         showToast('已复制，可到微信粘贴发送');
         alert('汇总内容已复制。请打开微信聊天窗口，长按输入框粘贴发送。');
@@ -1633,6 +1660,7 @@
         }
       });
       resetForm();
+      if($('monthPicker')) $('monthPicker').value = latestMonth(sorted());
       render();
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js').catch(()=>{});
