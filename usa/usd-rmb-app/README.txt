@@ -1,12 +1,12 @@
-美元人民币汇率记录工具 - 完整包
+OpenAA 美元人民币汇率记录工具
 
-上传方法：
-1. 解压本 ZIP。
-2. 把 index.html、manifest.json、sw.js 三个文件上传到 GitHub Pages 对应目录。
-3. 如果已有旧文件，直接覆盖同名文件。
+上传说明：
+1. 将本文件夹内的 index.html、manifest.json、sw.js 上传到你的工具目录。
+2. 推荐路径：tools.openaa.com/usd-rmb/
+3. 如果只做本次文案/按钮更新，也可以只覆盖 index.html。
 
-本版本：
-- 保留最后一次确认的导出/统计功能。
-- 增加右上角分享本网页。
-- 优化 title、description、keywords、OG、Twitter SEO。
-- 增加 FAQ 和 SEO 正文。
+本版本更新：
+- 首页增加数据安全说明。
+- 导出页增加数据保存说明。
+- 增加“返回工具首页”按钮，链接到 https://tools.openaa.com/。
+- 保留原有导出、统计、分享卡片和 SEO 功能。
