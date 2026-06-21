@@ -21,20 +21,25 @@
   <link rel="icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
 
-
   <!-- =========================================================
-    OpenAA 通用静态页面说明
+    OpenAA 通用静态页面模板 · openaa-app 版
+    Template Version: 1.0.0
+    Primary Domain: https://openaa.com
+    Image Domain:   https://img.openaa.com
 
     一、站长自己改的地方：只改下面 OPENAA_CONFIG
-    1. banners：广告图片地址 + 点击广告打开的链接。
-    2. modules：控制广告轮播、滚动动态、8宫格、实用工具显示或隐藏。
+    1. version：模板版本号，方便以后确认文件是否为最新版。
+    2. pageType：页面类型标记，只作识别和后续扩展，不改变当前视觉效果。
+       可用建议："standard" / "guide" / "notice" / "ad" / "topic"
+    3. banners：广告图片地址 + 点击广告打开的链接。
+    4. modules：控制广告轮播、滚动动态、8宫格、实用工具显示或隐藏。
        true  = 显示
        false = 隐藏
        隐藏后页面会自动收紧，不会留下大空白。
-    3. templateLinkMode：控制“模板固定区域”的链接打开方式。
-       "new"  = 新窗口打开（默认）
-       "same" = 当前页面打开
-       只控制：顶部 Logo、纽约快捷栏、广告图、滚动动态、8宫格、实用工具、底部导航。
+    5. templateLinkMode：控制“模板固定区域”的链接打开方式。
+       "new"  = 新窗口打开
+       "same" = 当前页面打开（默认）
+       只控制：顶部 Logo、顶部快捷导航、广告图、滚动动态、8宫格、实用工具、底部导航。
        不控制：中间正文内容里的链接。
 
     二、发给 AI 写内容时，请告诉 AI：
@@ -45,9 +50,19 @@
     5. 正文建议用 <article class="template-card"> 包住，保持卡片风格统一。
     6. 正文里的链接按内容需要设置，不受 templateLinkMode 控制。
     7. 正式页面的 title、description、keywords、canonical、OG、Twitter、结构化数据都要按当前内容改好，不要写“模板”。
+
+    三、防误改边界：
+    1. 不要改顶部 Header、Logo、快捷导航、广告轮播、滚动动态、8宫格、实用工具、底部导航、回到顶部。
+    2. 不要把模板里的主站链接 https://openaa.com 改成旧站或其它域名。
+    3. 信息滚动条固定使用 openaa-app 新站内容，不再读取 openaa-ny 旧动态。
+    4. 如需调整模板结构，请另存为新版本，不要直接覆盖旧版本。
   ========================================================== -->
   <script>
     const OPENAA_CONFIG = {
+      // 0）模板版本与页面类型：只作识别和后续扩展，不改变当前视觉效果
+      version: "1.0.0",
+      pageType: "tool",
+
       // 1）广告轮播：图片地址 + 点击图片打开的链接
       banners: [
         {
@@ -100,19 +115,30 @@
       background: linear-gradient(90deg, #d9dce3 0%, #eef0f4 28%, #eef0f4 72%, #d9dce3 100%);
       color: #18181b;
       min-height: 100vh;
-      padding-bottom: calc(64px + env(safe-area-inset-bottom));
+      padding-bottom: calc(72px + env(safe-area-inset-bottom));
     }
     a { color: inherit; text-decoration: none; }
     button { font: inherit; }
     [hidden] { display: none !important; }
 
+    :root {
+      --app-shell-width: 560px;
+      --app-bg: #f4f4f7;
+      --app-blue: #3b82f6;
+      --app-text: #18181b;
+      --app-muted: #71717a;
+      --app-border: #e4e4e7;
+      --app-side-shadow: -32px 0 44px rgba(15, 23, 42, .14), 32px 0 44px rgba(15, 23, 42, .14);
+    }
+
     .app-shell {
-      max-width: 560px;
+      width: 100%;
+      max-width: var(--app-shell-width);
       min-height: 100vh;
       margin: 0 auto;
-      background: #f4f4f7;
+      background: var(--app-bg);
       position: relative;
-      box-shadow: -32px 0 44px rgba(15, 23, 42, .14), 32px 0 44px rgba(15, 23, 42, .14);
+      box-shadow: var(--app-side-shadow);
     }
 
     .app-header {
@@ -121,13 +147,13 @@
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
-      max-width: 560px;
+      max-width: var(--app-shell-width);
       z-index: 100;
       background: rgba(255,255,255,.96);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(228,228,235,.8);
-      box-shadow: -32px 0 44px rgba(15, 23, 42, .14), 32px 0 44px rgba(15, 23, 42, .14);
+      box-shadow: var(--app-side-shadow);
     }
     .header-inner {
       height: 56px;
@@ -195,7 +221,7 @@
       left: 50%;
       transform: translateX(-50%) translateY(-8px);
       width: 100%;
-      max-width: 560px;
+      max-width: var(--app-shell-width);
       z-index: 98;
       background: rgba(255,255,255,.98);
       border-bottom: 1px solid #e4e4e7;
@@ -500,7 +526,7 @@
       bottom: 0;
       transform: translateX(-50%);
       width: 100%;
-      max-width: 560px;
+      max-width: var(--app-shell-width);
       z-index: 100;
       background: rgba(255,255,255,.97);
       backdrop-filter: blur(12px);
@@ -514,23 +540,25 @@
     .bottom-nav-item {
       flex: 1;
       min-width: 0;
+      min-height: 64px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 3px;
-      padding: 8px 4px 10px;
-      color: #71717a;
-      font-size: 11px;
+      padding: 7px 4px 9px;
+      color: var(--app-muted);
+      font-size: 13px;
+      line-height: 1.05;
       font-weight: 500;
       -webkit-tap-highlight-color: transparent;
     }
-    .bottom-nav-item svg { width: 24px; height: 24px; stroke: currentColor; }
-    .bottom-nav-item.active { color: #3b82f6; font-weight: 700; }
+    .bottom-nav-item svg { width: 24px; height: 24px; stroke: currentColor; flex: 0 0 auto; }
+    .bottom-nav-item.active { color: var(--app-blue); font-weight: 700; }
 
     .back-top {
       position: fixed;
-      right: calc(50% - 260px + 12px);
+      right: calc((100vw - min(100vw, var(--app-shell-width))) / 2 + 14px);
       bottom: calc(78px + env(safe-area-inset-bottom));
       width: 42px;
       height: 42px;
@@ -564,6 +592,11 @@
       box-shadow: 0 4px 16px rgba(0,0,0,.2);
     }
 
+
+    @media (min-width: 768px) { :root { --app-shell-width: 760px; } }
+    @media (min-width: 1024px) { :root { --app-shell-width: 960px; } }
+    @media (min-width: 1280px) { :root { --app-shell-width: 1040px; } }
+
     @media (min-width: 480px) { .banner-slide img { height: 180px; } }
     @media (min-width: 600px) { .banner-slide img { height: 200px; } }
     @media (min-width: 768px) {
@@ -577,232 +610,6 @@
       .app-shell, .app-header, .bottom-nav { box-shadow: none; }
       .back-top { right: 14px; }
     }
-
-    /* OpenAA app home shell/header/navigation parity */
-    html { min-height: 100%; background: #e2e8f0; }
-    body {
-      font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #e2e8f0;
-      color: #0f172a;
-      min-height: 100dvh;
-      padding-bottom: 0;
-    }
-    .app-shell {
-      width: 100%;
-      max-width: 560px;
-      min-height: 100dvh;
-      margin: 0 auto;
-      background: #fff;
-      position: relative;
-      box-shadow: 0 0 40px rgba(15, 23, 42, .12);
-    }
-    .app-header {
-      position: sticky;
-      top: 0;
-      left: auto;
-      transform: none;
-      width: 100%;
-      max-width: 560px;
-      z-index: 30;
-      background: rgba(255,255,255,.95);
-      padding-top: max(.75rem, env(safe-area-inset-top));
-      border-bottom: 1px solid #f1f5f9;
-      box-shadow: 0 1px 2px rgba(15, 23, 42, .06);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-    .header-inner {
-      position: relative;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-    }
-    .header-location {
-      z-index: 10;
-      display: inline-flex;
-      min-height: 40px;
-      flex-shrink: 0;
-      align-items: center;
-      gap: 4px;
-      border: 0;
-      border-radius: 999px;
-      background: transparent;
-      padding: 0 4px;
-      color: #334155;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .header-location:active { opacity: .7; }
-    .header-location svg { width: 14px; height: 14px; color: #2563eb; }
-    .header-location .chevron { width: 15px; height: 15px; color: #2563eb; stroke-width: 2; }
-    .header-logo {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      user-select: none;
-    }
-    .header-logo img {
-      width: 36px;
-      height: 36px;
-      border-radius: 12px;
-      object-fit: contain;
-    }
-    .header-logo-text {
-      font-size: 20px;
-      font-weight: 900;
-      letter-spacing: 0;
-      line-height: 1;
-    }
-    .logo-blue { color: #2563eb; }
-    .logo-dark { color: #0f172a; }
-    .header-actions {
-      z-index: 10;
-      display: flex;
-      flex-shrink: 0;
-      align-items: center;
-      gap: 8px;
-    }
-    .round-btn {
-      display: grid;
-      width: 40px;
-      height: 40px;
-      place-items: center;
-      border: 1px solid #e2e8f0;
-      border-radius: 999px;
-      background: transparent;
-      color: #334155;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .round-btn svg { width: 22px; height: 22px; }
-    .round-btn + .round-btn svg, .header-actions button.round-btn svg { width: 18px; height: 18px; }
-    .header-spacer { display: none; }
-    .top-links-panel {
-      position: static;
-      top: auto;
-      left: auto;
-      transform: none;
-      width: 100%;
-      max-width: 560px;
-      z-index: auto;
-      border-top: 1px solid #f1f5f9;
-      border-bottom: 0;
-      background: rgba(255,255,255,.95);
-      padding: 8px 12px;
-      box-shadow: 0 10px 24px rgba(15,23,42,.08);
-      opacity: 0;
-      max-height: 0;
-      overflow: hidden;
-      pointer-events: none;
-      transition: opacity .18s ease, max-height .18s ease;
-    }
-    .top-links-panel.open {
-      opacity: 1;
-      max-height: 80px;
-      pointer-events: auto;
-      transform: none;
-    }
-    .top-links-scroller {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 8px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      white-space: nowrap;
-      padding: 4px 0;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior-x: contain;
-      scrollbar-width: none;
-    }
-    .top-links-scroller::-webkit-scrollbar { display: none; }
-    .top-link-chip {
-      display: inline-flex;
-      min-height: 36px;
-      flex: 0 0 auto;
-      align-items: center;
-      border: 1px solid #dbeafe;
-      border-radius: 999px;
-      background: #eff6ff;
-      padding: 8px 16px;
-      color: #1d4ed8;
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 1;
-      transition: background-color .15s ease;
-    }
-    .top-link-chip:hover { background: #dbeafe; }
-    main {
-      min-height: calc(100dvh - 8rem);
-      padding: 16px 16px 112px;
-    }
-    .content-wrap { padding: 14px 0 18px; }
-    .bottom-nav {
-      position: fixed;
-      left: 50%;
-      bottom: 0;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 560px;
-      z-index: 40;
-      display: block;
-      border-top: 1px solid #f1f5f9;
-      background: rgba(255,255,255,.95);
-      padding: 8px 8px max(.55rem, env(safe-area-inset-bottom));
-      box-shadow: 0 -6px 24px rgba(15,23,42,.08);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-    .bottom-nav-grid {
-      display: grid;
-      height: 64px;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      align-items: stretch;
-      gap: 4px;
-    }
-    .bottom-nav-item {
-      display: flex;
-      width: 100%;
-      height: 100%;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      padding: 2px 0 8px;
-      color: #475569;
-      font-size: 13px;
-      font-weight: 500;
-      line-height: 1;
-      transition: color .15s ease;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .bottom-nav-item:hover { color: #0f172a; }
-    .bottom-nav-item svg { width: 24px; height: 24px; stroke: currentColor; stroke-width: 1.8; }
-    .bottom-nav-item.active { color: #2563eb; font-weight: 500; }
-    .bottom-nav-item.active svg { stroke-width: 2.1; }
-    .back-top {
-      right: max(14px, calc(50% - min(100vw, 560px) / 2 + 14px));
-      bottom: calc(96px + env(safe-area-inset-bottom));
-    }
-    @media (min-width: 768px) {
-      .app-shell, .app-header, .top-links-panel, .bottom-nav { max-width: 760px; }
-      .back-top { right: calc(50% - 380px + 14px); }
-    }
-    @media (min-width: 1024px) {
-      .app-shell, .app-header, .top-links-panel, .bottom-nav { max-width: 960px; }
-      .back-top { right: calc(50% - 480px + 14px); }
-    }
-    @media (min-width: 1280px) {
-      .app-shell, .app-header, .top-links-panel, .bottom-nav { max-width: 1040px; }
-      .back-top { right: calc(50% - 520px + 14px); }
-    }
-
   </style>
 </head>
 <body>
@@ -816,7 +623,7 @@
         </button>
 
         <a class="header-logo" href="https://openaa.com/" aria-label="OpenAA 首页">
-          <img src="https://openaa.com/openaa-logo.png" alt="OpenAA" />
+          <img src="https://img.openaa.com/logo.png" alt="OpenAA" />
           <span class="header-logo-text"><span class="logo-blue">Open</span><span class="logo-dark">AA</span></span>
         </a>
 
@@ -829,6 +636,7 @@
           </button>
         </div>
       </div>
+    </header>
 
     <div class="top-links-panel" id="topLinksPanel" aria-label="顶部快捷导航">
       <div class="top-links-scroller" id="topLinksScroller">
@@ -841,7 +649,6 @@
         <a class="top-link-chip" href="https://openaa.com/services" target="_self">本地服务</a>
       </div>
     </div>
-    </header>
 
     <div class="header-spacer"></div>
 
@@ -853,7 +660,7 @@
         </div>
         <a class="quick-strip" id="latestStrip" data-template-module="ticker" href="https://openaa.com/news" target="_self">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h8l-1 8 11-14h-8l1-6Z"/></svg>
-          <span class="quick-strip-text" id="latestStripText">正在读取 OpenAA 最新动态...</span>
+          <span class="quick-strip-text" id="latestStripText">正在显示 OpenAA 新站动态...</span>
           <span class="quick-strip-arrow">›</span>
         </a>
       </section>
@@ -919,14 +726,14 @@
           <a class="tool-card blue" href="https://openaa.com/dmv" target="_self">
             <div class="tool-top">
               <div class="tool-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"></path><path d="M7 14h.01"></path><path d="M17 14h.01"></path><rect width="18" height="8" x="3" y="10" rx="2"></rect><path d="M5 18v2"></path><path d="M19 18v2"></path></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13h18l-2-5a3 3 0 0 0-3-2H8a3 3 0 0 0-3 2l-2 5Z"/><path d="M5 13v5"/><path d="M19 13v5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
               </div>
               <span class="tool-action">开始练习 ›</span>
             </div>
             <div class="tool-name">DMV 笔试模拟</div>
             <div class="tool-desc">纽约 Learner Permit 中文练习</div>
           </a>
-          <a class="tool-card orange" href="https://tools.openaa.com/usa/dmv/tickets" target="_self">
+          <a class="tool-card orange" href="https://openaa.com/dmv/tickets" target="_self">
             <div class="tool-top">
               <div class="tool-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
@@ -1252,23 +1059,21 @@
   </div>
 
   <nav class="bottom-nav" role="navigation" aria-label="底部导航">
-    <div class="bottom-nav-grid">
-      <a href="https://openaa.com/" class="bottom-nav-item active" target="_self">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg><span>首页</span>
-      </a>
-      <a href="https://openaa.com/jobs" class="bottom-nav-item" target="_self">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12h.01"></path><path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><path d="M22 13a18.15 18.15 0 0 1-20 0"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg><span>招聘</span>
-      </a>
-      <a href="https://openaa.com/housing" class="bottom-nav-item" target="_self">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg><span>房屋</span>
-      </a>
-      <a href="https://openaa.com/news" class="bottom-nav-item" target="_self">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18h-5"></path><path d="M18 14h-8"></path><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0v-9a2 2 0 0 1 2-2h2"></path><rect width="8" height="4" x="10" y="6" rx="1"></rect></svg><span>新闻</span>
-      </a>
-      <a href="https://openaa.com/profile" class="bottom-nav-item" target="_self">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"></circle><path d="M20 21a8 8 0 0 0-16 0"></path></svg><span>我的</span>
-      </a>
-    </div>
+    <a href="https://openaa.com/" class="bottom-nav-item active" target="_self">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg><span>首页</span>
+    </a>
+    <a href="https://openaa.com/jobs" class="bottom-nav-item" target="_self">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12h.01"></path><path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><path d="M22 13a18.15 18.15 0 0 1-20 0"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg><span>招聘</span>
+    </a>
+    <a href="https://openaa.com/housing" class="bottom-nav-item" target="_self">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg><span>房屋</span>
+    </a>
+    <a href="https://openaa.com/news" class="bottom-nav-item" target="_self">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18h-5"></path><path d="M18 14h-8"></path><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0v-9a2 2 0 0 1 2-2h2"></path><rect width="8" height="4" x="10" y="6" rx="1"></rect></svg><span>新闻</span>
+    </a>
+    <a href="https://openaa.com/profile" class="bottom-nav-item" target="_self">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"></circle><path d="M20 21a8 8 0 0 0-16 0"></path></svg><span>我的</span>
+    </a>
   </nav>
 
   <button class="back-top" id="backTop" type="button" aria-label="回到顶部">
@@ -1279,6 +1084,12 @@
 
     function getTemplateTarget() {
       return OPENAA_CONFIG.templateLinkMode === 'same' ? '_self' : '_blank';
+    }
+
+    function applyTemplateIdentity() {
+      document.documentElement.setAttribute('data-openaa-template', 'universal-static');
+      document.documentElement.setAttribute('data-template-version', OPENAA_CONFIG.version || '1.0.0');
+      document.documentElement.setAttribute('data-page-type', OPENAA_CONFIG.pageType || 'standard');
     }
 
     function getTemplateRel() {
@@ -1320,11 +1131,12 @@
 
     const APP_BASE_URL = 'https://openaa.com';
     const TOP_LINKS_API = APP_BASE_URL + '/api/top-links';
-    // 如果 openaa.com 以后提供不同的最新动态 API，只需要改这里。
-    const LATEST_API_CANDIDATES = [
-      APP_BASE_URL + '/api/latest-posts',
-      APP_BASE_URL + '/api/home-latest',
-      APP_BASE_URL + '/api/latest'
+    // 信息滚动条使用 openaa-app 新站内容，避免继续读取 openaa-ny 的旧动态。
+    const LATEST_STRIP_ITEMS = [
+      { type: 'OpenAA', title: '美国华人生活入口 · 招聘 房屋 二手 新闻 本地服务', url: APP_BASE_URL + '/' },
+      { type: 'DMV', title: '纽约 DMV 中文题库、练习、模拟考试和罚单查询', url: APP_BASE_URL + '/dmv' },
+      { type: '导航', title: '华人常用网站、政府服务、银行金融和生活工具', url: APP_BASE_URL + '/navigation' },
+      { type: '新闻', title: '美国华人资讯、生活指南和本地消息', url: APP_BASE_URL + '/news' }
     ];
 
     const ADS = Array.isArray(OPENAA_CONFIG.banners) ? OPENAA_CONFIG.banners : [];
@@ -1544,23 +1356,8 @@
       if (items.length > 1) setInterval(show, 3500);
     }
 
-    async function initLatestStripFromApp() {
-      for (const api of LATEST_API_CANDIDATES) {
-        try {
-          const res = await fetch(api, { mode: 'cors', cache: 'no-store' });
-          if (!res.ok) continue;
-          const data = await res.json();
-          const items = normalizeLatestItems(data);
-          if (items.length) {
-            renderLatestStrip(items);
-            return;
-          }
-        } catch (e) {}
-      }
-      renderLatestStrip([
-        { type: 'OpenAA', title: '美国华人生活入口 · 招聘 房屋 二手 新闻 本地服务', url: 'https://openaa.com/' },
-        { type: '导航', title: '常用网站、DMV、生活工具一站整理', url: 'https://openaa.com/' }
-      ]);
+    function initLatestStripFromApp() {
+      renderLatestStrip(LATEST_STRIP_ITEMS);
     }
 
     function shareOpenAA() {
@@ -1591,6 +1388,7 @@
       btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     })();
 
+    applyTemplateIdentity();
     applyModuleVisibility();
     applyTemplateLinkMode();
     initTopLinksFromApp();
