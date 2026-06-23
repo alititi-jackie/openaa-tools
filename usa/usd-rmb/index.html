@@ -1046,10 +1046,15 @@
               <button class="fx-primary-btn" type="button" id="downloadXlsBtn">📊 导出 Excel</button>
               <button class="fx-primary-btn" type="button" id="shareXlsBtn">📎 分享 Excel</button>
               <button class="fx-small-btn" type="button" id="copySummaryBtn">📋 复制汇总内容</button>
+              <button class="fx-small-btn" type="button" id="downloadBackupBtn">📦 导出数据备份</button>
+              <label class="fx-small-btn" style="display:flex;align-items:center;justify-content:center;">
+                📥 导入数据备份
+                <input id="importBackupInput" type="file" accept=".json,.backup,application/json" hidden />
+              </label>
               <button class="fx-small-btn" type="button" id="installAppBtnExport">📱 安装到手机</button>
               <button class="fx-danger-btn" type="button" id="clearDataBtn">🗑️ 清空全部数据</button>
             </div>
-            <p class="fx-help">Excel 分享依赖手机浏览器的系统分享菜单；微信内置浏览器可能只支持下载。复制汇总内容后，可直接到微信聊天框粘贴发送。</p>
+            <p class="fx-help">Excel 分享依赖手机浏览器的系统分享菜单；微信内置浏览器可能只支持下载。复制汇总内容后，可直接到微信聊天框粘贴发送。导出数据备份可用于清理缓存、换浏览器或换设备后恢复记录。</p>
           </section>
         </div>
       </section>
@@ -1824,6 +1829,83 @@
         }
       }
       function filename(ext){ return '美元人民币汇率记录_' + today().replaceAll('-','') + ext; }
+
+      function backupFilename(){
+        return '汇率数据备份_' + today().replaceAll('-','') + '.json';
+      }
+      function makeBackupBlob(){
+        const data = {
+          app: 'OpenAA USD RMB Rate Records',
+          version: 1,
+          exportedAt: new Date().toISOString(),
+          records: load()
+        };
+        return new Blob([JSON.stringify(data, null, 2)], {type:'application/json;charset=utf-8'});
+      }
+      function normalizeBackupRows(data){
+        const rows = Array.isArray(data) ? data : (data && Array.isArray(data.records) ? data.records : null);
+        if(!rows) throw new Error('bad backup');
+        return rows.map((r) => ({
+          id: String(r.id || ('r_' + Date.now() + '_' + Math.random().toString(16).slice(2))),
+          date: String(r.date || '').slice(0,10),
+          usd: num(r.usd),
+          rate: num(r.rate),
+          note: String(r.note || ''),
+          createdAt: String(r.createdAt || new Date().toISOString())
+        })).filter(r => r.date && r.usd !== 0 && r.rate !== 0);
+      }
+      function mergeBackupRows(current, incoming){
+        const seen = new Set();
+        const keyOf = (r) => String(r.id || '') + '|' + String(r.date || '') + '|' + Number(r.usd || 0).toFixed(2) + '|' + Number(r.rate || 0).toFixed(4) + '|' + String(r.note || '');
+        const merged = [];
+        current.forEach(r => {
+          const key = keyOf(r);
+          seen.add(key);
+          if(r.id) seen.add('id:' + r.id);
+          merged.push(r);
+        });
+        incoming.forEach(r => {
+          const key = keyOf(r);
+          const idKey = r.id ? ('id:' + r.id) : '';
+          if((idKey && seen.has(idKey)) || seen.has(key)) return;
+          seen.add(key);
+          if(idKey) seen.add(idKey);
+          merged.push(r);
+        });
+        return merged;
+      }
+      async function importBackupFile(file){
+        try {
+          const text = await file.text();
+          const incoming = normalizeBackupRows(JSON.parse(text));
+          if(!incoming.length) {
+            alert('备份文件里没有可导入的记录。');
+            return;
+          }
+          const current = load();
+          if(current.length) {
+            const choice = prompt('检测到当前浏览器已有 ' + current.length + ' 条记录，备份文件有 ' + incoming.length + ' 条记录。\n\n请输入导入方式：\n1 = 覆盖当前数据\n2 = 合并数据\n0 = 取消');
+            if(choice === '1') {
+              save(incoming);
+              showToast('已覆盖导入');
+            } else if(choice === '2') {
+              save(mergeBackupRows(current, incoming));
+              showToast('已合并导入');
+            } else {
+              showToast('已取消导入');
+              return;
+            }
+          } else {
+            save(incoming);
+            showToast('导入成功');
+          }
+          render();
+          goto('home');
+        } catch(err) {
+          alert('导入失败，请选择正确的数据备份文件。');
+        }
+      }
+
       window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredInstallPrompt = e; });
       document.addEventListener('click', (e) => {
         const go = e.target.closest('[data-goto]');
@@ -1857,6 +1939,12 @@
         alert('汇总内容已复制。请打开微信聊天窗口，长按输入框粘贴发送。');
       }
       $('copySummaryBtn')?.addEventListener('click', copySummary);
+      $('downloadBackupBtn')?.addEventListener('click', ()=> downloadBlob(makeBackupBlob(), backupFilename()));
+      $('importBackupInput')?.addEventListener('change', async (e)=>{
+        const file = e.target.files && e.target.files[0];
+        if(file) await importBackupFile(file);
+        e.target.value = '';
+      });
       $('installAppBtnExport')?.addEventListener('click', ()=> $('installAppBtn')?.click());
       $('clearDataBtn')?.addEventListener('click', ()=>{ if(confirm('确定清空全部数据吗？此操作不可恢复。')){ save([]); render(); showToast('已清空'); }});
       $('installAppBtn')?.addEventListener('click', async ()=>{
