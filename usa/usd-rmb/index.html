@@ -750,6 +750,62 @@
       -webkit-tap-highlight-color: transparent;
     }
     .fx-tools-home-link:active { transform: scale(.99); background:#dbeafe; }
+    .fx-title-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .fx-type-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px;
+      border-radius: 999px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+    }
+    .fx-type-btn {
+      min-height: 34px;
+      border: 0;
+      border-radius: 999px;
+      padding: 0 12px;
+      background: transparent;
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .fx-type-btn.active[data-type-value="add"] {
+      background: #2563eb;
+      color: #fff;
+      box-shadow: 0 6px 14px rgba(37,99,235,.18);
+    }
+    .fx-type-btn.active[data-type-value="subtract"] {
+      background: #dc2626;
+      color: #fff;
+      box-shadow: 0 6px 14px rgba(220,38,38,.18);
+    }
+    .fx-negative { color: #dc2626 !important; }
+    .fx-type-badge {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 12px;
+      font-weight: 900;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .fx-type-badge.subtract {
+      background: #fef2f2;
+      color: #dc2626;
+    }
     @media (max-width: 360px) {
       .fx-home-grid, .fx-summary, .fx-filter-row, .fx-actions { grid-template-columns: 1fr; }
       .fx-big-btn { min-height: 76px; }
@@ -980,10 +1036,20 @@
           </section>
 
           <section class="fx-view" data-view="input">
-            <div class="fx-page-title"><h2 id="inputTitle">输入记录</h2><button class="fx-small-btn" type="button" data-goto="home">返回</button></div>
+            <div class="fx-page-title">
+              <div class="fx-title-left">
+                <h2 id="inputTitle">输入记录</h2>
+                <div class="fx-type-toggle" role="group" aria-label="记录类型">
+                  <button class="fx-type-btn active" type="button" id="fxTypeAddBtn" data-type-value="add">新增</button>
+                  <button class="fx-type-btn" type="button" id="fxTypeSubtractBtn" data-type-value="subtract">减去</button>
+                </div>
+              </div>
+              <button class="fx-small-btn" type="button" data-goto="home">返回</button>
+            </div>
             <div class="template-card">
               <form id="fxForm" class="fx-form">
                 <input type="hidden" id="editId" />
+                <input type="hidden" id="fxType" value="add" />
                 <div class="fx-field"><label for="fxDate">日期</label><input class="fx-input" id="fxDate" type="date" required /></div>
                 <div class="fx-field"><label for="fxUsd">美金金额</label><input class="fx-input" id="fxUsd" type="number" min="0" step="0.01" inputmode="decimal" placeholder="例如 100" required /></div>
                 <div class="fx-field"><label for="fxRate">汇率</label><input class="fx-input" id="fxRate" type="number" min="0" step="0.0001" inputmode="decimal" placeholder="例如 7.25" required /></div>
@@ -1505,34 +1571,67 @@
         return months[0] || '';
       }
       function summarize(rows){
-        const usd = rows.reduce((s,r)=>s+num(r.usd),0);
-        const cny = rows.reduce((s,r)=>s+calcCny(r),0);
-        const rateAvg = usd > 0 ? cny / usd : 0;
+        const addRows = rows.filter(r => num(r.usd) >= 0);
+        const subtractRows = rows.filter(r => num(r.usd) < 0);
+        const addUsd = addRows.reduce((s,r)=>s+Math.abs(num(r.usd)),0);
+        const subtractUsd = subtractRows.reduce((s,r)=>s+Math.abs(num(r.usd)),0);
+        const netUsd = rows.reduce((s,r)=>s+num(r.usd),0);
+        const addCny = addRows.reduce((s,r)=>s+Math.abs(calcCny(r)),0);
+        const subtractCny = subtractRows.reduce((s,r)=>s+Math.abs(calcCny(r)),0);
+        const netCny = rows.reduce((s,r)=>s+calcCny(r),0);
+        const totalAbsUsd = addUsd + subtractUsd;
+        const totalAbsCny = addCny + subtractCny;
+        const rateAvg = totalAbsUsd > 0 ? totalAbsCny / totalAbsUsd : 0;
         const months = new Set(rows.map(r => String(r.date || '').slice(0,7)).filter(Boolean));
         const monthCount = months.size;
-        const monthAvgUsd = monthCount ? usd / monthCount : 0;
-        const monthAvgCny = monthCount ? cny / monthCount : 0;
-        return { count: rows.length, usd, cny, rateAvg, monthCount, monthAvgUsd, monthAvgCny };
+        const monthAvgUsd = monthCount ? netUsd / monthCount : 0;
+        const monthAvgCny = monthCount ? netCny / monthCount : 0;
+        return {
+          count: rows.length,
+          addUsd, subtractUsd, netUsd,
+          addCny, subtractCny, netCny,
+          usd: netUsd, cny: netCny,
+          rateAvg, monthCount, monthAvgUsd, monthAvgCny
+        };
+      }
+      function signedMoneyText(n, prefix=''){
+        const value = Number(n) || 0;
+        const sign = value < 0 ? '-' : '';
+        return sign + prefix + Math.abs(value).toLocaleString('zh-CN',{minimumFractionDigits:2, maximumFractionDigits:2});
       }
       function summaryHtml(s, includeMonthlyAverage = true){
         const items = [
-          ['美金总金额', money(s.usd, '$')],
-          ['平均汇率', fixedRate(s.rateAvg)],
-          ['人民币总金额', money(s.cny, '¥')],
-          ['记录行数', s.count + ' 行']
+          ['新增美金总金额', money(s.addUsd, '$'), ''],
+          ['减去美金总金额', signedMoneyText(-Math.abs(s.subtractUsd || 0), '$'), 'fx-negative'],
+          ['美金净金额', signedMoneyText(s.netUsd, '$'), s.netUsd < 0 ? 'fx-negative' : ''],
+          ['平均汇率', fixedRate(s.rateAvg), ''],
+          ['新增人民币总金额', money(s.addCny, '¥'), ''],
+          ['减去人民币总金额', signedMoneyText(-Math.abs(s.subtractCny || 0), '¥'), 'fx-negative'],
+          ['人民币净金额', signedMoneyText(s.netCny, '¥'), s.netCny < 0 ? 'fx-negative' : ''],
+          ['记录行数', s.count + ' 行', '']
         ];
         if(includeMonthlyAverage) {
           items.push(
-            ['有记录月份', (s.monthCount || 0) + ' 个月'],
-            ['每月平均美金', money(s.monthAvgUsd, '$')],
-            ['每月平均人民币', money(s.monthAvgCny, '¥')]
+            ['有记录月份', (s.monthCount || 0) + ' 个月', ''],
+            ['每月平均美金', signedMoneyText(s.monthAvgUsd, '$'), s.monthAvgUsd < 0 ? 'fx-negative' : ''],
+            ['每月平均人民币', signedMoneyText(s.monthAvgCny, '¥'), s.monthAvgCny < 0 ? 'fx-negative' : '']
           );
         }
-        return items.map(x => '<div class="fx-stat"><span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>').join('');
+        return items.map(x => '<div class="fx-stat"><span>'+x[0]+'</span><strong class="'+(x[2]||'')+'">'+x[1]+'</strong></div>').join('');
       }
       function empty(text){ return '<div class="fx-empty">'+text+'</div>'; }
+      function recordType(row){
+        return num(row.usd) < 0 || row.type === 'subtract' ? 'subtract' : 'add';
+      }
+      function recordTypeLabel(row){
+        return recordType(row) === 'subtract' ? '减去' : '新增';
+      }
       function recordHtml(r){
-        return '<div class="fx-record"><div class="fx-record-top"><div class="fx-record-date">'+escapeHtml(r.date)+'</div><div class="fx-record-money">¥'+money(calcCny(r))+'</div></div><div class="fx-record-meta">美金：$'+money(r.usd)+' ｜ 汇率：'+fixedRate(r.rate)+(r.note?' ｜ '+escapeHtml(r.note):'')+'</div><div class="fx-record-actions"><button class="fx-chip-btn" type="button" data-edit="'+r.id+'">编辑</button><button class="fx-chip-btn" type="button" data-delete="'+r.id+'">删除</button></div></div>';
+        const type = recordType(r);
+        const isSub = type === 'subtract';
+        const badge = '<span class="fx-type-badge '+(isSub ? 'subtract' : '')+'">'+recordTypeLabel(r)+'</span>';
+        const amountClass = isSub ? ' fx-negative' : '';
+        return '<div class="fx-record"><div class="fx-record-top"><div class="fx-record-date">'+escapeHtml(r.date)+badge+'</div><div class="fx-record-money'+amountClass+'">'+signedMoneyText(calcCny(r), '¥')+'</div></div><div class="fx-record-meta">美金：<span class="'+(isSub?'fx-negative':'')+'">'+signedMoneyText(num(r.usd), '$')+'</span> ｜ 汇率：'+fixedRate(r.rate)+(r.note?' ｜ '+escapeHtml(r.note):'')+'</div><div class="fx-record-actions"><button class="fx-chip-btn" type="button" data-edit="'+r.id+'">编辑</button><button class="fx-chip-btn" type="button" data-delete="'+r.id+'">删除</button></div></div>';
       }
       function renderList(containerId, rows, emptyText){
         const box = $(containerId);
@@ -1571,6 +1670,13 @@
         render();
         window.scrollTo({top:0, behavior:'smooth'});
       }
+      function setRecordType(type){
+        const value = type === 'subtract' ? 'subtract' : 'add';
+        const input = $('fxType');
+        if(input) input.value = value;
+        document.querySelectorAll('.fx-type-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.typeValue === value));
+        updatePreview();
+      }
       function resetForm(){
         $('editId').value = '';
         $('inputTitle').textContent = '输入记录';
@@ -1578,11 +1684,17 @@
         $('fxUsd').value = '';
         $('fxRate').value = '';
         $('fxNote').value = '';
+        setRecordType('add');
         updatePreview();
       }
       function updatePreview(){
-        const cny = num($('fxUsd').value) * num($('fxRate').value);
-        $('fxCnyPreview').textContent = money(cny, '¥');
+        const sign = $('fxType')?.value === 'subtract' ? -1 : 1;
+        const cny = num($('fxUsd').value) * num($('fxRate').value) * sign;
+        const box = $('fxCnyPreview');
+        if(box) {
+          box.textContent = signedMoneyText(cny, '¥');
+          box.classList.toggle('fx-negative', cny < 0);
+        }
       }
       function editRecord(id){
         const r = load().find(x => x.id === id);
@@ -1590,9 +1702,10 @@
         $('editId').value = r.id;
         $('inputTitle').textContent = '编辑记录';
         $('fxDate').value = r.date;
-        $('fxUsd').value = r.usd;
+        $('fxUsd').value = Math.abs(num(r.usd));
         $('fxRate').value = r.rate;
         $('fxNote').value = r.note || '';
+        setRecordType(recordType(r));
         updatePreview();
         goto('input');
       }
@@ -1699,33 +1812,46 @@
       function sheetXmlAdvanced(rows){
         return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
           '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">' +
-          '<cols><col min="1" max="1" width="16" customWidth="1"/><col min="2" max="4" width="15" customWidth="1"/><col min="5" max="5" width="24" customWidth="1"/></cols>' +
+          '<cols><col min="1" max="1" width="14" customWidth="1"/><col min="2" max="2" width="16" customWidth="1"/><col min="3" max="8" width="16" customWidth="1"/><col min="9" max="9" width="24" customWidth="1"/></cols>' +
           '<sheetData>' + rows.map((row, rIdx) => '<row r="'+(rIdx+1)+'">' + row.map((cell, cIdx) => cellXml(cell, rIdx+1, cIdx)).join('') + '</row>').join('') + '</sheetData></worksheet>';
       }
       function headerRow(labels){ return labels.map(v => ({v, s:1})); }
-      function blankRow(){ return ['', '', '', '', '']; }
+      function blankRow(){ return ['', '', '', '', '', '', '', '', '']; }
       function summaryRows(title, summary, includeMonthlyAverage){
         const rows = [
-          [{v:title, s:2}, '', '', '', ''],
-          [{v:'美金总金额', s:3}, {v:fixedMoney(summary.usd), s:4}, '', '', ''],
-          [{v:'平均汇率', s:3}, {v:fixedRate(summary.rateAvg), s:4}, '', '', ''],
-          [{v:'人民币总金额', s:3}, {v:fixedMoney(summary.cny), s:4}, '', '', ''],
-          [{v:'记录行数', s:3}, {v:summary.count + ' 行', s:4}, '', '', '']
+          [{v:title, s:2}, '', '', '', '', '', '', '', ''],
+          [{v:'新增美金总金额', s:3}, {v:fixedMoney(summary.addUsd), s:4}, '', '', '', '', '', '', ''],
+          [{v:'减去美金总金额', s:3}, {v:signedMoneyText(-Math.abs(summary.subtractUsd || 0)), s:6}, '', '', '', '', '', '', ''],
+          [{v:'美金净金额', s:3}, {v:signedMoneyText(summary.netUsd), s:summary.netUsd < 0 ? 6 : 4}, '', '', '', '', '', '', ''],
+          [{v:'平均汇率', s:3}, {v:fixedRate(summary.rateAvg), s:4}, '', '', '', '', '', '', ''],
+          [{v:'新增人民币总金额', s:3}, {v:fixedMoney(summary.addCny), s:4}, '', '', '', '', '', '', ''],
+          [{v:'减去人民币总金额', s:3}, {v:signedMoneyText(-Math.abs(summary.subtractCny || 0)), s:6}, '', '', '', '', '', '', ''],
+          [{v:'人民币净金额', s:3}, {v:signedMoneyText(summary.netCny), s:summary.netCny < 0 ? 6 : 4}, '', '', '', '', '', '', ''],
+          [{v:'记录行数', s:3}, {v:summary.count + ' 行', s:4}, '', '', '', '', '', '', '']
         ];
         if(includeMonthlyAverage) {
           rows.push(
-            [{v:'有记录月份', s:3}, {v:(summary.monthCount || 0) + ' 个月', s:4}, '', '', ''],
-            [{v:'每月平均美金', s:3}, {v:fixedMoney(summary.monthAvgUsd), s:4}, '', '', ''],
-            [{v:'每月平均人民币', s:3}, {v:fixedMoney(summary.monthAvgCny), s:4}, '', '', '']
+            [{v:'有记录月份', s:3}, {v:(summary.monthCount || 0) + ' 个月', s:4}, '', '', '', '', '', '', ''],
+            [{v:'每月平均美金', s:3}, {v:signedMoneyText(summary.monthAvgUsd), s:summary.monthAvgUsd < 0 ? 6 : 4}, '', '', '', '', '', '', ''],
+            [{v:'每月平均人民币', s:3}, {v:signedMoneyText(summary.monthAvgCny), s:summary.monthAvgCny < 0 ? 6 : 4}, '', '', '', '', '', '', '']
           );
         }
         return rows;
       }
       function recordRow(r){
-        return [{v:r.date, s:0}, {v:fixedMoney(r.usd), s:5}, {v:fixedRate(r.rate), s:5}, {v:fixedMoney(calcCny(r)), s:5}, {v:r.note || '', s:0}];
+        const isSub = recordType(r) === 'subtract';
+        const valueStyle = isSub ? 6 : 5;
+        return [
+          {v:recordTypeLabel(r), s:isSub ? 6 : 0},
+          {v:r.date, s:0},
+          {v:signedMoneyText(num(r.usd)), s:valueStyle},
+          {v:fixedRate(r.rate), s:5},
+          {v:signedMoneyText(calcCny(r)), s:valueStyle},
+          {v:r.note || '', s:0}
+        ];
       }
       function buildAllSheetRows(rows){
-        const out = [headerRow(['日期','美金','汇率','人民币','备注'])];
+        const out = [headerRow(['类型','日期','美金','汇率','人民币','备注'])];
         rows.forEach(r => out.push(recordRow(r)));
         out.push(blankRow());
         out.push(...summaryRows('总汇总', summarize(rows), true));
@@ -1743,7 +1869,7 @@
         months.forEach((month, idx) => {
           if(idx > 0) out.push(blankRow());
           out.push([{v:monthLabel(month), s:2}, '', '', '', '']);
-          out.push(headerRow(['日期','美金','汇率','人民币','备注']));
+          out.push(headerRow(['类型','日期','美金','汇率','人民币','备注']));
           groups[month].sort((a,b)=>String(b.date).localeCompare(String(a.date))).forEach(r => out.push(recordRow(r)));
           out.push(blankRow());
           out.push(...summaryRows(monthLabel(month) + '汇总', summarize(groups[month]), false));
@@ -1753,8 +1879,18 @@
       }
       function buildYearSheetRows(rows){
         const months = groupSummary(rows, 7);
-        const out = [headerRow(['月份','美金总金额','平均汇率','人民币总金额','记录行数'])];
-        months.forEach(r => out.push([{v:monthLabel(r.period), s:0}, {v:fixedMoney(r.usd), s:5}, {v:fixedRate(r.rateAvg), s:5}, {v:fixedMoney(r.cny), s:5}, {v:r.count + ' 行', s:5}]));
+        const out = [headerRow(['月份','新增美金总金额','减去美金总金额','美金净金额','平均汇率','新增人民币总金额','减去人民币总金额','人民币净金额','记录行数'])];
+        months.forEach(r => out.push([
+          {v:monthLabel(r.period), s:0},
+          {v:fixedMoney(r.addUsd), s:5},
+          {v:signedMoneyText(-Math.abs(r.subtractUsd || 0)), s:6},
+          {v:signedMoneyText(r.netUsd), s:r.netUsd < 0 ? 6 : 5},
+          {v:fixedRate(r.rateAvg), s:5},
+          {v:fixedMoney(r.addCny), s:5},
+          {v:signedMoneyText(-Math.abs(r.subtractCny || 0)), s:6},
+          {v:signedMoneyText(r.netCny), s:r.netCny < 0 ? 6 : 5},
+          {v:r.count + ' 行', s:5}
+        ]));
         out.push(blankRow());
         out.push(...summaryRows('年度总汇总', summarize(rows), true));
         return out;
@@ -1766,7 +1902,7 @@
           '<fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF2563EB"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFFF7ED"/><bgColor indexed="64"/></patternFill></fill></fills>' +
           '<borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FFD1D5DB"/></left><right style="thin"><color rgb="FFD1D5DB"/></right><top style="thin"><color rgb="FFD1D5DB"/></top><bottom style="thin"><color rgb="FFD1D5DB"/></bottom><diagonal/></border></borders>' +
           '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>' +
-          '<cellXfs count="6"><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"><alignment horizontal="left"/></xf><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="3" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/><xf numFmtId="0" fontId="4" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"><alignment horizontal="right"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1"><alignment horizontal="right"/></xf></cellXfs>' +
+          '<cellXfs count="7"><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"><alignment horizontal="left"/></xf><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="3" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/><xf numFmtId="0" fontId="4" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"><alignment horizontal="right"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1"><alignment horizontal="right"/></xf><xf numFmtId="0" fontId="4" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1"><alignment horizontal="right"/></xf></cellXfs>' +
           '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>' +
           '</styleSheet>';
       }
@@ -1848,6 +1984,7 @@
         return rows.map((r) => ({
           id: String(r.id || ('r_' + Date.now() + '_' + Math.random().toString(16).slice(2))),
           date: String(r.date || '').slice(0,10),
+          type: (r.type === 'subtract' || num(r.usd) < 0) ? 'subtract' : 'add',
           usd: num(r.usd),
           rate: num(r.rate),
           note: String(r.note || ''),
@@ -1916,11 +2053,14 @@
         if(del) deleteRecord(del.dataset.delete);
       });
       ['fxUsd','fxRate'].forEach(id => $(id)?.addEventListener('input', updatePreview));
+      document.querySelectorAll('.fx-type-btn').forEach(btn => btn.addEventListener('click', () => setRecordType(btn.dataset.typeValue)));
       $('fxForm')?.addEventListener('submit', (e) => {
         e.preventDefault();
         const rows = load();
         const id = $('editId').value || ('r_' + Date.now() + '_' + Math.random().toString(16).slice(2));
-        const row = { id, date:$('fxDate').value, usd:num($('fxUsd').value), rate:num($('fxRate').value), note:$('fxNote').value.trim(), createdAt:new Date().toISOString() };
+        const type = $('fxType')?.value === 'subtract' ? 'subtract' : 'add';
+        const signedUsd = num($('fxUsd').value) * (type === 'subtract' ? -1 : 1);
+        const row = { id, type, date:$('fxDate').value, usd:signedUsd, rate:num($('fxRate').value), note:$('fxNote').value.trim(), createdAt:new Date().toISOString() };
         const idx = rows.findIndex(r=>r.id===id);
         if(idx >= 0) rows[idx] = {...rows[idx], ...row}; else rows.push(row);
         save(rows); resetForm(); goto('saved'); showToast('保存成功');
@@ -1933,7 +2073,7 @@
       $('shareXlsBtn')?.addEventListener('click', ()=> shareBlob(makeXlsxBlob(), filename('.xlsx'), '美元人民币汇率记录'));
       async function copySummary(){
         const s = summarize(sorted());
-        const text = '美元人民币汇率记录\n\n美金总金额：$'+money(s.usd)+'\n平均汇率：'+fixedRate(s.rateAvg)+'\n人民币总金额：¥'+money(s.cny)+'\n记录行数：'+s.count+' 行\n有记录月份：'+(s.monthCount || 0)+' 个月\n每月平均美金：$'+money(s.monthAvgUsd)+'\n每月平均人民币：¥'+money(s.monthAvgCny);
+        const text = '美元人民币汇率记录\n\n新增美金总金额：$'+money(s.addUsd)+'\n减去美金总金额：'+signedMoneyText(-Math.abs(s.subtractUsd || 0), '$')+'\n美金净金额：'+signedMoneyText(s.netUsd, '$')+'\n平均汇率：'+fixedRate(s.rateAvg)+'\n新增人民币总金额：¥'+money(s.addCny)+'\n减去人民币总金额：'+signedMoneyText(-Math.abs(s.subtractCny || 0), '¥')+'\n人民币净金额：'+signedMoneyText(s.netCny, '¥')+'\n记录行数：'+s.count+' 行\n有记录月份：'+(s.monthCount || 0)+' 个月\n每月平均美金：'+signedMoneyText(s.monthAvgUsd, '$')+'\n每月平均人民币：'+signedMoneyText(s.monthAvgCny, '¥');
         await copyText(text);
         showToast('已复制，可到微信粘贴发送');
         alert('汇总内容已复制。请打开微信聊天窗口，长按输入框粘贴发送。');
