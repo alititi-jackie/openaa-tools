@@ -360,6 +360,24 @@
       border-radius: 999px;
       background: #3b82f6;
     }
+    .section-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 8px 4px 12px;
+    }
+    .section-title-row .section-title {
+      margin: 0;
+    }
+    .fx-title-back {
+      min-width: 76px;
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b83ff;
+    }
     .template-card {
       background: #fff;
       border: 1px solid #eceef3;
@@ -1065,7 +1083,7 @@
       <!-- 中间内容开始：以后只让 AI 修改这里，不要改顶部、广告轮播、8宫格、实用工具、底部导航 -->
 
       <section class="content-wrap">
-        <div class="section-title">汇率工具</div>
+        <div class="section-title-row"><div class="section-title">汇率工具</div><a class="fx-small-btn fx-title-back" href="/">返回</a></div>
 
         <div id="fxApp" class="fx-app">
           <section class="fx-view active" data-view="home">
@@ -1080,7 +1098,6 @@
               <button class="fx-big-btn" type="button" data-goto="year"><strong>年度</strong><span>年度合计与记录行数</span></button>
               <button class="fx-big-btn" type="button" data-goto="export"><strong>导出/分享</strong><span>Excel、汇总复制、清空数据</span></button>
               <button class="fx-big-btn" type="button" id="installAppBtn"><strong>下载安装到手机</strong><span>添加到桌面，像 App 一样打开</span></button>
-              <a class="fx-big-btn" href="/"><strong>返回工具首页</strong><span>查看 OpenAA 更多实用工具</span></a>
             </div>
             <div class="template-card">
               <h2>当前数据</h2>
@@ -1680,17 +1697,32 @@
         const sign = value < 0 ? '-' : '';
         return sign + prefix + Math.abs(value).toLocaleString('zh-CN',{minimumFractionDigits:2, maximumFractionDigits:2});
       }
+      function hasSubtractSummary(s){
+        return Math.abs(Number(s.subtractUsd) || 0) > 0 || Math.abs(Number(s.subtractCny) || 0) > 0;
+      }
       function summaryHtml(s, includeMonthlyAverage = true){
-        const items = [
-          ['新增美金总金额', money(s.addUsd, '$'), ''],
-          ['减去美金总金额', signedMoneyText(-Math.abs(s.subtractUsd || 0), '$'), 'fx-negative'],
+        const hasSubtract = hasSubtractSummary(s);
+        const items = [];
+        if(hasSubtract) {
+          items.push(
+            ['新增美金总金额', money(s.addUsd, '$'), ''],
+            ['减去美金总金额', signedMoneyText(-Math.abs(s.subtractUsd || 0), '$'), 'fx-negative']
+          );
+        }
+        items.push(
           ['美金净金额', signedMoneyText(s.netUsd, '$'), s.netUsd < 0 ? 'fx-negative' : ''],
-          ['平均汇率', fixedRate(s.rateAvg), ''],
-          ['新增人民币总金额', money(s.addCny, '¥'), ''],
-          ['减去人民币总金额', signedMoneyText(-Math.abs(s.subtractCny || 0), '¥'), 'fx-negative'],
+          ['平均汇率', fixedRate(s.rateAvg), '']
+        );
+        if(hasSubtract) {
+          items.push(
+            ['新增人民币总金额', money(s.addCny, '¥'), ''],
+            ['减去人民币总金额', signedMoneyText(-Math.abs(s.subtractCny || 0), '¥'), 'fx-negative']
+          );
+        }
+        items.push(
           ['人民币净金额', signedMoneyText(s.netCny, '¥'), s.netCny < 0 ? 'fx-negative' : ''],
           ['记录行数', s.count + ' 行', '']
-        ];
+        );
         if(includeMonthlyAverage) {
           items.push(
             ['有记录月份', (s.monthCount || 0) + ' 个月', ''],
@@ -1899,17 +1931,26 @@
       function headerRow(labels){ return labels.map(v => ({v, s:1})); }
       function blankRow(){ return ['', '', '', '', '', '', '', '', '']; }
       function summaryRows(title, summary, includeMonthlyAverage){
+        const hasSubtract = hasSubtractSummary(summary);
         const rows = [
           [{v:title, s:2}, '', '', '', '', '', '', '', ''],
-          [{v:'新增美金总金额', s:3}, {v:fixedMoney(summary.addUsd), s:4}, '', '', '', '', '', '', ''],
-          [{v:'减去美金总金额', s:3}, {v:signedMoneyText(-Math.abs(summary.subtractUsd || 0)), s:6}, '', '', '', '', '', '', ''],
+          [{v:'新增美金总金额', s:3}, {v:fixedMoney(summary.addUsd), s:4}, '', '', '', '', '', '', '']
+        ];
+        if(hasSubtract) {
+          rows.push([{v:'减去美金总金额', s:3}, {v:signedMoneyText(-Math.abs(summary.subtractUsd || 0)), s:6}, '', '', '', '', '', '', '']);
+        }
+        rows.push(
           [{v:'美金净金额', s:3}, {v:signedMoneyText(summary.netUsd), s:summary.netUsd < 0 ? 6 : 4}, '', '', '', '', '', '', ''],
           [{v:'平均汇率', s:3}, {v:fixedRate(summary.rateAvg), s:4}, '', '', '', '', '', '', ''],
-          [{v:'新增人民币总金额', s:3}, {v:fixedMoney(summary.addCny), s:4}, '', '', '', '', '', '', ''],
-          [{v:'减去人民币总金额', s:3}, {v:signedMoneyText(-Math.abs(summary.subtractCny || 0)), s:6}, '', '', '', '', '', '', ''],
+          [{v:'新增人民币总金额', s:3}, {v:fixedMoney(summary.addCny), s:4}, '', '', '', '', '', '', '']
+        );
+        if(hasSubtract) {
+          rows.push([{v:'减去人民币总金额', s:3}, {v:signedMoneyText(-Math.abs(summary.subtractCny || 0)), s:6}, '', '', '', '', '', '', '']);
+        }
+        rows.push(
           [{v:'人民币净金额', s:3}, {v:signedMoneyText(summary.netCny), s:summary.netCny < 0 ? 6 : 4}, '', '', '', '', '', '', ''],
           [{v:'记录行数', s:3}, {v:summary.count + ' 行', s:4}, '', '', '', '', '', '', '']
-        ];
+        );
         if(includeMonthlyAverage) {
           rows.push(
             [{v:'有记录月份', s:3}, {v:(summary.monthCount || 0) + ' 个月', s:4}, '', '', '', '', '', '', ''],
@@ -1960,18 +2001,36 @@
       }
       function buildYearSheetRows(rows){
         const months = groupSummary(rows, 7);
-        const out = [headerRow(['月份','新增美金总金额','减去美金总金额','美金净金额','平均汇率','新增人民币总金额','减去人民币总金额','人民币净金额','记录行数'])];
-        months.forEach(r => out.push([
-          {v:monthLabel(r.period), s:0},
-          {v:fixedMoney(r.addUsd), s:5},
-          {v:signedMoneyText(-Math.abs(r.subtractUsd || 0)), s:6},
-          {v:signedMoneyText(r.netUsd), s:r.netUsd < 0 ? 6 : 5},
-          {v:fixedRate(r.rateAvg), s:5},
-          {v:fixedMoney(r.addCny), s:5},
-          {v:signedMoneyText(-Math.abs(r.subtractCny || 0)), s:6},
-          {v:signedMoneyText(r.netCny), s:r.netCny < 0 ? 6 : 5},
-          {v:r.count + ' 行', s:5}
-        ]));
+        const hasSubtract = hasSubtractSummary(summarize(rows));
+        const headers = hasSubtract
+          ? ['月份','新增美金总金额','减去美金总金额','美金净金额','平均汇率','新增人民币总金额','减去人民币总金额','人民币净金额','记录行数']
+          : ['月份','新增美金总金额','美金净金额','平均汇率','新增人民币总金额','人民币净金额','记录行数'];
+        const out = [headerRow(headers)];
+        months.forEach(r => {
+          if(hasSubtract) {
+            out.push([
+              {v:monthLabel(r.period), s:0},
+              {v:fixedMoney(r.addUsd), s:5},
+              {v:signedMoneyText(-Math.abs(r.subtractUsd || 0)), s:6},
+              {v:signedMoneyText(r.netUsd), s:r.netUsd < 0 ? 6 : 5},
+              {v:fixedRate(r.rateAvg), s:5},
+              {v:fixedMoney(r.addCny), s:5},
+              {v:signedMoneyText(-Math.abs(r.subtractCny || 0)), s:6},
+              {v:signedMoneyText(r.netCny), s:r.netCny < 0 ? 6 : 5},
+              {v:r.count + ' 行', s:5}
+            ]);
+          } else {
+            out.push([
+              {v:monthLabel(r.period), s:0},
+              {v:fixedMoney(r.addUsd), s:5},
+              {v:signedMoneyText(r.netUsd), s:r.netUsd < 0 ? 6 : 5},
+              {v:fixedRate(r.rateAvg), s:5},
+              {v:fixedMoney(r.addCny), s:5},
+              {v:signedMoneyText(r.netCny), s:r.netCny < 0 ? 6 : 5},
+              {v:r.count + ' 行', s:5}
+            ]);
+          }
+        });
         out.push(blankRow());
         out.push(...summaryRows('年度总汇总', summarize(rows), true));
         return out;
@@ -1979,11 +2038,11 @@
       function xlsxStylesXml(){
         return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
           '<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">' +
-          '<fonts count="5"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/><color rgb="FFFFFFFF"/></font><font><b/><sz val="16"/><name val="Calibri"/><color rgb="FF1D4ED8"/></font><font><b/><sz val="12"/><name val="Calibri"/><color rgb="FF334155"/></font><font><b/><sz val="15"/><name val="Calibri"/><color rgb="FFDC2626"/></font></fonts>' +
+          '<fonts count="6"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/><color rgb="FFFFFFFF"/></font><font><b/><sz val="16"/><name val="Calibri"/><color rgb="FF1D4ED8"/></font><font><b/><sz val="12"/><name val="Calibri"/><color rgb="FF334155"/></font><font><b/><sz val="15"/><name val="Calibri"/><color rgb="FFDC2626"/></font><font><sz val="11"/><name val="Calibri"/><color rgb="FFDC2626"/></font></fonts>' +
           '<fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF2563EB"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFFF7ED"/><bgColor indexed="64"/></patternFill></fill></fills>' +
           '<borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FFD1D5DB"/></left><right style="thin"><color rgb="FFD1D5DB"/></right><top style="thin"><color rgb="FFD1D5DB"/></top><bottom style="thin"><color rgb="FFD1D5DB"/></bottom><diagonal/></border></borders>' +
           '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>' +
-          '<cellXfs count="9"><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"><alignment horizontal="left"/></xf><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="3" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/><xf numFmtId="0" fontId="4" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"><alignment horizontal="right"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1"><alignment horizontal="right"/></xf><xf numFmtId="0" fontId="4" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1"><alignment horizontal="right"/></xf><xf numFmtId="0" fontId="4" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1"><alignment horizontal="right"/></xf><xf numFmtId="0" fontId="4" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1"/></cellXfs>' +
+          '<cellXfs count="9"><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"><alignment horizontal="left"/></xf><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="3" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/><xf numFmtId="0" fontId="4" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"><alignment horizontal="right"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1"><alignment horizontal="right"/></xf><xf numFmtId="0" fontId="4" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1"><alignment horizontal="right"/></xf><xf numFmtId="0" fontId="5" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1"><alignment horizontal="right"/></xf><xf numFmtId="0" fontId="5" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1"/></cellXfs>' +
           '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>' +
           '</styleSheet>';
       }
