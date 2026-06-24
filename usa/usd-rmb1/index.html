@@ -719,6 +719,66 @@
     .fx-chip-btn { border:0; border-radius:999px; background:#f1f5f9; color:#334155; padding:8px 12px; font-size:13px; font-weight:800; }
     .fx-empty { text-align:center; color:#71717a; background:#fff; border:1px dashed #d4d4d8; border-radius:16px; padding:28px 12px; }
     .fx-tools-grid { display:grid; grid-template-columns:1fr; gap:10px; }
+
+    .fx-action-btn {
+      min-height: 72px;
+      border-radius: 18px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      padding: 12px 16px;
+      text-align: left;
+      box-shadow: 0 2px 10px rgba(15,23,42,.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .fx-action-btn:active { transform: scale(.99); background:#f8fafc; }
+    .fx-action-btn strong { font-size: 17px; color:#111827; font-weight:900; }
+    .fx-action-btn span { font-size: 13px; color:#64748b; line-height:1.35; }
+    .fx-action-btn.fx-action-primary { border-color:#bfdbfe; background:#eff6ff; }
+    .fx-action-btn.fx-action-primary strong { color:#1d4ed8; }
+    .fx-sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      background: rgba(15,23,42,.38);
+      padding: 16px 12px calc(16px + env(safe-area-inset-bottom));
+    }
+    .fx-sheet-backdrop.open { display: flex; }
+    .fx-action-sheet {
+      width: 100%;
+      max-width: min(520px, calc(100vw - 24px));
+      border-radius: 24px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 24px 60px rgba(15,23,42,.28);
+      padding: 16px;
+    }
+    .fx-action-sheet h3 { font-size:18px; color:#111827; margin:0 0 6px; }
+    .fx-action-sheet p { font-size:13px; color:#64748b; line-height:1.55; margin:0 0 12px; }
+    .fx-sheet-grid { display:grid; grid-template-columns:1fr; gap:10px; }
+    .fx-sheet-grid button, .fx-sheet-grid label {
+      min-height:48px;
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      background:#fff;
+      font-size:15px;
+      font-weight:900;
+      color:#111827;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+    }
+    .fx-sheet-grid .primary { background:#2563eb; color:#fff; border-color:#2563eb; }
+    .fx-sheet-grid .cancel { color:#64748b; background:#f8fafc; }
+
     .fx-help { color:#64748b; font-size:13px; line-height:1.65; margin-top:8px; }
     .fx-safety-note {
       display: flex;
@@ -1039,23 +1099,44 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
               <div>
                 <strong>数据保存说明</strong>
-                <p>OpenAA 不会收集、上传或存储您的汇率记录。为了保护用户隐私，所有记录仅保存在当前浏览器中，不会同步到服务器。如果更换浏览器、清理浏览器缓存、清除网站数据、重装浏览器或更换设备，记录将被清空且无法恢复。建议定期导出 Excel 文件保存重要数据。</p>
+                <p>OpenAA 不会收集、上传或存储您的汇率记录。为了保护用户隐私，所有记录仅保存在当前浏览器中，不会同步到服务器。如果更换浏览器、清理浏览器缓存、清除网站数据、重装浏览器或更换设备，记录将被清空且无法恢复。建议定期导出 Excel 文件或数据备份保存重要数据。</p>
               </div>
             </div>
             <div class="fx-tools-grid">
-              <button class="fx-primary-btn" type="button" id="downloadXlsBtn">📊 导出 Excel</button>
-              <button class="fx-primary-btn" type="button" id="shareXlsBtn">📎 分享 Excel</button>
+              <button class="fx-action-btn fx-action-primary" type="button" id="excelFileBtn"><strong>📊 Excel 文件</strong><span>下载或分享表格，适合查看、打印和存档</span></button>
+              <button class="fx-action-btn" type="button" id="backupFileBtn"><strong>📦 数据备份</strong><span>清缓存、换浏览器或换设备后恢复记录</span></button>
               <button class="fx-small-btn" type="button" id="copySummaryBtn">📋 复制汇总内容</button>
-              <button class="fx-small-btn" type="button" id="downloadBackupBtn">📦 导出数据备份</button>
-              <label class="fx-small-btn" style="display:flex;align-items:center;justify-content:center;">
-                📥 导入数据备份
-                <input id="importBackupInput" type="file" accept=".json,.backup,application/json" hidden />
-              </label>
               <button class="fx-small-btn" type="button" id="installAppBtnExport">📱 安装到手机</button>
               <button class="fx-danger-btn" type="button" id="clearDataBtn">🗑️ 清空全部数据</button>
             </div>
-            <p class="fx-help">Excel 分享依赖手机浏览器的系统分享菜单；微信内置浏览器可能只支持下载。复制汇总内容后，可直接到微信聊天框粘贴发送。导出数据备份可用于清理缓存、换浏览器或换设备后恢复记录。</p>
+            <input id="importBackupInput" type="file" accept=".json,.backup,application/json" hidden />
+            <p class="fx-help">Excel 文件适合查看、打印和转发；数据备份适合清理缓存、换浏览器或换设备后恢复记录。复制汇总内容后，可直接到微信聊天框粘贴发送。</p>
           </section>
+
+          <div class="fx-sheet-backdrop" id="excelActionSheet" aria-hidden="true">
+            <div class="fx-action-sheet" role="dialog" aria-modal="true" aria-label="Excel 文件操作">
+              <h3>Excel 文件</h3>
+              <p>选择下载到本机，或调用系统分享菜单发送给微信、短信、邮件等。</p>
+              <div class="fx-sheet-grid">
+                <button class="primary" type="button" id="downloadXlsBtn">📊 下载 Excel</button>
+                <button type="button" id="shareXlsBtn">📎 分享 Excel</button>
+                <button class="cancel" type="button" data-close-sheet>取消</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="fx-sheet-backdrop" id="backupActionSheet" aria-hidden="true">
+            <div class="fx-action-sheet" role="dialog" aria-modal="true" aria-label="数据备份操作">
+              <h3>数据备份</h3>
+              <p>备份文件用于恢复本工具数据。清缓存、换浏览器或换设备前，建议先导出或分享备份文件。</p>
+              <div class="fx-sheet-grid">
+                <button class="primary" type="button" id="downloadBackupBtn">📦 下载数据备份</button>
+                <button type="button" id="shareBackupBtn">📤 分享数据备份</button>
+                <label for="importBackupInput">📥 导入数据备份</label>
+                <button class="cancel" type="button" data-close-sheet>取消</button>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1906,6 +1987,23 @@
         }
       }
 
+
+      function openActionSheet(id){
+        const sheet = $(id);
+        if(!sheet) return;
+        sheet.classList.add('open');
+        sheet.setAttribute('aria-hidden', 'false');
+      }
+      function closeActionSheets(){
+        document.querySelectorAll('.fx-sheet-backdrop.open').forEach(sheet => {
+          sheet.classList.remove('open');
+          sheet.setAttribute('aria-hidden', 'true');
+        });
+      }
+      async function shareBackupFile(){
+        await shareBlob(makeBackupBlob(), backupFilename(), '汇率数据备份');
+      }
+
       window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredInstallPrompt = e; });
       document.addEventListener('click', (e) => {
         const go = e.target.closest('[data-goto]');
@@ -1929,8 +2027,13 @@
       $('monthPicker')?.addEventListener('change', render);
       $('yearPicker')?.addEventListener('input', render);
       $('clearYearBtn')?.addEventListener('click', ()=>{ $('yearPicker').value=''; render(); });
-      $('downloadXlsBtn')?.addEventListener('click', ()=> downloadBlob(makeXlsxBlob(), filename('.xlsx')));
-      $('shareXlsBtn')?.addEventListener('click', ()=> shareBlob(makeXlsxBlob(), filename('.xlsx'), '美元人民币汇率记录'));
+      $('excelFileBtn')?.addEventListener('click', ()=> openActionSheet('excelActionSheet'));
+      $('backupFileBtn')?.addEventListener('click', ()=> openActionSheet('backupActionSheet'));
+      document.querySelectorAll('[data-close-sheet]').forEach(btn => btn.addEventListener('click', closeActionSheets));
+      document.querySelectorAll('.fx-sheet-backdrop').forEach(sheet => sheet.addEventListener('click', (e)=>{ if(e.target === sheet) closeActionSheets(); }));
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeActionSheets(); });
+      $('downloadXlsBtn')?.addEventListener('click', ()=> { downloadBlob(makeXlsxBlob(), filename('.xlsx')); closeActionSheets(); });
+      $('shareXlsBtn')?.addEventListener('click', async ()=> { await shareBlob(makeXlsxBlob(), filename('.xlsx'), '美元人民币汇率记录'); closeActionSheets(); });
       async function copySummary(){
         const s = summarize(sorted());
         const text = '美元人民币汇率记录\n\n美金总金额：$'+money(s.usd)+'\n平均汇率：'+fixedRate(s.rateAvg)+'\n人民币总金额：¥'+money(s.cny)+'\n记录行数：'+s.count+' 行\n有记录月份：'+(s.monthCount || 0)+' 个月\n每月平均美金：$'+money(s.monthAvgUsd)+'\n每月平均人民币：¥'+money(s.monthAvgCny);
@@ -1939,10 +2042,11 @@
         alert('汇总内容已复制。请打开微信聊天窗口，长按输入框粘贴发送。');
       }
       $('copySummaryBtn')?.addEventListener('click', copySummary);
-      $('downloadBackupBtn')?.addEventListener('click', ()=> downloadBlob(makeBackupBlob(), backupFilename()));
+      $('downloadBackupBtn')?.addEventListener('click', ()=> { downloadBlob(makeBackupBlob(), backupFilename()); closeActionSheets(); });
+      $('shareBackupBtn')?.addEventListener('click', async ()=> { await shareBackupFile(); closeActionSheets(); });
       $('importBackupInput')?.addEventListener('change', async (e)=>{
         const file = e.target.files && e.target.files[0];
-        if(file) await importBackupFile(file);
+        if(file) { closeActionSheets(); await importBackupFile(file); }
         e.target.value = '';
       });
       $('installAppBtnExport')?.addEventListener('click', ()=> $('installAppBtn')?.click());
