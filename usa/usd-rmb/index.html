@@ -1935,19 +1935,23 @@
       function summaryRows(title, summary, includeMonthlyAverage){
         const hasSubtract = hasSubtractSummary(summary);
         const rows = [
-          [{v:title, s:2}, '', '', '', '', '', '', '', ''],
-          [{v:'新增美金总金额', s:3}, {v:fixedMoney(summary.addUsd), s:4}, '', '', '', '', '', '', '']
+          [{v:title, s:2}, '', '', '', '', '', '', '', '']
         ];
         if(hasSubtract) {
-          rows.push([{v:'减去美金总金额', s:3}, {v:signedMoneyText(-Math.abs(summary.subtractUsd || 0)), s:6}, '', '', '', '', '', '', '']);
+          rows.push(
+            [{v:'新增美金总金额', s:3}, {v:fixedMoney(summary.addUsd), s:4}, '', '', '', '', '', '', ''],
+            [{v:'减去美金总金额', s:3}, {v:signedMoneyText(-Math.abs(summary.subtractUsd || 0)), s:6}, '', '', '', '', '', '', '']
+          );
         }
         rows.push(
           [{v:'美金净金额', s:3}, {v:signedMoneyText(summary.netUsd), s:summary.netUsd < 0 ? 6 : 4}, '', '', '', '', '', '', ''],
-          [{v:'平均汇率', s:3}, {v:fixedRate(summary.rateAvg), s:4}, '', '', '', '', '', '', ''],
-          [{v:'新增人民币总金额', s:3}, {v:fixedMoney(summary.addCny), s:4}, '', '', '', '', '', '', '']
+          [{v:'平均汇率', s:3}, {v:fixedRate(summary.rateAvg), s:4}, '', '', '', '', '', '', '']
         );
         if(hasSubtract) {
-          rows.push([{v:'减去人民币总金额', s:3}, {v:signedMoneyText(-Math.abs(summary.subtractCny || 0)), s:6}, '', '', '', '', '', '', '']);
+          rows.push(
+            [{v:'新增人民币总金额', s:3}, {v:fixedMoney(summary.addCny), s:4}, '', '', '', '', '', '', ''],
+            [{v:'减去人民币总金额', s:3}, {v:signedMoneyText(-Math.abs(summary.subtractCny || 0)), s:6}, '', '', '', '', '', '', '']
+          );
         }
         rows.push(
           [{v:'人民币净金额', s:3}, {v:signedMoneyText(summary.netCny), s:summary.netCny < 0 ? 6 : 4}, '', '', '', '', '', '', ''],
@@ -2006,7 +2010,7 @@
         const hasSubtract = hasSubtractSummary(summarize(rows));
         const headers = hasSubtract
           ? ['月份','新增美金总金额','减去美金总金额','美金净金额','平均汇率','新增人民币总金额','减去人民币总金额','人民币净金额','记录行数']
-          : ['月份','新增美金总金额','美金净金额','平均汇率','新增人民币总金额','人民币净金额','记录行数'];
+          : ['月份','美金净金额','平均汇率','人民币净金额','记录行数'];
         const out = [headerRow(headers)];
         months.forEach(r => {
           if(hasSubtract) {
@@ -2024,10 +2028,8 @@
           } else {
             out.push([
               {v:monthLabel(r.period), s:0},
-              {v:fixedMoney(r.addUsd), s:5},
               {v:signedMoneyText(r.netUsd), s:r.netUsd < 0 ? 6 : 5},
               {v:fixedRate(r.rateAvg), s:5},
-              {v:fixedMoney(r.addCny), s:5},
               {v:signedMoneyText(r.netCny), s:r.netCny < 0 ? 6 : 5},
               {v:r.count + ' 行', s:5}
             ]);
