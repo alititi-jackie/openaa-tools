@@ -1083,7 +1083,7 @@
       <!-- 中间内容开始：以后只让 AI 修改这里，不要改顶部、广告轮播、8宫格、实用工具、底部导航 -->
 
       <section class="content-wrap">
-        <div class="section-title-row"><div class="section-title">汇率工具</div><a class="fx-small-btn fx-title-back" href="/">返回</a></div>
+        <div class="section-title-row" id="fxSectionTitleRow"><div class="section-title">汇率工具</div><a class="fx-small-btn fx-title-back" href="/">返回</a></div>
 
         <div id="fxApp" class="fx-app">
           <section class="fx-view active" data-view="home">
@@ -1774,6 +1774,8 @@
       }
       function goto(name){
         views().forEach(v => v.classList.toggle('active', v.dataset.view === name));
+        const sectionTitleRow = $('fxSectionTitleRow');
+        if(sectionTitleRow) sectionTitleRow.hidden = name !== 'home';
         if(name === 'input' && !$('editId').value) {
           $('fxDate').value = $('fxDate').value || today();
         }
