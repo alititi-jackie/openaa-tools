@@ -1,8 +1,0 @@
-{
-  "name": "OpenAA Expense Record Tool",
-  "short_name": "Expense Record",
-  "start_url": "./",
-  "scope": "./",
-  "display": "standalone",
-  "lang": "zh-CN"
-}
