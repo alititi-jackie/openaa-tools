@@ -1,0 +1,80 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CategoryIcon from "../components/tools/CategoryIcon.astro";
+import ToolCard from "../components/tools/ToolCard.astro";
+import { tools, categories } from "../data/tools";
+---
+
+<BaseLayout title="美国华人免费在线工具"
+  ><div class="container">
+    <section class="home-hero">
+      <span class="eyebrow">OPENAA · 为美国生活准备</span><h1>
+        生活里的小问题，<br />在这里找到答案。
+      </h1><p>
+        计算工资、换算单位、准备 DMV 材料。<br class="mobile-only" />{
+          tools.length
+        } 个免费中文工具，打开就能用。
+      </p><form action="/tools/" class="search-form" role="search">
+        <label class="sr-only" for="home-search">搜索工具</label><input
+          id="home-search"
+          type="search"
+          name="q"
+          placeholder="搜索工具，例如：小费、记账、DMV"
+        /><button type="submit">搜索</button>
+      </form><div class="quick-links">
+        <a href="/usa/expense-record/">生活记账</a><a href="/tools/currency/"
+          >美元换算</a
+        ><a href="/usa/dmv/document-checker.html">DMV 材料</a>
+      </div>
+    </section>
+    <section>
+      <div class="section-heading">
+        <div><span class="eyebrow">日常用得上</span><h2>常用工具</h2></div><a
+          href="/tools/">全部 {tools.length} 个 →</a
+        >
+      </div><div class="tool-grid">
+        {
+          tools
+            .filter((t) => t.featured)
+            .map((tool) => <ToolCard tool={tool} />)
+        }
+      </div>
+    </section>
+    <section id="categories" class="categories-section">
+      <div class="section-heading"><h2>按生活场景找工具</h2></div><div
+        class="category-grid"
+      >
+        {
+          categories.map((c) => (
+            <a class="category-card" href={`/tools/?category=${c.id}`}>
+              <>
+                <span aria-hidden="true">
+                  <CategoryIcon category={c.id} />
+                </span>
+                <strong>{c.name}</strong>
+                <small>
+                  {tools.filter((t) => t.category === c.id).length} 个工具 →
+                </small>
+              </>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+    <section id="usa-tools" class="parent-banner">
+      <div>
+        <span class="eyebrow">OPENAA 华人生活平台</span><h2>
+          工具之外，生活也有帮手。
+        </h2><p>找工作、找房、本地服务，或练习中文 DMV 笔试。</p>
+      </div><div>
+        <a href="https://openaa.com" target="_blank" rel="noopener noreferrer"
+          >进入 OpenAA ↗</a
+        ><a
+          href="https://dmv.openaa.com"
+          target="_blank"
+          rel="noopener noreferrer">DMV 中文题库 ↗</a
+        >
+      </div>
+    </section>
+  </div></BaseLayout
+>

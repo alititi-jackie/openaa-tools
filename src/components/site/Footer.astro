@@ -1,0 +1,17 @@
+---
+import { site } from "../../config/site";
+---
+
+<footer class="site-footer">
+  <p><strong>OpenAA 工具库</strong> · 让美国生活更方便</p><nav
+    aria-label="页脚导航"
+  >
+    <a href={site.parent} target="_blank" rel="noopener noreferrer"
+      >OpenAA.com</a
+    ><a href="/tools/">全部工具</a><a href="/privacy/">隐私说明</a><a
+      href={`${site.parent}/feedback`}
+      target="_blank"
+      rel="noopener noreferrer">意见反馈</a
+    >
+  </nav><small>© {new Date().getFullYear()} OpenAA · 免费使用，无需注册</small>
+</footer>

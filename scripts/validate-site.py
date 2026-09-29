@@ -1,119 +1,54 @@
 #!/usr/bin/env python3
-"""Dependency-free static-site validation for ToolKu."""
+"""Validate the actual static publish artifact, not source fragments."""
 from pathlib import Path
 from html.parser import HTMLParser
-from urllib.parse import urlparse
-import re
-import sys
-
-ROOT = Path(__file__).resolve().parents[1]
-errors = []
-
-class PageParser(HTMLParser):
-    def __init__(self, path):
-        super().__init__(convert_charrefs=True)
-        self.path = path
-        self.resources = []
-        self.ids = set()
-        self.duplicate_ids = set()
-
-    def handle_starttag(self, tag, attrs):
-        a = dict(attrs)
-        if 'id' in a and a['id']:
-            if a['id'] in self.ids:
-                self.duplicate_ids.add(a['id'])
-            self.ids.add(a['id'])
-
-        # Validate navigation, CSS and JavaScript resources. Images and media
-        # are intentionally excluded here because many pages use external/CDN
-        # assets and data/blob URLs; production smoke tests cover page delivery.
-        resource_attrs = {'a': 'href', 'link': 'href', 'script': 'src'}
-        attr = resource_attrs.get(tag)
-        if attr and a.get(attr):
-            self.resources.append((tag, a[attr]))
-
-
-def local_path(value):
-    parsed = urlparse(value)
-    if parsed.scheme in ('http', 'https'):
-        if parsed.netloc not in ('toolku.com', 'www.toolku.com'):
-            return None
-        value = parsed.path or '/'
-    elif parsed.scheme or value.startswith('//'):
-        return None
-    value = value.split('#', 1)[0].split('?', 1)[0]
-    if not value:
-        return None
-    return ROOT / value.lstrip('/') if value.startswith('/') else None
-
-
-def resolve_relative(value, source):
-    if value.startswith('/'):
-        return ROOT / value.lstrip('/')
-    return (source.parent / value).resolve()
-
-
-def check_target(source, value):
-    lower = value.strip().lower()
-    if lower.startswith(('#', 'mailto:', 'tel:', 'javascript:', 'data:', 'blob:', 'about:')) or lower.startswith('//'):
-        return
-    parsed = urlparse(value)
-    if parsed.scheme in ('http', 'https') and parsed.netloc not in ('toolku.com', 'www.toolku.com'):
-        return
-    if parsed.scheme and parsed.scheme not in ('http', 'https'):
-        return
-    target = local_path(value)
-    if target is None:
-        target = resolve_relative(value, source)
-    if target.is_dir():
-        target = target / 'index.html'
-    if not target.exists():
-        errors.append(f'{source.relative_to(ROOT)}: broken local resource -> {value}')
-
-
-for html in ROOT.rglob('*.html'):
-    if any(part in {'.git', 'node_modules'} for part in html.parts):
-        continue
-    parser = PageParser(html)
-    try:
-        parser.feed(html.read_text(encoding='utf-8'))
-    except Exception as exc:
-        errors.append(f'{html.relative_to(ROOT)}: HTML parse error: {exc}')
-        continue
-    text = html.read_text(encoding='utf-8')
-    rel = html.relative_to(ROOT)
-    if rel.name != '404.html':
-        if len(re.findall(r'<h1(?:\\s|>)', text, re.I)) != 1:
-            errors.append(f'{rel}: page must contain exactly one h1')
-        for required in ('<title>', 'name="description"', 'rel="canonical"'):
-            if required not in text:
-                errors.append(f'{rel}: required SEO field missing -> {required}')
-    if 'https://openaa.com/secondhand' in text:
-        errors.append(f'{rel}: deprecated OpenAA route /secondhand')
-    for _, value in parser.resources:
-        check_target(html, value)
-    for dup in sorted(parser.duplicate_ids):
-        errors.append(f'{html.relative_to(ROOT)}: duplicate id="{dup}"')
-
-sitemap = ROOT / 'sitemap.xml'
-if sitemap.exists():
-    text = sitemap.read_text(encoding='utf-8')
-    for loc in re.findall(r'<loc>(.*?)</loc>', text):
-        check_target(sitemap, loc)
-    from datetime import date
-    for value in re.findall(r'<lastmod>(\d{4}-\d{2}-\d{2})</lastmod>', text):
-        if value > date.today().isoformat():
-            errors.append(f'sitemap.xml: future lastmod date {value}')
-
-robots = ROOT / 'robots.txt'
-if robots.exists():
-    robots_text = robots.read_text(encoding='utf-8')
-    if 'Sitemap: https://toolku.com/sitemap.xml' not in robots_text:
-        errors.append('robots.txt: canonical sitemap declaration is missing')
-
+from urllib.parse import urlsplit,unquote
+import json,sys,xml.etree.ElementTree as ET
+ROOT=Path('dist').resolve(); errors=[]; catalog=json.loads(Path('src/data/tools.json').read_text())
+class Parser(HTMLParser):
+ def __init__(self):
+  super().__init__();self.ids=set();self.refs=[];self.h1=0;self.canon=[];self.description=False;self.title=False;self.in_head=False
+ def handle_starttag(self,tag,attrs):
+  a=dict(attrs)
+  if tag=='head':self.in_head=True
+  if tag in ['meta','title'] or (tag=='link' and a.get('rel')=='canonical'):
+   if not self.in_head:errors.append('Metadata outside head: '+tag)
+  if a.get('id'):
+   if a['id'] in self.ids:errors.append('Duplicate id: '+a['id'])
+   self.ids.add(a['id'])
+  self.h1+=tag=='h1';self.title|=tag=='title'
+  self.description|=tag=='meta' and a.get('name')=='description' and bool(a.get('content'))
+  if tag=='link' and a.get('rel')=='canonical':self.canon.append(a.get('href',''))
+  attr={'a':'href','link':'href','script':'src','img':'src'}.get(tag)
+  if attr and a.get(attr):self.refs.append(a[attr])
+  if any(k.startswith('on') for k in a):errors.append('Inline event handler')
+ def handle_endtag(self,tag):
+  if tag=='head':self.in_head=False
+def target(url,source):
+ u=urlsplit(url)
+ if u.scheme and (u.scheme not in ['https','http'] or u.netloc!='tools.openaa.com'):return None
+ if u.netloc and u.netloc!='tools.openaa.com':return None
+ p=(ROOT/unquote(u.path).lstrip('/')) if u.path.startswith('/') else source.parent/unquote(u.path)
+ if not u.path:p=source
+ if p.is_dir():p=p/'index.html'
+ return p
+for f in ROOT.rglob('*.html'):
+ text=f.read_text();p=Parser();p.feed(text)
+ if p.h1!=1:errors.append(f'{f.relative_to(ROOT)}: h1 count {p.h1}')
+ if not p.title or not p.description:errors.append(f'{f}: missing metadata')
+ if len(p.canon)!=1 or not p.canon[0].startswith('https://tools.openaa.com/'):errors.append(f'{f}: wrong canonical')
+ if 'toolku' in text.lower():errors.append(f'{f}: old brand')
+ for ref in p.refs:
+  t=target(ref,f)
+  if t is not None and not t.exists():errors.append(f'{f.relative_to(ROOT)}: missing {ref}')
+for tool in catalog:
+ if not target(tool['path'],ROOT/'index.html').is_file():errors.append('Missing tool '+tool['path'])
+ns={'s':'http://www.sitemaps.org/schemas/sitemap/0.9'}
+urls=[e.text for e in ET.parse(ROOT/'sitemap.xml').findall('.//s:loc',ns)]
+assert len(urls)==len(catalog)+3 and len(set(urls))==len(urls)
+assert not any('404' in x for x in urls)
+for url in urls:
+ if not target(url,ROOT/'index.html').exists():errors.append('Missing sitemap URL '+url)
 if errors:
-    print('\n'.join(f'ERROR: {x}' for x in errors))
-    print(f'\nValidation failed with {len(errors)} error(s).')
-    sys.exit(1)
-
-print('Static site validation passed: HTML resources, local links, duplicate IDs, sitemap and robots.txt checked.')
+ print('\n'.join(errors));sys.exit(1)
+print(f'Validated {len(list(ROOT.rglob("*.html")))} pages, {len(catalog)} tool routes, metadata, IDs, scripts, styles, icons and sitemap.')

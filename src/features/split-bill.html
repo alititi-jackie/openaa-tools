@@ -1,0 +1,31 @@
+<h1>AA 分账计算器</h1>
+<p class="subtitle">聚餐、朋友吃饭时快速计算每人应付金额。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="bill">总账单 ($)</label
+    ><input id="bill" min="0" step="0.01" type="number" value="200" />
+  </div>
+  <div class="field">
+    <label for="people">人数</label
+    ><input id="people" min="1" step="1" type="number" value="4" />
+  </div>
+  <div class="field">
+    <label for="tip">小费比例 (%)</label
+    ><input id="tip" max="100" min="0" type="number" value="20" />
+  </div>
+  <button class="btn" id="calculate">计算分账</button>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>$60.00</strong><span>每人应付 · 小费 $40.00 · 总计 $240.00</span>
+</div>
+<div class="info">
+  <h2>怎么使用？</h2>
+  <p>
+    输入总账单、人数和小费比例。工具会先计算小费，再把含小费总额平均分给所有人。
+  </p>
+  <h2>常见问题</h2>
+  <div class="faq">
+    <h3>可以不加小费吗？</h3>
+    <p>可以，把小费比例设为 0 即可。</p>
+  </div>
+</div>
