@@ -10,6 +10,7 @@ import {
   SOCIAL_SECURITY_WAGE_BASE_2026,
   fedTax,
   fetchJson,
+  queryError,
 } from "../advanced.js";
 export const calculate = async () => {
   const z = ($("zip")?.value || "").trim();
@@ -27,10 +28,6 @@ export const calculate = async () => {
       "ZIP " + z + " · " + names.join("、"),
     );
   } catch (e) {
-    bad(
-      e.name === "AbortError"
-        ? "查询超时，请稍后重试"
-        : "没有找到该 ZIP Code，请检查输入",
-    );
+    bad(queryError(e, " ZIP Code"));
   }
 };

@@ -1,6 +1,7 @@
 ---
 import Header from "../components/site/Header.astro";
 import Footer from "../components/site/Footer.astro";
+import GlobalNavigationButtons from "../components/site/GlobalNavigationButtons.astro";
 import { site } from "../config/site";
 import "../styles/global.css";
 interface Props {
@@ -89,6 +90,7 @@ const schema = {
     <Header />
     <main id="main"><slot /></main>
     <Footer />
+    <GlobalNavigationButtons toolId={toolId} />
     <div id="site-status" class="site-status" role="status" aria-live="polite">
     </div>
     <script>

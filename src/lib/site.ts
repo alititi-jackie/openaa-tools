@@ -1,4 +1,40 @@
 const status = document.getElementById("site-status");
+import { normalizeBackup, saveImportedRecords } from "./backup.js";
+document
+  .querySelectorAll<HTMLButtonElement>("[data-restore-import]")
+  .forEach((button) => {
+    const kind = button.dataset.restoreImport;
+    const key =
+      kind === "expense"
+        ? "openaa_expense_records_v1"
+        : "openaa_usd_rmb_records_v1";
+    const update = () => {
+      try {
+        button.hidden = localStorage.getItem(key + "_before_import") === null;
+      } catch {
+        button.hidden = true;
+      }
+    };
+    update();
+    window.addEventListener("records-imported", update);
+    button.addEventListener("click", () => {
+      try {
+        const raw = localStorage.getItem(key + "_before_import");
+        if (raw === null) return;
+        const data = JSON.parse(raw);
+        const rows =
+          Array.isArray(data) && data.length === 0
+            ? []
+            : normalizeBackup(data, kind);
+        if (!confirm("恢复到上次导入前的记录？当前记录也会保留为恢复快照。"))
+          return;
+        saveImportedRecords(key, rows);
+        location.reload();
+      } catch {
+        notify("恢复失败，未能恢复记录。请先导出当前数据并检查存储空间。");
+      }
+    });
+  });
 let timer: ReturnType<typeof setTimeout>;
 export function notify(message: string) {
   if (!status) return;

@@ -88,7 +88,7 @@ test("network query success and failure", async ({ page }) => {
   await page.goto("/tools/area-code/");
   await page.locator("#areaCode").fill("212");
   await page.locator("#calculate").click();
-  await expect(page.locator("#result")).toContainText("没有找到");
+  await expect(page.locator("#result")).toContainText("查询服务暂时不可用");
 });
 for (const app of ["expense-record", "usd-rmb"])
   test("records round-trip " + app, async ({ page }) => {

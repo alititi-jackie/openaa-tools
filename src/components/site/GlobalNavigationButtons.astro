@@ -1,0 +1,151 @@
+---
+import { site } from "../../config/site";
+const { toolId = "" } = Astro.props;
+const fallback = toolId
+  ? "/tools/"
+  : Astro.url.pathname === "/"
+    ? site.parent
+    : "/";
+---
+
+<nav class="floating-navigation" aria-label="页面快捷导航">
+  <button
+    type="button"
+    data-scroll-top
+    hidden
+    aria-label="回到顶部"
+    title="回到顶部"
+  >
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"><path d="m5 12 7-7 7 7M12 5v14"></path></svg
+    >
+  </button>
+  <a href={fallback} data-go-back aria-label="返回上一页" title="返回上一页">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"><path d="m12 5-7 7 7 7M5 12h14"></path></svg
+    >
+  </a>
+</nav>
+<script>
+  const navigation = document.querySelector<HTMLElement>(
+    ".floating-navigation",
+  );
+  const top = document.querySelector<HTMLButtonElement>("[data-scroll-top]");
+  const update = () => {
+    if (top) top.hidden = window.scrollY <= 900;
+  };
+  update();
+  window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("pageshow", update);
+  top?.addEventListener("click", () =>
+    window.scrollTo({
+      top: 0,
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+    }),
+  );
+  document
+    .querySelector("[data-go-back]")
+    ?.addEventListener("click", (event) => {
+      if (
+        event instanceof MouseEvent &&
+        (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+      )
+        return;
+      if (history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  const updateKeyboard = () => {
+    const editing = document.activeElement?.matches(
+      "input, textarea, [contenteditable=true]",
+    );
+    const keyboardOpen =
+      editing &&
+      window.visualViewport &&
+      window.innerHeight - window.visualViewport.height > 150;
+    navigation?.classList.toggle("keyboard-open", !!keyboardOpen);
+  };
+  window.visualViewport?.addEventListener("resize", updateKeyboard);
+  document.addEventListener("focusin", updateKeyboard);
+  document.addEventListener("focusout", () =>
+    requestAnimationFrame(updateKeyboard),
+  );
+</script>
+<style>
+  .floating-navigation {
+    position: fixed;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: calc(20px + env(safe-area-inset-bottom));
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .floating-navigation :is(button, a) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 50%;
+    background: #fffffff2;
+    color: #334155;
+    box-shadow: 0 8px 18px #0f172a1a;
+    backdrop-filter: blur(8px);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .floating-navigation :is(button, a):hover {
+    background: #f8fafc;
+  }
+  .floating-navigation :is(button, a):focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+  }
+  .floating-navigation [hidden],
+  .floating-navigation.keyboard-open {
+    display: none;
+  }
+  :global(
+      body:has(
+        .expense-sheet-backdrop.open,
+        .fx-sheet-backdrop.open,
+        dialog[open]
+      )
+    )
+    .floating-navigation {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .floating-navigation {
+      right: 24px;
+      bottom: 24px;
+    }
+  }
+  @media print {
+    .floating-navigation {
+      display: none;
+    }
+  }
+</style>

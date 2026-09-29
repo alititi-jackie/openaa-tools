@@ -10,6 +10,7 @@ import {
   SOCIAL_SECURITY_WAGE_BASE_2026,
   fedTax,
   fetchJson,
+  queryError,
 } from "../advanced.js";
 export const calculate = async () => {
   const a = ($("areaCode")?.value || "").replace(/\D/g, "").slice(0, 3);
@@ -21,15 +22,12 @@ export const calculate = async () => {
       ),
       x = d?.data || d || {},
       cities = Array.isArray(x.cities) ? x.cities.slice(0, 6).map(String) : [];
+    if (!x.region && !x.state && !cities.length) throw new Error("empty");
     out(
       String(x.region || x.state || "已找到"),
       "区号 " + a + " · " + (cities.join("、") || "地区信息"),
     );
   } catch (e) {
-    bad(
-      e.name === "AbortError"
-        ? "查询超时，请稍后重试"
-        : "没有找到该区号，请检查输入",
-    );
+    bad(queryError(e, "区号"));
   }
 };

@@ -60,9 +60,20 @@ export async function fetchJson(url) {
       headers: { Accept: "application/json" },
       signal: controller.signal,
     });
-    if (!r.ok) throw new Error("HTTP " + r.status);
+    if (!r.ok) {
+      const error = new Error("HTTP " + r.status);
+      error.status = r.status;
+      throw error;
+    }
     return await r.json();
   } finally {
     clearTimeout(timer);
   }
+}
+export function queryError(error, kind) {
+  if (error.name === "AbortError") return "查询超时，请稍后重试";
+  if (error.status === 404 || error.message === "empty")
+    return `没有找到该${kind}，请检查输入`;
+  if (error.status === 429) return "查询过于频繁，请稍后重试";
+  return "查询服务暂时不可用或网络连接失败，请稍后重试";
 }
