@@ -1,2 +1,93 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111827"><title>ToolKu工具库｜OpenAA工具库｜美国华人在线工具大全</title><meta name="description" content="ToolKu工具库（OpenAA工具库）是 OpenAA 旗下的美国华人免费在线工具平台，提供小费、工资、房贷、汽车、汇率、单位换算、时间日期、尺码等免费中文在线工具。支持按关键词快速搜索。"><link rel="canonical" href="https://toolku.com/tools/"><meta property="og:type" content="website"><meta property="og:locale" content="zh_CN"><meta property="og:title" content="ToolKu工具库｜OpenAA工具库｜美国华人在线工具大全"><meta property="og:description" content="ToolKu工具库（OpenAA工具库）全部工具导航：美国华人常用免费中文工具。ToolKu 是 OpenAA 旗下的在线工具平台。"><meta property="og:url" content="https://toolku.com/tools/"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="ToolKu工具库｜OpenAA工具库｜美国华人在线工具大全"><meta name="twitter:description" content="ToolKu工具库（OpenAA工具库）美国华人常用免费在线工具导航。"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"><link rel="stylesheet" href="/css/site.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"ToolKu工具导航","url":"https://toolku.com/tools/","description":"ToolKu工具库（OpenAA工具库）是 OpenAA 旗下的美国华人免费在线工具平台，提供小费、工资、房贷、汽车、汇率、单位换算、时间日期、尺码等免费中文在线工具。支持按关键词快速搜索。"}</script>
-</head><body><header class="site-header"><a class="brand" href="/"><span class="brand-mark">T</span>ToolKu</a><nav><a href="/">首页</a><a href="/tools/">工具导航</a><a href="/#categories">分类</a><a href="https://openaa.com" target="_blank" rel="noopener noreferrer">OpenAA</a></nav></header><main class="wrap"><div class="hero"><div class="eyebrow">OpenAA旗下</div><h1>ToolKu工具库</h1><p>美国华人常用的免费中文在线工具，按生活场景快速找到需要的工具。ToolKu 是 OpenAA 旗下的在线工具平台。</p><div class="search"><input id="q" type="search" autocomplete="off" enterkeyhint="search" aria-label="搜索工具" placeholder="搜索工具…"></div></div><div class="tool-grid-links" id="list"></div><section class="openaa-cta"><div><div class="cta-eyebrow">🇺🇸 OpenAA · 美国华人生活入口</div><h2>工具解决问题，OpenAA 解决生活</h2><p>找工作、找房、二手、DMV、新闻和本地服务，继续进入 OpenAA。</p></div><a class="cta-button" href="https://openaa.com" target="_blank" rel="noopener noreferrer">进入 OpenAA →</a></section></main><footer>ToolKu工具库 · <a href="https://openaa.com" target="_blank" rel="noopener noreferrer">OpenAA</a><br><small>ToolKu 是 OpenAA 旗下的在线工具平台。</small></footer><script src="/js/tools-data.js"></script><script src="/js/tools-index.js"></script><script src="/js/openaa-referral.js" defer></script></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0066FF">
+  <title>全部工具 | OpenAA 工具库</title>
+  <meta name="description" content="浏览 OpenAA 工具库的全部在线工具，包括财务计算、单位转换、美国生活和日常实用工具。">
+  <link rel="stylesheet" href="/src/styles/brand.css">
+  <link rel="stylesheet" href="/src/styles/layout.css">
+  <link rel="icon" href="/favicon.ico">
+  <style>
+    .catalog-hero { padding: 3rem 0 2rem; background: linear-gradient(135deg, #F8F9FB, #E8F0FF); }
+    .catalog-hero h1 { margin-bottom: .75rem; }
+    .catalog-hero p { margin: 0; }
+    .catalog-controls { display: flex; gap: 1rem; align-items: center; margin: 2rem 0; flex-wrap: wrap; }
+    .search-box { flex: 1 1 280px; position: relative; }
+    .search-box input { padding-left: 2.75rem; }
+    .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--color-text-tertiary); }
+    .category-filters { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .filter-btn { padding: .65rem 1rem; border: 1px solid var(--color-border); border-radius: 999px; background: #fff; color: var(--color-text-secondary); cursor: pointer; font-weight: 600; }
+    .filter-btn:hover, .filter-btn.active { color: #fff; border-color: var(--color-primary); background: var(--color-primary); }
+    .catalog-section { padding: 2rem 0 4rem; }
+    .catalog-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+    .catalog-heading h2 { margin: 0; }
+    .tool-card[hidden] { display: none; }
+    .empty-state { display: none; padding: 3rem 1rem; text-align: center; color: var(--color-text-secondary); }
+    .empty-state.visible { display: block; }
+    @media (max-width: 768px) { .catalog-controls { align-items: stretch; } .category-filters { width: 100%; } .filter-btn { flex: 1; } }
+  </style>
+</head>
+<body>
+  <header class="openaa-header">
+    <div class="container">
+      <a href="/" class="openaa-logo"><div class="logo-icon">A</div><div class="logo-text"><div class="logo-brand">OpenAA</div><div class="logo-sub">工具库</div></div></a>
+      <nav class="openaa-nav"><a href="/">首页</a><a href="/tools/">全部工具</a><a href="/#categories">分类浏览</a><a href="https://www.openaa.com/" target="_blank" rel="noopener">关于 OpenAA</a></nav>
+      <button class="mobile-menu-btn" aria-label="打开菜单"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="catalog-hero"><div class="container"><h1>全部工具</h1><p>简单、快速、免费的在线工具，专注解决实际问题。</p></div></section>
+    <section class="catalog-section"><div class="container">
+      <div class="catalog-controls">
+        <label class="search-box"><span class="search-icon" aria-hidden="true">⌕</span><span class="sr-only">搜索工具</span><input id="tool-search" type="search" placeholder="搜索工具名称或描述…" autocomplete="off"></label>
+        <div class="category-filters" role="group" aria-label="工具分类">
+          <button class="filter-btn active" data-category="all" type="button">全部</button>
+          <button class="filter-btn" data-category="finance" type="button">💰 财务</button>
+          <button class="filter-btn" data-category="convert" type="button">🔄 转换</button>
+          <button class="filter-btn" data-category="usa" type="button">🇺🇸 美国</button>
+          <button class="filter-btn" data-category="lifestyle" type="button">🛠️ 生活</button>
+        </div>
+      </div>
+      <div class="catalog-heading"><h2>工具列表</h2><span id="tool-count" class="text-muted" aria-live="polite"></span></div>
+      <div id="tool-grid" class="tools-grid" aria-live="polite"></div>
+      <div id="empty-state" class="empty-state"><div style="font-size:3rem">🔎</div><h3>没有找到匹配工具</h3><p>试试其他关键词或选择“全部”分类。</p></div>
+    </div></section>
+  </main>
+
+  <footer class="openaa-footer"><div class="container"><div class="footer-links"><a href="/">首页</a><a href="https://www.openaa.com/" target="_blank" rel="noopener">关于 OpenAA</a><a href="https://github.com/alititi-jackie/openaa-tools" target="_blank" rel="noopener">GitHub 项目</a></div><div class="footer-bottom"><p>&copy; 2025 OpenAA 工具库。保留所有权利。</p></div></div></footer>
+
+  <script src="/src/js/tools-registry.js"></script>
+  <script src="/src/js/app.js"></script>
+  <script>
+    (() => {
+      const config = window.TOOLS_CONFIG || (typeof TOOLS_CONFIG !== 'undefined' ? TOOLS_CONFIG : { tools: [] });
+      const tools = config.tools || [];
+      const grid = document.getElementById('tool-grid');
+      const count = document.getElementById('tool-count');
+      const empty = document.getElementById('empty-state');
+      const search = document.getElementById('tool-search');
+      let category = 'all';
+      const render = () => {
+        const query = search.value.trim().toLowerCase();
+        const filtered = tools.filter(tool => {
+          const matchesCategory = category === 'all' || tool.category === category;
+          const text = `${tool.name} ${tool.description}`.toLowerCase();
+          return matchesCategory && (!query || text.includes(query));
+        });
+        count.textContent = `显示 ${filtered.length} / ${tools.length} 个工具`;
+        grid.innerHTML = filtered.map(tool => `<a class="tool-card" href="${tool.path}"><div class="tool-icon">${tool.icon || '🧰'}</div><div class="tool-name">${tool.name}</div><div class="tool-desc">${tool.description}</div><span class="tool-link">使用工具 →</span></a>`).join('');
+        empty.classList.toggle('visible', filtered.length === 0);
+      };
+      document.querySelectorAll('.filter-btn').forEach(button => button.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(item => item.classList.remove('active'));
+        button.classList.add('active'); category = button.dataset.category; render();
+      }));
+      search.addEventListener('input', render);
+      render();
+    })();
+  </script>
+</body>
+</html>
