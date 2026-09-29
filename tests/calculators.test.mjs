@@ -18,6 +18,10 @@ function element(value = "") {
     appendChild(x) {
       this.children.push(x);
     },
+    replaceChildren(...children) {
+      this.children = children;
+      this.innerHTML = children.map((x) => x.textContent).join(" ");
+    },
     querySelector(sel) {
       return sel === "strong" ? this.strong : sel === "span" ? this.span : null;
     },

@@ -1,4 +1,5 @@
 import { localDate, readRecords, writeRecords } from "../lib/records.js";
+import { readBackupFile, saveImportedRecords } from "../lib/backup.js";
 function showToast(text) {
   const old = document.querySelector(".toast");
   if (old) old.remove();
@@ -945,27 +946,6 @@ function showToast(text) {
       type: "application/json;charset=utf-8",
     });
   }
-  function normalizeBackupRows(data) {
-    const rows = Array.isArray(data)
-      ? data
-      : data && Array.isArray(data.records)
-        ? data.records
-        : null;
-    if (!rows) throw new Error("bad backup");
-    return rows
-      .map((r) => ({
-        id: String(
-          r.id || "r_" + Date.now() + "_" + Math.random().toString(16).slice(2),
-        ),
-        date: String(r.date || "").slice(0, 10),
-        type: r.type === "subtract" || num(r.usd) < 0 ? "subtract" : "add",
-        usd: num(r.usd),
-        rate: num(r.rate),
-        note: String(r.note || ""),
-        createdAt: String(r.createdAt || new Date().toISOString()),
-      }))
-      .filter((r) => r.date && r.usd !== 0 && r.rate !== 0);
-  }
   function mergeBackupRows(current, incoming) {
     const seen = new Set();
     const keyOf = (r) =>
@@ -997,8 +977,7 @@ function showToast(text) {
   }
   async function importBackupFile(file) {
     try {
-      const text = await file.text();
-      const incoming = normalizeBackupRows(JSON.parse(text));
+      const incoming = await readBackupFile(file, "fx");
       if (!incoming.length) {
         alert("备份文件里没有可导入的记录。");
         return;
@@ -1013,23 +992,26 @@ function showToast(text) {
             " 条记录。\n\n请输入导入方式：\n1 = 覆盖当前数据\n2 = 合并数据\n0 = 取消",
         );
         if (choice === "1") {
-          save(incoming);
+          saveImportedRecords(KEY, incoming);
           showToast("已覆盖导入");
         } else if (choice === "2") {
-          save(mergeBackupRows(current, incoming));
+          saveImportedRecords(KEY, mergeBackupRows(current, incoming));
           showToast("已合并导入");
         } else {
           showToast("已取消导入");
           return;
         }
       } else {
-        save(incoming);
+        saveImportedRecords(KEY, incoming);
         showToast("导入成功");
       }
       render();
       goto("home");
     } catch (err) {
-      alert("导入失败，请选择正确的数据备份文件。");
+      alert(
+        "导入失败：" +
+          (err instanceof Error ? err.message : "请检查备份文件。"),
+      );
     }
   }
 

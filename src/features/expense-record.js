@@ -1,4 +1,5 @@
 import { localDate, readRecords, writeRecords } from "../lib/records.js";
+import { readBackupFile, saveImportedRecords } from "../lib/backup.js";
 function showToast(text) {
   const old = document.querySelector(".toast");
   if (old) old.remove();
@@ -57,7 +58,7 @@ function showToast(text) {
     const day = d.getDay();
     const diff = day === 0 ? -6 : 1 - day;
     d.setDate(d.getDate() + diff);
-    return d.toISOString().slice(0, 10);
+    return localDate(d);
   }
   function inRange(row, range) {
     const d = String(row.date || "");
@@ -684,26 +685,27 @@ function showToast(text) {
   }
   async function importBackup(file) {
     try {
-      const data = JSON.parse(await file.text());
-      const rows = Array.isArray(data) ? data : data.records;
-      if (!Array.isArray(rows)) throw new Error("bad");
-      if (load().length) {
+      const rows = await readBackupFile(file, "expense");
+      const current = load();
+      if (current.length) {
         const choice = prompt(
           "当前浏览器已有数据。请输入导入方式：\n1 = 覆盖当前数据\n2 = 合并数据\n0 = 取消",
         );
-        if (choice === "1") save(rows);
+        if (choice === "1") saveImportedRecords(KEY, rows);
         else if (choice === "2")
-          save([
-            ...load(),
-            ...rows.filter((r) => !load().some((x) => x.id === r.id)),
+          saveImportedRecords(KEY, [
+            ...current,
+            ...rows.filter((r) => !current.some((x) => x.id === r.id)),
           ]);
         else return;
-      } else save(rows);
+      } else saveImportedRecords(KEY, rows);
       showToast("导入成功");
       render();
       goto("home");
     } catch (e) {
-      alert("导入失败，请选择正确的数据备份文件。");
+      alert(
+        "导入失败：" + (e instanceof Error ? e.message : "请检查备份文件。"),
+      );
     }
   }
   window.addEventListener("beforeinstallprompt", (e) => {

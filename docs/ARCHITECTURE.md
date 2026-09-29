@@ -29,7 +29,7 @@ Astro 在构建时生成完整 HTML。41 个既有工具 URL 保持不变；页�
 
 ## 记录兼容
 
-保留 `openaa_expense_records_v1` 和 `openaa_usd_rmb_records_v1`；保留原备份导入格式。同域名同浏览器原记录可继续读取。跨 `toolku.com` / `tools.openaa.com` 无法直接读取本地存储，需要用户主动导出和导入。存储损坏或写入失败时停止操作并显示提示，不能用空数组覆盖未知数据。
+保留 `openaa_expense_records_v1` 和 `openaa_usd_rmb_records_v1`；保留原备份导入格式。同域名同浏览器原记录可继续读取。本站独立使用 `tools.openaa.com`，不与其他工具品牌关联。存储损坏或写入失败时停止操作并显示提示，不能用空数组覆盖未知数据。
 
 ## 离线缓存
 

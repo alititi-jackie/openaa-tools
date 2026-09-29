@@ -7,7 +7,12 @@ export const n = (id) => {
 };
 export const out = (v, l) => {
   const e = $("result");
-  if (e) e.innerHTML = `<strong>${v}</strong><span>${l}</span>`;
+  if (!e) return;
+  const strong = document.createElement("strong");
+  const span = document.createElement("span");
+  strong.textContent = String(v);
+  span.textContent = String(l);
+  e.replaceChildren(strong, span);
 };
 export const bad = (m) => out("⚠️", m);
 export function loan(p, d, r, t, isYears) {
