@@ -1,0 +1,245 @@
+.nyc-wrap {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 16px 28px;
+}
+.nyc-head {
+  margin: 18px 0 14px;
+}
+.nyc-head h1 {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.25;
+}
+.nyc-head p {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+.nyc-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin: 12px 0;
+}
+.nyc-btn {
+  min-height: 40px;
+  border: 1px solid #dbe3ee;
+  border-radius: 10px;
+  background: #fff;
+  color: #334155;
+  padding: 0 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.nyc-btn.primary {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: #fff;
+}
+.nyc-btn[disabled] {
+  opacity: 0.65;
+  cursor: default;
+}
+.nyc-search {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #dbe3ee;
+  border-radius: 12px;
+  padding: 0 14px;
+  font-size: 16px;
+  outline: none;
+  background: #fff;
+}
+.nyc-search:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+.nyc-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0 2px;
+  overflow-x: auto;
+  padding: 2px 0 6px;
+  scrollbar-width: none;
+}
+.nyc-tabs::-webkit-scrollbar {
+  display: none;
+}
+.nyc-tab {
+  flex: 0 0 auto;
+  min-height: 36px;
+  border: 1px solid #dbe3ee;
+  border-radius: 999px;
+  background: #fff;
+  color: #475569;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.nyc-tab.active {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  color: #2563eb;
+}
+.nyc-count {
+  margin: 8px 2px 10px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+}
+.nyc-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.nyc-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.nyc-card:hover {
+  border-color: #dbeafe;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.07);
+}
+.nyc-card:active {
+  transform: scale(0.992);
+}
+.nyc-card-inner {
+  min-height: 96px;
+  border-radius: 11px;
+  background: #f8fafc;
+  padding: 13px;
+}
+.nyc-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+.nyc-name {
+  min-width: 0;
+  flex: 1;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--brand);
+  line-height: 1.35;
+}
+.nyc-note {
+  margin-top: 7px;
+  color: #334155;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.nyc-address {
+  margin-top: 7px;
+  padding-right: 4px;
+  color: #64748b;
+  font-size: 12.5px;
+  font-weight: 650;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.nyc-copy {
+  flex: 0 0 auto;
+  min-height: 30px;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #2563eb;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.nyc-copy:active {
+  transform: scale(0.98);
+}
+.nyc-category {
+  display: inline-flex;
+  margin-top: 8px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 800;
+}
+.nyc-empty {
+  grid-column: 1/-1;
+  padding: 24px;
+  text-align: center;
+  color: #94a3b8;
+  background: #fff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 14px;
+}
+.nyc-links {
+  margin-top: 20px;
+}
+.nyc-links h2 {
+  font-size: 17px;
+  margin: 0 0 10px;
+}
+.nyc-link-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.nyc-site-link {
+  display: block;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 13px;
+}
+.nyc-site-link strong {
+  display: block;
+  font-size: 14px;
+}
+.nyc-site-link span {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.nyc-foot {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 12px;
+  margin: 18px 0 0;
+}
+.install-help {
+  display: none;
+  margin: 10px 0;
+  padding: 11px 13px;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #1e40af;
+  font-size: 13px;
+  line-height: 1.6;
+}
+@media (min-width: 760px) {
+  .nyc-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 520px) {
+  .nyc-link-grid {
+    grid-template-columns: 1fr;
+  }
+  .nyc-head h1 {
+    font-size: 23px;
+  }
+}

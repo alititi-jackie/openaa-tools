@@ -1,0 +1,20 @@
+---
+import { tools } from "../data/tools";
+import ToolLayout from "../layouts/ToolLayout.astro";
+export function getStaticPaths() {
+  return tools.map((tool) => ({
+    params: { route: tool.path.replace(/^\//, "").replace(/\/$/, "") },
+    props: { tool },
+  }));
+}
+const { tool } = Astro.props;
+const fragments = import.meta.glob("../features/*.html", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+}) as Record<string, string>;
+---
+
+<ToolLayout tool={tool}
+  ><Fragment set:html={fragments[`../features/${tool.id}.html`]} /></ToolLayout
+>

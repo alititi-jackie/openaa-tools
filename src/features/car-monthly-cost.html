@@ -1,0 +1,43 @@
+<h1>汽车真实月成本计算器</h1>
+<p class="subtitle">不只看月供，算算你的车每个月真正花多少钱。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="payment">汽车月供 ($)</label
+    ><input id="payment" min="0" type="number" value="500" />
+  </div>
+  <div class="field">
+    <label for="miles">每年行驶里程</label
+    ><input id="miles" min="0" type="number" value="12000" />
+  </div>
+  <div class="field">
+    <label for="mpg">平均 MPG</label
+    ><input id="mpg" min="0.1" type="number" value="25" />
+  </div>
+  <div class="field">
+    <label for="gas">油价 ($/gal)</label
+    ><input id="gas" min="0" step="0.01" type="number" value="3.5" />
+  </div>
+  <div class="field">
+    <label for="insurance">汽车保险/年 ($)</label
+    ><input id="insurance" min="0" type="number" value="1800" />
+  </div>
+  <div class="field">
+    <label for="maintenance">保养维修/年 ($)</label
+    ><input id="maintenance" min="0" type="number" value="1200" />
+  </div>
+  <div class="field">
+    <label for="other">其他月费用 ($)</label
+    ><input id="other" min="0" type="number" value="50" />
+  </div>
+  <button class="btn" id="calculate">计算真实月成本</button>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>—</strong><span>填写数据后计算</span>
+</div>
+<div class="note">未包含车辆折旧、停车、过路费、注册费和意外维修等费用。</div>
+<div class="info">
+  <h2>为什么不能只看月供？</h2>
+  <p>
+    汽车实际成本还包括汽油、保险、保养维修等。把这些费用放在一起，才能更接近每月真实用车成本。
+  </p>
+</div>

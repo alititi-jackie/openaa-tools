@@ -1,0 +1,494 @@
+<div class="app-shell">
+  <div>
+    <section class="content-wrap">
+      <div class="expense-app" id="expenseApp">
+        <section class="expense-view active" data-view="home">
+          <div class="expense-hero">
+            <h1>生活开支记录</h1>
+            <p>
+              手机端快速记一笔。日期、金额、支付方式、分类和备注，本地保存，不上传服务器。
+            </p>
+          </div>
+          <div class="expense-home-grid">
+            <button
+              class="expense-big-btn"
+              data-expense-goto="input"
+              type="button"
+            >
+              <strong>记一笔</strong><span>日期 / 金额 / 分类</span>
+            </button>
+            <button
+              class="expense-big-btn"
+              data-expense-goto="records"
+              type="button"
+            >
+              <strong>查看记录</strong><span>默认显示当月数据</span>
+            </button>
+            <button
+              class="expense-big-btn"
+              data-expense-goto="summary"
+              type="button"
+            >
+              <strong>开支汇总</strong><span>星期 / 月 / 年 / 全部</span>
+            </button>
+            <button
+              class="expense-big-btn"
+              data-expense-goto="export"
+              type="button"
+            >
+              <strong>导出/分享</strong><span>Excel、备份、复制汇总</span>
+            </button>
+            <button
+              class="expense-big-btn"
+              id="expenseInstallBtn"
+              type="button"
+            >
+              <strong>下载安装到手机</strong
+              ><span>添加到桌面，像 App 一样打开</span>
+            </button>
+          </div>
+          <div class="template-card">
+            <h2>本月数据</h2>
+            <div class="expense-summary" id="homeMonthSummary"></div>
+            <div
+              class="expense-category-summary"
+              id="homeCategorySummary"
+            ></div>
+            <div
+              aria-label="数据安全说明"
+              class="expense-safety-note"
+              role="note"
+            >
+              <svg
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewbox="0 0 24 24"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path>
+                <path d="M12 8v4"></path>
+                <path d="M12 16h.01"></path>
+              </svg>
+              <div>
+                <strong>数据安全说明</strong>
+                <p>
+                  OpenAA
+                  重视用户隐私与数据安全。本工具不会上传、存储或同步任何记录到服务器，所有数据仅保存在您当前使用的浏览器中。清理缓存、清除网站数据、重装浏览器或更换设备前，请先导出
+                  Excel 或数据备份。
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="expense-view" data-view="input">
+          <div class="expense-page-title">
+            <h2 id="expenseInputTitle">记一笔</h2>
+            <button
+              class="expense-small-btn"
+              data-expense-goto="home"
+              type="button"
+            >
+              返回
+            </button>
+          </div>
+          <div class="template-card">
+            <form class="expense-form" id="expenseForm">
+              <input id="expenseEditId" type="hidden" />
+              <input id="expensePayment" type="hidden" />
+              <input id="expenseCategory" type="hidden" />
+              <div class="expense-field">
+                <label for="expenseDate">日期</label
+                ><input
+                  class="expense-input"
+                  id="expenseDate"
+                  required=""
+                  type="date"
+                />
+              </div>
+              <div class="expense-field">
+                <label for="expenseAmount">金额</label>
+                <input
+                  class="expense-input"
+                  id="expenseAmount"
+                  inputmode="decimal"
+                  min="0"
+                  placeholder="例如 25.80"
+                  required=""
+                  step="0.01"
+                  type="number"
+                />
+                <div class="expense-warning" id="expenseAmountWarning">
+                  ⚠️ 金额看起来可能有误，请确认是否输入正确。
+                </div>
+              </div>
+              <div class="expense-field">
+                <label>支付方式</label>
+                <div
+                  class="expense-card-grid expense-pay-grid"
+                  id="expensePaymentGrid"
+                >
+                  <button
+                    class="expense-choice-card"
+                    data-payment="现金"
+                    type="button"
+                  >
+                    💵 现金
+                  </button>
+                  <button
+                    class="expense-choice-card"
+                    data-payment="银行卡"
+                    type="button"
+                  >
+                    💳 银行卡
+                  </button>
+                </div>
+              </div>
+              <div class="expense-field">
+                <label>开支分类</label>
+                <div
+                  class="expense-card-grid expense-category-grid"
+                  id="expenseCategoryGrid"
+                >
+                  <button
+                    class="expense-choice-card"
+                    data-category="购物"
+                    type="button"
+                  >
+                    🛒 购物
+                  </button>
+                  <button
+                    class="expense-choice-card"
+                    data-category="餐饮"
+                    type="button"
+                  >
+                    🍜 餐饮
+                  </button>
+                  <button
+                    class="expense-choice-card"
+                    data-category="交通"
+                    type="button"
+                  >
+                    🚗 交通
+                  </button>
+                  <button
+                    class="expense-choice-card"
+                    data-category="房屋"
+                    type="button"
+                  >
+                    🏠 房屋
+                  </button>
+                  <button
+                    class="expense-choice-card"
+                    data-category="账单"
+                    type="button"
+                  >
+                    📱 账单
+                  </button>
+                  <button
+                    class="expense-choice-card"
+                    data-category="其它"
+                    type="button"
+                  >
+                    📦 其它
+                  </button>
+                </div>
+              </div>
+              <div class="expense-field">
+                <label for="expenseNote">备注（可不填）</label
+                ><input
+                  class="expense-input"
+                  id="expenseNote"
+                  placeholder="例如 Costco、房租、加油"
+                  type="text"
+                />
+              </div>
+              <div class="expense-actions">
+                <button
+                  class="expense-small-btn"
+                  data-expense-goto="home"
+                  type="button"
+                >
+                  取消
+                </button>
+                <button class="expense-primary-btn" type="submit">保存</button>
+              </div>
+            </form>
+          </div>
+        </section>
+        <section class="expense-view" data-view="saved">
+          <div class="template-card">
+            <h2>保存成功</h2>
+            <p>这条开支记录已保存到当前浏览器。</p>
+            <div class="expense-actions">
+              <button
+                class="expense-small-btn"
+                data-expense-goto="home"
+                type="button"
+              >
+                返回首页
+              </button>
+              <button
+                class="expense-primary-btn"
+                id="expenseContinueBtn"
+                type="button"
+              >
+                继续记录
+              </button>
+            </div>
+          </div>
+        </section>
+        <section class="expense-view" data-view="records">
+          <div class="expense-page-title">
+            <h2>查看记录</h2>
+            <button
+              class="expense-small-btn"
+              data-expense-goto="home"
+              type="button"
+            >
+              返回
+            </button>
+          </div>
+          <div class="expense-filter-row">
+            <input class="expense-input" id="expenseMonthPicker" type="month" />
+            <button
+              class="expense-small-btn"
+              id="expenseThisMonthBtn"
+              type="button"
+            >
+              本月
+            </button>
+          </div>
+          <div class="expense-summary" id="recordsSummary"></div>
+          <div class="expense-list" id="recordsList"></div>
+        </section>
+        <section class="expense-view" data-view="summary">
+          <div class="expense-page-title">
+            <h2>开支汇总</h2>
+            <button
+              class="expense-small-btn"
+              data-expense-goto="home"
+              type="button"
+            >
+              返回
+            </button>
+          </div>
+          <div class="expense-tabs" id="expenseSummaryTabs">
+            <button
+              class="expense-tab active"
+              data-summary-range="week"
+              type="button"
+            >
+              本周
+            </button>
+            <button
+              class="expense-tab"
+              data-summary-range="month"
+              type="button"
+            >
+              本月
+            </button>
+            <button class="expense-tab" data-summary-range="year" type="button">
+              今年
+            </button>
+            <button class="expense-tab" data-summary-range="all" type="button">
+              全部
+            </button>
+          </div>
+          <div class="expense-summary" id="summaryStats"></div>
+          <div class="expense-category-summary" id="summaryCategoryStats"></div>
+          <div class="expense-list" id="summaryList"></div>
+        </section>
+        <section class="expense-view" data-view="export">
+          <div class="expense-page-title">
+            <h2>导出 / 分享</h2>
+            <button
+              class="expense-small-btn"
+              data-expense-goto="home"
+              type="button"
+            >
+              返回
+            </button>
+          </div>
+          <div
+            aria-label="数据保存说明"
+            class="expense-safety-note"
+            role="note"
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewbox="0 0 24 24"
+            >
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path>
+              <path d="M12 8v4"></path>
+              <path d="M12 16h.01"></path>
+            </svg>
+            <div>
+              <strong>数据保存说明</strong>
+              <p>
+                数据仅保存在当前浏览器。建议定期导出 Excel
+                或数据备份，方便清缓存、换浏览器或换手机后恢复。
+              </p>
+            </div>
+          </div>
+          <div class="expense-tools-grid">
+            <button
+              class="expense-primary-btn"
+              id="expenseExcelBtn"
+              type="button"
+            >
+              📊 Excel 文件
+            </button>
+            <button
+              class="expense-small-btn"
+              id="expenseBackupBtn"
+              type="button"
+            >
+              📦 数据备份
+            </button>
+            <button
+              class="expense-small-btn"
+              id="expenseCopySummaryBtn"
+              type="button"
+            >
+              📋 复制本月汇总
+            </button>
+            <button
+              class="expense-small-btn"
+              id="expenseInstallBtnExport"
+              type="button"
+            >
+              📱 安装到手机
+            </button>
+            <button
+              class="expense-danger-btn"
+              id="expenseClearBtn"
+              type="button"
+            >
+              🗑️ 清空全部数据
+            </button>
+          </div>
+          <input
+            accept=".json,.backup,application/json"
+            hidden=""
+            id="expenseImportInput"
+            type="file"
+          />
+        </section>
+        <div
+          aria-hidden="true"
+          class="expense-sheet-backdrop"
+          id="expenseExcelSheet"
+        >
+          <div
+            aria-label="Excel 文件操作"
+            aria-modal="true"
+            class="expense-action-sheet"
+            role="dialog"
+          >
+            <h3>Excel 文件</h3>
+            <p>导出为 WPS / Excel 可打开的表格，可下载或分享。</p>
+            <div class="expense-sheet-grid">
+              <button
+                class="primary"
+                id="expenseDownloadExcelBtn"
+                type="button"
+              >
+                📊 下载 Excel
+              </button>
+              <button id="expenseShareExcelBtn" type="button">
+                📎 分享 Excel
+              </button>
+              <button class="cancel" data-expense-close-sheet="" type="button">
+                取消
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="expense-sheet-backdrop"
+          id="expenseBackupSheet"
+        >
+          <div
+            aria-label="数据备份操作"
+            aria-modal="true"
+            class="expense-action-sheet"
+            role="dialog"
+          >
+            <h3>数据备份</h3>
+            <p>
+              备份文件用于恢复本工具数据。清缓存、换浏览器或换设备前建议先保存。
+            </p>
+            <div class="expense-sheet-grid">
+              <button
+                class="primary"
+                id="expenseDownloadBackupBtn"
+                type="button"
+              >
+                📦 下载数据备份
+              </button>
+              <button id="expenseShareBackupBtn" type="button">
+                📤 分享数据备份
+              </button>
+              <label for="expenseImportInput">📥 导入数据备份</label>
+              <button class="cancel" data-expense-close-sheet="" type="button">
+                取消
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        aria-label="分享给朋友"
+        class="expense-share-card"
+        data-share=""
+        type="button"
+      >
+        <span aria-hidden="true" class="expense-share-icon"
+          ><svg
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewbox="0 0 24 24"
+          >
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <path d="M8.59 13.51l6.83 3.98"></path>
+            <path d="M15.41 6.51 8.59 10.49"></path></svg
+        ></span>
+        <span class="expense-share-text"
+          ><strong>分享给朋友</strong
+          ><span>一键调用系统分享，不支持时会自动复制链接</span></span
+        >
+      </button>
+      <article class="template-card expense-seo-card">
+        <h2>常见问题</h2>
+        <h3>这个生活开支记录工具会上传数据吗？</h3>
+        <p>
+          不会。所有记录默认只保存在当前浏览器中，不需要登录，也不会上传到
+          OpenAA 服务器。
+        </p>
+        <h3>为什么分类只有六个？</h3>
+        <p>
+          这个工具重点是手机端快速记录，所以只保留购物、餐饮、交通、房屋、账单和其它六个大分类，减少选择成本。
+        </p>
+        <h3>清理缓存前要做什么？</h3>
+        <p>
+          清理缓存、清除网站数据、重装浏览器或更换设备前，建议先导出 Excel
+          或数据备份。Excel 适合查看和保存，数据备份适合以后导入恢复。
+        </p>
+      </article>
+    </section>
+  </div>
+</div>

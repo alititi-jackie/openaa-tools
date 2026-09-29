@@ -1,0 +1,38 @@
+<h1>复利计算器</h1>
+<p class="subtitle">本金加定期投入，快速估算长期复利增长。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="principal">初始本金 ($)</label
+    ><input id="principal" min="0" type="number" value="10000" />
+  </div>
+  <div class="field">
+    <label for="contribution">每期追加 ($)</label
+    ><input id="contribution" min="0" type="number" value="500" />
+  </div>
+  <div class="field">
+    <label for="rate">年回报率 (%)</label
+    ><input id="rate" min="0" step="0.1" type="number" value="7" />
+  </div>
+  <div class="field">
+    <label for="years">投资年数</label
+    ><input id="years" min="0" type="number" value="20" />
+  </div>
+  <div class="field">
+    <label for="freq">每年复利次数</label
+    ><select id="freq">
+      <option selected="" value="12">12 次</option>
+      <option value="4">4 次</option>
+      <option value="1">1 次</option>
+    </select>
+  </div>
+  <button class="btn" id="calculate">计算复利</button>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>—</strong><span>填写数据后计算</span>
+</div>
+<div class="info">
+  <h2>复利是什么？</h2>
+  <p>
+    收益继续参与下一期增长，长期投资时“收益再投资”会产生复利效果。实际投资回报并不会固定。
+  </p>
+</div>

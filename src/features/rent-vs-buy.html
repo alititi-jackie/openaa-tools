@@ -1,0 +1,53 @@
+<h1>租房 vs 买房计算器</h1>
+<p class="subtitle">比较长期租金和买房持有成本，帮助你做初步判断。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="rent">当前月租 ($)</label
+    ><input id="rent" min="0" type="number" value="2200" />
+  </div>
+  <div class="field">
+    <label for="price">房价 ($)</label
+    ><input id="price" min="0" type="number" value="400000" />
+  </div>
+  <div class="field">
+    <label for="down">首付 ($)</label
+    ><input id="down" min="0" type="number" value="80000" />
+  </div>
+  <div class="field">
+    <label for="rate">房贷利率 (%)</label
+    ><input id="rate" min="0" step="0.01" type="number" value="6.5" />
+  </div>
+  <div class="field">
+    <label for="years">比较年限</label
+    ><input id="years" min="1" type="number" value="10" />
+  </div>
+  <div class="field">
+    <label for="tax">房产税率/年 (%)</label
+    ><input id="tax" min="0" step="0.01" type="number" value="1.5" />
+  </div>
+  <div class="field">
+    <label for="insurance">房屋保险/年 ($)</label
+    ><input id="insurance" min="0" type="number" value="1800" />
+  </div>
+  <div class="field">
+    <label for="maintenance">维护费/年占房价 (%)</label
+    ><input id="maintenance" min="0" step="0.1" type="number" value="1" />
+  </div>
+  <div class="field">
+    <label for="rentRise">预计年租金上涨 (%)</label
+    ><input id="rentRise" min="0" step="0.1" type="number" value="3" />
+  </div>
+  <button class="btn" id="calculate">开始比较</button>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>—</strong><span>填写数据后计算</span>
+</div>
+<div class="note">
+  这是简化比较，未计房屋升值、买卖交易费、首付机会成本和税务抵扣。
+</div>
+<div class="info">
+  <h2>怎么比较？</h2>
+  <p>
+    工具把未来租金上涨纳入租房成本，同时计算房贷、房产税、保险和维护费用，得到指定年限的大致持有成本。
+  </p>
+</div>

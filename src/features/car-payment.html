@@ -1,0 +1,56 @@
+<h1>美国汽车贷款月供计算器</h1>
+<p class="subtitle">买车前快速估算贷款月供。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="price">车价 ($)</label
+    ><input id="price" min="0" type="number" value="30000" />
+  </div>
+  <div class="field">
+    <label for="down">首付 ($)</label
+    ><input id="down" min="0" type="number" value="5000" />
+  </div>
+  <div class="field">
+    <label for="rate">年利率 (%)</label
+    ><input id="rate" max="100" min="0" step="0.01" type="number" value="6.5" />
+  </div>
+  <div class="field">
+    <label for="months">贷款期限（月）</label
+    ><input id="months" max="120" min="1" type="number" value="60" />
+  </div>
+  <button class="btn" id="calculate">计算月供</button>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>$489.89</strong><span>示例月供 · 实际费用以贷款合同为准</span>
+</div>
+<div class="note">未包含销售税、牌照、Dealer fee、保险等实际购车成本。</div>
+<div class="info">
+  <h2>汽车贷款怎么算？</h2>
+  <p>根据贷款本金、年利率和还款期数使用标准等额本息公式估算月供。</p>
+</div>
+<section class="source-panel">
+  <div class="source-meta">计算规则复核：2026年9月10日</div>
+  <h2>汽车月供不等于全部用车成本</h2>
+  <p>
+    计算器根据车价减去首付后的贷款本金、APR和还款月数估算固定月供。合同中的税费、Dealer
+    Fee、延长保修及其他附加产品如果被计入贷款，也会提高实际月供。
+  </p>
+  <p>
+    <strong>比较方法：</strong
+    >期限较长可能降低每月付款，但通常会增加总利息。签约前应同时比较APR、贷款本金、期限和总付款。
+  </p>
+  <p class="official-source">
+    官方来源：<a
+      href="https://www.consumerfinance.gov/ask-cfpb/what-is-included-in-the-monthly-auto-loan-payment-en-819/"
+      rel="noopener noreferrer"
+      target="_blank"
+      >CFPB汽车月供说明</a
+    >
+    ·
+    <a
+      href="https://www.consumerfinance.gov/ask-cfpb/how-do-i-compare-auto-loan-offers-what-should-i-look-at-besides-the-monthly-payment-en-753/"
+      rel="noopener noreferrer"
+      target="_blank"
+      >CFPB贷款比较指南</a
+    >
+  </p>
+</section>

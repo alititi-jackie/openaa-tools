@@ -1,0 +1,28 @@
+<h1>英寸 ↔ 厘米换算器</h1>
+<p class="subtitle">inch、cm、feet、meter 快速换算。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="value">数值</label
+    ><input id="value" min="0" step="0.01" type="number" value="1" />
+  </div>
+  <div class="field">
+    <label for="direction">方向</label
+    ><select id="direction">
+      <option value="incm">inch → cm</option>
+      <option value="cmin">cm → inch</option>
+      <option value="ftm">feet → meter</option>
+      <option value="mft">meter → feet</option>
+    </select>
+  </div>
+  <button class="btn" id="calculate">转换</button>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>2.54</strong><span>cm</span>
+</div>
+<div class="info">
+  <h2>常用公式</h2>
+  <p>
+    1 inch = 2.54 cm；1 foot = 0.3048
+    m。美国房屋、家具和商品尺寸经常使用英寸或英尺。
+  </p>
+</div>

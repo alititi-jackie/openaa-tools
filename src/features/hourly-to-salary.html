@@ -1,0 +1,32 @@
+<h1>美国时薪转年薪计算器</h1>
+<p class="subtitle">输入时薪和工作时间，估算税前年收入。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="hourly">时薪 ($)</label
+    ><input id="hourly" min="0" step="0.01" type="number" value="25" />
+  </div>
+  <div class="field">
+    <label for="hours">每周工作小时</label
+    ><input id="hours" max="168" min="0" type="number" value="40" />
+  </div>
+  <div class="field">
+    <label for="weeks">每年工作周数</label
+    ><input id="weeks" max="52" min="1" type="number" value="52" />
+  </div>
+  <button class="btn" id="calculate">计算年薪</button>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>$52,000.00</strong><span>估算年薪税前 · 月薪约 $4,333.33</span>
+</div>
+<div class="info">
+  <h2>计算公式</h2>
+  <p>
+    年薪 = 时薪 × 每周工作小时 ×
+    每年工作周数。加班、奖金、带薪休假和税费没有纳入。
+  </p>
+  <h2>常见问题</h2>
+  <div class="faq">
+    <h3>美国常见的全职工时是多少？</h3>
+    <p>很多全职岗位按每周 40 小时估算，但实际工作安排因雇主和行业而不同。</p>
+  </div>
+</div>

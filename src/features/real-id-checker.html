@@ -1,0 +1,179 @@
+<div class="app-shell">
+  <div>
+    <section class="content-wrap">
+      <div class="section-title">DMV 实用工具</div>
+      <div class="dmv-tool-nav-card">
+        <nav aria-label="DMV 工具分类导航" class="dmv-tool-nav">
+          <a class="dmv-tool-link" href="/tools/?category=usa">全部美国工具</a>
+          <a class="dmv-tool-link" href="/usa/dmv/document-checker.html"
+            >文件检查</a
+          >
+          <a class="dmv-tool-link" href="/usa/dmv/6-points-calculator.html"
+            >6 Points</a
+          >
+          <a class="dmv-tool-link active" href="/usa/dmv/real-id-checker.html"
+            >REAL ID</a
+          >
+          <a
+            class="dmv-tool-link"
+            href="/usa/dmv/real-id-vs-standard-vs-enhanced.html"
+            >证件对比</a
+          >
+        </nav>
+      </div>
+      <article class="template-card realid-tool">
+        <h1>纽约 DMV REAL ID 检查器</h1>
+        <p>
+          这个工具帮你快速检查：去纽约 DMV 办 REAL ID
+          前，常见核心文件是否准备齐。适合第一次办驾照、Learner
+          Permit、Non-driver ID，或想把 Standard ID 升级成 REAL ID
+          的纽约华人参考。
+        </p>
+        <div class="notice-box">
+          说明：本工具只做中文整理和预检查，不代表 DMV 最终审核结果。去 DMV
+          前，请以纽约 DMV 官方 Document Guide 和 ID-44 文件清单为准。
+        </div>
+      </article>
+      <article class="template-card realid-tool">
+        <h2>先选择你的情况</h2>
+        <div class="realid-form" id="realIdForm">
+          <label class="check-row"
+            ><input data-key="identity" type="checkbox" />
+            <span
+              >我有身份证明 / 出生日期 /
+              合法身份文件，例如美国护照、绿卡、EAD、I-94、外国护照加有效身份文件等</span
+            ></label
+          >
+          <label class="check-row"
+            ><input data-key="ssn" type="checkbox" />
+            <span
+              >我有 Social Security Card / W-2 / Pay Stub 等可证明 SSN
+              的文件，或 SSA 不符合资格信</span
+            ></label
+          >
+          <label class="check-row"
+            ><input data-key="res1" type="checkbox" />
+            <span
+              >我有第 1
+              份纽约地址证明，例如银行账单、水电煤账单、信用卡账单、租约、工资单等</span
+            ></label
+          >
+          <label class="check-row"
+            ><input data-key="res2" type="checkbox" />
+            <span
+              >我有第 2 份纽约地址证明，地址和姓名与申请信息一致</span
+            ></label
+          >
+          <label class="check-row"
+            ><input data-key="sixpoints" type="checkbox" />
+            <span>我已经准备好纽约 DMV 6 Points 身份证明文件</span></label
+          >
+          <label class="check-row"
+            ><input data-key="namechange" type="checkbox" />
+            <span
+              >我的当前姓名和所有文件姓名完全一致；如改过名，我有结婚纸、离婚纸、法院改名文件等证明</span
+            ></label
+          >
+          <label class="check-row"
+            ><input data-key="currentid" type="checkbox" />
+            <span
+              >我会带上现有驾照 / Learner Permit / Non-driver
+              ID（如果已经有）</span
+            ></label
+          >
+        </div>
+        <button class="realid-btn" data-action="checkRealId" type="button">
+          检查是否准备齐
+        </button>
+        <div class="result-box" id="realIdResult">
+          勾选上面的情况后，点击按钮查看结果。
+        </div>
+      </article>
+      <article class="template-card">
+        <h2>REAL ID 去 DMV 常见必备清单</h2>
+        <div class="mini-grid realid-grid">
+          <div class="mini-card">
+            <strong>1. 身份 / 出生日期 / 合法身份</strong
+            ><span
+              >常见为美国护照、出生纸、绿卡、EAD、外国护照加有效身份文件等。</span
+            >
+          </div>
+          <div class="mini-card">
+            <strong>2. SSN 或不符合资格信</strong
+            ><span
+              >有 SSN 的通常需要证明 SSN；没有 SSN 的合法身份申请人，可能需要
+              SSA 不符合资格信。</span
+            >
+          </div>
+          <div class="mini-card">
+            <strong>3. 两份纽约地址证明</strong
+            ><span
+              >REAL ID / Enhanced ID 需要 2 份纽约州居住地址证明，P.O. Box
+              通常不接受。</span
+            >
+          </div>
+          <div class="mini-card">
+            <strong>4. 6 Points 身份证明</strong
+            ><span
+              >纽约 DMV 很多驾照/ID 业务仍要按 6 Points 文件规则准备。</span
+            >
+          </div>
+        </div>
+      </article>
+      <article class="template-card">
+        <h2>REAL ID、Enhanced、Standard 有什么区别？</h2>
+        <p>
+          <strong>REAL ID：</strong
+          >用于美国国内飞机、进入部分联邦设施等联邦用途。纽约 DMV 说明，REAL ID
+          本身通常不额外收费，但需要到 DMV 现场提交文件并重新拍照。
+        </p>
+        <p>
+          <strong>Enhanced ID：</strong>也符合 REAL ID
+          联邦用途，并可用于从加拿大、墨西哥和部分加勒比国家经陆路或海路返回美国，但通常有额外费用。
+        </p>
+        <p>
+          <strong>Standard ID：</strong>普通纽约驾照 / ID，不一定符合 REAL ID
+          联邦用途。是否适合你，要看你是否需要坐美国国内飞机、进入某些联邦设施，或是否已有护照等替代证件。
+        </p>
+      </article>
+      <article class="template-card">
+        <h2>去 DMV 前建议这样做</h2>
+        <p>
+          第一，先用本页做一次中文预检查；第二，再用纽约 DMV 官方 Document Guide
+          生成你的个人文件清单；第三，预约 DMV
+          后，把所有文件原件或官方认可版本带齐。不要只带手机截图，很多文件需要打印版或原件。
+        </p>
+        <div class="notice-box official-links">
+          官方链接：
+          <a
+            href="https://dmv.ny.gov/driver-license/enhanced-or-real-id"
+            rel="noopener noreferrer"
+            target="_blank"
+            >纽约 DMV REAL ID / Enhanced ID 说明</a
+          >
+          ｜
+          <a
+            href="https://process.dmv.ny.gov/documentguide/?s=lic"
+            rel="noopener noreferrer"
+            target="_blank"
+            >纽约 DMV Document Guide</a
+          >
+          ｜
+          <a
+            href="https://dmv.ny.gov/forms/id44.pdf"
+            rel="noopener noreferrer"
+            target="_blank"
+            >ID-44 官方文件清单 PDF</a
+          >
+          ｜
+          <a
+            href="https://www.tsa.gov/realid"
+            rel="noopener noreferrer"
+            target="_blank"
+            >TSA REAL ID 说明</a
+          >
+        </div>
+      </article>
+    </section>
+  </div>
+</div>

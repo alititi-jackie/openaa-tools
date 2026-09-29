@@ -1,0 +1,23 @@
+<h1>HP ↔ kW 马力千瓦换算器</h1>
+<p class="subtitle">汽车、电机和工业设备常用功率单位快速换算。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="value">功率</label
+    ><input id="value" min="0" step="0.01" type="number" value="100" />
+  </div>
+  <div class="field">
+    <label for="direction">方向</label
+    ><select id="direction">
+      <option value="hp-kw">HP → kW</option>
+      <option value="kw-hp">kW → HP</option>
+    </select>
+  </div>
+  <button class="btn" id="calculate">转换</button>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>74.57</strong><span>kW</span>
+</div>
+<div class="info">
+  <h2>换算公式</h2>
+  <p>1 mechanical horsepower ≈ 0.7457 kW；1 kW ≈ 1.3410 HP。</p>
+</div>

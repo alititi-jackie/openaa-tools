@@ -1,0 +1,71 @@
+<h1>美国税后工资计算器</h1>
+<p class="subtitle">按 2026 年联邦税率和 FICA 规则，快速估算到手收入。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="annual">年薪 ($)</label
+    ><input id="annual" min="0" type="number" value="60000" />
+  </div>
+  <div class="field">
+    <label for="status">报税身份</label
+    ><select id="status">
+      <option value="single">Single 单身</option>
+      <option value="married">Married 夫妻合报</option>
+      <option value="hoh">Head of Household 户主</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="k401">401(k) 年缴 ($)</label
+    ><input id="k401" min="0" type="number" value="0" />
+  </div>
+  <div class="field">
+    <label for="health">医保等税后扣款/年 ($)</label
+    ><input id="health" min="0" type="number" value="0" />
+  </div>
+  <div class="field">
+    <label for="state">州所得税有效税率 (%)</label
+    ><input id="state" max="20" min="0" step="0.01" type="number" value="3" />
+  </div>
+  <button class="btn" id="calculate">估算税后工资</button>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>—</strong><span>填写数据后计算</span>
+</div>
+<div class="note">
+  仅为估算，不是报税结果。2026 年联邦税率、标准扣除和 FICA
+  参数按官方公布数据简化计算；实际收入会受税务身份、扣除、抵免、州税及福利影响。
+</div>
+<div class="info">
+  <h2>怎么计算？</h2>
+  <p>
+    工具用简化的 2026 年联邦所得税、Social Security、Medicare、Additional
+    Medicare Tax 和用户填写的州有效税率进行估算。401(k)
+    按税前扣除处理，医保等项目按税后扣款处理。
+  </p>
+</div>
+<section class="source-panel">
+  <div class="source-meta">适用数据：2026税年 · 更新于2026年9月10日</div>
+  <h2>税后工资估算说明</h2>
+  <p>
+    本工具先从年薪中扣除输入的税前401(k)缴款和标准扣除额，再按联邦累进税率分层计算；同时估算Social
+    Security、Medicare及用户输入的州税。进入更高税档，并不代表全部收入都按更高税率缴税。
+  </p>
+  <p>
+    <strong>示例：</strong
+    >年薪$60,000不等于直接用一个税率乘以$60,000；应先考虑报税身份、税前扣除和各税档区间。
+  </p>
+  <p class="official-source">
+    官方来源：<a
+      href="https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2026-including-amendments-from-the-one-big-beautiful-bill"
+      rel="noopener noreferrer"
+      target="_blank"
+      >IRS 2026税务通胀调整</a
+    >
+    ·
+    <a
+      href="https://www.irs.gov/filing/federal-income-tax-rates-and-brackets"
+      rel="noopener noreferrer"
+      target="_blank"
+      >IRS联邦税率说明</a
+    >
+  </p>
+</section>

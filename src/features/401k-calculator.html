@@ -1,0 +1,60 @@
+<h1>401(k) 退休计算器</h1>
+<p class="subtitle">估算长期缴款和公司 Match 后的退休账户余额。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="salary">年薪 ($)</label
+    ><input id="salary" min="0" type="number" value="60000" />
+  </div>
+  <div class="field">
+    <label for="contribution">个人缴款 (%)</label
+    ><input id="contribution" min="0" step="0.1" type="number" value="6" />
+  </div>
+  <div class="field">
+    <label for="match">公司 Match (%)</label
+    ><input id="match" min="0" step="0.1" type="number" value="3" />
+  </div>
+  <div class="field">
+    <label for="rate">预计年回报 (%)</label
+    ><input id="rate" min="0" step="0.1" type="number" value="7" />
+  </div>
+  <div class="field">
+    <label for="years">投资年数</label
+    ><input id="years" min="0" type="number" value="25" />
+  </div>
+  <button class="btn" id="calculate">计算退休金额</button>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>—</strong><span>填写数据后计算</span>
+</div>
+<div class="note">
+  仅为复利估算，不考虑工资增长、税务、费用、通胀、缴款上限和市场波动。
+</div>
+<div class="info">
+  <h2>怎么算？</h2>
+  <p>工具把个人缴款和公司匹配视为每年投入，并按月复利估算长期账户价值。</p>
+</div>
+<section class="source-panel">
+  <div class="source-meta">适用数据：2026年 · 更新于2026年9月10日</div>
+  <h2>401(k)估算需要注意什么？</h2>
+  <p>
+    工具把个人缴款和公司Match作为持续投入，并按设定回报率进行复利估算。结果没有预测市场，也没有计入管理费、工资增长、通胀、税务变化和雇主归属规则。
+  </p>
+  <p>
+    IRS公布的2026年员工401(k)基本递延缴款上限为$24,500；年满50岁者可能适用catch-up规则，60至63岁人员还可能适用更高的特别上限。
+  </p>
+  <p class="official-source">
+    官方来源：<a
+      href="https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500"
+      rel="noopener noreferrer"
+      target="_blank"
+      >IRS 2026退休计划限额</a
+    >
+    ·
+    <a
+      href="https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-topics-contributions"
+      rel="noopener noreferrer"
+      target="_blank"
+      >IRS缴款说明</a
+    >
+  </p>
+</section>

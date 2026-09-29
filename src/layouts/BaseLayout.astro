@@ -1,0 +1,98 @@
+---
+import Header from "../components/site/Header.astro";
+import Footer from "../components/site/Footer.astro";
+import { site } from "../config/site";
+import "../styles/global.css";
+interface Props {
+  title: string;
+  toolId?: string;
+  description?: string;
+  canonical?: string;
+  bodyClass?: string;
+  calculator?: string;
+  modules?: string[];
+  noindex?: boolean;
+  manifest?: string;
+}
+const {
+  title,
+  toolId = "",
+  description = site.description,
+  canonical = Astro.url.pathname,
+  bodyClass = "",
+  calculator = "",
+  modules = [],
+  noindex = false,
+  manifest = "/site.webmanifest",
+} = Astro.props;
+const url = new URL(canonical, site.origin).href;
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: site.name,
+  url: site.origin,
+  publisher: {
+    "@type": "Organization",
+    name: "OpenAA",
+    url: site.parent,
+    logo: `${site.origin}/assets/openaa-logo.png`,
+  },
+};
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <title>{`${title}｜${site.name}`}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#2563eb" />
+    <link rel="canonical" href={url} />
+    {noindex && <meta name="robots" content="noindex,follow" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={`${title}｜${site.name}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta
+      property="og:image"
+      content={`${site.origin}/assets/openaa-logo.png`}
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={`${title}｜${site.name}`} />
+    <meta name="twitter:description" content={description} />
+    <meta
+      name="twitter:image"
+      content={`${site.origin}/assets/openaa-logo.png`}
+    />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/icons/icon-180.png" />
+    <link rel="manifest" href={manifest} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(schema).replace(/</g, "\\u003c")}
+    />
+    <slot name="head" />
+  </head>
+  <body
+    class={bodyClass}
+    data-tool={calculator}
+    data-tool-id={toolId}
+    data-modules={modules.join(",")}
+  >
+    <a class="skip-link" href="#main">跳到内容</a>
+    <Header />
+    <main id="main"><slot /></main>
+    <Footer />
+    <div id="site-status" class="site-status" role="status" aria-live="polite">
+    </div>
+    <script>
+      import "../lib/site";
+    </script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<h1>美元人民币换算器</h1>
+<p class="subtitle">
+  USD 与 CNY 双向换算，汇率可以按银行或市场实时数据自行填写。
+</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="amount">金额</label
+    ><input id="amount" min="0" step="0.01" type="number" value="100" />
+  </div>
+  <div class="field">
+    <label for="direction">方向</label
+    ><select id="direction">
+      <option value="USD-CNY">USD → CNY</option>
+      <option value="CNY-USD">CNY → USD</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="rate">汇率（1 USD = CNY）</label
+    ><input id="rate" min="0.000001" step="0.0001" type="number" value="6.70" />
+  </div>
+  <button class="btn" id="calculate">换算</button>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>¥670.00</strong><span>换算结果 · 1 USD = 6.7000 CNY</span>
+</div>
+<div class="note">
+  OpenAA 工具库 不提供实时汇率数据；汇率请以银行、兑换机构或实时行情为准。
+</div>
+<div class="info">
+  <h2>怎么使用？</h2>
+  <p>选择 USD → CNY 或 CNY → USD，输入金额和当前汇率即可。</p>
+  <h2>常见问题</h2>
+  <div class="faq">
+    <h3>为什么结果和银行卡扣款不同？</h3>
+    <p>银行或支付平台可能使用自己的汇率，并可能收取手续费。</p>
+  </div>
+</div>
