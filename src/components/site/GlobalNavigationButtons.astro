@@ -1,11 +1,6 @@
 ---
 import { site } from "../../config/site";
-const { toolId = "" } = Astro.props;
-const fallback = toolId
-  ? "/tools/"
-  : Astro.url.pathname === "/"
-    ? site.parent
-    : "/";
+const fallback = Astro.url.pathname === "/" ? site.parent : "/";
 ---
 
 <nav class="floating-navigation" aria-label="页面快捷导航">

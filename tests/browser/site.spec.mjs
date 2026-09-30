@@ -39,16 +39,15 @@ for (const tool of catalog) {
 }
 test("home and catalog search", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator(".tool-card")).toHaveCount(6);
-  await page.locator("#home-search").fill("温度");
-  await page.getByRole("button", { name: "搜索", exact: true }).click();
-  await expect(page.locator("#tool-grid .tool-card:visible")).toHaveCount(1);
+  await expect(page.locator(".tool-card")).toHaveCount(41);
+  await page.locator("#tool-search").fill("温度");
+  await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(1);
   await page.getByRole("button", { name: "清除", exact: true }).click();
-  await expect(page.locator("#tool-grid .tool-card:visible")).toHaveCount(41);
+  await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(41);
   await page.locator("[data-filter=dmv]").click();
-  await expect(page.locator("#tool-grid .tool-card:visible")).toHaveCount(4);
+  await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(4);
   await page.reload();
-  await expect(page.locator("#tool-grid .tool-card:visible")).toHaveCount(4);
+  await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(4);
   await page.locator("#tool-search").fill("not-a-tool");
   await expect(page.locator("#empty-state")).toBeVisible();
 });

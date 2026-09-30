@@ -10,7 +10,7 @@ for (const tool of tools.filter((t) => t.path.endsWith(".html"))) {
     fs.writeFileSync(target, html);
   }
 }
-const urls = ["/", "/tools/", "/privacy/", ...tools.map((t) => t.path)];
+const urls = ["/", "/privacy/", ...tools.map((t) => t.path)];
 fs.writeFileSync(
   "dist/sitemap.xml",
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
