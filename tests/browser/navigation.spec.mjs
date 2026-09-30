@@ -3,7 +3,7 @@ test("floating controls threshold, back history and reduced motion", async ({
   page,
 }, testInfo) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/tools/");
+  await page.goto("/");
   await expect(page.locator("[data-go-back]")).toBeVisible();
   await expect(page.locator("[data-scroll-top]")).toBeHidden();
   await page.evaluate(() => scrollTo(0, 1000));
@@ -14,12 +14,9 @@ test("floating controls threshold, back history and reduced motion", async ({
   await page.locator("[data-scroll-top]").click();
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
   await page.locator('a[href="/tools/tip-calculator/"]').first().click();
-  await expect(page.locator("[data-go-back]")).toHaveAttribute(
-    "href",
-    "/tools/",
-  );
+  await expect(page.locator("[data-go-back]")).toHaveAttribute("href", "/");
   await page.locator("[data-go-back]").click();
-  await expect(page).toHaveURL(/\/tools\/$/);
+  await expect(page).toHaveURL(/^http:\/\/127\.0\.0\.1:4321\/$/);
   await page.emulateMedia({ media: "print" });
   await expect(page.locator(".floating-navigation")).toBeHidden();
 });
@@ -47,13 +44,11 @@ test("invalid import preserves records and valid import can be restored", async 
     if (d.type() === "prompt") await d.accept("1");
     else await d.accept();
   });
-  await page
-    .locator("#expenseImportInput")
-    .setInputFiles({
-      name: "invalid.json",
-      mimeType: "application/json",
-      buffer: Buffer.from("[null]"),
-    });
+  await page.locator("#expenseImportInput").setInputFiles({
+    name: "invalid.json",
+    mimeType: "application/json",
+    buffer: Buffer.from("[null]"),
+  });
   await expect.poll(() => messages.length).toBe(1);
   expect(
     await page.evaluate(
@@ -61,17 +56,15 @@ test("invalid import preserves records and valid import can be restored", async 
       key,
     ),
   ).toBe("old");
-  await page
-    .locator("#expenseImportInput")
-    .setInputFiles({
-      name: "valid.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(
-        JSON.stringify([
-          { ...row, id: "new", note: '<img src=x onerror="alert(1)">' },
-        ]),
-      ),
-    });
+  await page.locator("#expenseImportInput").setInputFiles({
+    name: "valid.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(
+      JSON.stringify([
+        { ...row, id: "new", note: '<img src=x onerror="alert(1)">' },
+      ]),
+    ),
+  });
   await expect
     .poll(() =>
       page.evaluate((key) => JSON.parse(localStorage.getItem(key))[0].id, key),

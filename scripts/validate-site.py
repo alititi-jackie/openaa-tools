@@ -45,8 +45,10 @@ for tool in catalog:
  if not target(tool['path'],ROOT/'index.html').is_file():errors.append('Missing tool '+tool['path'])
 ns={'s':'http://www.sitemaps.org/schemas/sitemap/0.9'}
 urls=[e.text for e in ET.parse(ROOT/'sitemap.xml').findall('.//s:loc',ns)]
-assert len(urls)==len(catalog)+3 and len(set(urls))==len(urls)
+assert len(urls)==len(catalog)+2 and len(set(urls))==len(urls)
 assert not any('404' in x for x in urls)
+assert 'https://tools.openaa.com/tools/' not in urls
+assert not (ROOT/'tools/index.html').exists(), 'Removed catalog must not be published'
 for url in urls:
  if not target(url,ROOT/'index.html').exists():errors.append('Missing sitemap URL '+url)
 if errors:
