@@ -134,7 +134,7 @@ const fallback = Astro.url.pathname === "/" ? site.parent : "/";
   }
   @media (min-width: 768px) {
     .floating-navigation {
-      right: 24px;
+      right: max(24px, calc((100vw - var(--site-width)) / 2 + 24px));
       bottom: 24px;
     }
   }
