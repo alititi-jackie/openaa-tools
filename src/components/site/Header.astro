@@ -14,49 +14,45 @@ const path = Astro.url.pathname;
       <a href="/" aria-current={path === "/" ? "page" : undefined}>首页</a
       ><a href={site.parent} target="_blank" rel="noopener noreferrer">OpenAA</a>
     </nav>
-    <div class="header-actions" aria-label="快捷操作">
-      <button
-        class="header-icon-button"
-        type="button"
-        data-install
-        aria-label="下载到桌面"
-        title="下载到桌面"
+    <button
+      class="share-button"
+      type="button"
+      data-install
+      aria-label="下载到桌面"
+      title="下载到桌面"
+    >
+      <svg
+        width="19"
+        height="19"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
       >
-        <svg
-          width="19"
-          height="19"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M12 3v12"></path>
-          <path d="m7 10 5 5 5-5"></path>
-          <path d="M5 21h14"></path>
-        </svg>
-      </button>
-      <button
-        class="header-icon-button"
-        type="button"
-        data-share
-        aria-label="分享当前页面"
-        title="分享"
+        <path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path>
+      </svg>
+    </button>
+    <button
+      class="share-button"
+      type="button"
+      data-share
+      aria-label="分享当前页面"
+      title="分享"
+    >
+      <svg
+        width="19"
+        height="19"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        aria-hidden="true"
       >
-        <svg
-          width="19"
-          height="19"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          aria-hidden="true"
-        >
-          <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4"></path>
-        </svg>
-      </button>
-    </div>
+        <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4"></path>
+      </svg>
+    </button>
   </div>
 </header>
