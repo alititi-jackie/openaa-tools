@@ -11,8 +11,11 @@ const path = Astro.url.pathname;
       ></a
     >
     <nav class="site-nav" aria-label="主导航">
-      <a href="/" aria-current={path === "/" ? "page" : undefined}>首页</a
-      ><a href={site.parent} target="_blank" rel="noopener noreferrer">OpenAA</a>
+      <a href="/" aria-current={path === "/" ? "page" : undefined}>首页</a><a
+        href={site.parent}
+        target="_blank"
+        rel="noopener noreferrer">OpenAA</a
+      >
     </nav>
     <div class="header-actions" aria-label="页面操作">
       <button
@@ -33,7 +36,8 @@ const path = Astro.url.pathname;
           stroke-linejoin="round"
           aria-hidden="true"
         >
-          <path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path>
+          <path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path
+            d="M5 21h14"></path>
         </svg>
       </button>
       <button
@@ -52,7 +56,9 @@ const path = Astro.url.pathname;
           stroke-width="1.8"
           aria-hidden="true"
         >
-          <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4"></path>
+          <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"
+          ></circle><circle cx="18" cy="19" r="3"></circle><path
+            d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4"></path>
         </svg>
       </button>
     </div>
@@ -83,12 +89,12 @@ const path = Astro.url.pathname;
     }
 
     .header-actions {
-      gap: 5px;
+      gap: 2px;
     }
 
     .header-actions .share-button {
-      width: 28px;
-      height: 28px;
+      width: 44px;
+      height: 44px;
     }
 
     .header-actions .share-button svg {
@@ -111,12 +117,12 @@ const path = Astro.url.pathname;
     }
 
     .header-actions {
-      gap: 4px;
+      gap: 2px;
     }
 
     .header-actions .share-button {
-      width: 27px;
-      height: 27px;
+      width: 44px;
+      height: 44px;
     }
   }
 </style>

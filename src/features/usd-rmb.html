@@ -26,7 +26,12 @@
             <button class="fx-big-btn" data-goto="export" type="button">
               <strong>导出/分享</strong><span>Excel、汇总复制、清空数据</span>
             </button>
-            <button class="fx-big-btn" id="installAppBtn" type="button">
+            <button
+              class="fx-big-btn"
+              id="installAppBtn"
+              data-install
+              type="button"
+            >
               <strong>下载安装到手机</strong
               ><span>添加到桌面，像 App 一样打开</span>
             </button>
@@ -131,6 +136,7 @@
                 ><input
                   class="fx-input"
                   id="fxNote"
+                  maxlength="10000"
                   placeholder="例如 转账、工资、兑换"
                   type="text"
                 />
@@ -247,7 +253,12 @@
             <button class="fx-small-btn" id="copySummaryBtn" type="button">
               📋 复制汇总内容
             </button>
-            <button class="fx-small-btn" id="installAppBtnExport" type="button">
+            <button
+              class="fx-small-btn"
+              id="installAppBtnExport"
+              data-install
+              type="button"
+            >
               📱 安装到手机
             </button>
             <button class="fx-danger-btn" id="clearDataBtn" type="button">
@@ -305,7 +316,9 @@
                 📦 下载数据备份
               </button>
               <button id="shareBackupBtn" type="button">📤 分享数据备份</button>
-              <label for="importBackupInput">📥 导入数据备份</label>
+              <button type="button" data-import-file="importBackupInput">
+                📥 导入数据备份
+              </button>
               <button type="button" data-restore-import="fx" hidden>
                 恢复导入前的记录
               </button>

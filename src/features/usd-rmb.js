@@ -1,5 +1,14 @@
+import {
+  openDialog as openActionSheet,
+  closeDialog as closeActionSheets,
+} from "../lib/dialog.js";
 import { localDate, readRecords, writeRecords } from "../lib/records.js";
-import { readBackupFile, saveImportedRecords } from "../lib/backup.js";
+import {
+  readBackupFile,
+  saveImportedRecords,
+  serializeBackup,
+  clearRecords,
+} from "../lib/backup.js";
 function showToast(text) {
   const old = document.querySelector(".toast");
   if (old) old.remove();
@@ -12,7 +21,6 @@ function showToast(text) {
 /* 美元人民币汇率记录工具：本地保存 + 导出分享 */
 (function initFxApp() {
   const KEY = "openaa_usd_rmb_records_v1";
-  let deferredInstallPrompt = null;
   const $ = (id) => document.getElementById(id);
   const views = () => Array.from(document.querySelectorAll("#fxApp .fx-view"));
   const money = (n, prefix = "") =>
@@ -936,13 +944,7 @@ function showToast(text) {
     return "汇率数据备份_" + today().replaceAll("-", "") + ".json";
   }
   function makeBackupBlob() {
-    const data = {
-      app: "OpenAA USD RMB Rate Records",
-      version: 1,
-      exportedAt: new Date().toISOString(),
-      records: load(),
-    };
-    return new Blob([JSON.stringify(data, null, 2)], {
+    return new Blob([serializeBackup(load(), "fx")], {
       type: "application/json;charset=utf-8",
     });
   }
@@ -1015,26 +1017,10 @@ function showToast(text) {
     }
   }
 
-  function openActionSheet(id) {
-    const sheet = $(id);
-    if (!sheet) return;
-    sheet.classList.add("open");
-    sheet.setAttribute("aria-hidden", "false");
-  }
-  function closeActionSheets() {
-    document.querySelectorAll(".fx-sheet-backdrop.open").forEach((sheet) => {
-      sheet.classList.remove("open");
-      sheet.setAttribute("aria-hidden", "true");
-    });
-  }
   async function shareBackupFile() {
     await shareBlob(makeBackupBlob(), backupFilename(), "汇率数据备份");
   }
 
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredInstallPrompt = e;
-  });
   document.addEventListener("click", (e) => {
     const go = e.target.closest("[data-goto]");
     if (go) {
@@ -1105,9 +1091,6 @@ function showToast(text) {
       if (e.target === sheet) closeActionSheets();
     }),
   );
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeActionSheets();
-  });
   $("downloadXlsBtn")?.addEventListener("click", () => {
     downloadBlob(makeXlsxBlob(), filename(".xlsx"));
     closeActionSheets();
@@ -1162,30 +1145,16 @@ function showToast(text) {
     }
     e.target.value = "";
   });
-  $("installAppBtnExport")?.addEventListener("click", () =>
-    $("installAppBtn")?.click(),
-  );
   $("clearDataBtn")?.addEventListener("click", () => {
     if (confirm("确定清空全部数据吗？此操作不可恢复。")) {
-      save([]);
+      try {
+        clearRecords(KEY);
+      } catch {
+        alert("清空失败，请检查浏览器存储权限后重试。");
+        return;
+      }
       render();
       showToast("已清空");
-    }
-  });
-  $("installAppBtn")?.addEventListener("click", async () => {
-    const ua = navigator.userAgent.toLowerCase();
-    if (deferredInstallPrompt) {
-      deferredInstallPrompt.prompt();
-      await deferredInstallPrompt.userChoice;
-      deferredInstallPrompt = null;
-    } else if (/iphone|ipad|ipod/.test(ua)) {
-      alert(
-        "iPhone 安装方法：请用 Safari 打开本页，点击底部“分享”按钮，然后选择“添加到主屏幕”。\n\n如果在微信里，请先点右上角，用 Safari 打开。",
-      );
-    } else {
-      alert(
-        "请用 Chrome/Edge 打开本页，然后在浏览器菜单选择“安装应用”或“添加到主屏幕”。如果在微信里，请先用浏览器打开。",
-      );
     }
   });
   resetForm();

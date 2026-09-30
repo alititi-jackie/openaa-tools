@@ -4,9 +4,12 @@ import {
   normalizeBackup,
   readBackupFile,
   saveImportedRecords,
+  serializeBackup,
+  clearRecords,
 } from "../src/lib/backup.js";
 import { resolveLocalTime } from "../src/lib/zoned-time.js";
 import { queryError } from "../src/lib/calculators/advanced.js";
+import { writeRecords } from "../src/lib/records.js";
 const row = {
   id: "old",
   date: "2026-09-28",
@@ -15,6 +18,71 @@ const row = {
   payment: "现金",
   note: '<img src=x onerror="alert(1)">',
 };
+test("zero and empty backups round-trip; save and merged imports enforce limits atomically", async () => {
+  for (const [kind, records] of [
+    ["expense", [{ ...row, amount: 0 }]],
+    ["fx", [{ id: "zero", date: row.date, usd: 0, rate: 0 }]],
+    ["expense", []],
+    ["fx", []],
+  ]) {
+    const text = serializeBackup(records, kind);
+    const restored = await readBackupFile(new Blob([text]), kind);
+    assert.deepEqual(restored, JSON.parse(text).records);
+  }
+  assert.throws(() =>
+    serializeBackup([{ ...row, note: "a".repeat(10001) }], "expense"),
+  );
+  const rows = Array.from({ length: 10000 }, (_, i) => ({
+    ...row,
+    id: String(i),
+    note: "中".repeat(200),
+  }));
+  assert.throws(() => serializeBackup(rows, "expense"), /5 MB/);
+  const key = "openaa_expense_records_v1";
+  const data = new Map([
+    [key, JSON.stringify([row])],
+    [key + "_before_import", "[]"],
+    ["unrelated", "keep"],
+  ]);
+  globalThis.localStorage = {
+    getItem: (k) => data.get(k) ?? null,
+    setItem: (k, v) => data.set(k, v),
+    removeItem: (k) => data.delete(k),
+  };
+  globalThis.alert = () => {};
+  writeRecords(key, [{ ...row, amount: 0 }]);
+  const exported = serializeBackup(JSON.parse(data.get(key)), "expense");
+  saveImportedRecords(
+    key,
+    await readBackupFile(new Blob([exported]), "expense"),
+  );
+  assert.equal(JSON.parse(data.get(key))[0].amount, 0);
+  const before = data.get(key);
+  assert.throws(() => writeRecords(key, [{ ...row, note: "a".repeat(10001) }]));
+  assert.equal(data.get(key), before);
+  data.set(key, JSON.stringify([row]));
+  data.set(key + "_before_import", "[]");
+  assert.throws(() =>
+    saveImportedRecords(
+      key,
+      Array.from({ length: 10001 }, (_, i) => ({ ...row, id: String(i) })),
+    ),
+  );
+  assert.equal(data.get(key), JSON.stringify([row]));
+  assert.equal(data.get(key + "_before_import"), "[]");
+  const set = localStorage.setItem;
+  localStorage.setItem = (k, v) => {
+    if (k === key) throw Error("quota");
+    set(k, v);
+  };
+  assert.throws(() => saveImportedRecords(key, []), /quota/);
+  assert.equal(data.get(key + "_before_import"), "[]");
+  localStorage.setItem = set;
+  clearRecords(key);
+  assert.equal(data.has(key), false);
+  assert.equal(data.has(key + "_before_import"), false);
+  assert.equal(data.get("unrelated"), "keep");
+});
 test("backup validation rejects malformed rows before saving", async () => {
   assert.equal(
     normalizeBackup({ records: [row] }, "expense")[0].note,

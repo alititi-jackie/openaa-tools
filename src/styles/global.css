@@ -633,6 +633,43 @@ img {
 .header-inner {
   width: 100%;
 }
+.install-help-dialog {
+  width: min(440px, calc(100vw - 32px));
+  margin: auto;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  color: var(--text);
+  background: #fff;
+}
+.install-help-dialog::backdrop {
+  background: rgb(15 23 42 / 45%);
+}
+.install-help-dialog h2 {
+  font-size: 20px;
+}
+.install-help-dialog p {
+  margin: 16px 0;
+  line-height: 1.7;
+}
+.install-help-dialog button {
+  min-height: 44px;
+  padding: 8px 20px;
+}
+@media (max-width: 360px) {
+  .site-header .brand {
+    gap: 5px;
+  }
+  .site-header .brand b {
+    font-size: 18px;
+  }
+  .site-header .header-inner {
+    gap: 4px;
+  }
+  .site-header .site-nav {
+    gap: 6px;
+  }
+}
 .tool-icon {
   color: var(--brand);
 }
