@@ -11,7 +11,10 @@ const path = Astro.url.pathname;
       ></a
     >
     <nav class="site-nav" aria-label="主导航">
-      <a href="/" aria-current={path === "/" ? "page" : undefined}>首页</a
+      <a
+        href="/"
+        style="display:inline"
+        aria-current={path === "/" ? "page" : undefined}>首页</a
       ><a href={site.parent} target="_blank" rel="noopener noreferrer">OpenAA</a>
     </nav>
     <button
