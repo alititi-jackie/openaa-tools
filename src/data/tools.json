@@ -10,8 +10,7 @@
     "bodyClass": "",
     "calculator": "retire",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "age",
@@ -24,8 +23,7 @@
     "bodyClass": "",
     "calculator": "age",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "area",
@@ -38,8 +36,7 @@
     "bodyClass": "",
     "calculator": "area",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "area-code",
@@ -52,8 +49,7 @@
     "bodyClass": "",
     "calculator": "area",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "car-monthly-cost",
@@ -66,8 +62,7 @@
     "bodyClass": "",
     "calculator": "carcost",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "car-payment",
@@ -80,8 +75,7 @@
     "bodyClass": "",
     "calculator": "car",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "china-us-time",
@@ -94,8 +88,7 @@
     "bodyClass": "",
     "calculator": "time",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "compound-interest",
@@ -108,8 +101,7 @@
     "bodyClass": "",
     "calculator": "compound",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "credit-card-payoff",
@@ -122,8 +114,7 @@
     "bodyClass": "",
     "calculator": "credit",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "currency",
@@ -136,8 +127,7 @@
     "bodyClass": "",
     "calculator": "currency",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "date-difference",
@@ -150,8 +140,7 @@
     "bodyClass": "",
     "calculator": "date",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "discount",
@@ -164,8 +153,7 @@
     "bodyClass": "",
     "calculator": "discount",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "distance",
@@ -178,8 +166,7 @@
     "bodyClass": "",
     "calculator": "distance",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "gas-cost",
@@ -192,8 +179,7 @@
     "bodyClass": "",
     "calculator": "gas",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "hourly-to-salary",
@@ -206,8 +192,7 @@
     "bodyClass": "",
     "calculator": "hourly",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "hp-kw",
@@ -220,8 +205,7 @@
     "bodyClass": "",
     "calculator": "hp",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "length",
@@ -234,8 +218,7 @@
     "bodyClass": "",
     "calculator": "length",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "mattress-size",
@@ -248,8 +231,7 @@
     "bodyClass": "",
     "calculator": "mattress",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "mortgage",
@@ -262,8 +244,7 @@
     "bodyClass": "",
     "calculator": "mortgage",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "mpg",
@@ -276,8 +257,7 @@
     "bodyClass": "",
     "calculator": "mpg",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "overtime-pay",
@@ -290,8 +270,7 @@
     "bodyClass": "",
     "calculator": "overtime",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "psi-bar",
@@ -304,8 +283,7 @@
     "bodyClass": "",
     "calculator": "psi",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "rent-vs-buy",
@@ -318,8 +296,7 @@
     "bodyClass": "",
     "calculator": "rentbuy",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "salary-calculator",
@@ -332,8 +309,7 @@
     "bodyClass": "",
     "calculator": "salary",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "sales-tax",
@@ -346,8 +322,7 @@
     "bodyClass": "",
     "calculator": "tax",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "savings-cd",
@@ -360,8 +335,7 @@
     "bodyClass": "",
     "calculator": "savings",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "shoe-size",
@@ -374,8 +348,7 @@
     "bodyClass": "",
     "calculator": "shoe",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "split-bill",
@@ -388,8 +361,7 @@
     "bodyClass": "",
     "calculator": "split",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "take-home-pay",
@@ -402,8 +374,7 @@
     "bodyClass": "",
     "calculator": "takehome",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": true
+    "styles": []
   },
   {
     "id": "temperature",
@@ -416,8 +387,7 @@
     "bodyClass": "",
     "calculator": "temp",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": true
+    "styles": []
   },
   {
     "id": "tip-calculator",
@@ -430,8 +400,7 @@
     "bodyClass": "",
     "calculator": "tip",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": true
+    "styles": []
   },
   {
     "id": "volume",
@@ -444,8 +413,7 @@
     "bodyClass": "",
     "calculator": "volume",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "weight",
@@ -458,8 +426,7 @@
     "bodyClass": "",
     "calculator": "weight",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "zip-code",
@@ -472,8 +439,7 @@
     "bodyClass": "",
     "calculator": "zip",
     "modules": ["calculator"],
-    "styles": [],
-    "featured": false
+    "styles": []
   },
   {
     "id": "6-points-calculator",
@@ -486,8 +452,7 @@
     "bodyClass": "usa-tool-page",
     "calculator": "",
     "modules": ["dmv-6-points"],
-    "styles": ["usa-tools.css", "dmv-tools.css", "dmv-6-points.css"],
-    "featured": false
+    "styles": ["usa-tools.css", "dmv-tools.css", "dmv-6-points.css"]
   },
   {
     "id": "document-checker",
@@ -500,8 +465,7 @@
     "bodyClass": "usa-tool-page",
     "calculator": "",
     "modules": ["dmv-document-checker"],
-    "styles": ["usa-tools.css", "dmv-tools.css", "dmv-document-checker.css"],
-    "featured": true
+    "styles": ["usa-tools.css", "dmv-tools.css", "dmv-document-checker.css"]
   },
   {
     "id": "real-id-checker",
@@ -514,8 +478,7 @@
     "bodyClass": "usa-tool-page",
     "calculator": "",
     "modules": ["dmv-real-id-checker"],
-    "styles": ["usa-tools.css", "dmv-tools.css", "dmv-real-id-checker.css"],
-    "featured": false
+    "styles": ["usa-tools.css", "dmv-tools.css", "dmv-real-id-checker.css"]
   },
   {
     "id": "real-id-vs-standard-vs-enhanced",
@@ -528,8 +491,7 @@
     "bodyClass": "usa-tool-page",
     "calculator": "",
     "modules": ["dmv-id-comparison"],
-    "styles": ["usa-tools.css", "dmv-tools.css", "dmv-id-comparison.css"],
-    "featured": false
+    "styles": ["usa-tools.css", "dmv-tools.css", "dmv-id-comparison.css"]
   },
   {
     "id": "expense-record",
@@ -542,8 +504,7 @@
     "bodyClass": "usa-tool-page",
     "calculator": "",
     "modules": ["expense-record"],
-    "styles": ["usa-tools.css", "expense-record.css"],
-    "featured": true
+    "styles": ["usa-tools.css", "expense-record.css"]
   },
   {
     "id": "nyc-attractions",
@@ -556,8 +517,7 @@
     "bodyClass": "usa-tool-page",
     "calculator": "",
     "modules": ["nyc-attractions"],
-    "styles": ["usa-tools.css", "nyc-attractions.css"],
-    "featured": false
+    "styles": ["usa-tools.css", "nyc-attractions.css"]
   },
   {
     "id": "usd-rmb",
@@ -570,7 +530,6 @@
     "bodyClass": "usa-tool-page",
     "calculator": "",
     "modules": ["usd-rmb"],
-    "styles": ["usa-tools.css", "usd-rmb.css"],
-    "featured": true
+    "styles": ["usa-tools.css", "usd-rmb.css"]
   }
 ]

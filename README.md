@@ -27,4 +27,6 @@ GitHub Actions 对 PR 执行检查、计算测试、静态构建和手机/桌面
 
 上线前核对正式域名当前指向的实际托管项目，避免在其他托管平台仍部署旧目录。
 
-详见 [架构与新增工具](docs/ARCHITECTURE.md) 和 [迁移验收](docs/MIGRATION.md)。
+首页直接按六个分类展示全部工具，不再保留独立目录页。详见 [架构与新增工具](docs/ARCHITECTURE.md) 和 [功能维护约定](docs/QUALITY.md)。
+
+如需回滚，revert 对应提交并重新部署。不要清理用户 localStorage；构建、测试通过不能替代正式域名的访问验收。
