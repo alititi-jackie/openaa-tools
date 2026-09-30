@@ -41,6 +41,7 @@
             <button
               class="expense-big-btn"
               id="expenseInstallBtn"
+              data-install
               type="button"
             >
               <strong>下载安装到手机</strong
@@ -201,6 +202,7 @@
                 ><input
                   class="expense-input"
                   id="expenseNote"
+                  maxlength="10000"
                   placeholder="例如 Costco、房租、加油"
                   type="text"
                 />
@@ -363,6 +365,7 @@
             <button
               class="expense-small-btn"
               id="expenseInstallBtnExport"
+              data-install
               type="button"
             >
               📱 安装到手机
@@ -438,7 +441,9 @@
               <button id="expenseShareBackupBtn" type="button">
                 📤 分享数据备份
               </button>
-              <label for="expenseImportInput">📥 导入数据备份</label>
+              <button type="button" data-import-file="expenseImportInput">
+                📥 导入数据备份
+              </button>
               <button type="button" data-restore-import="expense" hidden>
                 恢复导入前的记录
               </button>

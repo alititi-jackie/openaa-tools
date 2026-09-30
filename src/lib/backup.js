@@ -10,8 +10,9 @@ export function validDate(value) {
 }
 export function normalizeBackup(data, kind) {
   const rows = Array.isArray(data) ? data : data?.records;
-  if (!Array.isArray(rows) || !rows.length || rows.length > MAX_RECORDS)
-    throw new Error("备份必须包含 1–10000 条记录。");
+  if (!Array.isArray(rows) || rows.length > MAX_RECORDS)
+    throw new Error("记录必须是数组，最多可保存 10000 条。");
+  if (!["expense", "fx"].includes(kind)) throw new Error("未知的记录类型。");
   const ids = new Set();
   return rows.map((r, index) => {
     const fail = () => {
@@ -46,7 +47,7 @@ export function normalizeBackup(data, kind) {
       const amount = number(r.amount);
       if (
         !Number.isFinite(amount) ||
-        amount <= 0 ||
+        amount < 0 ||
         !["现金", "银行卡"].includes(r.payment) ||
         !["购物", "餐饮", "交通", "房屋", "账单", "其它"].includes(r.category)
       )
@@ -57,9 +58,8 @@ export function normalizeBackup(data, kind) {
       rate = number(r.rate);
     if (
       !Number.isFinite(usd) ||
-      usd === 0 ||
       !Number.isFinite(rate) ||
-      rate <= 0 ||
+      rate < 0 ||
       !Number.isFinite(usd * rate)
     )
       return fail();
@@ -70,6 +70,29 @@ export function normalizeBackup(data, kind) {
       type: r.type === "subtract" || usd < 0 ? "subtract" : "add",
     };
   });
+}
+export function recordKind(key) {
+  return key === "openaa_expense_records_v1"
+    ? "expense"
+    : key === "openaa_usd_rmb_records_v1"
+      ? "fx"
+      : null;
+}
+// Save, merge and export use the same normalized envelope and byte limit.
+export function serializeBackup(rows, kind) {
+  const records = normalizeBackup(rows, kind);
+  const text = JSON.stringify({
+    app:
+      kind === "expense"
+        ? "OpenAA Expense Records"
+        : "OpenAA USD RMB Rate Records",
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    records,
+  });
+  if (new Blob([text]).size > MAX_BACKUP_BYTES)
+    throw new Error("数据超过 5 MB，请先导出备份并整理记录后再保存。");
+  return text;
 }
 export async function readBackupFile(file, kind) {
   if (file.size > MAX_BACKUP_BYTES) throw new Error("备份文件不能超过 5 MB。");
@@ -83,9 +106,32 @@ export async function readBackupFile(file, kind) {
 }
 // Retain a single pre-import snapshot. A failed snapshot write prevents replacement.
 export function saveImportedRecords(key, rows) {
+  const kind = recordKind(key);
+  const serialized = kind
+    ? JSON.stringify(JSON.parse(serializeBackup(rows, kind)).records)
+    : JSON.stringify(rows);
   const original = localStorage.getItem(key);
-  if (original !== null) localStorage.setItem(key + "_before_import", original);
-  localStorage.setItem(key, JSON.stringify(rows));
+  const snapshotKey = key + "_before_import";
+  const previousSnapshot = localStorage.getItem(snapshotKey);
+  localStorage.setItem(snapshotKey, original ?? "[]");
+  try {
+    localStorage.setItem(key, serialized);
+  } catch (error) {
+    try {
+      if (previousSnapshot === null) localStorage.removeItem(snapshotKey);
+      else localStorage.setItem(snapshotKey, previousSnapshot);
+    } catch {
+      /* Preserve the original records even if snapshot rollback fails. */
+    }
+    throw error;
+  }
+  if (typeof window !== "undefined")
+    window.dispatchEvent(new Event("records-imported"));
+}
+export function clearRecords(key) {
+  // Remove the recovery copy first; never announce success on a storage failure.
+  localStorage.removeItem(key + "_before_import");
+  localStorage.removeItem(key);
   if (typeof window !== "undefined")
     window.dispatchEvent(new Event("records-imported"));
 }

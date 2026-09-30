@@ -1,5 +1,14 @@
+import {
+  openDialog as openSheet,
+  closeDialog as closeSheets,
+} from "../lib/dialog.js";
 import { localDate, readRecords, writeRecords } from "../lib/records.js";
-import { readBackupFile, saveImportedRecords } from "../lib/backup.js";
+import {
+  readBackupFile,
+  saveImportedRecords,
+  serializeBackup,
+  clearRecords,
+} from "../lib/backup.js";
 function showToast(text) {
   const old = document.querySelector(".toast");
   if (old) old.remove();
@@ -12,7 +21,6 @@ function showToast(text) {
 /* OpenAA 工具库 生活开支记录工具：本地保存 + 汇总 + 导出备份 */
 (function initExpenseApp() {
   const KEY = "openaa_expense_records_v1";
-  let deferredInstallPrompt = null;
   const CATEGORIES = ["购物", "餐饮", "交通", "房屋", "账单", "其它"];
   const CATEGORY_ICONS = {
     购物: "🛒",
@@ -659,29 +667,12 @@ function showToast(text) {
   function backupBlob() {
     return blob(
       "expense.backup",
-      JSON.stringify(
-        {
-          app: "OpenAA Expense Records",
-          version: 1,
-          exportedAt: new Date().toISOString(),
-          records: load(),
-        },
-        null,
-        2,
-      ),
+      serializeBackup(load(), "expense"),
       "application/json;charset=utf-8",
     );
   }
   function fname(ext) {
     return "生活开支记录_" + today().replaceAll("-", "") + ext;
-  }
-  function openSheet(id) {
-    $(id)?.classList.add("open");
-  }
-  function closeSheets() {
-    document
-      .querySelectorAll(".expense-sheet-backdrop.open")
-      .forEach((s) => s.classList.remove("open"));
   }
   async function importBackup(file) {
     try {
@@ -705,26 +696,6 @@ function showToast(text) {
     } catch (e) {
       alert(
         "导入失败：" + (e instanceof Error ? e.message : "请检查备份文件。"),
-      );
-    }
-  }
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredInstallPrompt = e;
-  });
-  async function installExpenseApp() {
-    const ua = navigator.userAgent.toLowerCase();
-    if (deferredInstallPrompt) {
-      deferredInstallPrompt.prompt();
-      await deferredInstallPrompt.userChoice;
-      deferredInstallPrompt = null;
-    } else if (/iphone|ipad|ipod/.test(ua)) {
-      alert(
-        "iPhone 安装方法：请用 Safari 打开本页，点击底部“分享”按钮，然后选择“添加到主屏幕”。\n\n如果在微信里，请先点右上角，用 Safari 打开。",
-      );
-    } else {
-      alert(
-        "请用 Chrome/Edge 打开本页，然后在浏览器菜单选择“安装应用”或“添加到主屏幕”。如果在微信里，请先用浏览器打开。",
       );
     }
   }
@@ -833,7 +804,12 @@ function showToast(text) {
   });
   $("expenseClearBtn")?.addEventListener("click", () => {
     if (confirm("确定清空全部数据吗？此操作不可恢复。")) {
-      save([]);
+      try {
+        clearRecords(KEY);
+      } catch {
+        alert("清空失败，请检查浏览器存储权限后重试。");
+        return;
+      }
       render();
       showToast("已清空");
     }
@@ -855,8 +831,6 @@ function showToast(text) {
     if (navigator.clipboard) await navigator.clipboard.writeText(text);
     showToast("已复制，可到微信粘贴发送");
   });
-  $("expenseInstallBtn")?.addEventListener("click", installExpenseApp);
-  $("expenseInstallBtnExport")?.addEventListener("click", installExpenseApp);
   resetForm();
   if ($("expenseMonthPicker")) $("expenseMonthPicker").value = monthNow();
   render();

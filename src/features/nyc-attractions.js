@@ -165,12 +165,8 @@ const CATEGORY_LABELS = {
 const list = document.getElementById("placeList"),
   search = document.getElementById("searchInput"),
   count = document.getElementById("countText"),
-  shareBtn = document.getElementById("shareBtn"),
-  installBtn = document.getElementById("installBtn"),
-  installHelp = document.getElementById("installHelp"),
   categoryTabs = document.getElementById("categoryTabs");
-let installPrompt = null,
-  activeCategory = "all";
+let activeCategory = "all";
 function esc(s) {
   return String(s || "").replace(
     /[&<>"']/g,
@@ -271,90 +267,6 @@ list.addEventListener("keydown", (e) => {
   openMap(card.dataset.map);
 });
 search.addEventListener("input", render);
-shareBtn.addEventListener("click", async () => {
-  const d = {
-    title: "纽约景点购物地址导航｜OpenAA 工具库",
-    text: "纽约景点 · 购物商场 · 品牌直营店 · 实用地点 · 中文说明",
-    url: location.href,
-  };
-  if (navigator.share) {
-    try {
-      await navigator.share(d);
-      return;
-    } catch (e) {}
-  }
-  alert(
-    (await copyText(location.href)) ? "链接已复制" : "请手动复制地址栏链接",
-  );
-});
-function isInstalled() {
-  return (
-    window.matchMedia("(display-mode: standalone)").matches ||
-    window.navigator.standalone === true
-  );
-}
-function showHelp(text) {
-  installHelp.textContent = text;
-  installHelp.style.display = "block";
-  installHelp.scrollIntoView({ behavior: "smooth", block: "center" });
-}
-if (isInstalled()) {
-  installBtn.textContent = "已安装到桌面";
-  installBtn.disabled = true;
-}
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  installPrompt = e;
-  installBtn.textContent = "下载到桌面";
-  installBtn.disabled = false;
-});
-window.addEventListener("appinstalled", () => {
-  installPrompt = null;
-  installBtn.textContent = "已安装到桌面";
-  installBtn.disabled = true;
-  installHelp.style.display = "none";
-});
-installBtn.addEventListener("click", async () => {
-  if (isInstalled()) {
-    installBtn.textContent = "已安装到桌面";
-    installBtn.disabled = true;
-    return;
-  }
-  if (installPrompt) {
-    installPrompt.prompt();
-    try {
-      await installPrompt.userChoice;
-    } catch (e) {}
-    installPrompt = null;
-    return;
-  }
-  const ua = navigator.userAgent;
-  if (/iPad|iPhone|iPod/.test(ua)) {
-    showHelp(
-      "iPhone / iPad：点击 Safari 底部“分享”按钮，再选择“添加到主屏幕”。",
-    );
-    return;
-  }
-  if (/Android/i.test(ua)) {
-    showHelp(
-      "Android：点击 Chrome 右上角菜单，再选择“安装应用”或“添加到主屏幕”。",
-    );
-    return;
-  }
-  if (/Edg\//.test(ua)) {
-    showHelp("Edge：点击右上角“…” → 应用 → 将此站点安装为应用。");
-    return;
-  }
-  if (/Chrome\//.test(ua)) {
-    showHelp(
-      "Chrome：如果没有弹出安装窗口，请点击地址栏右侧的安装图标；或右上角“⋮” → 投放、保存和分享 → 将网页安装为应用。",
-    );
-    return;
-  }
-  showHelp(
-    "当前浏览器没有提供直接安装提示。可使用浏览器菜单中的“安装应用”“添加到主屏幕”或“创建快捷方式”。",
-  );
-});
 if ("serviceWorker" in navigator)
   navigator.serviceWorker.register("./sw.js", { scope: "./" }).catch(() => {});
 render();

@@ -1,3 +1,4 @@
+import { recordKind, serializeBackup } from "./backup.js";
 export function localDate(now = new Date()) {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 }
@@ -16,8 +17,18 @@ export function readRecords(key) {
   }
 }
 export function writeRecords(key, rows) {
+  let serialized;
   try {
-    localStorage.setItem(key, JSON.stringify(rows));
+    const kind = recordKind(key);
+    serialized = JSON.stringify(
+      kind ? JSON.parse(serializeBackup(rows, kind)).records : rows,
+    );
+  } catch (error) {
+    alert("保存失败：" + error.message);
+    throw error;
+  }
+  try {
+    localStorage.setItem(key, serialized);
   } catch (error) {
     alert(
       "保存失败：浏览器存储不可用或空间不足。请先导出备份，不要清理现有数据。",
