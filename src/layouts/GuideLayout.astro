@@ -16,7 +16,13 @@ const cross = guides.filter(
     g.toolIds[0] !== tool.id &&
     tools.find((t) => t.id === g.toolIds[0])?.category === tool.category,
 );
-const related = [...same.slice(0, 4), ...cross.filter((g, i) => i % 10 === 0)];
+const related = [
+  ...same.slice(0, 4),
+  ...cross.filter(
+    (g, i) =>
+      cross.findIndex((other) => other.toolIds[0] === g.toolIds[0]) === i,
+  ),
+];
 const sources = guide.sources || [];
 const articleSchema = {
   "@context": "https://schema.org",

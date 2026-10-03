@@ -455,19 +455,6 @@
     "styles": ["usa-tools.css", "dmv-tools.css", "dmv-6-points.css"]
   },
   {
-    "id": "document-checker",
-    "name": "纽约 DMV 材料清单",
-    "heading": "去纽约 DMV 要带什么？",
-    "description": "纽约 DMV 文件检查器，帮助华人准备 Learner Permit、驾照和 REAL ID 所需的身份证明、SSN、地址证明等材料。",
-    "icon": "🪪",
-    "category": "dmv",
-    "path": "/usa/dmv/document-checker.html",
-    "bodyClass": "usa-tool-page",
-    "calculator": "",
-    "modules": ["dmv-document-checker"],
-    "styles": ["usa-tools.css", "dmv-tools.css", "dmv-document-checker.css"]
-  },
-  {
     "id": "real-id-checker",
     "name": "纽约 DMV REAL ID 检查器",
     "heading": "纽约 DMV REAL ID 检查器",
@@ -492,6 +479,19 @@
     "calculator": "",
     "modules": ["dmv-id-comparison"],
     "styles": ["usa-tools.css", "dmv-tools.css", "dmv-id-comparison.css"]
+  },
+  {
+    "id": "document-checker",
+    "name": "纽约 DMV 材料清单",
+    "heading": "去纽约 DMV 要带什么？",
+    "description": "纽约 DMV 出门材料清单：选择 Standard、REAL ID 或 Enhanced，准备身份证明、Social Security、地址证明、MV-44、原件及认证英文翻译，不重复计算6分。",
+    "icon": "🪪",
+    "category": "dmv",
+    "path": "/usa/dmv/document-checker.html",
+    "bodyClass": "usa-tool-page",
+    "calculator": "",
+    "modules": ["dmv-document-checker"],
+    "styles": ["usa-tools.css", "dmv-tools.css", "dmv-document-checker.css"]
   },
   {
     "id": "expense-record",
