@@ -42,8 +42,9 @@ export function checkEligibility(a) {
       ? ["card", "alternative"].includes(a.ssn)
       : type === "REAL ID"
         ? ["card", "number", "alternative", "ineligible"].includes(a.ssn)
-        : ["card", "number", "alternative", "never"].includes(a.ssn) ||
-          (a.purpose === "id" && a.ssn === "ineligible");
+        : ["card", "number", "alternative", "never", "ineligible"].includes(
+            a.ssn,
+          );
     check(
       ssnOk,
       "已选择适用 Social Security 路径",

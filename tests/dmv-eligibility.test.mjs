@@ -48,6 +48,10 @@ test("REAL ID accepts SSN number; Enhanced requires card/valid NY document alter
     "ready",
   );
   assert.equal(
+    checkEligibility({ ...ready, ssn: "ineligible" }).Standard.state,
+    "ready",
+  );
+  assert.equal(
     checkEligibility({ ...ready, ssn: "ineligible" }).Enhanced.state,
     "missing",
   );
