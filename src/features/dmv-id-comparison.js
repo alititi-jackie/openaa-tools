@@ -1,67 +1,21 @@
-(function () {
-  const result = document.getElementById("ridResult");
-  const purpose = document.getElementById("ridPurpose");
-  const status = document.getElementById("ridStatus");
-
-  function getRecommendation() {
-    const p = purpose.value;
-    const s = status.value;
-    let title = "建议：";
-    let body = "";
-
-    if (p === "drive") {
-      title += "Standard 可能已经够用";
-      body =
-        "如果你只是为了在纽约州开车、考 Learner Permit、换普通驾照，Standard License / Permit 通常可以满足开车用途。但它不能用于坐美国国内飞机或进入部分联邦设施。";
-    } else if (p === "fly") {
-      title += "优先考虑 REAL ID";
-      body =
-        "如果你以后要用纽约驾照/ID 坐美国国内飞机，REAL ID 是最常见选择。Enhanced 也可以坐国内飞机，但如果你不需要边境陆路/海路功能，REAL ID 通常更简单。";
-    } else if (p === "federal") {
-      title += "选择 REAL ID 或 Enhanced";
-      body =
-        "如果你需要进入部分联邦大楼、军事基地，或需要联邦认可的州证件，应选择 REAL ID 或 Enhanced。Standard 标注 Not for Federal Purposes，不适合这类用途。";
-    } else if (p === "border") {
-      title += "考虑 Enhanced";
-      body =
-        "如果你经常从加拿大、墨西哥或部分加勒比地区经陆路或海路返回美国，Enhanced 更合适。注意：坐国际飞机仍需要护照，Enhanced 不能代替护照坐国际航班。";
-    } else if (p === "passport") {
-      title += "有护照可以不急，但 REAL ID 更方便";
-      body =
-        "有效护照本身就是 TSA 接受的身份证件，可以用于坐飞机。REAL ID 的好处是国内旅行不必每次带护照；如果你不介意带护照，Standard 也可继续用于开车。";
-    } else {
-      title += "长期稳妥选 REAL ID";
-      body =
-        "如果你不确定未来用途，REAL ID 通常是最平衡的选择：可开车、可坐美国国内飞机、可进入部分联邦设施。只有经常陆路/海路过境加拿大或墨西哥时，才更需要 Enhanced。";
-    }
-
-    const warnings = [];
-    if (s === "no-ssn")
-      warnings.push(
-        "你选择了“没有 SSN 或社安卡”：请特别核对 DMV 对 SSN 不适用信或其它证明的要求。",
-      );
-    if (s === "name-change")
-      warnings.push(
-        "你选择了“姓名不一致”：请准备能把名字变化串起来的文件，例如结婚证、离婚判决或法院改名文件。",
-      );
-    if (s === "few-address")
-      warnings.push(
-        "你选择了“地址证明不多”：REAL ID / Enhanced 通常要 2 份纽约州地址证明，建议先准备银行账单、水电煤账单、租约、工资单等不同来源文件。",
-      );
-
-    return (
-      "<strong>" +
-      title +
-      "</strong><br>" +
-      body +
-      (warnings.length ? "<br><br>" + warnings.join("<br>") : "")
-    );
+(function(){
+ const get=n=>document.querySelector(`input[name="${n}"]:checked`)?.value||"";
+ const result=document.getElementById("ridResult");
+ function render(){
+  const citizen=get("citizen"),fly=get("fly"),border=get("border"),status=get("status");
+  if(!citizen||!fly||!border||!status){result.innerHTML="<strong>请先完成上面 4 个选择。</strong>";return;}
+  let type="Standard",title="Standard 可能已经够用",body="如果你主要就是开车，而且不需要直接用这张驾照 / ID 做联邦 REAL ID 用途，Standard 通常可以满足驾驶需要。",next='<a href="/usa/dmv/document-checker.html">查看材料清单 →</a>';
+  if(border==="yes"&&citizen==="yes"){
+   type="Enhanced";title="更适合：Enhanced";body="你是美国公民，而且有特定陆路 / 海路跨境返美需求。Enhanced 包含 REAL ID 用途，并增加符合条件的加拿大、墨西哥及部分加勒比地区陆路 / 海路返美功能；额外费用为 $30。";next='<a href="/usa/dmv/document-checker.html">查看 Enhanced 材料 →</a>';
+  }else if(border==="yes"&&citizen==="no"){
+   type=status==="yes"?"REAL ID":"Standard";title=status==="yes"?"Enhanced 不适用；优先考虑 REAL ID":"Enhanced 不适用；先考虑 Standard";body="Enhanced 只提供给符合条件的美国公民。非美国公民不能因为有跨境需求而选择 Enhanced；国际和边境旅行应另外准备符合要求的旅行证件。";next=status==="yes"?'<a href="/usa/dmv/real-id-checker.html">检查 REAL ID 条件 →</a>':'<a href="/usa/dmv/document-checker.html">查看 Standard 材料 →</a>';
+  }else if(fly==="yes"){
+   if(status==="yes"){type="REAL ID";title="更适合：REAL ID";body="你希望直接使用纽约驾照 / ID 坐美国国内飞机，又没有 Enhanced 的跨境需求。REAL ID 通常是最实用的选择，而且纽约 DMV 不收额外 REAL ID 升级费。";next='<a href="/usa/dmv/real-id-checker.html">检查 REAL ID 条件 →</a>';}else if(status==="unsure"){type="REAL ID?";title="先确认是否符合 REAL ID 条件";body="你的使用需求更适合 REAL ID，但你还不确定 lawful status 文件是否符合。先检查 REAL ID 条件，再决定是否办理。";next='<a href="/usa/dmv/real-id-checker.html">检查 REAL ID 条件 →</a>';}else{title="目前先考虑 Standard";body="你想直接用驾照坐国内飞机，但目前不能证明符合 REAL ID 要求的身份 / lawful status。Standard 可以用于普通驾驶；乘机时需要使用 TSA 接受的其它身份证件。";next='<a href="/usa/dmv/document-checker.html">查看 Standard 材料 →</a>';}
+  }else if((fly==="alt"||fly==="no")&&border==="no"){
+   title="Standard 可能已经够用";body=fly==="alt"?"你已有护照或其它 TSA 接受证件，又没有 Enhanced 的跨境需求。如果主要用途是开车，通常没有必要只为了国内乘机而升级 REAL ID。":"如果主要就是开车，也没有国内乘机或 Enhanced 跨境用途，Standard 通常已经够用。";
   }
-
-  function update() {
-    if (result) result.innerHTML = getRecommendation();
-  }
-  if (purpose) purpose.addEventListener("change", update);
-  if (status) status.addEventListener("change", update);
-  update();
+  const note=type==="Standard"&&fly==="alt"?"<p>注意：Standard 本身不是机场可接受的 REAL ID-compliant 州证件；乘机时请携带 TSA 接受的替代证件。</p>":"";
+  result.innerHTML=`<span class="rid-result-label">建议</span><strong>${title}</strong><p>${body}</p>${note}<div class="rid-next">${next}</div>`;
+ }
+ document.getElementById("ridChoose")?.addEventListener("click",render);
 })();
