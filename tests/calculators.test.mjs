@@ -147,51 +147,34 @@ for (const item of catalog)
   assert.ok(fs.existsSync("src/features/" + item.id + ".html"));
 
 const dmvCode = fs.readFileSync("src/features/dmv-document-checker.js", "utf8");
-const dmvElements = {
-  docType: { value: "standard", selectedIndex: 0 },
-  purpose: { value: "permit", selectedIndex: 0 },
-  ssn: { value: "yes-card", selectedIndex: 0 },
-  citizen: { value: "yes", selectedIndex: 0 },
-  dmvResult: {
-    className: "",
-    innerHTML: "",
-    replaceChildren() {
-      this.innerHTML = "";
-    },
-    scrollIntoView() {},
+const dmvResult = {
+  className: "",
+  innerHTML: "",
+  scrollIntoView() {},
+};
+const docType = { value: "standard", checked: true };
+const checkButton = {
+  addEventListener(type, fn) {
+    this["on" + type] = fn;
   },
 };
-const selected = [
-  {
-    dataset: { points: "4", birth: "1", lawful: "1", citizen: "1" },
-    checked: true,
-  },
-  { dataset: { points: "1", res: "1" }, checked: true },
-  { dataset: { points: "1" }, checked: true },
-];
-vm.runInNewContext(dmvCode, {
-  window: {},
-  document: {
-    getElementById: (id) => dmvElements[id],
-    querySelectorAll: () => selected,
-    querySelector: () => null,
-  },
-});
-const dmvWindow = {};
-const dmvContext = {
-  window: dmvWindow,
-  document: {
-    getElementById: (id) => dmvElements[id],
-    querySelectorAll: () => selected,
-    querySelector: () => null,
+const dmvDocument = {
+  getElementById: (id) => (id === "dmvResult" ? dmvResult : null),
+  querySelector: (selector) => {
+    if (selector === 'input[name="docType"]:checked') return docType;
+    if (selector === "[data-action=checkDmvDocs]") return checkButton;
+    return null;
   },
 };
-vm.runInNewContext(dmvCode, dmvContext);
-dmvWindow.checkDmvDocs();
-includes(dmvElements.dmvResult.innerHTML, "6 Points", "DMV document checker");
+vm.runInNewContext(dmvCode, { document: dmvDocument });
+assert.equal(typeof checkButton.onclick, "function", "DMV checklist wires the generate button");
+checkButton.onclick();
+includes(dmvResult.innerHTML, "Standard 材料清单", "DMV document checker");
+includes(dmvResult.innerHTML, "6 Points", "DMV document checker");
+includes(dmvResult.innerHTML, "纽约地址证明：至少 1 份", "DMV document checker");
 
 console.log(
-  "Calculator tests passed: 27 result cases, catalog integrity, and DMV checker.",
+  "Calculator tests passed: 27 result cases, catalog integrity, and DMV checklist.",
 );
 
 for (const app of ["expense-record", "usd-rmb"]) {
