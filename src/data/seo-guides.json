@@ -1,0 +1,1122 @@
+[
+  {
+    "slug": "ny-dmv-6-points",
+    "title": "纽约 DMV 6 Points 是什么？考驾照6分怎么凑",
+    "description": "6 Points 是姓名证明文件积分，不是考试分数或交通扣分。普通驾照 / Permit 还需出生日期证明、纽约居住证明和适用 Social Security 路径。",
+    "toolIds": ["6-points-calculator"],
+    "intro": "6 Points 是姓名证明文件积分，不是考试分数或交通扣分。普通驾照 / Permit 还需出生日期证明、纽约居住证明和适用 Social Security 路径。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>第一次办纽约学习驾照，先把身份证明、地址材料分开；达到6分后不用为了更高分继续找文件。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>ID-44 的 A、B、C 三部分有分值。美国护照4分、有效绿卡3分、原始社安卡2分；零分文件也可能有地址证明作用。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>积分够6就认定所有材料都合格；同类型 / 同来源重复叠加。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "6分和6道题有关系吗？",
+        "answer": "没有。笔试和材料审核是不同步骤，6分仅是姓名证明门槛。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "chinese-passport-ny-dmv",
+    "title": "中国护照怎么凑纽约驾照6分？Standard 和 REAL ID 分开看",
+    "description": "有效中国护照可用于纽约普通非商业驾照的 Green Light Law 材料；REAL ID 则要另外核对符合 ID-44 的移民文件组合。",
+    "toolIds": ["6-points-calculator"],
+    "intro": "有效中国护照可用于纽约普通非商业驾照的 Green Light Law 材料；REAL ID 则要另外核对符合 ID-44 的移民文件组合。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>只有中国护照的人可先准备银行账单和水电单；每份符合要求可各计1分，地址材料还必须显示当前纽约住址。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>有效外国护照在普通驾照材料体系可计4分；REAL ID lawful status 路径包括合格 Visa / I-94 或有效 I-551 相关证明。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>把普通驾照护照规则直接套到 REAL ID；或者把护照照片当原件。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "只有护照可以去考试吗？",
+        "answer": "通常还缺其它姓名证明、地址证明及 Social Security 路径材料。先核对完整组合。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "chinese-driver-license-ny",
+    "title": "中国驾照在纽约 DMV 算几分？能直接换纽约驾照吗",
+    "description": "符合条件的外国照片驾照为4分，须有效或过期不超过2年；它不是直接免考换成纽约驾照的保证。",
+    "toolIds": ["6-points-calculator"],
+    "intro": "符合条件的外国照片驾照为4分，须有效或过期不超过2年；它不是直接免考换成纽约驾照的保证。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>中国驾照可用于普通驾照的姓名 / 出生日期材料，但不属于 REAL ID 或 Enhanced 的出生日期证明类别。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>外文文件须配认证英文翻译。成为纽约居民后申请驾照，还需按 DMV 的外国司机规则办理考试等步骤。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>把文件可计分理解成路考免试；把翻译件当原件替代。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "中国驾照能替代纽约地址证明吗？",
+        "answer": "不能。它不是 ID-44 的纽约居住证明，仍需合格纽约地址文件。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "ny-dmv-no-ssn",
+    "title": "没有 SSN 可以考纽约驾照吗？从未获发与丢卡不同",
+    "description": "从未获发 SSN 的纽约居民可以按 Green Light Law 申请普通非商业驾照 / Permit，签署适用声明。没有社安卡不等于从未获发号码。",
+    "toolIds": ["6-points-calculator"],
+    "intro": "从未获发 SSN 的纽约居民可以按 Green Light Law 申请普通非商业驾照 / Permit，签署适用声明。没有社安卡不等于从未获发号码。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>已经有 SSN 但卡丢了的人应填写真实号码，不应签从未获发声明。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>NSS-1 / NSS-1A 为零分，不能用于 REAL ID / Enhanced；已有 SSN 在 MV-44 填号码也为零分。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>借用他人号码、把 ITIN 当 SSN、为了省事签不真实的声明。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "没有 SSN 就能办 REAL ID 吗？",
+        "answer": "不能仅据此判断；REAL ID 无资格路径需30天内 SSA 信及相应 DHS 文件，还需合格 lawful status。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "social-security-card-dmv-points",
+    "title": "Social Security Card 在纽约 DMV 算几分？没带卡怎么办",
+    "description": "原始美国社安卡为2分；只填已有 SSN 为0分。号码路径可用于 Standard 和 REAL ID，但不能用于 Enhanced。",
+    "toolIds": ["6-points-calculator"],
+    "intro": "原始美国社安卡为2分；只填已有 SSN 为0分。号码路径可用于 Standard 和 REAL ID，但不能用于 Enhanced。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>如果已有 SSN 且其它材料已够6分，REAL ID 可按 ID-44 填入 MV-44，不应把号码算成2分。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>有有效纽约照片证件时，显示完整 SSN 的 W-2、SSA-1099 或指定1098 / 1099可按 ID-44 作为社安卡替代。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>把遮盖号码的工资单当原始社安卡；把填号码用于 Enhanced。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "社安卡同时证明纽约住址吗？",
+        "answer": "不是。社安卡提供姓名积分，地址证明要另外准备。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "ny-dmv-medicaid-points",
+    "title": "纽约白卡 Medicaid 在 DMV 算几分？能证明身份吗",
+    "description": "纽约州 Benefit / Medicaid 有照片卡3分、无照片卡2分；两种都不是 ID-44 的居住证明。白卡也不证明 lawful status。",
+    "toolIds": ["6-points-calculator"],
+    "intro": "纽约州 Benefit / Medicaid 有照片卡3分、无照片卡2分；两种都不是 ID-44 的居住证明。白卡也不证明 lawful status。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>卡片上的 Medicaid 字样不能判断是否有照片，更不能把同一卡的照片版和无照片版同时叠加。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>需区分纽约州福利 / Medicaid 卡与普通 Health Insurance / Prescription Card；后者是另一类别，通常1分。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>白卡算积分就认定能办 REAL ID；或者把白卡当纽约地址证明。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "白卡能单独满足6分吗？",
+        "answer": "不能。还须其它合格姓名证明，并补齐出生日期、地址及适用 SSN 路径。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "bank-statement-ny-dmv",
+    "title": "银行账单、银行卡在纽约 DMV 算几分？地址证明怎么用",
+    "description": "符合要求的银行账单可计1分并证明居住地址；银行卡可计1分但不是地址证明。相同类型或同一来源不能重复计算。",
+    "toolIds": ["6-points-calculator"],
+    "intro": "符合要求的银行账单可计1分并证明居住地址；银行卡可计1分但不是地址证明。相同类型或同一来源不能重复计算。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>银行账单和同一家银行信用卡账单不能当两份独立证明。先用银行账单配合另一种不同来源的文件。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>银行账单须1年内、预印当前纽约地址，电子 statement 要打印。ATM卡需预印姓名和签名，信用卡需符合有效主要信用卡类别。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>同家银行不同月份账单算多分；把信用卡账单误算成信用卡本身的1分。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "信用卡账单算几分？",
+        "answer": "ID-44 列为0分地址材料；有效主要信用卡本身是另一行的1分姓名证明。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "utility-bill-ny-dmv",
+    "title": "电费单 Utility Bill 能用于纽约 DMV 吗？电子账单要打印吗",
+    "description": "1年内且显示当前纽约住址的合格 Utility Bill 可为1分，并用于居住证明。电子账单必须打印。",
+    "toolIds": ["6-points-calculator"],
+    "intro": "1年内且显示当前纽约住址的合格 Utility Bill 可为1分，并用于居住证明。电子账单必须打印。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>租房账单只写房东姓名，不能直接当自己的地址材料；应寻找符合自己情况的银行、租约或其它官方接受文件。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>住址须预印在文件上，P.O. Box 不接受。只能用一份同类型 / 来源证明，水电不同月份不是增加份数的办法。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>自己手写地址、仅带手机截图、账单过期或把电费和燃气当两份同类材料。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "电费单超过1年还能用吗？",
+        "answer": "不符合该行1年内条件；重新取得近期合格账单。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "ny-dmv-address-proof",
+    "title": "纽约 DMV 地址证明要什么？普通驾照和 REAL ID 要几份",
+    "description": "Standard 普通驾照 / Permit 要1份，REAL ID / Enhanced 要2份不同来源 / 类型的合格居住证明；地址证明不一定有积分。",
+    "toolIds": ["6-points-calculator"],
+    "intro": "Standard 普通驾照 / Permit 要1份，REAL ID / Enhanced 要2份不同来源 / 类型的合格居住证明；地址证明不一定有积分。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>银行账单加住宅租约可以提供两个不同类别，但租约为0分；还需独立确认6分。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>常用文件有1年内银行账单、Utility Bill、电脑打印工资单、住宅租约，或符合规则的 NY Title。NY Registration 是2分姓名证明但不是居住证明。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>文件有地址就自动接受；把 Registration 当 Title；地址与当前居住地不一致。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "Standard Non-Driver ID 也要1份地址吗？",
+        "answer": "ID-44 对 Standard Non-Driver ID 不要求居住证明，但它需 citizenship / lawful status，不能套用普通驾照规则。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "ny-dmv-six-point-combinations",
+    "title": "纽约驾照6分材料组合实例：护照、绿卡、社安卡怎么搭配",
+    "description": "示例只能说明符合条件的积分组合，不代替逐份审核；总分超过6只需要理解为 ≥6分。",
+    "toolIds": ["6-points-calculator"],
+    "intro": "示例只能说明符合条件的积分组合，不代替逐份审核；总分超过6只需要理解为 ≥6分。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>Standard 示例：有效外国护照4分 + 合格银行账单1分 + Utility Bill 1分。绿卡3分 + 社安卡2分 + 银行账单1分也达6分。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>REAL ID 示例可用有效绿卡3分、社安卡2分、银行账单1分，再带不同来源 Utility Bill 满足2份地址；文件仍须原件 / 认证件及全名一致。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>照抄他人的组合却未核对文件有效期、SSN实际情况或是否适用于所申请类型。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "护照加社安卡达6分还要地址吗？",
+        "answer": "要。积分与居住证明是并列条件，Standard License / Permit 仍需至少1份合格地址材料。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "real-id-documents-ny",
+    "title": "纽约 REAL ID 需要什么材料？中文条件自查",
+    "description": "主要条件是 ≥6 Points、公民身份或合格 lawful status、适用 Social Security 路径，以及2份合格纽约居住证明。",
+    "toolIds": ["real-id-checker"],
+    "intro": "主要条件是 ≥6 Points、公民身份或合格 lawful status、适用 Social Security 路径，以及2份合格纽约居住证明。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>第一次申请的人可先确认身份文件，再找两个不同来源 / 类型的地址文件；不要仅看总分。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>还需核对出生日期、全名、改名证明链、原件 / 签发机构认证件，外文文件配认证英译；普通驾照材料不一定可用于 REAL ID。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>没有 lawful status 文件却认为白卡、SSN或6分能替代。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "办 REAL ID 额外收费吗？",
+        "answer": "纽约没有额外 REAL ID 升级费，但正常交易费用仍适用。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "real-id-chinese-passport",
+    "title": "中国护照能办纽约 REAL ID 吗？还需要哪些移民文件",
+    "description": "有中国护照不能单独认定符合 REAL ID；外国护照须配 ID-44 接受的 Visa / I-94 或 I-551 相关文件，并由 DMV 核验身份。",
+    "toolIds": ["real-id-checker"],
+    "intro": "有中国护照不能单独认定符合 REAL ID；外国护照须配 ID-44 接受的 Visa / I-94 或 I-551 相关文件，并由 DMV 核验身份。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>只有护照但没有合格配套文件时，应将 lawful status 选为待核对，而非默认通过。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>ID-44列出有效 Visa 加 I-94 / CBP印章、有效 I-551 印章或 Visa 上有效 I-551 说明等路径。临时身份需带当前有效材料。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>拿旧签证或单独 I-94 就认定一定合格；把中国国籍理解成不能办 REAL ID。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "REAL ID 只限美国公民吗？",
+        "answer": "不是。符合纽约 DMV lawful status 要求的非美国公民也可申请。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "real-id-green-card",
+    "title": "绿卡办纽约 REAL ID：6分、SSN和住址还缺什么",
+    "description": "有效 I-551 绿卡可作为 lawful status 和出生日期相关证明，姓名积分3分；还需补到6分、Social Security 路径及2份地址。",
+    "toolIds": ["real-id-checker"],
+    "intro": "有效 I-551 绿卡可作为 lawful status 和出生日期相关证明，姓名积分3分；还需补到6分、Social Security 路径及2份地址。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>绿卡3分加原始社安卡2分加合格银行账单1分，积分达到6；另带合格水电账单满足第二份地址。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>卡片有效状态和法定全名须核对；过期绿卡不能直接套用有效 I-551 行，特殊延长文件需官方确认。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>以为绿卡一张就够；把绿卡身份当美国公民资格申请 Enhanced。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "绿卡能办 Enhanced 吗？",
+        "answer": "绿卡证明永久居民身份，不是美国公民证明；非美国公民不能办 Enhanced。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "ead-ny-dmv-points",
+    "title": "工卡 EAD 能办纽约 REAL ID 吗？为什么还要 DHS 文件",
+    "description": "EAD本身不是充分条件。ID-44要求 EAD 配合 DHS 认可文件（如明确证明有效合格 lawful status 的 I-797），对应6 C.F.R.37.3。",
+    "toolIds": ["real-id-checker"],
+    "intro": "EAD本身不是充分条件。ID-44要求 EAD 配合 DHS 认可文件（如明确证明有效合格 lawful status 的 I-797），对应6 C.F.R.37.3。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>同样持工卡的人可能有不同申请类别；不要按“有工卡”统一判合格。先核对底层身份与配套通知内容。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>普通有效 EAD为3分但单独那一行明确不适用于 REAL ID；带有合格 DHS 身份文件的组合是不同路径。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>拿任何 I-797 收据都认定通过；把获准工作和符合 REAL ID lawful status 等同。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "所有工卡类别都可以吗？",
+        "answer": "不能统一回答。须看有效类别、对应身份和 DHS 文件内容，无法确认时使用 DMV官方预审。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "real-id-no-ssn",
+    "title": "没有 SSN 能办纽约 REAL ID 吗？SSA 信需要多久内",
+    "description": "不符合 SSN资格的特定申请人，可按 REAL ID 路径提交办理前30天内 SSA 无资格信，以及当时交 SSA 判断资格的 DHS 文件。",
+    "toolIds": ["real-id-checker"],
+    "intro": "不符合 SSN资格的特定申请人，可按 REAL ID 路径提交办理前30天内 SSA 无资格信，以及当时交 SSA 判断资格的 DHS 文件。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>完全没有 SSN和已有号码但卡丢失是两回事；后者可按 ID-44在 MV-44填写已有号码。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>无资格信不是姓名积分，也不是 lawful status证明的替代；仍须单独满足身份、6分和2份地址。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>把 NSS-1 / NSS-1A 从未获发声明用于 REAL ID；把超过30天的信当合格。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "已有 SSN一定要社安卡吗？",
+        "answer": "ID-44允许把已有 SSN填在 MV-44（0分）；这条不能用于 Enhanced。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "real-id-address-proofs",
+    "title": "纽约 REAL ID 需要几份地址证明？同家银行可以两份吗",
+    "description": "需要2份合格居住证明，并遵守每种类型或每个来源只用一份规则。同家银行账单与信用卡账单不能凑成两份。",
+    "toolIds": ["real-id-checker"],
+    "intro": "需要2份合格居住证明，并遵守每种类型或每个来源只用一份规则。同家银行账单与信用卡账单不能凑成两份。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>可考虑银行账单配水电账单，或合格租约等不同类别。两个月银行账单仍是同一类型。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>地址要预印且为当前纽约住所，P.O. Box 不接受；银行 / Utility Bill须1年内，电子材料打印。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>认为两张纸就是两份；用不在本人名下或旧地址的账单。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "两份地址都有积分吗？",
+        "answer": "不一定。住宅租约、信用卡账单等可以是0分地址文件，积分须另核对。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "real-id-six-points",
+    "title": "纽约 REAL ID 也需要6 Points吗？普通驾照的材料能直接用吗",
+    "description": "需要 ≥6 Points，但所用文件还须可用于 REAL ID。普通驾照可用的文件不是全部都适用 REAL ID。",
+    "toolIds": ["real-id-checker"],
+    "intro": "需要 ≥6 Points，但所用文件还须可用于 REAL ID。普通驾照可用的文件不是全部都适用 REAL ID。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>外国照片驾照属于仅出生日期类别，不能用于 REAL ID对应出生日期路径；应准备合格公民 / lawful status文件。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>ID-44星号注明不适用于 REAL ID / Enhanced的文件要排除；出生日期仅证明类别也不能替代身份资格。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>普通驾照计算器达6分就跳过 REAL ID材料核对。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "积分多能弥补合法身份文件吗？",
+        "answer": "不能。6分与 lawful status、SSN和2份住址都是独立要求。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "real-id-vs-standard-ny",
+    "title": "纽约 REAL ID 和普通驾照区别：多哪些材料、能做什么",
+    "description": "驾驶用途都能满足对应驾照权限；REAL ID增加联邦用途，并要求合格身份、Social Security路径及2份居住证明。",
+    "toolIds": ["real-id-checker"],
+    "intro": "驾驶用途都能满足对应驾照权限；REAL ID增加联邦用途，并要求合格身份、Social Security路径及2份居住证明。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>已经用护照坐飞机的人可保持 Standard；需要直接用驾照作机场证件时再考虑 REAL ID。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>Standard非商业驾照 / Permit有 Green Light Law路径；REAL ID不能用从未获发 SSN声明，也不能绕过 lawful status核验。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>把 REAL ID理解成驾驶技术等级更高；或者认为 Standard持有人不能乘机。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "REAL ID必须办理吗？",
+        "answer": "不必须。联邦用途可以另用 TSA等机构接受的替代身份证件。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "real-id-domestic-flights",
+    "title": "REAL ID 可以坐美国国内飞机吗？中国护照还能用吗",
+    "description": "符合联邦用途的 REAL ID / Enhanced可作国内机场身份证件；有效外国政府护照也是 TSA接受的替代证件之一。",
+    "toolIds": ["real-id-checker"],
+    "intro": "符合联邦用途的 REAL ID / Enhanced可作国内机场身份证件；有效外国政府护照也是 TSA接受的替代证件之一。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>还在等实体 REAL ID寄到的人，出行前可准备 TSA接受的有效护照等；临时纸质驾照不是 TSA接受的身份证件。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>18岁及以上旅客通常需 REAL ID或其它接受证件。无合格证件的身份核验流程及费用可能变动，应看 TSA最新指引，不能保证放行。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>认为必须拿 REAL ID才能登机；把临时打印件或护照截图当实体证件。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "REAL ID能替代国际航班护照吗？",
+        "answer": "不能。国际旅行仍需满足护照、签证和目的地要求。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "real-id-document-combinations",
+    "title": "纽约 REAL ID 华人常见材料组合：绿卡、护照与工卡",
+    "description": "组合必须同时满足身份、≥6分、SSN和2份住所；示例不是对所有身份类别的通用批准。",
+    "toolIds": ["real-id-checker"],
+    "intro": "组合必须同时满足身份、≥6分、SSN和2份住所；示例不是对所有身份类别的通用批准。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>有效绿卡3分 + 原始社安卡2分 + 银行账单1分，另带 Utility Bill补第二份地址；护照路径要配合格移民文件。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>EAD组合先核对 DHS文件明确证明合格 lawful status，再看剩余积分。声明、零分住址、SSN数字不应虚增积分。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>只列卡片名称不看状态；两个地址来自同一来源；有工卡却漏带身份配套文件。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "可以拿别人的组合照办吗？",
+        "answer": "只能作准备思路。自己的文件类型、身份类别和有效期必须逐项匹配 ID-44。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "standard-real-id-enhanced-differences",
+    "title": "Standard、REAL ID、Enhanced 有什么区别？先看我能办什么",
+    "description": "先判断材料资格，再看用途。Standard普通驾照有 Green Light Law路径；REAL ID需合格身份；Enhanced仅美国公民。",
+    "toolIds": ["real-id-vs-standard-vs-enhanced"],
+    "intro": "先判断材料资格，再看用途。Standard普通驾照有 Green Light Law路径；REAL ID需合格身份；Enhanced仅美国公民。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>同一人可能同时符合三种，也可能仅适合申请 Standard；不要用旅行偏好推断合法资格。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>REAL ID与 Enhanced均有联邦用途；Enhanced额外$30并支持特定陆路 / 海路返美，不支持国际航空护照替代。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>把 Enhanced当人人可买的升级版；把 Standard驾照规则套在 Non-Driver ID。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "哪一种驾驶权限更大？",
+        "answer": "证件联邦标识不改变对应驾照类别的驾驶权限。商业驾照另有资格规则。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "standard-license-real-id-eligibility",
+    "title": "普通纽约驾照能升级 REAL ID 吗？不是只换一张卡",
+    "description": "有 Standard不自动代表满足 REAL ID条件；升级要在 DMV核对合格 citizenship / lawful status、SSN路径和2份住所等。",
+    "toolIds": ["real-id-vs-standard-vs-enhanced"],
+    "intro": "有 Standard不自动代表满足 REAL ID条件；升级要在 DMV核对合格 citizenship / lawful status、SSN路径和2份住所等。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>原先用外国驾照与无 SSN声明办 Standard的人，升级时不能继续只沿用那组材料。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>现有纽约照片证件可提供姓名积分，但不能免除 REAL ID所需身份文件；法定全名有变化要带改名证明链。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>把已经有驾照当作免身份核验；去办公室却只带旧驾照。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "可以完全在线升级吗？",
+        "answer": "首次转成 REAL ID应按 DMV指引准备材料并到办公室办理，可先用官方预审。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "enhanced-vs-real-id",
+    "title": "Enhanced 和 REAL ID 区别：绿卡能办增强驾照吗",
+    "description": "两者都符合联邦 REAL ID用途；Enhanced只限美国公民，并有特定陆路 / 海路返美功能。绿卡不等于美国公民。",
+    "toolIds": ["real-id-vs-standard-vs-enhanced"],
+    "intro": "两者都符合联邦 REAL ID用途；Enhanced只限美国公民，并有特定陆路 / 海路返美功能。绿卡不等于美国公民。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>非公民想去加拿大，不能因跨境需求选择 Enhanced；应准备符合身份和目的地要求的旅行证件。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>Enhanced需公民证明、SSN材料、≥6分及2份地址；填写 SSN数字路径不适用，额外费用$30。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>认为 Enhanced能替代飞往加拿大或墨西哥的护照。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "美国公民都应该办 Enhanced吗？",
+        "answer": "先满足材料要求，再看是否有相应边境用途；只是国内乘机可考虑 REAL ID或护照。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "non-citizen-ny-license-options",
+    "title": "非美国公民能办哪种纽约驾照？Standard 与 REAL ID",
+    "description": "纽约居民非公民可按对应条件申请 Standard普通非商业驾照；有合格 lawful status文件也可能申请 REAL ID；Enhanced不适用。",
+    "toolIds": ["real-id-vs-standard-vs-enhanced"],
+    "intro": "纽约居民非公民可按对应条件申请 Standard普通非商业驾照；有合格 lawful status文件也可能申请 REAL ID；Enhanced不适用。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>刚来美国的人应先确认自己的文件是否能证明出生日期和姓名，再分别检查 lawful status与地址要求。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>Green Light Law不以美国公民或 lawful status为普通驾照前提，但仍需年龄、纽约居住和其它材料 / 考试要求。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>把不是公民理解成所有证件都不能办；把工作许可当公民证明。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "非公民可以办 Non-Driver ID吗？",
+        "answer": "可按 Non-Driver ID规则核对 lawful status等要求，不能照搬 Green Light Law无身份路径。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "green-card-ny-dmv-points",
+    "title": "有绿卡能办哪种纽约驾照？REAL ID和 Enhanced怎么判断",
+    "description": "有效绿卡持有人可以核对 Standard和 REAL ID材料；作为非美国公民不能申请 Enhanced。",
+    "toolIds": ["real-id-vs-standard-vs-enhanced"],
+    "intro": "有效绿卡持有人可以核对 Standard和 REAL ID材料；作为非美国公民不能申请 Enhanced。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>需要国内乘机便利的人可优先检查 REAL ID；已有有效护照或绿卡作为 TSA接受证件，也可根据需要选择 Standard。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>绿卡3分、原始社安卡2分；地址、姓名和原件条件仍要补齐，REAL ID需2份合格居住证明。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>永久居民和公民混为一谈；以为出境后靠 REAL ID即可返美。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "入籍以后是否自动有 Enhanced？",
+        "answer": "不会。需另申请并提供公民身份证明及其它要求。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "ead-license-options",
+    "title": "有工卡能办哪种纽约驾照？EAD不等于 REAL ID资格",
+    "description": "有效工卡可用于相应 Standard材料；申请 REAL ID还需配套 DHS文件明确证明合格 lawful status。Enhanced仅美国公民。",
+    "toolIds": ["real-id-vs-standard-vs-enhanced"],
+    "intro": "有效工卡可用于相应 Standard材料；申请 REAL ID还需配套 DHS文件明确证明合格 lawful status。Enhanced仅美国公民。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>收到 EAD后先核对卡片有效期和背后身份文件，而非直接勾选所有联邦证件符合。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>EAD对应3分；不同 lawful status条件影响 REAL ID路径，普通 EAD那一行明确不适用于 REAL ID。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>拿任意 I-797回执当身份已通过；以为工卡比绿卡更适合 Enhanced。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "工卡快过期还可以办吗？",
+        "answer": "需核对有效状态和 DMV认可文件。临时 lawful status可能限制 REAL ID有效期，不能仅凭日期猜测。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "chinese-passport-license-options",
+    "title": "有中国护照能办哪种纽约驾照？先分材料用途",
+    "description": "有效中国护照可进入 Standard普通驾照材料路径；REAL ID须额外满足合格移民文件、SSN及住址条件；Enhanced须美国公民资格。",
+    "toolIds": ["real-id-vs-standard-vs-enhanced"],
+    "intro": "有效中国护照可进入 Standard普通驾照材料路径；REAL ID须额外满足合格移民文件、SSN及住址条件；Enhanced须美国公民资格。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>有中国护照但不能证明 REAL ID lawful status时，可先核对 Standard，不应凭乘机需要判定符合 REAL ID。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>外国护照按 Green Light Law与联邦证件规则有不同用途；两者不是一个“护照是否有用”的答案。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>中国护照单独能办 REAL ID；或者有美国签证就自动是美国公民。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "中国护照可以作国内乘机证件吗？",
+        "answer": "有效外国护照在 TSA接受清单内；机场使用与纽约 DMV办证资格是不同问题。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "standard-license-lawful-status",
+    "title": "无法证明 lawful status 能考纽约驾照吗？Green Light Law规则",
+    "description": "纽约16岁及以上居民可按 Green Light Law申请 Standard普通非商业驾照 / Permit，不论公民或 lawful status；材料及考试要求仍需满足。",
+    "toolIds": ["real-id-vs-standard-vs-enhanced"],
+    "intro": "纽约16岁及以上居民可按 Green Light Law申请 Standard普通非商业驾照 / Permit，不论公民或 lawful status；材料及考试要求仍需满足。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>无法提供 REAL ID合格身份文件时，别因为联邦证件不符合就判断普通驾照也不能办。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>从未获发 SSN应签适用声明；已有 SSN要提供真实信息。Green Light Law不适用于 Non-Driver ID或商业驾照。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>把获得驾照理解成获得移民身份；把纽约规则套到其它州。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "Standard能证明合法移民身份吗？",
+        "answer": "不能。普通驾照不是移民身份授予，也不用于联邦 REAL ID用途。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "domestic-flight-license-choice",
+    "title": "美国国内坐飞机办哪种驾照？先查资格再看替代证件",
+    "description": "基本符合 REAL ID条件且想直接用驾照乘机，可考虑 REAL ID；符合公民及材料条件的 Enhanced也能用于联邦用途。",
+    "toolIds": ["real-id-vs-standard-vs-enhanced"],
+    "intro": "基本符合 REAL ID条件且想直接用驾照乘机，可考虑 REAL ID；符合公民及材料条件的 Enhanced也能用于联邦用途。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>只有 Standard的人可携带 TSA接受的有效外国护照、绿卡等替代证件，不能据乘机需求推断能申请 Enhanced。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>临时驾照不是 TSA接受证件；实体证件收到前安排备用。无合格证件的核验程序按 TSA最新规则执行，不保证通过。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>把“可以乘机”与“符合该证件申请资格”倒过来判断。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "持 Standard就不能坐飞机吗？",
+        "answer": "不是。Standard本身不符合联邦用途，但可以另用 TSA接受证件。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "canada-mexico-enhanced-passport",
+    "title": "去加拿大、墨西哥选 Enhanced 还是护照？陆海空规则不同",
+    "description": "Enhanced适用于符合条件的美国公民从加拿大、墨西哥和部分加勒比国家经陆路 / 海路返美，不替代国际航空护照。",
+    "toolIds": ["real-id-vs-standard-vs-enhanced"],
+    "intro": "Enhanced适用于符合条件的美国公民从加拿大、墨西哥和部分加勒比国家经陆路 / 海路返美，不替代国际航空护照。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>驾车往返与坐飞机往返要分开计划；非公民不能办 Enhanced，应按个人身份核对护照、签证和返美文件。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>美国入境可接受文件不等于目的地准许入境。邮轮、目的地国和紧急航空返程也可能要求护照。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>拿 REAL ID跨境就当护照；只看返美规则忽略加拿大 / 墨西哥入境规则。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "有 Enhanced就可以不带护照旅行吗？",
+        "answer": "不能一概而论。核对路线、目的地及承运方要求；可能需要国际航空返程时应备护照。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "first-ny-dmv-visit-checklist",
+    "title": "第一次去纽约 DMV 考驾照带什么？出门前清单",
+    "description": "先确定办 Standard、REAL ID还是 Enhanced，再带 MV-44、相应身份证明、SSN路径文件、地址证明和费用。",
+    "toolIds": ["document-checker"],
+    "intro": "先确定办 Standard、REAL ID还是 Enhanced，再带 MV-44、相应身份证明、SSN路径文件、地址证明和费用。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>首次申请 Learner Permit要按 DMV安排笔试与视力测试；不要把准备材料误当已经可以直接领正式驾照。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>普通驾照需出生日期、≥6分及1份住址；REAL ID / Enhanced分别需合格身份、SSN和2份住址；Enhanced另需公民资格。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>只带复印件或手机照片；预约类型选错；所有文件使用旧地址。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "清单能代替6分计算吗？",
+        "answer": "不能。清单用于出门准备，积分先在6 Points工具核对。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "learner-permit-documents",
+    "title": "纽约 Learner Permit 要带什么？中文材料与考试提醒",
+    "description": "普通 D / M学习驾照材料需按所选证件类型准备，并完成笔试、视力测试和费用；年龄至少16岁。",
+    "toolIds": ["document-checker"],
+    "intro": "普通 D / M学习驾照材料需按所选证件类型准备，并完成笔试、视力测试和费用；年龄至少16岁。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>16或17岁申请人还要核对父母同意等特殊要求；成年人不要直接照抄未成年人的 MV-45路径。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>ID-44要求16 / 17岁父母同意，17岁持 MV-285等例外需按官方核对；不同身份与期限影响 REAL ID有效期。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>把 Permit当正式可独立驾驶的驾照；拿成人简化清单替代未成年人规则。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "中国驾照能免 Learner Permit步骤吗？",
+        "answer": "不能只据持有中国驾照判断免考；按纽约外国司机官方流程核对。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "standard-license-document-checklist",
+    "title": "纽约 Standard 普通驾照材料清单：原件、地址、SSN",
+    "description": "带合格出生日期证明、≥6 Points姓名证明、1份纽约居住证明和适用 SSN信息 / 声明；另备 MV-44与费用。",
+    "toolIds": ["document-checker"],
+    "intro": "带合格出生日期证明、≥6 Points姓名证明、1份纽约居住证明和适用 SSN信息 / 声明；另备 MV-44与费用。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>从未获得 SSN的人按 Standard规则准备声明；已有号码但没卡可填写真实号码，不需把声明当替代。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>Green Light Law允许普通非商业驾照 / Permit申请不以 lawful status为前提；不适用于 Non-Driver ID。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>为了凑材料用重复来源；以为 Standard没有材料要求。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "普通驾照一定要社安卡原件吗？",
+        "answer": "不是统一要求。适用号码 / 声明路径可用，但其它文件仍须满足姓名积分等条件。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "real-id-document-checklist",
+    "title": "纽约 REAL ID 出门材料清单：最容易漏的五类文件",
+    "description": "准备合格公民 / lawful status文件、≥6分姓名证明、Social Security路径、2份地址及 MV-44；另核对原件与全名。",
+    "toolIds": ["document-checker"],
+    "intro": "准备合格公民 / lawful status文件、≥6分姓名证明、Social Security路径、2份地址及 MV-44；另核对原件与全名。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>持 EAD的人要带明确证明合格身份的 DHS配套文件；已改名的人要带连接全部姓名的正式证明。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>SSA无资格信须30天内及相应 DHS文件；已有 SSN可填入 MV-44但为0分；电子账单必须打印。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>有社安卡却忘了第二份地址；把 EAD单独当 lawful status通过。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "旧 Standard驾照能代替所有材料吗？",
+        "answer": "不能。它可提供姓名证明，但联邦身份和其它要求仍需审核。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "enhanced-document-checklist",
+    "title": "纽约 Enhanced 驾照材料清单：公民证明和 SSN怎么带",
+    "description": "仅美国公民申请，带合格公民身份证明、Social Security材料、≥6分、2份纽约地址、MV-44和正常费用另加$30。",
+    "toolIds": ["document-checker"],
+    "intro": "仅美国公民申请，带合格公民身份证明、Social Security材料、≥6分、2份纽约地址、MV-44和正常费用另加$30。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>美国出生证明本身为0分，但证明公民身份 / 出生日期；还需补足姓名证明。归化证书为3分。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>仅在 MV-44填写 SSN数字不适用于 Enhanced；有效纽约照片证件配指定显示完整 SSN税务文件可按 ID-44替代社安卡。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>把绿卡当公民证明；觉得付$30就可办；只带 SSN数字。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "Enhanced能坐国际飞机吗？",
+        "answer": "不能作为国际航空护照替代；它的额外边境用途是特定陆路 / 海路返美。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "new-immigrant-ny-driver-license-documents",
+    "title": "中国护照申请纽约驾照带什么？Standard与 REAL ID清单",
+    "description": "带护照原件和按证件类型所需配套文件；Standard与 REAL ID的外国护照路径不同，不能只准备一本护照。",
+    "toolIds": ["document-checker"],
+    "intro": "带护照原件和按证件类型所需配套文件；Standard与 REAL ID的外国护照路径不同，不能只准备一本护照。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>申请 Standard可先按 Green Light Law准备姓名积分和纽约地址；申请 REAL ID需合格 Visa / I-94或 I-551等组合。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>外文文件需认证英文翻译；住址须当前纽约住所，电子账单打印；SSN情况要如实填写。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>办 REAL ID时忘了移民配套材料；只带护照照片或非认证翻译。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "护照名字与银行账单不同怎么办？",
+        "answer": "先核对法定姓名与可接受证明；正式改名应准备连接旧名与新名的原件 / 认证文件。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "no-ssn-dmv-document-checklist",
+    "title": "没有 SSN 去纽约 DMV 带什么？声明和 SSA信分开",
+    "description": "Standard普通驾照从未获发 SSN走适用声明；REAL ID不符合 SSN资格路径需30天内 SSA信与相应 DHS文件。",
+    "toolIds": ["document-checker"],
+    "intro": "Standard普通驾照从未获发 SSN走适用声明；REAL ID不符合 SSN资格路径需30天内 SSA信与相应 DHS文件。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>只是卡丢了但已有号码的人应使用已有 SSN路径，不要签从未获发声明。Enhanced不接受仅填号码路径。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>声明和 SSA信都为0分，不能用于补姓名积分；lawful status和地址材料仍需另外准备。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>以为随便一封 SSA信都可以；把从未获发声明套到 REAL ID。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "ITIN可以当 SSN填吗？",
+        "answer": "不能。税号与 Social Security Number不是同一号码。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "ny-address-document-checklist",
+    "title": "纽约 DMV 地址证明材料清单：账单、租约、车辆文件",
+    "description": "先选合格文件：银行账单、水电账单、电脑打印工资单、住宅租约等，再核对日期、姓名、当前纽约住址及来源。",
+    "toolIds": ["document-checker"],
+    "intro": "先选合格文件：银行账单、水电账单、电脑打印工资单、住宅租约等，再核对日期、姓名、当前纽约住址及来源。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>Standard License / Permit带1份；REAL ID / Enhanced带2份，不能来自同一种类型或同一来源。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>住宅租约1年内为0分住址；NY Title为2分且可作住址；NY Registration为2分但不是住址材料。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>有地址就认为合格；选两张同银行账单；把 P.O. Box当居住地址。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "没分数的文件要带吗？",
+        "answer": "需要时要带。零分文件可能正好满足住址，积分与住所是不同条件。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "dmv-electronic-statements",
+    "title": "纽约 DMV 接受电子账单、打印件吗？原件要求怎么区分",
+    "description": "ID-44明确电子 statements和 e-bills必须打印；这不代表所有身份证明都可用普通打印件代替原件。",
+    "toolIds": ["document-checker"],
+    "intro": "ID-44明确电子 statements和 e-bills必须打印；这不代表所有身份证明都可用普通打印件代替原件。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>下载银行官方 statement PDF打印，保留预印姓名、地址、日期；护照和绿卡则按原件 / 签发机构认证件要求携带。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>地址不得自己手写，P.O. Box不接受，银行 / Utility Bill一般需1年内；资料被修改或损坏可能被拒。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>拿手机页面或裁剪截图；把“账单可打印”理解成护照也可打印。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "黑白打印可以保证接受吗？",
+        "answer": "ID-44并未给予所有打印形式一概保证。保持文件完整清晰，具体由 DMV核验。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  },
+  {
+    "slug": "dmv-missing-documents",
+    "title": "去纽约 DMV 最容易漏带什么？中文出门核对",
+    "description": "常见漏项是第二份地址、身份配套文件、社安路径、改名证明链、认证英译和电子账单打印件。",
+    "toolIds": ["document-checker"],
+    "intro": "常见漏项是第二份地址、身份配套文件、社安路径、改名证明链、认证英译和电子账单打印件。",
+    "sections": [
+      {
+        "heading": "华人常见实际情况",
+        "html": "<p>把各类材料分袋：身份原件、姓名积分、SSN、住址、申请表；出门前用同一套姓名和当前地址逐份检查。</p>"
+      },
+      {
+        "heading": "文件和条件怎么核对",
+        "html": "<p>REAL ID的 EAD需合格 DHS文件，SSA无资格信30天内；地址按来源 / 类型去重；首次申请还要核对考试与年龄安排。</p>"
+      },
+      {
+        "heading": "常见错误",
+        "html": "<p>只看证件有无不看有效期；有多个名字却不带连接证明；把不同月份同一账单当不同材料。</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "材料缺了可以先拿临时 REAL ID坐飞机吗？",
+        "answer": "不能把临时纸质驾照当 TSA接受身份证件。出行前备 TSA认可的有效替代证件。"
+      }
+    ],
+    "reviewed": "2026-10-03"
+  }
+]

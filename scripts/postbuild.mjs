@@ -10,7 +10,22 @@ for (const tool of tools.filter((t) => t.path.endsWith(".html"))) {
     fs.writeFileSync(target, html);
   }
 }
-const urls = ["/", "/privacy/", ...tools.map((t) => t.path)];
+const guides = JSON.parse(fs.readFileSync("src/data/seo-guides.json", "utf8"));
+const urls = [
+  "/",
+  "/privacy/",
+  ...tools.map((t) => t.path),
+  ...guides.map((g) => `/usa/dmv/${g.slug}/`),
+];
+fs.writeFileSync(
+  "dist/release.json",
+  JSON.stringify({
+    commit: process.env.GITHUB_SHA || "local",
+    guides: guides.length,
+    rules: "ID-44 (2/26)",
+    buildTime: new Date().toISOString(),
+  }),
+);
 fs.writeFileSync(
   "dist/sitemap.xml",
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +

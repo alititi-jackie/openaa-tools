@@ -1,14 +1,211 @@
 ---
-import BaseLayout from './BaseLayout.astro';
-import { guides, type Guide } from '../data/guides';
-interface Props { guide: Guide }
-const { guide }=Astro.props;
-const path=`/usa/dmv/${guide.slug}/`;
-const related=guides.filter(g=>g.slug!==guide.slug && g.toolIds.some(id=>guide.toolIds.includes(id))).slice(0,6);
-const articleSchema={"@context":"https://schema.org","@type":"Article",headline:guide.title,description:guide.description,inLanguage:"zh-CN",mainEntityOfPage:`https://tools.openaa.com${path}`,publisher:{"@type":"Organization",name:"OpenAA",url:"https://openaa.com"}};
-const breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"工具库",item:"https://tools.openaa.com/"},{"@type":"ListItem",position:2,name:"DMV 与证件",item:"https://tools.openaa.com/?category=dmv"},{"@type":"ListItem",position:3,name:guide.title,item:`https://tools.openaa.com${path}`} ]};
+import BaseLayout from "./BaseLayout.astro";
+import { guides, type Guide } from "../data/guides";
+import { tools } from "../data/tools";
+interface Props {
+  guide: Guide;
+}
+const { guide } = Astro.props;
+const tool = tools.find((t) => t.id === guide.toolIds[0])!;
+const path = guide.path!;
+const same = guides.filter(
+  (g) => g.slug !== guide.slug && g.toolIds.includes(tool.id),
+);
+const cross = guides.filter(
+  (g) =>
+    g.toolIds[0] !== tool.id &&
+    tools.find((t) => t.id === g.toolIds[0])?.category === tool.category,
+);
+const related = [...same.slice(0, 4), ...cross.filter((g, i) => i % 10 === 0)];
+const sources = guide.sources || [];
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: guide.title,
+  description: guide.description,
+  inLanguage: "zh-CN",
+  mainEntityOfPage: `https://tools.openaa.com${path}`,
+  author: { "@type": "Organization", name: "OpenAA" },
+  publisher: {
+    "@type": "Organization",
+    name: "OpenAA",
+    url: "https://openaa.com",
+  },
+};
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "工具库",
+      item: "https://tools.openaa.com/",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: tool.name,
+      item: `https://tools.openaa.com${tool.path}`,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: guide.title,
+      item: `https://tools.openaa.com${path}`,
+    },
+  ],
+};
 ---
-<BaseLayout title={guide.title} description={guide.description} canonical={path} bodyClass="guide-page">
-<Fragment slot="head"><script type="application/ld+json" set:html={JSON.stringify(articleSchema).replace(/</g,'\\u003c')}/><script type="application/ld+json" set:html={JSON.stringify(breadcrumb).replace(/</g,'\\u003c')}/><style>.guide-shell{max-width:860px;margin:0 auto;padding:18px 16px 48px}.guide-breadcrumb{font-size:14px;margin:4px 0 18px;color:#64748b}.guide-breadcrumb a{color:inherit}.guide-article{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:clamp(20px,4vw,36px)}.guide-article h1{font-size:clamp(26px,5vw,38px);line-height:1.25;margin:0 0 16px}.guide-lead{font-size:17px;line-height:1.8;color:#334155}.guide-tool{margin:24px 0;padding:18px;border-radius:14px;background:#eff6ff;border:1px solid #bfdbfe}.guide-tool strong{display:block;font-size:18px;margin-bottom:6px}.guide-tool a{display:inline-block;margin-top:10px;font-weight:700}.guide-content h2{font-size:22px;margin:30px 0 10px}.guide-content p{line-height:1.85;color:#334155}.guide-related{margin-top:24px}.guide-related a{display:block;padding:13px 0;border-bottom:1px solid #e5e7eb}.guide-note{margin-top:28px;font-size:14px;color:#64748b}</style></Fragment>
-<div class="guide-shell"><nav class="guide-breadcrumb"><a href="/">全部工具</a> / <a href="/?category=dmv">DMV 与证件</a> / 指南</nav><article class="guide-article"><h1>{guide.title}</h1><p class="guide-lead">{guide.intro}</p><aside class="guide-tool"><strong>纽约 DMV 6 Points 计算器</strong><span>不确定自己的材料够不够？按身份证明、地址证明、其它加分证明快速检查。</span><br/><a href="/usa/dmv/6-points-calculator.html">立即检查我的材料 →</a></aside><div class="guide-content">{guide.sections.map(s=><section><h2>{s.heading}</h2><Fragment set:html={s.html}/></section>)}</div><p class="guide-note">本文用于帮助中文用户理解和准备材料，不代替纽约 DMV 的最终审核。证件要求可能更新，办理前请同时核对最新 ID-44 和 DMV Document Guide。</p>{related.length>0&&<section class="guide-related"><h2>纽约 DMV 相关指南</h2>{related.map(g=><a href={`/usa/dmv/${g.slug}/`}>{g.title} →</a>)}</section>}</article></div>
+
+<BaseLayout
+  title={guide.title}
+  description={guide.description}
+  canonical={path}
+  bodyClass="guide-page"
+  ogType="article"
+>
+  <Fragment slot="head"
+    ><script
+      type="application/ld+json"
+      set:html={JSON.stringify(articleSchema).replace(/</g, "\\u003c")}
+    /><script
+      type="application/ld+json"
+      set:html={JSON.stringify(breadcrumb).replace(/</g, "\\u003c")}
+    /></Fragment
+  >
+  <div class="guide-shell">
+    <aside class="guide-tool">
+      <a href={tool.path}>→ {tool.name}</a><p>
+        先用工具检查自己的材料，再看下面的中文解释。
+      </p>
+    </aside><nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">全部工具</a> / <a href={tool.path}>{tool.name}</a> / 攻略
+    </nav><article class="guide-article">
+      <h1>{guide.title}</h1><p class="guide-lead">{guide.intro}</p><p
+        class="guide-note"
+      >
+        官方规则核对：{guide.reviewed} · OpenAA 中文整理
+      </p><div class="guide-content">
+        {
+          guide.sections.map((s) => (
+            <section>
+              <>
+                <h2>{s.heading}</h2>
+                <Fragment set:html={s.html} />
+              </>
+            </section>
+          ))
+        }<section>
+          <h2>常见问题</h2>{
+            guide.faq.map((f) => (
+              <>
+                <>
+                  <h3>{f.question}</h3>
+                  <p>{f.answer}</p>
+                </>
+              </>
+            ))
+          }
+        </section><section>
+          <h2>检查我的材料</h2><p>
+            <a href={tool.path}>→ 使用{tool.name}</a
+            >。按需要继续使用下面的相关工具。
+          </p><ul>
+            {
+              tools
+                .filter((t) => t.category === tool.category && t.id !== tool.id)
+                .map((t) => (
+                  <li>
+                    <a href={t.path}>{t.name}</a>
+                  </li>
+                ))
+            }
+          </ul>
+        </section><section>
+          <h2>官方来源与适用范围</h2><p>{guide.scope}</p><ul>
+            {
+              sources.map((s) => (
+                <li>
+                  <a href={s.url} target="_blank" rel="noopener noreferrer">
+                    {s.name}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+      </div><section class="guide-related">
+        <h2>相关文章</h2>{related.map((g) => <a href={g.path}>{g.title} →</a>)}
+      </section>
+    </article>
+  </div>
 </BaseLayout>
+<style>
+  .guide-shell {
+    max-width: 860px;
+    margin: auto;
+    padding: 16px 16px 48px;
+  }
+  .guide-tool {
+    padding: 16px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    margin-bottom: 18px;
+  }
+  .guide-tool a {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1d4ed8;
+  }
+  .guide-tool p {
+    margin: 8px 0 0;
+    line-height: 1.6;
+  }
+  .guide-breadcrumb {
+    font-size: 14px;
+    margin-bottom: 18px;
+    line-height: 1.7;
+  }
+  .guide-article {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: clamp(18px, 4vw, 36px);
+  }
+  h1 {
+    font-size: clamp(25px, 5vw, 36px);
+    line-height: 1.35;
+    margin: 0 0 16px;
+  }
+  h2 {
+    font-size: 22px;
+    margin-top: 30px;
+  }
+  h3 {
+    font-size: 18px;
+  }
+  .guide-content p,
+  .guide-lead {
+    line-height: 1.9;
+    color: #334155;
+  }
+  .guide-content li {
+    line-height: 1.9;
+    margin-bottom: 8px;
+  }
+  .guide-note {
+    font-size: 14px;
+    color: #64748b;
+  }
+  .guide-related a {
+    display: block;
+    padding: 14px 0;
+    border-bottom: 1px solid #e5e7eb;
+    line-height: 1.7;
+  }
+  a {
+    overflow-wrap: anywhere;
+  }
+</style>

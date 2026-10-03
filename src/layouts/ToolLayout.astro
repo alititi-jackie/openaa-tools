@@ -1,18 +1,106 @@
 ---
+import DmvNavigation from "../components/tools/DmvNavigation.astro";
 import BaseLayout from "./BaseLayout.astro";
 import ToolCard from "../components/tools/ToolCard.astro";
 import { relatedTools, type Tool } from "../data/tools";
 import { guidesForTool } from "../data/guides";
-interface Props { tool: Tool; }
+interface Props {
+  tool: Tool;
+}
 const { tool } = Astro.props;
 const related = relatedTools(tool);
 const relatedGuides = guidesForTool(tool.id);
-const styles = import.meta.glob("../styles/tools/*.css", { query:"?url", import:"default", eager:true }) as Record<string,string>;
-const hasManifest=["expense-record","usd-rmb","nyc-attractions"].includes(tool.id);
+const styles = import.meta.glob("../styles/tools/*.css", {
+  query: "?url",
+  import: "default",
+  eager: true,
+}) as Record<string, string>;
+const hasManifest = ["expense-record", "usd-rmb", "nyc-attractions"].includes(
+  tool.id,
+);
 ---
-<BaseLayout toolId={tool.id} title={tool.heading} description={tool.description} canonical={tool.path} bodyClass={tool.bodyClass} calculator={tool.calculator} modules={tool.modules} manifest={hasManifest?`${tool.path}manifest.json`:undefined}>
-<Fragment slot="head">{tool.styles.map(name=><link rel="stylesheet" href={styles[`../styles/tools/${name}`]}/>)}<script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"工具库",item:"https://tools.openaa.com/"},{"@type":"ListItem",position:2,name:tool.heading,item:`https://tools.openaa.com${tool.path}`}]}).replace(/</g,"\\u003c")}/></Fragment>
-<div class:list={["tool-shell",{"wide-tool":!!tool.bodyClass}]}><nav class="breadcrumbs" aria-label="面包屑"><a href="/">全部工具</a><span> / {tool.name}</span></nav><article class:list={["tool-page",{"advanced-tool":!!tool.bodyClass}]}><slot/></article>
-{relatedGuides.length>0&&<section class="related-tools"><h2>相关指南</h2><div style="display:grid;gap:10px">{relatedGuides.map(g=><a style="display:block;padding:14px 16px;border:1px solid #e5e7eb;border-radius:12px;background:#fff" href={`/usa/dmv/${g.slug}/`}>{g.title} →</a>)}</div></section>}
-{related.length>0&&<section class="related-tools"><h2>相关工具</h2><div class="tool-grid">{related.map(item=><ToolCard tool={item}/>)}</div></section>}
-<div class="tool-actions"><a href="/">← 返回全部工具</a><button type="button" data-share>分享这个工具 ↗</button></div></div></BaseLayout>
+
+<BaseLayout
+  toolId={tool.id}
+  title={tool.heading}
+  description={tool.description}
+  canonical={tool.path}
+  bodyClass={tool.bodyClass}
+  calculator={tool.calculator}
+  modules={tool.modules}
+  manifest={hasManifest ? `${tool.path}manifest.json` : undefined}
+>
+  <Fragment slot="head"
+    >{
+      tool.styles.map((name) => (
+        <link rel="stylesheet" href={styles[`../styles/tools/${name}`]} />
+      ))
+    }<script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "工具库",
+            item: "https://tools.openaa.com/",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: tool.heading,
+            item: `https://tools.openaa.com${tool.path}`,
+          },
+        ],
+      }).replace(/</g, "\\u003c")}
+    /></Fragment
+  >
+  <div class:list={["tool-shell", { "wide-tool": !!tool.bodyClass }]}>
+    <nav class="breadcrumbs" aria-label="面包屑">
+      <a href="/">全部工具</a><span> / {tool.name}</span>
+    </nav><article
+      class:list={["tool-page", { "advanced-tool": !!tool.bodyClass }]}
+    >
+      {tool.category === "dmv" && <DmvNavigation current={tool.id} />}<slot />
+    </article>
+    {
+      relatedGuides.length > 0 && (
+        <section class="related-tools">
+          <>
+            <h2>相关攻略 / 常见问题</h2>
+            <div style="display:grid;gap:10px">
+              {relatedGuides.map((g) => (
+                <a
+                  style="display:block;padding:14px 16px;border:1px solid #e5e7eb;border-radius:12px;background:#fff"
+                  href={`/usa/dmv/${g.slug}/`}
+                >
+                  {g.title} →
+                </a>
+              ))}
+            </div>
+          </>
+        </section>
+      )
+    }
+    {
+      related.length > 0 && (
+        <section class="related-tools">
+          <>
+            <h2>相关工具</h2>
+            <div class="tool-grid">
+              {related.map((item) => (
+                <ToolCard tool={item} />
+              ))}
+            </div>
+          </>
+        </section>
+      )
+    }
+    <div class="tool-actions">
+      <a href="/">← 返回全部工具</a><button type="button" data-share
+        >分享这个工具 ↗</button>
+    </div>
+  </div></BaseLayout
+>

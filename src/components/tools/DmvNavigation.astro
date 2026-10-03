@@ -1,0 +1,45 @@
+---
+interface Props {
+  current: string;
+}
+const { current } = Astro.props;
+const links = [
+  { id: "home", path: "/", name: "首页" },
+  {
+    id: "6-points-calculator",
+    path: "/usa/dmv/6-points-calculator.html",
+    name: "① 6 Points",
+  },
+  {
+    id: "real-id-checker",
+    path: "/usa/dmv/real-id-checker.html",
+    name: "② REAL ID 检查",
+  },
+  {
+    id: "real-id-vs-standard-vs-enhanced",
+    path: "/usa/dmv/real-id-vs-standard-vs-enhanced.html",
+    name: "③ 我能办哪种",
+  },
+  {
+    id: "document-checker",
+    path: "/usa/dmv/document-checker.html",
+    name: "④ 材料清单",
+  },
+];
+---
+
+<div class="dmv-tool-nav-card">
+  <nav aria-label="DMV 工具分类导航" class="dmv-tool-nav">
+    {
+      links.map((link) => (
+        <a
+          class:list={["dmv-tool-link", { active: current === link.id }]}
+          aria-current={current === link.id ? "page" : undefined}
+          href={link.path}
+        >
+          {link.name}
+        </a>
+      ))
+    }
+  </nav>
+</div>
