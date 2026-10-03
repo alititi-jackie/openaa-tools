@@ -65,10 +65,19 @@ test("DMV controls", async ({ page }) => {
   await page.goto("/usa/dmv/document-checker.html");
   await page.locator("[data-action=checkDmvDocs]").click();
   await expect(page.locator("#dmvResult")).toContainText("请先选择");
-  await page.locator('input[name="docType"][value="standard"]').check();
-  await page.locator("[data-action=checkDmvDocs]").click();
-  await expect(page.locator("#dmvResult")).toContainText("Standard 材料清单");
-  await expect(page.locator("#dmvResult")).toContainText("6 Points");
+  for (const [value, title] of [
+    ["standard", "Standard"],
+    ["real", "REAL ID"],
+    ["enhanced", "Enhanced"],
+  ]) {
+    const radio = page.locator(`input[name="docType"][value="${value}"]`);
+    // Click the visible label, as users do with these custom radio cards.
+    await page.locator(".doc-type-options label").filter({ has: radio }).click();
+    await expect(radio).toBeChecked();
+    await page.locator("[data-action=checkDmvDocs]").click();
+    await expect(page.locator("#dmvResult")).toContainText(`${title} 材料清单`);
+    await expect(page.locator("#dmvResult")).toContainText("6 Points");
+  }
   await page.goto("/usa/dmv/real-id-checker.html");
   await page.locator("[data-action=checkRealId]").click();
   await expect(page.locator("#realIdResult")).toContainText("你可能还缺");
