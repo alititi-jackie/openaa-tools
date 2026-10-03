@@ -60,7 +60,9 @@
     const valid = counted(all);
     const score = valid.reduce((n,d) => n + d.points,0);
     const enoughPoints = score >= 6;
-    const complete = hasIdentity && hasAddress && enoughPoints;
+    const hasExtra = all.some(d => d.step === 'extra');
+    const cautious = hasIdentity && hasAddress && enoughPoints && !hasExtra;
+    const complete = hasIdentity && hasAddress && enoughPoints && hasExtra;
     const financial = valid.filter(d => d.source === 'financial').length;
 
     $('dmvScore').textContent = score;
@@ -69,18 +71,22 @@
     if (!hasIdentity) $('dmvStatus').textContent = '先选择身份证明';
     else if (!hasAddress) $('dmvStatus').textContent = '还缺地址证明';
     else if (!enoughPoints) $('dmvStatus').textContent = `还差 ${6-score} 分`;
+    else if (!hasExtra) $('dmvStatus').textContent = '已达 6 分，建议再选一项';
     else $('dmvStatus').textContent = '主要文件基本齐全';
 
     if (!hasIdentity) $('dmvResultText').textContent = '第一步必须先有一份合格身份证明。';
     else if (!hasAddress) $('dmvResultText').textContent = '身份证明已选择，现在请选择一份符合要求的纽约州地址证明。';
     else if (!enoughPoints) $('dmvResultText').textContent = `身份和地址证明已选择，目前 ${score}/6 分，再补 ${6-score} 分。`;
-    else $('dmvResultText').textContent = '身份证明、纽约地址证明和 6 Points 三项主要检查均已满足。请按 DMV 原件要求准备材料。';
+    else if (!hasExtra) $('dmvResultText').textContent = '你目前选择的身份证明和地址证明积分已达到 6 Points，但仅凭这些文件是否足够仍可能需要 DMV 现场核验。建议在第 ③ 项再选择至少一份你实际拥有的加分证明，以免现场被要求补材料。';
+    else $('dmvResultText').textContent = '身份证明、纽约地址证明和其它加分证明均已选择，6 Points 已达到。请按 DMV 原件要求准备材料。';
 
     const rows = [
       `<div class="dmv-summary-item"><strong>身份证明：</strong>${hasIdentity?'✓ 已选择':'✕ 未选择'}</div>`,
       `<div class="dmv-summary-item"><strong>纽约地址：</strong>${hasAddress?'✓ 1/1':'✕ 0/1'}</div>`,
-      `<div class="dmv-summary-item"><strong>6 Points：</strong>${score}/6 ${enoughPoints?'✓':''}</div>`
+      `<div class="dmv-summary-item"><strong>6 Points：</strong>${score}/6 ${enoughPoints?'✓':''}</div>`,
+      `<div class="dmv-summary-item"><strong>其它加分证明：</strong>${hasExtra?'✓ 已选择':'— 未选择'}</div>`
     ];
+    if (cautious) rows.push('<div class="dmv-summary-item">⚠️ 已达到 6 Points，但目前没有选择第 ③ 项的其它加分证明。为减少 DMV 现场要求补材料的风险，建议再准备至少 1 份符合要求的独立证明。</div>');
     if (financial > 1) rows.push('<div class="dmv-summary-item">⚠️ 如果银行账单、银行卡或信用卡来自同一家金融机构，请不要把它们当成多份不同来源的证明。</div>');
     if (all.some(d=>d.id==='foreign-passport')) rows.push('<div class="dmv-summary-item">⚠️ 外国护照的 4 分以同时具备 ID-44 要求的合格美国移民文件为前提。</div>');
     if (complete) rows.push('<div class="dmv-summary-item"><strong>结果：</strong>✓ 主要文件基本准备齐全。最终是否接受以纽约 DMV 审核为准。</div>');
