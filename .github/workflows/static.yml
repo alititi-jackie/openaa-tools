@@ -45,3 +45,17 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+  production-acceptance:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Verify live Production commit, DMV tools and all forty guides
+        run: node scripts/verify-production.mjs
