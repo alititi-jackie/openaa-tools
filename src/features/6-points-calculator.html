@@ -1,71 +1,24 @@
-<div class="app-shell">
-  <div>
-    <section class="content-wrap">
-      <div class="section-title">DMV 6 Points 计算器</div>
-      <div class="dmv-tool-nav-card">
-        <nav aria-label="DMV 工具分类导航" class="dmv-tool-nav">
-          <a class="dmv-tool-link" href="/?category=usa">全部美国工具</a>
-          <a class="dmv-tool-link" href="/usa/dmv/document-checker.html">文件检查</a>
-          <a class="dmv-tool-link active" href="/usa/dmv/6-points-calculator.html">6 Points</a>
-          <a class="dmv-tool-link" href="/usa/dmv/real-id-checker.html">REAL ID</a>
-          <a class="dmv-tool-link" href="/usa/dmv/real-id-vs-standard-vs-enhanced.html">证件对比</a>
-        </nav>
-      </div>
+<div class="app-shell"><div><section class="content-wrap">
+  <div class="section-title">DMV 6 Points 计算器</div>
+  <div class="dmv-tool-nav-card"><nav aria-label="DMV 工具分类导航" class="dmv-tool-nav"><a class="dmv-tool-link" href="/?category=usa">全部美国工具</a><a class="dmv-tool-link" href="/usa/dmv/document-checker.html">文件检查</a><a class="dmv-tool-link active" href="/usa/dmv/6-points-calculator.html">6 Points</a><a class="dmv-tool-link" href="/usa/dmv/real-id-checker.html">REAL ID</a><a class="dmv-tool-link" href="/usa/dmv/real-id-vs-standard-vs-enhanced.html">证件对比</a></nav></div>
 
-      <article class="template-card dmv-hero">
-        <h1>纽约 DMV 6 Points 计算器</h1>
-        <p class="dmv-intro">刚来美国，不知道中国护照、社安卡、银行账单、白卡等加起来够不够？选择你手上已有的文件，马上计算纽约 DMV Proof of Name 是否达到 6 Points。</p>
-        <div class="dmv-badge-row"><span class="dmv-badge">简单易懂</span><span class="dmv-badge">适合纽约华人</span><span class="dmv-badge">不收集资料</span></div>
-      </article>
+  <article class="template-card dmv-hero"><h1>纽约 DMV 6 Points 计算器</h1></article>
 
-      <div aria-live="polite" class="dmv-result-card">
-        <div class="dmv-score-line"><div class="dmv-score"><span id="dmvScore">0</span><small> / 6 分</small></div><div class="dmv-status warn" id="dmvStatus">还差 6 分</div></div>
-        <div class="dmv-progress"><div class="dmv-progress-bar" id="dmvProgress"></div></div>
-        <div class="dmv-result-text" id="dmvResultText">选择你现在手上有的文件，我们帮你计算。</div>
-      </div>
+  <div class="template-card dmv-section" id="identityStep"><h2>① 选择身份证明</h2><div class="dmv-doc-list" id="identityDocs"></div></div>
+  <div class="template-card dmv-section" id="addressStep"><h2>② 选择纽约地址证明 <span id="addressLock">🔒</span></h2><div class="dmv-doc-list" id="addressDocs"></div></div>
+  <div class="template-card dmv-section" id="extraStep"><h2>③ 补足 6 Points <span id="extraLock">🔒</span></h2><div class="dmv-doc-list" id="extraDocs"></div></div>
 
-      <div class="template-card dmv-section">
-        <h2>你现在有哪些文件？</h2>
-        <div class="dmv-section-note">先选最常见的。分数按纽约 DMV ID-44（2/26）整理。</div>
-        <div class="dmv-doc-list" id="sectionMain"></div>
-      </div>
+  <div aria-live="polite" class="dmv-result-card"><div class="dmv-score-line"><div class="dmv-score"><span id="dmvScore">0</span><small> / 6 分</small></div><div class="dmv-status warn" id="dmvStatus">先选择身份证明</div></div><div class="dmv-progress"><div class="dmv-progress-bar" id="dmvProgress"></div></div><div class="dmv-result-text" id="dmvResultText">完成上面 3 步后，这里会告诉你主要文件是否基本齐全。</div></div>
+  <div class="template-card"><h2>检查结果</h2><div class="dmv-summary-list" id="dmvSummary"></div><div class="dmv-actions"><button class="dmv-btn primary" data-print="" type="button">打印/保存结果</button><button class="dmv-btn secondary" id="resetDmvCalc" type="button">重新选择</button></div></div>
 
-      <div class="template-card dmv-section">
-        <h2>其它常见文件</h2>
-        <div class="dmv-doc-list" id="sectionMore"></div>
-      </div>
-
-      <div class="template-card">
-        <h2>你的检查结果</h2>
-        <div class="dmv-summary-list" id="dmvSummary"></div>
-        <div class="dmv-warning">6 Points 只是 Proof of Name 的要求。申请驾照 / Permit 时仍需满足出生日期、SSN、纽约州地址等要求；REAL ID / Enhanced 还有额外要求。</div>
-        <div class="dmv-actions"><button class="dmv-btn primary" data-print="" type="button">打印/保存结果</button><button class="dmv-btn secondary" id="resetDmvCalc" type="button">重新选择</button></div>
-      </div>
-
-      <div class="template-card">
-        <h2>刚来美国常见组合</h2>
-        <div class="mini-grid">
-          <div class="mini-card"><strong>中国护照 + 合格移民文件 + 社安号</strong><span>符合 ID-44 条件的外国护照组合 4 分 + SSN 2 分 = 6 分。</span></div>
-          <div class="mini-card"><strong>中国护照 + 银行账单 + 白卡</strong><span>实际分数取决于护照配套移民文件，以及白卡是否有照片。直接在上面勾选即可计算。</span></div>
-          <div class="mini-card"><strong>绿卡 + 社安号 + 银行账单</strong><span>有效绿卡 3 分 + SSN 2 分 + 银行账单 1 分 = 6 分。</span></div>
-          <div class="mini-card"><strong>工卡 + 社安号 + 银行账单</strong><span>有效工卡 3 分 + SSN 2 分 + 银行账单 1 分 = 6 分。</span></div>
-        </div>
-      </div>
-
-      <div class="template-card">
-        <h2>去 DMV 前记住 3 点</h2>
-        <p>① Proof of Name 至少 6 分，并且至少一份证明要有你的签名。</p>
-        <p>② 地址证明要显示当前纽约州地址；Standard License / Permit 通常需要 1 份，REAL ID / Enhanced 通常需要 2 份。</p>
-        <p>③ 外国护照要按 ID-44 的配套移民文件条件判断；只有一本中国护照，不应直接当作 4 分。</p>
-      </div>
-
-      <div class="template-card">
-        <h2>纽约 DMV 官方核对</h2>
-        <div class="dmv-link-list">
-          <a href="https://dmv.ny.gov/forms/id44.pdf" rel="noopener noreferrer" target="_blank"><span>ID-44 官方文件清单</span><span>›</span></a>
-          <a href="https://dmv.ny.gov/DocumentGuide" rel="noopener noreferrer" target="_blank"><span>DMV Document Guide</span><span>›</span></a>
-        </div>
-      </div>
-    </section>
-  </div>
-</div>
+  <article class="template-card">
+    <h2>纽约 DMV 6 Points 是什么？</h2><p>第一次申请纽约州 Standard Learner Permit、Driver License 或 Non-Driver ID 时，DMV 会按可接受文件核对姓名、出生日期和身份，并要求 Proof of Name 达到规定积分。这个工具把复杂表格整理成“身份证明 → 纽约地址证明 → 补足积分”三步，方便刚来美国的华人快速检查自己手上的材料。</p>
+    <h2>中国护照可以用来申请纽约驾照吗？</h2><p>外国护照必须符合纽约 DMV ID-44 对应条件。常见情况是护照同时配有符合要求的美国移民文件，例如有效 Visa 与 I-94 等。只有一本外国护照时，不应直接把它当成完整的 4 分组合。</p>
+    <h2>纽约考驾照一定要有 Social Security Card 吗？</h2><p>不一定。没有 SSN 的申请人也可能按 DMV 规定办理 Standard 证件，但必须按自己的实际情况完成相应声明或证明。社安卡如果符合要求，可以作为 Proof of Name 的计分文件。</p>
+    <h2>银行账单是不是必须的？</h2><p>不是。银行账单只是常见的纽约地址证明之一。工资单、符合要求的 Utility Bill、W-2 等也可能用于证明当前纽约州地址。页面不会强制要求你一定有银行卡或银行账单。</p>
+    <h2>为什么已经 6 分还可能不够？</h2><p>6 Points 与地址证明不是同一个条件。即使身份和补充分文件已经达到 6 分，如果没有符合要求的纽约州地址证明，主要材料仍没有准备齐。Standard 通常至少需要一份符合要求的纽约州地址证明。</p>
+    <h2>同一家银行的文件能重复算吗？</h2><p>纽约 DMV 有 One Proof Per Source or Type 的限制。同一种证明或同一来源的多份材料不能简单重复使用。工具会避免已知的同类型文件重复计分；对于银行等来源信息网页无法知道的情况，会提醒你自行核对。</p>
+    <h2>使用前注意</h2><p>本工具面向 Standard Permit / Driver License 常见文件准备场景，主要用于快速自查，不代替 DMV 最终审核。REAL ID 和 Enhanced 的地址及身份要求更严格，请使用本站对应的 REAL ID 工具进一步检查。</p>
+  </article>
+  <div class="template-card"><h2>纽约 DMV 官方核对</h2><div class="dmv-link-list"><a href="https://dmv.ny.gov/forms/id44.pdf" rel="noopener noreferrer" target="_blank"><span>ID-44 官方文件清单</span><span>›</span></a><a href="https://dmv.ny.gov/DocumentGuide" rel="noopener noreferrer" target="_blank"><span>DMV Document Guide</span><span>›</span></a></div></div>
+</section></div></div>
