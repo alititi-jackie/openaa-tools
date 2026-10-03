@@ -31,3 +31,6 @@ document.getElementById("ridChoose")?.addEventListener("click", () => {
       .join("") +
     `<h2>用途建议</h2><p>${outcomes["REAL ID"].state === "ready" ? "你基本符合 REAL ID 材料要求；如果希望用驾照乘坐美国国内航班，可优先考虑 REAL ID。" : "先补齐资格材料。美国国内乘机可另外使用 TSA 接受的有效护照等证件。"}${outcomes.Enhanced.state === "ready" ? " 你也基本符合 Enhanced 材料要求；有特定陆路 / 海路返美需求时可考虑，国际航空仍需护照。" : ""}</p><p>本结果是材料预检查。年龄、考试和具体文件真实性仍由 DMV 审核；本页不会收集 SSN、护照号码或移民文件。</p>`;
 });
+
+// Explicit initialization signal for reliable production interaction checks.
+document.querySelector("#ridChoose")?.setAttribute("data-ready", "true");

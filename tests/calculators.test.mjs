@@ -154,6 +154,8 @@ const dmvResult = {
 };
 const docType = { value: "standard", checked: true };
 const checkButton = {
+  attributes: {},
+  setAttribute(name, value) { this.attributes[name] = value; },
   addEventListener(type, fn) {
     this["on" + type] = fn;
   },
@@ -168,6 +170,7 @@ const dmvDocument = {
 };
 vm.runInNewContext(dmvCode, { document: dmvDocument });
 assert.equal(typeof checkButton.onclick, "function", "DMV checklist wires the generate button");
+assert.equal(checkButton.attributes["data-ready"], "true", "DMV initialization completes before interaction");
 checkButton.onclick();
 includes(dmvResult.innerHTML, "Standard 材料清单", "DMV document checker");
 includes(dmvResult.innerHTML, "6 Points", "DMV document checker");

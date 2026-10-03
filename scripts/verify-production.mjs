@@ -63,7 +63,47 @@ try {
     });
     for (const t of tools) {
       await page.goto(origin + t.path);
-      await page.waitForLoadState("networkidle");
+
+      if (t.id === "6-points-calculator") {
+        await page.locator('input[data-id="foreign-passport"]').check();
+        await page.locator('input[data-id="bank"]').check();
+        await page.locator('input[data-id="utility"]').check();
+        assert.equal(await page.locator("#dmvScore").textContent(), "6");
+      }
+      if (t.id === "real-id-checker") {
+        await page
+          .locator("[data-action=checkRealId][data-ready=true]")
+          .waitFor();
+        for (const [name, value] of Object.entries({
+          sixpoints: "yes",
+          identity: "yes",
+          ssn: "number",
+          residency: "2",
+        }))
+          await page
+            .locator(`label:has(input[name="${name}"][value="${value}"])`)
+            .click();
+        await page.locator("[data-action=checkRealId]").click();
+        assert.match(
+          await page.locator("#realIdResult").innerText(),
+          /主要条件基本满足/,
+        );
+      }
+      if (t.id === "document-checker") {
+        await page
+          .locator("[data-action=checkDmvDocs][data-ready=true]")
+          .waitFor();
+        for (const value of ["standard", "real", "enhanced"]) {
+          await page
+            .locator(`label:has(input[name="docType"][value="${value}"])`)
+            .click();
+          await page.locator("[data-action=checkDmvDocs]").click();
+          assert.match(
+            await page.locator("#dmvResult").innerText(),
+            /材料清单/,
+          );
+        }
+      }
       assert.deepEqual(
         await page.locator(".dmv-tool-nav a").allTextContents(),
         ["首页", "① 6 Points", "② REAL ID 检查", "③ 我能办哪种", "④ 材料清单"],
@@ -85,7 +125,7 @@ try {
       );
     }
     await page.goto(origin + "/usa/dmv/real-id-vs-standard-vs-enhanced.html");
-    await page.waitForLoadState("networkidle");
+    await page.locator("#ridChoose[data-ready=true]").waitFor();
     const selections = {
       purpose: "license",
       citizen: "no",
