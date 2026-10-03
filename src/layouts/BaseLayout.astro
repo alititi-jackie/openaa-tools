@@ -78,6 +78,7 @@ const schema = {
       type="application/ld+json"
       set:html={JSON.stringify(schema).replace(/</g, "\\u003c")}
     />
+    <script is:inline defer src="https://openaa.com/analytics/tracker.js"></script>
     <slot name="head" />
   </head>
   <body
