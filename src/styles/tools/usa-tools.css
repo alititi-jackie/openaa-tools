@@ -105,6 +105,14 @@
   border: 1px solid #e6eaf0;
   color: #526071;
 }
+.usa-tool-page .dmv-tool-link.dmv-exam-link {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+.usa-tool-page .dmv-tool-link.dmv-exam-link:hover {
+  background: #dbeafe;
+}
 .usa-tool-page .dmv-tool-link.active {
   background: var(--brand);
   border-color: var(--brand);

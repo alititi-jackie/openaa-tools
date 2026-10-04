@@ -18,6 +18,7 @@ test("four tools share exactly ordered navigation and ten guides", async ({
       "② REAL ID 检查",
       "③ 我能办哪种",
       "④ 材料清单",
+      "模拟考试 ↗",
     ]);
     await expect(nav.locator("[aria-current=page]")).toHaveAttribute(
       "href",

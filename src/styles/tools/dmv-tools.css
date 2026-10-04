@@ -12,13 +12,8 @@
 .dmv-tool-nav {
   display: flex;
   gap: 8px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  flex-wrap: wrap;
   padding: 2px 1px 4px;
-}
-.dmv-tool-nav::-webkit-scrollbar {
-  display: none;
 }
 .dmv-tool-link {
   flex: 0 0 auto;
@@ -51,7 +46,6 @@
   .dmv-tool-link {
     padding-left: 12px;
     padding-right: 12px;
-    font-size: 13px;
   }
 }
 

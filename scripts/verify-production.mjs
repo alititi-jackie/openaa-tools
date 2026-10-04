@@ -106,7 +106,14 @@ try {
       }
       assert.deepEqual(
         await page.locator(".dmv-tool-nav a").allTextContents(),
-        ["首页", "① 6 Points", "② REAL ID 检查", "③ 我能办哪种", "④ 材料清单"],
+        [
+          "首页",
+          "① 6 Points",
+          "② REAL ID 检查",
+          "③ 我能办哪种",
+          "④ 材料清单",
+          "模拟考试 ↗",
+        ],
       );
       assert.equal(
         await page
