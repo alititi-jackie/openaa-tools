@@ -1,4 +1,9 @@
 import data from "./seo-guides.json";
+const toolGuidesModules = import.meta.glob("./tool-guides/*.json", {
+  eager: true,
+  import: "default",
+}) as Record<string, Guide[]>;
+const toolGuidesData: Guide[] = Object.values(toolGuidesModules).flat();
 export type Guide = {
   slug: string;
   title: string;
@@ -42,13 +47,21 @@ const dmvSources = [
     url: "https://www.help.cbp.gov/s/article/Article-1467?language=en_US",
   },
 ];
-export const guides: Guide[] = data.map((g) => ({
+export const dmvGuides: Guide[] = data.map((g) => ({
   ...g,
   path: `/usa/dmv/${g.slug}/`,
   sources: dmvSources,
   scope:
     "本文聚焦纽约普通非商业驾照 / Learner Permit材料。Non-Driver ID、商业驾照、未成年人、续证和特殊移民文件可能另有要求。具体文件由 DMV最终核验，出行规则由相关机构确认。",
 }));
+export const toolGuides: Guide[] = toolGuidesData.map((g) => ({
+  ...g,
+  path: `/tools/${g.toolIds[0]}/${g.slug}/`,
+  sources: g.sources ?? [],
+  scope:
+    "本文为中文整理的生活指南，数字为估算或区间，具体以官方最新公布为准。",
+}));
+export const guides: Guide[] = [...dmvGuides, ...toolGuides];
 export const guideBySlug = (slug: string) =>
   guides.find((g) => g.slug === slug);
 export const guidesForTool = (id: string) =>

@@ -11,17 +11,24 @@ for (const tool of tools.filter((t) => t.path.endsWith(".html"))) {
   }
 }
 const guides = JSON.parse(fs.readFileSync("src/data/seo-guides.json", "utf8"));
+const toolGuides = fs
+  .readdirSync("src/data/tool-guides")
+  .filter((f) => f.endsWith(".json"))
+  .flatMap((f) =>
+    JSON.parse(fs.readFileSync(path.join("src/data/tool-guides", f), "utf8")),
+  );
 const urls = [
   "/",
   "/privacy/",
   ...tools.map((t) => t.path),
   ...guides.map((g) => `/usa/dmv/${g.slug}/`),
+  ...toolGuides.map((g) => `/tools/${g.toolIds[0]}/${g.slug}/`),
 ];
 fs.writeFileSync(
   "dist/release.json",
   JSON.stringify({
     commit: process.env.GITHUB_SHA || "local",
-    guides: guides.length,
+    guides: guides.length + toolGuides.length,
     rules: "ID-44 (2/26)",
     buildTime: new Date().toISOString(),
   }),

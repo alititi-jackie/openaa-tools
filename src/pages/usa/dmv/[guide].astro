@@ -1,7 +1,7 @@
 ---
 import GuideLayout from '../../../layouts/GuideLayout.astro';
-import { guides } from '../../../data/guides';
-export function getStaticPaths(){return guides.map(guide=>({params:{guide:guide.slug},props:{guide}}));}
+import { dmvGuides } from '../../../data/guides';
+export function getStaticPaths(){return dmvGuides.map(guide=>({params:{guide:guide.slug},props:{guide}}));}
 const {guide}=Astro.props;
 ---
 <GuideLayout guide={guide}/>
