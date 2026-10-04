@@ -1,0 +1,602 @@
+[
+ {
+  "description": "美国房贷月供由贷款本金、利率、期限三个变量决定，公式为等额本息。本文拆解公式、手算一遍40万美元贷款实例，并讲清PITI四项构成，提醒华人别漏算房产税和保险。",
+  "faq": [
+   {
+    "answer": "不是。银行账单上的月供通常是PITI四项：本金+利息+房产税+房屋保险。只算本息会低估20%~30%，看房时一定要问清PITI总额再做决定。",
+    "question": "月供就是本金加利息吗？"
+   },
+   {
+    "answer": "固定利率贷款月供30年不变；浮动利率（ARM）过了固定期后会随市场指数调整。2026年选固定还是浮动，关键看你打算持有这套房几年。",
+    "question": "利率变了，我的月供会变吗？"
+   },
+   {
+    "answer": "粗略估算：贷款40万美元、30年期，利率每降0.5个百分点，月供少约120美元。具体数字用站内房贷计算器按你的贷款额和利率算一遍最准。",
+    "question": "首付多交10万美元，月供能少多少？"
+   },
+   {
+    "answer": "大方向准，但要注意它默认的房产税和保险费率。建议把你所在郡的实际税率填进去再算一次，误差会小很多，别直接拿默认结果做买房决策。",
+    "question": "网上房贷计算器算得准吗？"
+   }
+  ],
+  "intro": "美国房贷月供用等额本息公式计算：月供 = 贷款本金 × 月利率 × (1+月利率)^还款月数 ÷ ((1+月利率)^还款月数 − 1)。比如贷款40万美元、30年固定、年利率按6.5%估算，月供本息约2,528美元。但注意这只是本息，银行实际扣款还要加上房产税和房屋保险，华人看房时最容易漏算这两项。",
+  "reviewed": "2026-10-03",
+  "sections": [
+   {
+    "heading": "公式拆开看：三个变量决定月供",
+    "html": "<p>公式里只有三个变量：<strong>贷款本金</strong>（房价减去首付）、<strong>月利率</strong>（年利率除以12）、<strong>还款月数</strong>（30年就是360期）。本金越大、利率越高、期限越短，月供越高。其中<strong>利率最敏感</strong>：40万美元贷款，利率从6%涨到7%，月供多出约263美元，一个百分点一年就是3,000多美元，30年下来差近10万美元。所以买房前把信用分数养好、货比三家谈利率，比纠结首付多一两万重要得多。</p>"
+   },
+   {
+    "heading": "手算一遍：40万美元贷款实例",
+    "html": "<p>假设贷款<strong>40万美元</strong>，30年固定，年利率按<strong>6.5%</strong>估算（以你实际拿到的银行报价为准）：月利率=6.5%÷12≈0.005417，还款月数=360。代入公式，月供本息 ≈ <strong>2,528美元</strong>。30年总共还款约91万美元，其中利息约51万美元——<strong>利息比本金还多</strong>，这就是长期贷款的真相，也是很多人考虑15年期或提前还款的原因。</p>"
+   },
+   {
+    "heading": "账单上不止本息：PITI四项",
+    "html": "<p>银行每月扣款是 <strong>PITI</strong> 四项：<strong>P</strong>rincipal本金 + <strong>I</strong>nterest利息 + <strong>T</strong>ax房产税 + <strong>I</strong>nsurance房屋保险。美国房产税各地差异极大，按房价1%/年估算很常见：50万美元的房子一年约5,000美元地税，摊到每月400多美元；房屋保险每月再加150~250美元。于是实际月供往往比计算器上的本息数字<strong>高出25%左右</strong>，做买房预算一定要按PITI算。</p>"
+   },
+   {
+    "heading": "华人最容易踩的两个坑",
+    "html": "<p>一是<strong>只看本息</strong>：看房时中介常报本息月供，听着很美好，签完字发现PITI贵出一大截，现金流直接吃紧。二是<strong>忘了closing cost</strong>：过户费一般是贷款额的2%~5%，40万美元贷款就是8千到2万美元现金，这笔不能贷款，要和首付一起准备好。另外提醒：换汇凑的首付要提前进账，银行要看60天流水，任何大额进账都要解释来源，临时抱佛脚换汇很容易耽误closing。</p>"
+   }
+  ],
+  "slug": "mortgage-yue-gong-ji-suan",
+  "sources": [
+   {
+    "name": "Consumer Financial Protection Bureau – Ask CFPB",
+    "url": "https://www.consumerfinance.gov/ask-cfpb/"
+   },
+   {
+    "name": "Freddie Mac – Primary Mortgage Market Survey",
+    "url": "https://www.freddiemac.com/pmms"
+   },
+   {
+    "name": "HUD – Buying a Home",
+    "url": "https://www.hud.gov/buying"
+   }
+  ],
+  "title": "美国房贷月供怎么算？公式+实例",
+  "toolIds": [
+   "mortgage"
+  ]
+ },
+ {
+  "description": "2026年美国30年固定房贷利率在6%~7%区间波动，具体看信用分数和首付。本文讲清当前利率水平、影响你利率的5个因素，以及华人拿低利率的实操方法。",
+  "faq": [
+   {
+    "answer": "Freddie Mac每周四公布PMMS数据，这是全美最权威的参考基准。银行给你报的rate会围绕这个浮动，贷款前多问几家对比，心里有锚就不怕被宰。",
+    "question": "去哪里查最新房贷利率？"
+   },
+   {
+    "answer": "信用分数影响最大，760分以上通常能拿到最优利率档。其次是首付比例、贷款类型、是否买点数，以及房子是自住还是投资房。",
+    "question": "信用分数对利率影响有多大？"
+   },
+   {
+    "answer": "买点数适合打算长期持有的买家，一般5~7年回本。短期内可能卖房或refinance的话，点数大概率打水漂，先算持有期再决定。",
+    "question": "买点数（points）降低利率划算吗？"
+   },
+   {
+    "answer": "可以，但浮动利率有调整上限（cap），也要看清固定几年、之后挂钩什么指数、最多能调到多少。2026年如果短期持有，ARM仍值得认真考虑。",
+    "question": "浮动利率ARM现在值得选吗？"
+   }
+  ],
+  "intro": "截至2026年初左右的市场水平，美国30年固定房贷利率大致在6%~7%区间波动，15年固定比30年低约0.5~0.8个百分点。但这只是中位数——信用分数760以上、首付20%的优质借款人能拿到偏低的，条件一般的会偏高。确切数字以 Freddie Mac 每周公布的 PMMS 数据和银行实时报价为准，本文教你怎么拿到属于你的低利率。",
+  "reviewed": "2026-10-03",
+  "sections": [
+   {
+    "heading": "当前利率大概什么水平",
+    "html": "<p>2026年美国房贷利率延续了近年的高位震荡格局：<strong>30年固定约6%~7%</strong>，15年固定约5.5%~6.5%，浮动利率（ARM）首期略低。这只是区间，具体到每个人能差出1个百分点以上——40万美元贷款，1个百分点就是每月200多美元的差距。查利率别只看新闻标题，<strong>Freddie Mac 的 PMMS 每周四更新</strong>，那才是银行定价的锚，买房前养成每周看一次的习惯。</p>"
+   },
+   {
+    "heading": "决定你利率的5个因素",
+    "html": "<p><strong>一是信用分数</strong>，760分是分水岭，740以下每降一档利率都上浮，差0.5%很常见；<strong>二是首付比例</strong>，20%以上通常有利率优惠，还省了PMI保险；<strong>三是贷款类型</strong>，conventional、FHA、VA的利率各不相同；<strong>四是房屋用途</strong>，自住房利率最低，投资房要上浮0.5%~1%；<strong>五是点数</strong>，花1%的贷款额买点数，一般能降0.25%的利率。五个因素叠加，好条件和差条件的人利率能差出1.5%。</p>"
+   },
+   {
+    "heading": "华人拿低利率的实操",
+    "html": "<p>新移民先<strong>养3~6个月信用记录</strong>再贷款，分数每上一个台阶都是真金白银，一张押金信用卡按时还款就是起点。至少<strong>问3家银行加1个华人broker</strong>，broker常能拿到大银行没有的批发价，华人broker还懂你的收入结构（比如国内资产证明）。锁定利率（lock）一般30~60天，签了purchase contract之后再锁不迟。如果打算长住，买点数降利率通常5~7年回本，先算清持有期再决定买不买点数。</p>"
+   },
+   {
+    "heading": "固定还是浮动：2026年怎么选",
+    "html": "<p>打算住<strong>7年以上选30年固定</strong>，图个安心，利率再涨也与你无关；<strong>3~5年内可能换房或refinance，ARM值得看</strong>，前期利率低0.5%~1%，月供压力小很多。但ARM一定要看清三点：固定几年、之后挂钩什么指数、每次调整和终身最多上调多少（cap）。别只看首期低利率就签字，算一算最坏情况下的月供你扛不扛得住。</p>"
+   }
+  ],
+  "slug": "mortgage-2026-li-lv",
+  "sources": [
+   {
+    "name": "Freddie Mac – Primary Mortgage Market Survey",
+    "url": "https://www.freddiemac.com/pmms"
+   },
+   {
+    "name": "Consumer Financial Protection Bureau – Owning a Home",
+    "url": "https://www.consumerfinance.gov/owning-a-home/"
+   },
+   {
+    "name": "Federal Housing Finance Agency",
+    "url": "https://www.fhfa.gov/"
+   }
+  ],
+  "title": "2026美国房贷利率现在多少？",
+  "toolIds": [
+   "mortgage"
+  ]
+ },
+ {
+  "description": "50万美元房子、首付20%、30年期，按6.5%利率算月供本息约2,528美元，加上房产税和保险实际约3,100美元。本文一步步算给你看，并对比不同首付和期限。",
+  "faq": [
+   {
+    "answer": "会。贷款额、利率、期限是等比关系，60万美元贷款就是上面的数字乘以1.5。但房产税和保险各地不同，要按当地实际数字加，不能简单乘。",
+    "question": "60万美元的房子能按比例推算吗？"
+   },
+   {
+    "answer": "closing cost一般是贷款额的2%~5%，40万美元贷款要准备8千到2万美元现金。这笔不能贷款，要和首付一起准备好，很多首次买房的华人会漏掉。",
+    "question": "除了首付还要准备多少钱？"
+   },
+   {
+    "answer": "可以，但10%首付要加PMI保险，每月多一两百美元，而且贷款额变大。手头紧可以先上车，等房价涨或本金还到80%再取消PMI。",
+    "question": "首付只够10%能买吗？"
+   },
+   {
+    "answer": "先看PITI总额，再看closing cost，最后看利率类型和有没有PMI。四个都合适再谈价格，很多华人只看月供本息就签了合同，入住才发现吃力。",
+    "question": "看房时怎么快速判断月供贵不贵？"
+   }
+  ],
+  "intro": "50万美元的房子，首付20%（10万美元），贷款40万美元，30年固定、年利率按6.5%估算：月供本息约2,528美元。再加上房产税（约400多美元/月）和房屋保险（约150~250美元/月），实际每月要还约3,100美元。这是估算，精确数字用站内房贷计算器按你的税率和保险算，5分钟就有答案。",
+  "reviewed": "2026-10-03",
+  "sections": [
+   {
+    "heading": "第一步：算贷款本金",
+    "html": "<p>50万美元房价，首付20%即10万美元，<strong>贷款本金40万美元</strong>。首付比例直接决定贷款额，也决定要不要交PMI保险（首付不到20%才要）。华人买家注意：如果首付是国内换汇过来的，每人每年5万美元额度，10万美元首付夫妻两人刚好卡线，要提前规划换汇节奏，银行会查60天流水，大额进账都要解释来源。另外提醒：贷款预批（pre-approval）阶段银行就会按这个本金数核你的收入，月供占收入比一般不能超过43%~45%，先算好再去看房能省很多时间。</p>"
+   },
+   {
+    "heading": "第二步：本息月供约2,528美元",
+    "html": "<p>按年利率<strong>6.5%</strong>、30年（360期）等额本息计算：月供 = 400,000 × 月利率 × (1+月利率)^360 ÷ ((1+月利率)^360 − 1) ≈ <strong>2,528美元</strong>。利率是最大变量：如果能拿到6%，月供约2,398美元；如果是7%，约2,661美元。<strong>0.5个百分点，一个月差130美元</strong>，30年差4.7万美元——所以买房前养信用、货比三家谈利率，回报最高。</p>"
+   },
+   {
+    "heading": "第三步：加上税和保险才是真实月供",
+    "html": "<p>房产税各地不同，按房价1%/年估算：50万美元 × 1% ÷ 12 ≈ <strong>417美元/月</strong>，德州、新泽西等高税州会更高，加州有13号提案保护相对低；房屋保险约<strong>150~250美元/月</strong>，飓风区、山火区更贵。三项相加，实际月供约 <strong>3,095~3,195美元</strong>。看房时问中介要PITI总数，别只听本息，那个数字是“裸价”。还有一项隐性成本：HOA物业费。公寓和联排别墅每月几百美元HOA很常见，看房时把HOA也加进月供预算，别只算PITI。</p>"
+   },
+   {
+    "heading": "换个条件对比一下",
+    "html": "<p>同样50万美元房子：<strong>首付10%</strong>的话贷款45万美元，月供本息约2,844美元，还要加PMI约150~250美元/月，实际月供奔3,500美元去了；<strong>15年期</strong>的话（假设利率5.9%）月供本息约3,354美元，但总利息省近30万美元。期限越短月供越高、总利息越少，量力而行——月供占税前收入别超过28%~30%是安全线。</p>"
+   }
+  ],
+  "slug": "mortgage-50wan-yue-gong",
+  "sources": [
+   {
+    "name": "Consumer Financial Protection Bureau – Ask CFPB",
+    "url": "https://www.consumerfinance.gov/ask-cfpb/"
+   },
+   {
+    "name": "HUD – Buying a Home",
+    "url": "https://www.hud.gov/buying"
+   },
+   {
+    "name": "Freddie Mac – Primary Mortgage Market Survey",
+    "url": "https://www.freddiemac.com/pmms"
+   }
+  ],
+  "title": "50万美元房子30年月供多少钱？",
+  "toolIds": [
+   "mortgage"
+  ]
+ },
+ {
+  "description": "15年房贷利率更低、总利息省近30万美元，但月供高出约三分之一。本文用40万美元贷款实例对比两种期限，另给30年+多还的折中方案，帮你选适合自己的。",
+  "faq": [
+   {
+    "answer": "可以，而且很多人这么干。30年贷款每月多还本金，效果接近15年，还保留了手头紧时只还最低月供的灵活性，现金流压力小很多。",
+    "question": "选30年再提前还款，能达到15年的效果吗？"
+   },
+   {
+    "answer": "2014年后的合格房贷（QM）基本都没有罚金，老贷款或non-QM要看合同条款。签约前直接问lender一句话就能确认，别靠猜。",
+    "question": "提前还款有没有罚金？"
+   },
+   {
+    "answer": "看现金流：如果月供占税前收入比超过30%会很吃力，选30年；如果双职工收入稳定、打算长住，选15年。拿不准就先30年，有钱再多还。",
+    "question": "怎么判断自己适合哪种？"
+   },
+   {
+    "answer": "可以，但要重走一遍申请流程、付closing cost。只有当下的利率比你原来的低0.75%以上才值得算一笔账，否则折腾意义不大。",
+    "question": "选了30年以后能转成15年吗？"
+   }
+  ],
+  "intro": "40万美元贷款、按30年6.5%和15年5.9%估算：30年月供本息约2,528美元，总利息约51万美元；15年月供约3,354美元，总利息约20.4万美元。<strong>15年总利息省近30万美元，但月供贵约826美元</strong>。没有绝对正确的答案，关键看你的现金流、收入稳定性和持有计划，下面用数字帮你判断。",
+  "reviewed": "2026-10-03",
+  "sections": [
+   {
+    "heading": "数字对比：差在哪",
+    "html": "<p>同样40万美元贷款：<strong>30年期</strong>（6.5%）月供约2,528美元，30年总利息约51万美元；<strong>15年期</strong>（假设5.9%，15年利率通常比30年低0.5~0.8个百分点）月供约3,354美元，总利息约20.4万美元。<strong>15年月供贵33%，总利息省60%</strong>。数字上15年完胜，但生活不是只看数字——每月多出的826美元，可能是孩子的课外班、回国的机票，或是你的应急存款。</p>"
+   },
+   {
+    "heading": "15年的代价：现金流",
+    "html": "<p>每月多826美元，一年就是近1万美元。对于刚在美国安顿的华人家庭，这笔钱的去处很多：应急存款、401k、孩子教育。房贷有个经验线：<strong>月供占税前收入别超28%~30%</strong>。如果15年的月供让你每个月都紧巴巴，宁可选30年——压力小才能长期持有，断供一次对信用的打击比多付点利息严重得多。更现实的算法是看税后现金流：月供之外还要留足应急存款和日常开销，紧巴巴的15年月供一旦遇到失业或意外，断供风险远高于30年。</p>"
+   },
+   {
+    "heading": "折中方案：30年+主动多还",
+    "html": "<p>很多人不知道的折中打法：选30年期限，每月<strong>主动多还本金</strong>。比如每月多还500美元，40万美元6.5%的贷款能提前约9年还清，省利息超20万美元。手头紧的月份只还最低月供，灵活性拉满，效果接近15年。这招特别适合收入有波动的家庭：好年景多还，差年景少还，主动权在自己手里。操作时注意跟银行确认多还部分计入本金（apply to principal），有些银行默认把多余款项算作提前支付下期月供，省利息的效果天差地别。</p>"
+   },
+   {
+    "heading": "华人家庭怎么选",
+    "html": "<p>刚拿身份、工作还在试用期、未来几年可能换城市的，<strong>选30年</strong>，现金流优先，灵活性就是安全感；双职工收入稳定、打算一住十几年的，<strong>选15年</strong>省利息，退休前无债一身轻。另外考虑税务：房贷利息可以分项抵税，30年利息多、抵税也多一点，但这不该成为选30年的主要理由，省下的利息才是真金白银。最后提醒：无论选哪种，签约前都确认没有提前还款罚金，给自己留一条“以后多还”的后路，这个选项本身就有价值。</p>"
+   }
+  ],
+  "slug": "mortgage-15nian-vs-30nian",
+  "sources": [
+   {
+    "name": "Consumer Financial Protection Bureau – Ask CFPB",
+    "url": "https://www.consumerfinance.gov/ask-cfpb/"
+   },
+   {
+    "name": "Freddie Mac – Primary Mortgage Market Survey",
+    "url": "https://www.freddiemac.com/pmms"
+   },
+   {
+    "name": "Federal Housing Finance Agency",
+    "url": "https://www.fhfa.gov/"
+   }
+  ],
+  "title": "15年和30年房贷哪个更划算？",
+  "toolIds": [
+   "mortgage"
+  ]
+ },
+ {
+  "description": "APR是把点数、手续费都折进去的真实年成本，房贷利率只是利息本身。本文讲清两者区别、APR的三个坑，以及华人看Loan Estimate的实操方法。",
+  "faq": [
+   {
+    "answer": "可以，但前提是贷款类型、期限、首付、点数都一样。APR是横向对比同类贷款的工具，拿30年固定的APR和ARM的APR比没有意义。",
+    "question": "两个银行的APR能直接对比吗？"
+   },
+   {
+    "answer": "不能。APR只算利息之外的借贷费用，本金、房产税、房屋保险都不在里面。想知道真实月供负担，还是要看PITI四项总额。",
+    "question": "APR包含房产税和保险吗？"
+   },
+   {
+    "answer": "能，而且应该谈。origination fee、点数都有议价空间，货比三家时把Loan Estimate的A项和J项并排放一起看，谁在费用里藏东西一目了然。",
+    "question": "手续费能跟银行谈吗？"
+   },
+   {
+    "answer": "会，而且每家算法略有不同。锁定利率后APR就定了，closing前务必再对比一次Loan Estimate，看有没有被偷加费用。",
+    "question": "锁利率后APR还会变吗？"
+   }
+  ],
+  "intro": "房贷利率（note rate）只是利息本身，APR（年利率成本）是把点数、手续费、PMI等费用全部折进去后的真实年化成本。<strong>APR一定比利率高</strong>：比如利率6.5%，加了点数和手续费后APR可能是6.72%。比价时看APR，算月供时用利率，两者分工不同，搞混了容易选错银行。",
+  "reviewed": "2026-10-03",
+  "sections": [
+   {
+    "heading": "一句话区别",
+    "html": "<p><strong>利率</strong>决定你每月还多少利息，是计算月供的输入；<strong>APR</strong>是把借钱的全部成本（利息+点数+手续费+PMI等）折成年化比率，是横向比价的标尺。同一个贷款，利率6.5%、APR 6.72%，差的0.22%就是那些一次性费用的年化体现。记住：<strong>月供用利率算，选银行看APR</strong>。打个比方：利率是商品的标价，APR是含税含运费的到手价。只看标价买东西，一定会买贵。</p>"
+   },
+   {
+    "heading": "举例：费用怎么推高APR",
+    "html": "<p>贷款40万美元，利率6.5%，A银行收1个点（4,000美元）+手续费2,000美元，APR约<strong>6.72%</strong>；B银行利率6.625%但零费用、零点数，APR约<strong>6.65%</strong>。只看利率你会选A，看APR才知道B更便宜。<strong>利率低不等于成本低</strong>，这就是APR存在的意义，也是银行最不想让你细看的数字。谈判技巧：拿着B银行的Loan Estimate去找A银行谈，很多时候A愿意降费用留住你，货比三家不是走过场，是真能谈下钱的。</p>"
+   },
+   {
+    "heading": "APR的三个坑",
+    "html": "<p>一是<strong>ARM的APR按当前利率算</strong>，不代表几年后利率调整时的真实成本，拿它和固定利率比会被误导；二是<strong>短期持有APR失真</strong>，APR假设你持有满30年，如果5年就卖房，一次性费用摊薄效果差很多，实际成本更高；三是<strong>APR不含房产税和保险</strong>，别拿它估算月供负担。看清这三点，APR才是好工具。还有一个细节：APR是按复利年化算的，点数这类一次性费用在APR里的权重比你直觉的大，所以零费用贷款的APR优势往往被低估。</p>"
+   },
+   {
+    "heading": "华人实操：看Loan Estimate",
+    "html": "<p>法律规定银行必须在收到申请后3天内给你 <strong>Loan Estimate</strong> 表格，直接翻到第二页：<strong>A项</strong>是手续费和点数，<strong>J项</strong>是总closing cost。把几家银行的这两项并排放一起，再对比APR，一眼看出谁在费用里藏了东西。这是CFPB（消费者金融保护局）给借款人的法定武器，不用白不用，华人买家尤其要善用——语言劣势下，表格数字比口头承诺可靠。</p>"
+   }
+  ],
+  "slug": "mortgage-apr-qu-bie",
+  "sources": [
+   {
+    "name": "Consumer Financial Protection Bureau – Ask CFPB",
+    "url": "https://www.consumerfinance.gov/ask-cfpb/"
+   },
+   {
+    "name": "HUD – Buying a Home",
+    "url": "https://www.hud.gov/buying"
+   },
+   {
+    "name": "Consumer Financial Protection Bureau – Owning a Home",
+    "url": "https://www.consumerfinance.gov/owning-a-home/"
+   }
+  ],
+  "title": "APR和房贷利率有什么区别？",
+  "toolIds": [
+   "mortgage"
+  ]
+ },
+ {
+  "description": "首付不到20%要交PMI保险，每月多一两百美元打水漂。本文算清10%和20%首付的月供差距，讲PMI多少钱、什么时候能取消，以及华人凑首付实操。",
+  "faq": [
+   {
+    "answer": "常规贷款可以：本金还到房价80%时书面申请取消，降到78%自动取消。FHA的MIP规则不同，首付不到10%的话MIP可能要交满11年，选FHA前先算清。",
+    "question": "PMI以后能取消吗？"
+   },
+   {
+    "answer": "加得快，但PMI一般按原始房价算LTV，自然还款很慢。更快的方法是房价涨了后申请重新评估，估值到了80%就能申请提前取消。",
+    "question": "多还本金能更快取消PMI吗？"
+   },
+   {
+    "answer": "不是，看贷款机构报价。0.5%~1.5%/年是常见区间，信用分数越高、首付比例越高，费率越低，拿贷款时一定要问清具体数字。",
+    "question": "PMI费率是固定的吗？"
+   },
+   {
+    "answer": "FHA首付3.5%就能上车，适合信用一般的买家，但MIP更难取消。信用尚可的话，conventional 10%首付+PMI更灵活，取消也更容易。",
+    "question": "首付不够20%，FHA和PMI哪个划算？"
+   }
+  ],
+  "intro": "PMI是首付不到20%时银行强制买的保险，保护的是银行不是你，费用一般是贷款额的<strong>0.5%~1.5%/年</strong>。50万美元房子：首付20%贷款40万，月供本息约2,528美元；首付10%贷款45万，月供本息约2,844美元再加PMI约150~250美元/月，一年多花近6,000美元。这笔账下面给你算明白。",
+  "reviewed": "2026-10-03",
+  "sections": [
+   {
+    "heading": "PMI是什么，多少钱",
+    "html": "<p><strong>PMI（Private Mortgage Insurance）</strong>是首付低于20%时，常规贷款强制购买的保险。关键认知：<strong>保的是银行</strong>——万一你断供，保险公司赔银行，你一分钱拿不到，纯粹是为借钱交的“过路费”。费用通常是贷款额的0.5%~1.5%/年，按月交。45万美元贷款、按1%算，一年4,500美元，<strong>每月375美元</strong>打水漂，交到能取消为止。</p>"
+   },
+   {
+    "heading": "10%和20%首付差多少",
+    "html": "<p>50万美元房子：<strong>首付20%</strong>（10万美元），贷款40万，月供本息约2,528美元，无PMI；<strong>首付10%</strong>（5万美元），贷款45万，月供本息约2,844美元，加PMI约200美元/月，实际月供约3,044美元。<strong>每月差516美元，一年差6,200美元</strong>，30年下来光PMI和利息差就几十万美元。当然，10%首付能让你少攒5万美元、早上车几年，房价上涨期的机会成本也要算进去。</p>"
+   },
+   {
+    "heading": "PMI怎么取消",
+    "html": "<p>常规贷款：本金还到房价<strong>80%</strong>时可以书面申请取消，降到<strong>78%</strong>自动取消，不用你操心。房价上涨也能帮你：比如房子涨到60万美元，45万贷款占比降到75%，申请<strong>重新评估（appraisal）</strong>就能提前取消，评估费几百美元很值。但注意FHA贷款的MIP规则更严，首付不到10%可能要交满11年甚至终身，选FHA前先算清这笔账。</p>"
+   },
+   {
+    "heading": "华人凑20%的现实问题",
+    "html": "<p>5万美元首付 vs 10万美元，对很多华人家庭差的就是国内换汇额度——<strong>每人每年5万美元</strong>，夫妻两人10万美元，刚好卡线。如果用父母的钱，银行要 <strong>gift letter（赠与信）</strong>，证明这是赠与不是借款，附上赠与人的银行流水。钱至少提前60天进账，大额转账都要解释来源，临时抱佛脚换汇很容易耽误closing，误了交房日还可能丢定金。</p>"
+   }
+  ],
+  "slug": "mortgage-shou-fu-pmi",
+  "sources": [
+   {
+    "name": "Consumer Financial Protection Bureau – Ask CFPB",
+    "url": "https://www.consumerfinance.gov/ask-cfpb/"
+   },
+   {
+    "name": "Federal Housing Finance Agency",
+    "url": "https://www.fhfa.gov/"
+   },
+   {
+    "name": "HUD – Buying a Home",
+    "url": "https://www.hud.gov/buying"
+   }
+  ],
+  "title": "首付10%和20%差多少？PMI是什么",
+  "toolIds": [
+   "mortgage"
+  ]
+ },
+ {
+  "description": "在美国没有信用记录也能贷款买房：FHA接受非传统信用证明，多付首付、用房租水电账单辅助。本文给新移民三条现实可行的路径，从养信用到找broker全讲清。",
+  "faq": [
+   {
+    "answer": "租房支票或转账记录、水电燃气账单、手机话费账单，连续12个月按时支付的记录都可以作为辅助，FHA官方认可这类非传统信用证明。",
+    "question": "哪些能算非传统信用证明？"
+   },
+   {
+    "answer": "通常6个月能看到分数，12个月比较像样。期间保持一张卡、按时全额还款、额度使用率低于30%，涨分最快，别同时开好几张卡。",
+    "question": "养信用要多久才够贷款？"
+   },
+   {
+    "answer": "大银行系统卡得严，华人broker和中小银行人工审核更灵活。建议两边都问，broker常有专门做新移民的贷款产品，利率有时反而更低。",
+    "question": "找大银行还是华人broker？"
+   },
+   {
+    "answer": "可以，但利率和首付要求都更高。策略是先以能贷到为目标上车，信用养好后再refinance到正常利率，这是很多新移民走过的路。",
+    "question": "信用很差也能贷吗？"
+   }
+  ],
+  "intro": "没有信用记录不等于贷不到款。美国FHA贷款官方接受<strong>非传统信用证明</strong>——房租、水电账单连续12个月按时支付的记录，配合20%左右的首付，新移民也能获批。更稳的路是先花6~12个月养信用：一张押金信用卡、按时全额还款，分数起来后利率能差出1个百分点，30年省几万美元。",
+  "reviewed": "2026-10-03",
+  "sections": [
+   {
+    "heading": "没信用≠贷不到：FHA这条路",
+    "html": "<p>FHA贷款允许用<strong>非传统信用（non-traditional credit）</strong>代替信用分数：过去12个月的房租支付记录、水电燃气账单、电话费账单，按时支付就能作为信用证明。但注意两点：一是<strong>不是所有lender都接</strong>，要找做人工核信（manual underwriting）的银行或broker；二是首付最好多准备，10%~20%能大大提高通过率——信用不够，首付来凑，这是银行的朴素逻辑。</p>"
+   },
+   {
+    "heading": "最快养信用的方法",
+    "html": "<p>办一张 <strong>secured card（押金信用卡）</strong>，存500~1,000美元做额度，每月小额消费、<strong>全额按时还款</strong>，额度使用率保持在30%以下。6个月出分，12个月分数就比较能看了。千万别同时开好几张卡，每次hard pull都扣分。SSN下来后第一件事就是办卡养信用，别拖——很多华人拖了一两年才办，白白浪费了养分时间。</p>"
+   },
+   {
+    "heading": "首付是硬通货",
+    "html": "<p>信用不够，<strong>首付来凑</strong>。20%~25%的首付能让很多lender对信用问题睁一只眼闭一只眼，因为银行的风险敞口小了。这恰恰是华人家庭的优势：国内资金调过来做高首付，用首付对冲弱信用，是新移民买房最常见的打法。注意资金要提前60天进账、来源解释清楚，大额换汇走正规渠道，留好记录。资金来源要经得起查：银行会要求60天流水，国内转过来的钱留好换汇凭证，大额现金存入是最容易被问到的，提前准备解释信。</p>"
+   },
+   {
+    "heading": "Broker比大银行灵活",
+    "html": "<p>Chase、BOA这种大银行基本是系统自动审批，没分数直接拒，连人工看一眼的机会都不给。<strong>华人mortgage broker</strong>对接几十家中小lender，有专门做新移民、做人工核信的产品，愿意看你的整体情况（存款、工作、房租记录）。建议大银行和broker两边都询价，broker的利率有时反而更低，因为他们拿的是批发价，还能帮你包装材料。</p>"
+   }
+  ],
+  "slug": "mortgage-wu-xin-yong-ji-lu",
+  "sources": [
+   {
+    "name": "HUD – Buying a Home",
+    "url": "https://www.hud.gov/buying"
+   },
+   {
+    "name": "Consumer Financial Protection Bureau – Ask CFPB",
+    "url": "https://www.consumerfinance.gov/ask-cfpb/"
+   },
+   {
+    "name": "Federal Housing Finance Agency",
+    "url": "https://www.fhfa.gov/"
+   }
+  ],
+  "title": "在美国没有信用记录怎么贷款买房？",
+  "toolIds": [
+   "mortgage"
+  ]
+ },
+ {
+  "description": "没有SSN也能用ITIN贷款买房，但只能走non-QM渠道：首付通常20%~25%以上、利率更高、要两年报税记录。本文讲清三个硬条件和华人实操清单。",
+  "faq": [
+   {
+    "answer": "不接受。FHA、VA和房利美/房地美的常规贷款都不接受ITIN，只有non-QM渠道的部分lender做，申请前一定要先问清do you do ITIN loans。",
+    "question": "FHA贷款接受ITIN吗？"
+   },
+   {
+    "answer": "报税记录是ITIN贷款的核心材料，证明你的收入稳定、连续、合法。现金收入、没有税表的话，基本贷不下来，所以每年按时报税非常重要。",
+    "question": "报税记录为什么这么重要？"
+   },
+   {
+    "answer": "通常用护照+ITIN确认信（IRS的CP565通知）代替SSN。驾照不是必须的，但有个州ID会让流程顺很多，建议先去办一个。",
+    "question": "ITIN贷款需要什么身份文件？"
+   },
+   {
+    "answer": "大部分ITIN贷款要求自住房，投资房更难、利率更高。现实策略是先以自住房上车，拿到SSN、养好信用后再refinance到常规贷款。",
+    "question": "能用ITIN买投资房吗？"
+   }
+  ],
+  "intro": "<strong>可以，但选择少、条件严</strong>。没有SSN走不了FHA和常规贷款，只能找做 <strong>ITIN loan（non-QM非合格房贷）</strong> 的lender：通常要求20%~25%以上首付、利率比常规高0.5~1.5个百分点、要看两年报税记录。先了解规则再行动，别被中介一句“没问题”忽悠着交了定金，最后贷不下来。",
+  "reviewed": "2026-10-03",
+  "sections": [
+   {
+    "heading": "ITIN贷款真实存在，但渠道窄",
+    "html": "<p>美国确实有银行和credit union做 <strong>ITIN mortgage</strong>，属于non-QM（非合格房贷），不卖给房利美所以各家政策自己定。现实是：<strong>大银行基本不做</strong>，Chase、Wells Fargo问一圈大概率碰壁。要做就找中小银行、社区credit union或专门的mortgage broker，开门见山问“do you do ITIN loans”，别浪费时间在不接的机构上。</p>"
+   },
+   {
+    "heading": "三个硬条件",
+    "html": "<p>一是<strong>首付20%~25%以上</strong>，有的lender甚至要到30%，首付是他们敢放款的最大底气；二是<strong>利率更高</strong>，比常规贷款高0.5~1.5个百分点是常态， lamb 接受这是为身份付出的溢价；三是<strong>两年报税记录</strong>，用ITIN报的1040税表是收入证明的核心。缺任何一条，通过率都大打折扣。想两年后买房的人，从今年报税季就要开始规划，别等到买房才想起来。</p>"
+   },
+   {
+    "heading": "和SSN贷款的差距",
+    "html": "<p>同样50万美元房子：有SSN、信用良好，首付20%、利率6.5%，月供本息约2,528美元；ITIN贷款可能首付25%、利率7.5%，月供约2,800多美元，30年多付10多万美元利息。所以ITIN贷款是<strong>过渡方案</strong>：先上车锁定房子和地段，拿到SSN、养好信用后 <strong>refinance</strong> 到常规贷款，这是华人走过的标准路线，一开始就按这个剧本规划。</p>"
+   },
+   {
+    "heading": "华人实操清单",
+    "html": "<p>每年用ITIN<strong>按时报税</strong>，留好1040和W-2/1099，这是最重要的资产；首付资金提前60天进账、来源说得清，大额换汇留记录；找<strong>做过ITIN case的broker</strong>，直接问“你们去年做了多少ITIN贷款”，没做过的别当小白鼠；合同里写清<strong>贷款contingency</strong>，万一贷不下来定金能退。最后提醒：别信“包贷”承诺，non-QM审批比常规贷款严得多，承诺包过的多半不靠谱。</p>"
+   }
+  ],
+  "slug": "mortgage-itin-dai-kuan",
+  "sources": [
+   {
+    "name": "Consumer Financial Protection Bureau – Ask CFPB",
+    "url": "https://www.consumerfinance.gov/ask-cfpb/"
+   },
+   {
+    "name": "HUD – Buying a Home",
+    "url": "https://www.hud.gov/buying"
+   },
+   {
+    "name": "Internal Revenue Service – ITIN",
+    "url": "https://www.irs.gov/individuals/international-taxpayers/individual-taxpayer-identification-number-itin"
+   }
+  ],
+  "title": "没有SSN，用ITIN能贷款买房吗？",
+  "toolIds": [
+   "mortgage"
+  ]
+ },
+ {
+  "description": "提前还房贷大多没有罚金，每月多还300美元能省十几万利息、提前近8年还清。但有高息债、没应急金、401k还没拿满match时，先别急着还。本文算清账。",
+  "faq": [
+   {
+    "answer": "2014年后的合格房贷（QM）基本都没有罚金，老贷款或non-QM要看合同条款。签约前直接问lender一句话就能确认，别靠猜。",
+    "question": "提前还款真的没有罚金吗？"
+   },
+   {
+    "answer": "没有。月供是固定的，多还的部分100%冲本金，下个月利息就按更少的本金算，越往后省得越多，滚雪球效应很明显。",
+    "question": "多还的钱会算作下个月月供吗？"
+   },
+   {
+    "answer": "跟lender确认入账方式，注明apply to principal。有些银行默认把多余的钱算成提前付下期月供，省利息的效果完全不同，一定要盯紧。",
+    "question": "怎么确保多还的是本金？"
+   },
+   {
+    "answer": "biweekly（每两周还一次）一年相当于多还一个月月供，自动加速还贷。适合自律性差的人，交给银行自动执行，不用自己操心。",
+    "question": "biweekly还款法靠谱吗？"
+   }
+  ],
+  "intro": "对大多数美国房贷来说，<strong>提前还款划算，但要分情况</strong>。2014年后的合格房贷基本没有提前还款罚金：40万美元6.5%的贷款，每月多还300美元本金，能省约15万美元利息、提前近8年还清。但如果你还有高息信用卡债、没存够应急金，那笔钱先别砸进房子里，顺序很重要。",
+  "reviewed": "2026-10-03",
+  "sections": [
+   {
+    "heading": "先确认：有没有罚金",
+    "html": "<p>2014年之后发放的 <strong>QM（合格房贷）</strong> 法律上不能收提前还款罚金，市面上绝大多数贷款都是QM，放心大胆还。但如果是non-QM、私人借贷或很老的贷款，合同里可能有罚金条款。<strong>签约前问lender一句话</strong>：“Is there a prepayment penalty?” 确认了再签字。已经在还的贷款，翻出当初的closing文件看一眼，几分钟的事。</p>"
+   },
+   {
+    "heading": "多还本金的威力：算笔账",
+    "html": "<p>40万美元、6.5%、30年，正常月供约2,528美元、总利息约51万美元。如果<strong>每月多还300美元本金</strong>：总利息省约15万美元，还款期缩短近8年。多还的钱100%冲本金，下个月利息按更少的本金计算，<strong>越往后滚雪球越快</strong>。这300美元每月的年化“收益”就是你的房贷利率6.5%，稳赚不赔，还不用交税——这是任何理财产品都给不了的确定性。</p>"
+   },
+   {
+    "heading": "三种情况先别提前还",
+    "html": "<p>一是有<strong>高息债</strong>：信用卡18%的利息，先还卡，数学上毫无争议；二是没有<strong>3~6个月应急金</strong>：钱砸进房子就拿不出来了，失业断供一次对信用的打击远超省下的利息；三是<strong>401k的公司match还没拿满</strong>：match是100%即时回报，比还6.5%的房贷划算得多。按“高息债→应急金→401k match→房贷”这个顺序排，轮到房贷再多还。</p>"
+   },
+   {
+    "heading": "华人观念的小提醒",
+    "html": "<p>很多华人信奉“无债一身轻”，想All in提前还清。但在美国，<strong>低息杠杆本身是资产</strong>：6.5%的房贷利息还能分项抵税，实际资金成本更低；而把钱投入401k、529教育基金，长期回报大概率跑赢房贷利率。不是不让你还，而是不必把提前还贷当成唯一正确的财务目标——尤其当你还年轻、收入还在上升期的时候，流动性和投资更重要。</p>"
+   }
+  ],
+  "slug": "mortgage-ti-qian-huan-kuan",
+  "sources": [
+   {
+    "name": "Consumer Financial Protection Bureau – Ask CFPB",
+    "url": "https://www.consumerfinance.gov/ask-cfpb/"
+   },
+   {
+    "name": "Freddie Mac – Primary Mortgage Market Survey",
+    "url": "https://www.freddiemac.com/pmms"
+   },
+   {
+    "name": "Consumer Financial Protection Bureau – Owning a Home",
+    "url": "https://www.consumerfinance.gov/owning-a-home/"
+   }
+  ],
+  "title": "提前还房贷划算吗？",
+  "toolIds": [
+   "mortgage"
+  ]
+ },
+ {
+  "description": "Refinance值不值就看回本期：月省金额除以过户成本，持有期超过回本期才划算。本文给公式、算40万美元实例，并提醒华人转贷最容易踩的四个坑。",
+  "faq": [
+   {
+    "answer": "看回本期，不看感觉。月省300美元、成本9,000美元，回本30个月，确定住3年以上才值得。为降0.25%折腾一圈，基本是白忙。",
+    "question": "利率降0.5%值得转贷吗？"
+   },
+   {
+    "answer": "2~4周是常态，appraisal、收入核实一个都不少。期间别换工作、别大额消费、别开新信用卡，任何风吹草动都会影响审批。",
+    "question": "转贷要多久？"
+   },
+   {
+    "answer": "可以，但那是另一笔账：套现利率更高、还款期重置。只有当资金有明确的高回报用途时才考虑，别为了消费套现。",
+    "question": "能顺便套现出来吗？"
+   },
+   {
+    "answer": "一般要求持有原贷款6个月以上且按时还款。刚买房就想转，多数lender不接，至少等半年再说。",
+    "question": "刚买的房子能马上转贷吗？"
+   }
+  ],
+  "intro": "Refinance划不划算，一个公式说了算：<strong>回本期 = 转贷总成本 ÷ 每月省下的月供</strong>。比如月省263美元、成本8,000美元，回本约30个月——你确定住满3年以上才值得折腾。经验法则：利率降<strong>0.75%以上</strong>再认真考虑，降0.25%基本是白忙活。下面把账算给你看。",
+  "reviewed": "2026-10-03",
+  "sections": [
+   {
+    "heading": "三个信号：该考虑转贷了",
+    "html": "<p>一是<strong>市场利率比你现在低0.75%~1%以上</strong>，这是最硬的信号；二是你的<strong>信用分数涨了一大截</strong>，比如从700涨到760，能拿到更好的定价；三是<strong>房价涨了</strong>，LTV降到80%以下可以顺手甩掉PMI。三个信号中一个就值得坐下来算账，两个以上基本闭眼转。2026年利率如果进入下行通道，之前高位上车的人都要盯紧这个机会。</p>"
+   },
+   {
+    "heading": "回本期算法：实例",
+    "html": "<p>40万美元贷款，原利率7%月供约2,661美元，新利率6%月供约2,398美元，<strong>月省263美元</strong>。转贷closing cost约8,000美元（一般是贷款额的2%~5%）：8,000 ÷ 263 ≈ <strong>30个月回本</strong>。你未来3年会卖房或再转贷？那就别转，白付8,000美元。打算长住？转完每月多263美元现金流，30个月后全是净赚。记住：<strong>回本期必须短于你的持有期</strong>，这是铁律。</p>"
+   },
+   {
+    "heading": "转贷成本明细",
+    "html": "<p>转贷不是免费的：<strong>appraisal评估费</strong>约500~700美元，<strong>origination fee</strong>约0.5%~1%，<strong>title insurance和过户杂费</strong>几千美元，加起来就是那8,000美元。有些lender推“no closing cost refinance”，听着美好，其实是把费用折进了更高的利率里，算总账可能更贵。永远对比APR和总成本，别被零费用话术忽悠，羊毛出在羊身上。</p>"
+   },
+   {
+    "heading": "华人转贷四个坑",
+    "html": "<p>一是<strong>频繁hard pull</strong>：14~45天内的多次房贷询价在信用报告上只算一次，别把询价拖太久；二是<strong>appraisal低于预期</strong>，LTV不够就转不成，提前查Zestimate、Redfin估价心里有数；三是<strong>换工作期间别转贷</strong>，收入核实过不了，前功尽弃；四是<strong>从30年转成新的30年</strong>，还款期重置，总利息可能反而更多，尽量选期限不长于剩余年限的，比如剩25年就转25年或20年。</p>"
+   }
+  ],
+  "slug": "mortgage-refinance-shi-ji",
+  "sources": [
+   {
+    "name": "Consumer Financial Protection Bureau – Ask CFPB",
+    "url": "https://www.consumerfinance.gov/ask-cfpb/"
+   },
+   {
+    "name": "Federal Housing Finance Agency",
+    "url": "https://www.fhfa.gov/"
+   },
+   {
+    "name": "Freddie Mac – Primary Mortgage Market Survey",
+    "url": "https://www.freddiemac.com/pmms"
+   }
+  ],
+  "title": "Refinance转贷什么时候最合适？",
+  "toolIds": [
+   "mortgage"
+  ]
+ }
+]
