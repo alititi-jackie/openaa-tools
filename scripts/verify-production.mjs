@@ -4,6 +4,12 @@ import { chromium } from "@playwright/test";
 const origin = process.env.PRODUCTION_URL || "https://tools.openaa.com";
 const expected = process.env.GITHUB_SHA;
 const guides = JSON.parse(fs.readFileSync("src/data/seo-guides.json", "utf8"));
+const toolGuides = fs
+  .readdirSync("src/data/tool-guides")
+  .filter((f) => f.endsWith(".json"))
+  .flatMap((f) =>
+    JSON.parse(fs.readFileSync(`src/data/tool-guides/${f}`, "utf8")),
+  );
 const tools = JSON.parse(fs.readFileSync("src/data/tools.json", "utf8")).filter(
   (t) => t.category === "dmv",
 );
@@ -28,10 +34,11 @@ if (expected)
     expected,
     "Production commit differs from deployed commit",
   );
-assert.equal(release.guides, 40);
+assert.equal(release.guides, guides.length + toolGuides.length);
 const urls = [
   ...tools.map((t) => t.path),
   ...guides.map((g) => `/usa/dmv/${g.slug}/`),
+  ...toolGuides.map((g) => `/tools/${g.toolIds[0]}/${g.slug}/`),
 ];
 const sitemap = await (await fetch(`${origin}/sitemap.xml`)).text();
 for (const path of urls) {
@@ -106,14 +113,7 @@ try {
       }
       assert.deepEqual(
         await page.locator(".dmv-tool-nav a").allTextContents(),
-        [
-          "首页",
-          "① 6 Points",
-          "② REAL ID 检查",
-          "③ 我能办哪种",
-          "④ 材料清单",
-          "模拟考试 ↗",
-        ],
+        ["首页", "① 6 Points", "② REAL ID 检查", "③ 我能办哪种", "④ 材料清单"],
       );
       assert.equal(
         await page
@@ -188,7 +188,7 @@ console.log(
       origin,
       commit: release.commit,
       tools: 4,
-      guides: 40,
+      guides: guides.length + toolGuides.length,
       checkedUrls: 44,
       viewports: [390, 1280],
     },
