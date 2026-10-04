@@ -937,7 +937,7 @@ function showToast(text) {
     }
   }
   function filename(ext) {
-    return "美元人民币汇率记录_" + today().replaceAll("-", "") + ext;
+    return "美元换人民币记录本_" + today().replaceAll("-", "") + ext;
   }
 
   function backupFilename() {
@@ -1096,7 +1096,7 @@ function showToast(text) {
     closeActionSheets();
   });
   $("shareXlsBtn")?.addEventListener("click", async () => {
-    await shareBlob(makeXlsxBlob(), filename(".xlsx"), "美元人民币汇率记录");
+    await shareBlob(makeXlsxBlob(), filename(".xlsx"), "美元换人民币记录本");
     closeActionSheets();
   });
   async function copySummary() {

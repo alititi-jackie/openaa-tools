@@ -9,7 +9,9 @@
     "path": "/tools/401k-calculator/",
     "bodyClass": "",
     "calculator": "retire",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -22,7 +24,9 @@
     "path": "/tools/age/",
     "bodyClass": "",
     "calculator": "age",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -35,7 +39,9 @@
     "path": "/tools/area/",
     "bodyClass": "",
     "calculator": "area",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -48,7 +54,9 @@
     "path": "/tools/area-code/",
     "bodyClass": "",
     "calculator": "area",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -61,7 +69,9 @@
     "path": "/tools/car-monthly-cost/",
     "bodyClass": "",
     "calculator": "carcost",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -74,7 +84,9 @@
     "path": "/tools/car-payment/",
     "bodyClass": "",
     "calculator": "car",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -87,7 +99,9 @@
     "path": "/tools/china-us-time/",
     "bodyClass": "",
     "calculator": "time",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -100,7 +114,9 @@
     "path": "/tools/compound-interest/",
     "bodyClass": "",
     "calculator": "compound",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -113,7 +129,9 @@
     "path": "/tools/credit-card-payoff/",
     "bodyClass": "",
     "calculator": "credit",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -126,7 +144,9 @@
     "path": "/tools/currency/",
     "bodyClass": "",
     "calculator": "currency",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -139,7 +159,9 @@
     "path": "/tools/date-difference/",
     "bodyClass": "",
     "calculator": "date",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -152,7 +174,9 @@
     "path": "/tools/discount/",
     "bodyClass": "",
     "calculator": "discount",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -165,7 +189,9 @@
     "path": "/tools/distance/",
     "bodyClass": "",
     "calculator": "distance",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -178,7 +204,9 @@
     "path": "/tools/gas-cost/",
     "bodyClass": "",
     "calculator": "gas",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -191,7 +219,9 @@
     "path": "/tools/hourly-to-salary/",
     "bodyClass": "",
     "calculator": "hourly",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -204,7 +234,9 @@
     "path": "/tools/hp-kw/",
     "bodyClass": "",
     "calculator": "hp",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -217,7 +249,9 @@
     "path": "/tools/length/",
     "bodyClass": "",
     "calculator": "length",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -230,7 +264,9 @@
     "path": "/tools/mattress-size/",
     "bodyClass": "",
     "calculator": "mattress",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -243,7 +279,9 @@
     "path": "/tools/mortgage/",
     "bodyClass": "",
     "calculator": "mortgage",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -256,7 +294,9 @@
     "path": "/tools/mpg/",
     "bodyClass": "",
     "calculator": "mpg",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -269,7 +309,9 @@
     "path": "/tools/overtime-pay/",
     "bodyClass": "",
     "calculator": "overtime",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -282,7 +324,9 @@
     "path": "/tools/psi-bar/",
     "bodyClass": "",
     "calculator": "psi",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -295,7 +339,9 @@
     "path": "/tools/rent-vs-buy/",
     "bodyClass": "",
     "calculator": "rentbuy",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -308,7 +354,9 @@
     "path": "/tools/salary-calculator/",
     "bodyClass": "",
     "calculator": "salary",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -321,7 +369,9 @@
     "path": "/tools/sales-tax/",
     "bodyClass": "",
     "calculator": "tax",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -334,7 +384,9 @@
     "path": "/tools/savings-cd/",
     "bodyClass": "",
     "calculator": "savings",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -347,7 +399,9 @@
     "path": "/tools/shoe-size/",
     "bodyClass": "",
     "calculator": "shoe",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -360,7 +414,9 @@
     "path": "/tools/split-bill/",
     "bodyClass": "",
     "calculator": "split",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -373,7 +429,9 @@
     "path": "/tools/take-home-pay/",
     "bodyClass": "",
     "calculator": "takehome",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -386,7 +444,9 @@
     "path": "/tools/temperature/",
     "bodyClass": "",
     "calculator": "temp",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -399,7 +459,9 @@
     "path": "/tools/tip-calculator/",
     "bodyClass": "",
     "calculator": "tip",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -412,7 +474,9 @@
     "path": "/tools/volume/",
     "bodyClass": "",
     "calculator": "volume",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -425,7 +489,9 @@
     "path": "/tools/weight/",
     "bodyClass": "",
     "calculator": "weight",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -438,7 +504,9 @@
     "path": "/tools/zip-code/",
     "bodyClass": "",
     "calculator": "zip",
-    "modules": ["calculator"],
+    "modules": [
+      "calculator"
+    ],
     "styles": []
   },
   {
@@ -451,8 +519,14 @@
     "path": "/usa/dmv/6-points-calculator.html",
     "bodyClass": "usa-tool-page",
     "calculator": "",
-    "modules": ["dmv-6-points"],
-    "styles": ["usa-tools.css", "dmv-tools.css", "dmv-6-points.css"]
+    "modules": [
+      "dmv-6-points"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "dmv-tools.css",
+      "dmv-6-points.css"
+    ]
   },
   {
     "id": "real-id-checker",
@@ -464,8 +538,14 @@
     "path": "/usa/dmv/real-id-checker.html",
     "bodyClass": "usa-tool-page",
     "calculator": "",
-    "modules": ["dmv-real-id-checker"],
-    "styles": ["usa-tools.css", "dmv-tools.css", "dmv-real-id-checker.css"]
+    "modules": [
+      "dmv-real-id-checker"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "dmv-tools.css",
+      "dmv-real-id-checker.css"
+    ]
   },
   {
     "id": "real-id-vs-standard-vs-enhanced",
@@ -477,8 +557,14 @@
     "path": "/usa/dmv/real-id-vs-standard-vs-enhanced.html",
     "bodyClass": "usa-tool-page",
     "calculator": "",
-    "modules": ["dmv-id-comparison"],
-    "styles": ["usa-tools.css", "dmv-tools.css", "dmv-id-comparison.css"]
+    "modules": [
+      "dmv-id-comparison"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "dmv-tools.css",
+      "dmv-id-comparison.css"
+    ]
   },
   {
     "id": "document-checker",
@@ -490,8 +576,14 @@
     "path": "/usa/dmv/document-checker.html",
     "bodyClass": "usa-tool-page",
     "calculator": "",
-    "modules": ["dmv-document-checker"],
-    "styles": ["usa-tools.css", "dmv-tools.css", "dmv-document-checker.css"]
+    "modules": [
+      "dmv-document-checker"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "dmv-tools.css",
+      "dmv-document-checker.css"
+    ]
   },
   {
     "id": "expense-record",
@@ -503,8 +595,13 @@
     "path": "/usa/expense-record/",
     "bodyClass": "usa-tool-page",
     "calculator": "",
-    "modules": ["expense-record"],
-    "styles": ["usa-tools.css", "expense-record.css"]
+    "modules": [
+      "expense-record"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "expense-record.css"
+    ]
   },
   {
     "id": "nyc-attractions",
@@ -516,20 +613,30 @@
     "path": "/usa/nyc-attractions/",
     "bodyClass": "usa-tool-page",
     "calculator": "",
-    "modules": ["nyc-attractions"],
-    "styles": ["usa-tools.css", "nyc-attractions.css"]
+    "modules": [
+      "nyc-attractions"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "nyc-attractions.css"
+    ]
   },
   {
     "id": "usd-rmb",
-    "name": "美元人民币汇率记录",
-    "heading": "美元人民币汇率记录",
-    "description": "美元人民币在线换算器，适合美国华人快速估算 USD 与 CNY 金额，并查看常用换算结果。",
+    "name": "美元换人民币记录本",
+    "heading": "美元换人民币记录本",
+    "description": "美元换人民币记录本：记录每次换汇的日期、美元金额和实际汇率，自动计算人民币金额，支持月度年度统计、Excel 导出和本地备份。",
     "icon": "💱",
     "category": "usa",
     "path": "/usa/usd-rmb/",
     "bodyClass": "usa-tool-page",
     "calculator": "",
-    "modules": ["usd-rmb"],
-    "styles": ["usa-tools.css", "usd-rmb.css"]
+    "modules": [
+      "usd-rmb"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "usd-rmb.css"
+    ]
   }
 ]
