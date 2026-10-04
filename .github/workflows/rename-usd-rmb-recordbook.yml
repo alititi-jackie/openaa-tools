@@ -1,0 +1,74 @@
+name: Rename USD RMB record tool
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/rename-usd-rmb-recordbook.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  rename:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Update user-facing name and metadata
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          tools_path = Path("src/data/tools.json")
+          tools = json.loads(tools_path.read_text(encoding="utf-8"))
+          tool = next(item for item in tools if item.get("id") == "usd-rmb")
+          tool["name"] = "美元换人民币记录本"
+          tool["heading"] = "美元换人民币记录本"
+          tool["description"] = "美元换人民币记录本：记录每次换汇的日期、美元金额和实际汇率，自动计算人民币金额，支持月度年度统计、Excel 导出和本地备份。"
+          tools_path.write_text(json.dumps(tools, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+          html_path = Path("src/features/usd-rmb.html")
+          html = html_path.read_text(encoding="utf-8")
+          if "<h1>美元人民币汇率记录</h1>" not in html:
+              raise SystemExit("Expected old H1 not found")
+          html = html.replace("<h1>美元人民币汇率记录</h1>", "<h1>美元换人民币记录本</h1>", 1)
+          html = html.replace("美元人民币汇率记录与美金换人民币计算工具", "美元换人民币记录本与美金换人民币计算工具")
+          html_path.write_text(html, encoding="utf-8")
+
+          js_path = Path("src/features/usd-rmb.js")
+          js = js_path.read_text(encoding="utf-8")
+          js = js.replace("美元人民币汇率记录_", "美元换人民币记录本_")
+          js = js.replace('"美元人民币汇率记录"', '"美元换人民币记录本"')
+          js_path.write_text(js, encoding="utf-8")
+
+          manifest_path = Path("public/usa/usd-rmb/manifest.json")
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          manifest["name"] = "OpenAA · 美元换人民币记录本"
+          manifest["short_name"] = "换汇记录本"
+          manifest["description"] = "本地保存的美元换人民币记录本，支持月度年度统计、Excel 导出和数据备份。"
+          manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+      - name: Verify rename
+        run: |
+          npm ci
+          npm run validate
+          grep -q '美元换人民币记录本' src/features/usd-rmb.html
+          grep -q '"name": "美元换人民币记录本"' src/data/tools.json
+
+      - name: Commit final change and remove temporary workflow
+        run: |
+          rm .github/workflows/rename-usd-rmb-recordbook.yml
+          git config user.name "OpenAA Automation"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/tools.json src/features/usd-rmb.html src/features/usd-rmb.js public/usa/usd-rmb/manifest.json .github/workflows/rename-usd-rmb-recordbook.yml
+          git commit -m "fix: rename USD RMB tool to record book"
+          git push origin HEAD:main
