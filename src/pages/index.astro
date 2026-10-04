@@ -2,6 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ToolCard from "../components/tools/ToolCard.astro";
 import { tools, categories } from "../data/tools";
+import { homeEcoLinks } from "../data/eco-links";
+const ecoLinks = homeEcoLinks();
 ---
 
 <BaseLayout
@@ -68,5 +70,55 @@ import { tools, categories } from "../data/tools";
     <p id="empty-state" hidden>
       没有找到匹配的工具，试试其他关键词或选择“全部”。
     </p>
+    <section class="eco-hub" aria-label="OpenAA 生态入口">
+      <h2>工具之外，生活继续</h2>
+      <p>找工作、找房、二手、本地服务、新闻、DMV 题库、手机靓号，直接进入。</p>
+      <div class="eco-hub-grid">
+        {
+          ecoLinks.map((l) => (
+            <a href={l.url} target="_blank" rel="noopener noreferrer">
+              {l.label} →
+            </a>
+          ))
+        }
+      </div>
+    </section>
   </div>
+  <style>
+    .eco-hub {
+      margin: 40px 0 8px;
+      padding: 24px;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      background: #f8fafc;
+    }
+    .eco-hub h2 {
+      margin: 0 0 6px;
+      font-size: 20px;
+    }
+    .eco-hub p {
+      margin: 0 0 14px;
+      color: #64748b;
+      font-size: 14px;
+    }
+    .eco-hub-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .eco-hub-grid a {
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      color: #0f172a;
+    }
+    .eco-hub-grid a:hover {
+      border-color: #2563eb;
+      color: #2563eb;
+    }
+  </style>
 </BaseLayout>

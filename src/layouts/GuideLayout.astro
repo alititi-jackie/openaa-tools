@@ -38,6 +38,8 @@ const articleSchema = {
     url: "https://openaa.com",
   },
 };
+import { guideEcoLink } from "../data/eco-links";
+const eco = guideEcoLink(guide.slug);
 const breadcrumb = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -144,10 +146,39 @@ const breadcrumb = {
       </div><section class="guide-related">
         <h2>相关文章</h2>{related.map((g) => <a href={g.path}>{g.title} →</a>)}
       </section>
+      <section class="guide-eco">
+        <h2>{eco.title}</h2>
+        <p>
+          {eco.description}
+          <a href={eco.url} target="_blank" rel="noopener noreferrer"
+            >{eco.label} →</a
+          >
+        </p>
+      </section>
     </article>
   </div>
 </BaseLayout>
 <style>
+  .guide-eco {
+    margin-top: 28px;
+    padding: 20px;
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    background: #eff6ff;
+  }
+  .guide-eco h2 {
+    margin: 0 0 8px;
+    font-size: 18px;
+  }
+  .guide-eco p {
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+  }
+  .guide-eco a {
+    font-weight: 700;
+    color: #2563eb;
+  }
   .guide-shell {
     max-width: 860px;
     margin: auto;

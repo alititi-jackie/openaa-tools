@@ -3,6 +3,7 @@ import DmvNavigation from "../components/tools/DmvNavigation.astro";
 import BaseLayout from "./BaseLayout.astro";
 import ToolCard from "../components/tools/ToolCard.astro";
 import { relatedTools, type Tool } from "../data/tools";
+import { ecoLinkFor } from "../data/eco-links";
 import { guidesForTool } from "../data/guides";
 interface Props {
   tool: Tool;
@@ -10,6 +11,7 @@ interface Props {
 const { tool } = Astro.props;
 const related = relatedTools(tool);
 const relatedGuides = guidesForTool(tool.id);
+const eco = ecoLinkFor(tool);
 const styles = import.meta.glob("../styles/tools/*.css", {
   query: "?url",
   import: "default",
@@ -98,9 +100,63 @@ const hasManifest = ["expense-record", "usd-rmb", "nyc-attractions"].includes(
         </section>
       )
     }
+    {
+      eco && (
+        <section class="eco-card" aria-label="相关推荐">
+          <div>
+            <p class="eco-eyebrow">OpenAA 生态</p>
+            <h2>{eco.title}</h2>
+            <p>{eco.description}</p>
+          </div>
+          <a
+            href={eco.url}
+            target="_blank"
+            rel="noopener noreferrer">{eco.label} →</a
+          >
+        </section>
+      )
+    }
     <div class="tool-actions">
       <a href="/">← 返回全部工具</a><button type="button" data-share
         >分享这个工具 ↗</button>
     </div>
-  </div></BaseLayout
+  </div><style>
+    .eco-card {
+      margin-top: 24px;
+      padding: 20px;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      background: #eff6ff;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .eco-eyebrow {
+      margin: 0 0 6px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #2563eb;
+    }
+    .eco-card h2 {
+      margin: 0 0 6px;
+      font-size: 18px;
+    }
+    .eco-card p {
+      margin: 0;
+      color: #475569;
+      font-size: 14px;
+    }
+    .eco-card a {
+      flex-shrink: 0;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: #2563eb;
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+  </style></BaseLayout
 >
