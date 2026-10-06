@@ -23,7 +23,13 @@ const PRECACHE_URLS = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(PAGE_CACHE).then((cache) => cache.addAll(PRECACHE_URLS)).then(() => self.skipWaiting()),
+    caches.open(PAGE_CACHE).then(async (cache) => {
+      // Cache each URL independently: one missing icon must not fail the whole install.
+      await Promise.all(
+        PRECACHE_URLS.map((url) => cache.add(url).catch(() => console.warn('[sw] precache skip:', url))),
+      );
+      return self.skipWaiting();
+    }),
   );
 });
 
@@ -81,12 +87,12 @@ async function networkFirst(request, cacheName, fallbackUrl) {
 async function staleWhileRevalidate(request, cacheName) {
   const cache = await caches.open(cacheName);
   const cached = await cache.match(request);
-  const network = fetch(request)
-    .then((response) => {
-      if (response && response.ok) cache.put(request, response.clone());
-      return response;
-    })
-    .catch(() => cached);
+  // No .catch() here: if there is no cached copy and the network fails,
+  // let the promise reject so the browser handles it as a normal network error.
+  const network = fetch(request).then((response) => {
+    if (response && response.ok) cache.put(request, response.clone());
+    return response;
+  });
   return cached || network;
 }
 

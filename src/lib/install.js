@@ -20,7 +20,7 @@ export function setupInstall(notify) {
         : "请打开浏览器菜单，选择“安装应用”“添加到主屏幕”或“创建快捷方式”。不同浏览器支持情况可能不同。";
       const offline = document.createElement("p");
       offline.textContent =
-        "添加到桌面不代表全站可离线使用；在线查询等功能仍需网络。";
+        "添加到桌面不代表全站可离线使用；已打开过的页面支持离线练习，在线查询等功能仍需网络。";
       const close = document.createElement("button");
       close.type = "button";
       close.textContent = "知道了";

@@ -58,6 +58,7 @@ const PATH_TERM = {
 export const calculate = () => {
   const raw = ($("kin-input")?.value || "").trim().replace(/[\s,，、;；]+/g, "");  const result = $("result");
   if (!raw) return bad("请输入亲戚关系，例如：爸爸的妈妈");
+  if (raw.length > 200) return bad("输入过长，请控制在 200 字以内");
   const parts = raw.split("的").filter(Boolean);
   if (parts.length > 5) return bad("关系链太长，暂支持 5 层以内");
   let path = "";
