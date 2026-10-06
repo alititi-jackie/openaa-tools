@@ -8,6 +8,8 @@ const FAV_KEY = "openaa_tools_fav_v1";
 const RECENT_KEY = "openaa_tools_recent_v1";
 const MAX_RECENT = 8;
 const MAX_HISTORY = 5;
+// 自带更丰富历史记录（可点击恢复）的工具：跳过通用自动记录，避免重复
+const NO_AUTO_HISTORY = new Set(["qr-generator"]);
 const histKey = (id) => `openaa_tools_hist_${id}_v1`;
 
 function readList(key) {
@@ -133,6 +135,9 @@ function setupToolPage(toolId) {
   writeList(RECENT_KEY, recent.slice(0, MAX_RECENT));
 
   setupToolFav(toolId);
+
+  // 自带富历史记录的工具自己管理历史（同存储键），跳过通用监听
+  if (NO_AUTO_HISTORY.has(toolId)) return;
 
   // 最近计算：监听结果区变化
   const result =

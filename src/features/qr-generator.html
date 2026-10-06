@@ -1,38 +1,186 @@
 <h1>二维码生成器</h1>
-<p class="subtitle">输入文字或链接，一键生成二维码，可下载 PNG 图片。</p>
+<p class="subtitle">链接、文本、WiFi、电子名片、电话、短信、邮件——7 种内容一键生成二维码，本地生成不上传，支持 PNG / SVG 下载。</p>
 <div class="tool-form">
-  <div class="field">
-    <label for="qr-text">文字或链接</label
-    ><textarea
-      id="qr-text"
-      rows="3"
-      placeholder="例如：https://tools.openaa.com/"
-      style="width:100%;font:inherit"
-    ></textarea>
+  <div class="qr-tabs" role="tablist" aria-label="二维码内容类型">
+    <button type="button" class="qr-tab is-active" data-qrtype="url" role="tab" aria-selected="true">🔗 链接</button>
+    <button type="button" class="qr-tab" data-qrtype="text" role="tab" aria-selected="false">📝 文本</button>
+    <button type="button" class="qr-tab" data-qrtype="wifi" role="tab" aria-selected="false">📶 WiFi</button>
+    <button type="button" class="qr-tab" data-qrtype="vcard" role="tab" aria-selected="false">👤 名片</button>
+    <button type="button" class="qr-tab" data-qrtype="tel" role="tab" aria-selected="false">📞 电话</button>
+    <button type="button" class="qr-tab" data-qrtype="sms" role="tab" aria-selected="false">💬 短信</button>
+    <button type="button" class="qr-tab" data-qrtype="email" role="tab" aria-selected="false">✉️ 邮件</button>
   </div>
-  <div class="field">
-    <label for="qr-size">图片尺寸（像素）</label
-    ><select id="qr-size" style="width:100%;font:inherit">
-      <option value="400">400 × 400</option>
-      <option value="600" selected>600 × 600</option>
-      <option value="1000">1000 × 1000</option>
-    </select>
+
+  <div class="qr-panel" data-panel="url" role="tabpanel">
+    <div class="field">
+      <label for="qr-url">链接地址</label>
+      <input id="qr-url" type="url" inputmode="url" autocomplete="off" maxlength="1200" placeholder="例如：https://tools.openaa.com/" style="font:inherit" />
+    </div>
+    <p class="qr-hint">不带 http(s):// 会自动补上 https://</p>
   </div>
+
+  <div class="qr-panel" data-panel="text" role="tabpanel" hidden>
+    <div class="field">
+      <label for="qr-text">文本内容（最多 1200 字）</label>
+      <textarea id="qr-text" rows="3" maxlength="1200" placeholder="输入任意文字，扫码即显示" style="font:inherit"></textarea>
+    </div>
+  </div>
+
+  <div class="qr-panel" data-panel="wifi" role="tabpanel" hidden>
+    <div class="field">
+      <label for="qr-wifi-ssid">WiFi 名称（SSID）</label>
+      <input id="qr-wifi-ssid" type="text" autocomplete="off" maxlength="64" placeholder="例如：Home_WiFi" style="font:inherit" />
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="qr-wifi-sec">加密方式</label>
+        <select id="qr-wifi-sec" style="font:inherit">
+          <option value="WPA">WPA / WPA2</option>
+          <option value="WEP">WEP</option>
+          <option value="nopass">无密码</option>
+        </select>
+      </div>
+      <div class="field" id="qr-wifi-pwd-wrap">
+        <label for="qr-wifi-pwd">WiFi 密码</label>
+        <input id="qr-wifi-pwd" type="text" autocomplete="off" maxlength="128" placeholder="输入 WiFi 密码" style="font:inherit" />
+      </div>
+    </div>
+    <p class="qr-hint">手机扫码后可直接加入该 WiFi，无需手动输入密码，适合贴在民宿、店铺或家里给客人用。</p>
+  </div>
+
+  <div class="qr-panel" data-panel="vcard" role="tabpanel" hidden>
+    <div class="field-row">
+      <div class="field">
+        <label for="qr-vcard-name">姓名</label>
+        <input id="qr-vcard-name" type="text" autocomplete="off" maxlength="60" placeholder="例如：张伟" style="font:inherit" />
+      </div>
+      <div class="field">
+        <label for="qr-vcard-tel">手机</label>
+        <input id="qr-vcard-tel" type="tel" autocomplete="off" maxlength="30" placeholder="例如：+1 212-555-0100" style="font:inherit" />
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="qr-vcard-email">邮箱</label>
+        <input id="qr-vcard-email" type="email" autocomplete="off" maxlength="100" placeholder="例如：name@example.com" style="font:inherit" />
+      </div>
+      <div class="field">
+        <label for="qr-vcard-org">公司（可选）</label>
+        <input id="qr-vcard-org" type="text" autocomplete="off" maxlength="60" placeholder="例如：OpenAA" style="font:inherit" />
+      </div>
+    </div>
+    <div class="field">
+      <label for="qr-vcard-url">网址（可选）</label>
+      <input id="qr-vcard-url" type="url" inputmode="url" autocomplete="off" maxlength="200" placeholder="例如：https://example.com" style="font:inherit" />
+    </div>
+    <p class="qr-hint">生成标准 vCard 电子名片，扫码即可把联系人存入手机通讯录。</p>
+  </div>
+
+  <div class="qr-panel" data-panel="tel" role="tabpanel" hidden>
+    <div class="field">
+      <label for="qr-tel">电话号码</label>
+      <input id="qr-tel" type="tel" autocomplete="off" maxlength="30" placeholder="例如：+1 212-555-0100" style="font:inherit" />
+    </div>
+    <p class="qr-hint">扫码后直接调起拨号界面，适合印在名片、海报上。</p>
+  </div>
+
+  <div class="qr-panel" data-panel="sms" role="tabpanel" hidden>
+    <div class="field">
+      <label for="qr-sms-tel">接收号码</label>
+      <input id="qr-sms-tel" type="tel" autocomplete="off" maxlength="30" placeholder="例如：+1 212-555-0100" style="font:inherit" />
+    </div>
+    <div class="field">
+      <label for="qr-sms-body">短信内容（可选，最多 500 字）</label>
+      <textarea id="qr-sms-body" rows="2" maxlength="500" placeholder="扫码后自动填入的内容" style="font:inherit"></textarea>
+    </div>
+  </div>
+
+  <div class="qr-panel" data-panel="email" role="tabpanel" hidden>
+    <div class="field">
+      <label for="qr-email-to">收件邮箱</label>
+      <input id="qr-email-to" type="email" autocomplete="off" maxlength="100" placeholder="例如：hi@example.com" style="font:inherit" />
+    </div>
+    <div class="field">
+      <label for="qr-email-sub">主题（可选）</label>
+      <input id="qr-email-sub" type="text" autocomplete="off" maxlength="120" placeholder="邮件主题" style="font:inherit" />
+    </div>
+    <div class="field">
+      <label for="qr-email-body">正文（可选）</label>
+      <textarea id="qr-email-body" rows="2" maxlength="800" placeholder="扫码后自动填入的正文" style="font:inherit"></textarea>
+    </div>
+  </div>
+
+  <fieldset class="qr-style">
+    <legend>样式设置</legend>
+    <div class="field-row">
+      <div class="field">
+        <label for="qr-size">图片尺寸（像素）</label>
+        <select id="qr-size" style="font:inherit">
+          <option value="400">400 × 400</option>
+          <option value="600" selected>600 × 600</option>
+          <option value="1000">1000 × 1000</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="qr-ec">纠错级别</label>
+        <select id="qr-ec" style="font:inherit">
+          <option value="L">L（低，图案最简洁）</option>
+          <option value="M" selected>M（中，推荐）</option>
+          <option value="Q">Q（较高）</option>
+          <option value="H">H（高，适合加 Logo / 印刷）</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="qr-fg">前景色</label>
+        <input type="color" id="qr-fg" class="qr-color" value="#000000" />
+      </div>
+      <div class="field">
+        <label for="qr-bg">背景色</label>
+        <input type="color" id="qr-bg" class="qr-color" value="#ffffff" />
+      </div>
+    </div>
+    <div class="qr-presets" aria-label="颜色预设">
+      <button type="button" class="qr-preset" data-fg="#000000" data-bg="#ffffff"><span class="qr-swatch" style="background:#000000"></span>黑白</button>
+      <button type="button" class="qr-preset" data-fg="#1e3a8a" data-bg="#ffffff"><span class="qr-swatch" style="background:#1e3a8a"></span>深蓝</button>
+      <button type="button" class="qr-preset" data-fg="#14532d" data-bg="#ffffff"><span class="qr-swatch" style="background:#14532d"></span>墨绿</button>
+      <button type="button" class="qr-preset" data-fg="#2563eb" data-bg="#ffffff"><span class="qr-swatch" style="background:#2563eb"></span>品牌蓝</button>
+    </div>
+    <div class="field">
+      <label for="qr-logo">中心 Logo（可选，小于 2MB 的图片）</label>
+      <input type="file" id="qr-logo" accept="image/*" />
+      <p class="qr-hint" id="qr-logo-note">上传后自动使用 H 级纠错，保证加 Logo 后仍可扫描。</p>
+      <button type="button" class="qr-textbtn" id="qr-logo-clear" hidden>移除 Logo</button>
+    </div>
+  </fieldset>
+
   <button class="btn" id="calculate">生成二维码</button>
 </div>
 <div aria-live="polite" class="result" id="result">
-  <strong>—</strong><span>输入内容后生成</span>
+  <strong>—</strong><span>输入内容后自动生成</span>
 </div>
 <div class="note">
-  二维码在您的浏览器本地生成，输入内容不会上传到服务器，可放心使用。
+  🔒 隐私说明：二维码在您的浏览器本地生成、本地下载，WiFi 密码、联系方式等输入内容不会上传到任何服务器，可放心使用。
 </div>
 <div class="info">
   <h2>怎么用？</h2>
   <p>
-    在输入框粘贴网址、一段文字、WiFi
-    信息或联系方式，点击生成即可得到二维码图片，支持下载为 PNG。
+    先选内容类型：网址直接生成链接码；WiFi 填好名称和密码，客人扫码直连；名片填好信息，扫码存入通讯录。输入时自动生成，也可点按钮手动生成，支持下载 PNG 或 SVG。
   </p>
   <h2>常见问题</h2>
+  <div class="faq">
+    <h3>WiFi 二维码扫了就能连上吗？</h3>
+    <p>可以。按 WPA / WEP / 无密码选对加密方式并填对密码，手机相机或微信扫码后会弹出加入网络的确认，无需手动输入密码。</p>
+  </div>
+  <div class="faq">
+    <h3>vCard 名片二维码有什么用？</h3>
+    <p>生成的是标准电子名片格式，对方扫码后可直接把姓名、电话、邮箱存入手机通讯录，印在纸质名片或会议胸牌上很方便。</p>
+  </div>
+  <div class="faq">
+    <h3>PNG 和 SVG 下载该选哪个？</h3>
+    <p>PNG 是位图，通用性最好，发微信、贴网页直接用；SVG 是矢量图，放大到海报、易拉宝尺寸也不会模糊，适合印刷。两个都是本地生成的，无水印。</p>
+  </div>
   <div class="faq">
     <h3>二维码里的中文能识别吗？</h3>
     <p>可以。工具使用 UTF-8 编码，中文、日文、emoji 都能正常编码识别。</p>
@@ -40,7 +188,7 @@
   <div class="faq">
     <h3>内容太长怎么办？</h3>
     <p>
-      二维码容量有限，内容越长图案越密集、越难扫。链接建议先用短链接缩短后再生成。
+      二维码容量有限，内容越长图案越密集、越难扫。链接建议先缩短后再生成；纠错级别越高，可靠性越好但图案越密。
     </p>
   </div>
   <div class="faq">
