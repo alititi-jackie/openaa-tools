@@ -1,11 +1,19 @@
 /* 二维码生成器：类型 tabs / 样式区 / 历史记录 */
 .qr-tabs {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
   margin-bottom: 4px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.qr-tabs::-webkit-scrollbar {
+  display: none;
 }
 .qr-tab {
+  flex-shrink: 0;
   padding: 9px 14px;
   border: 1px solid #cbd5e1;
   border-radius: 999px;
