@@ -638,5 +638,50 @@
       "usa-tools.css",
       "usd-rmb.css"
     ]
+  },
+  {
+    "id": "qr-generator",
+    "name": "二维码生成器",
+    "heading": "二维码生成器",
+    "description": "免费在线二维码生成器：输入文字或链接，一键生成二维码，可下载 PNG 图片，无需注册。",
+    "icon": "🔳",
+    "category": "life",
+    "path": "/tools/qr-generator/",
+    "bodyClass": "",
+    "calculator": "qr",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "kinship",
+    "name": "亲戚关系计算器",
+    "heading": "亲戚关系计算器",
+    "description": "中文亲戚称谓计算器：输入如“爸爸的妈妈”，一键算出是奶奶，支持三代以内常见亲戚关系换算。",
+    "icon": "🧧",
+    "category": "life",
+    "path": "/tools/kinship/",
+    "bodyClass": "",
+    "calculator": "kinship",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "mortgage-prepay",
+    "name": "房贷提前还款计算器",
+    "heading": "房贷提前还款计算器",
+    "description": "房贷提前还款计算器：输入贷款余额、利率、剩余年限和每月多还金额，算出能省多少利息、提前多久还清。",
+    "icon": "🏦",
+    "category": "life",
+    "path": "/tools/mortgage-prepay/",
+    "bodyClass": "",
+    "calculator": "prepay",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
   }
 ]

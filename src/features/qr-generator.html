@@ -1,0 +1,52 @@
+<h1>二维码生成器</h1>
+<p class="subtitle">输入文字或链接，一键生成二维码，可下载 PNG 图片。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="qr-text">文字或链接</label
+    ><textarea
+      id="qr-text"
+      rows="3"
+      placeholder="例如：https://tools.openaa.com/"
+      style="width:100%;font:inherit"
+    ></textarea>
+  </div>
+  <div class="field">
+    <label for="qr-size">图片尺寸（像素）</label
+    ><select id="qr-size" style="width:100%;font:inherit">
+      <option value="400">400 × 400</option>
+      <option value="600" selected>600 × 600</option>
+      <option value="1000">1000 × 1000</option>
+    </select>
+  </div>
+  <button class="btn" id="calculate">生成二维码</button>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>—</strong><span>输入内容后生成</span>
+</div>
+<div class="note">
+  二维码在您的浏览器本地生成，输入内容不会上传到服务器，可放心使用。
+</div>
+<div class="info">
+  <h2>怎么用？</h2>
+  <p>
+    在输入框粘贴网址、一段文字、WiFi
+    信息或联系方式，点击生成即可得到二维码图片，支持下载为 PNG。
+  </p>
+  <h2>常见问题</h2>
+  <div class="faq">
+    <h3>二维码里的中文能识别吗？</h3>
+    <p>可以。工具使用 UTF-8 编码，中文、日文、emoji 都能正常编码识别。</p>
+  </div>
+  <div class="faq">
+    <h3>内容太长怎么办？</h3>
+    <p>
+      二维码容量有限，内容越长图案越密集、越难扫。链接建议先用短链接缩短后再生成。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>生成的二维码有有效期吗？</h3>
+    <p>
+      二维码图案本身永久有效；但如果内容是一个会过期的链接，扫码后打不开属于链接的问题。
+    </p>
+  </div>
+</div>
