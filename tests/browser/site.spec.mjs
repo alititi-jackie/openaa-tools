@@ -39,11 +39,13 @@ for (const tool of catalog) {
 }
 test("home and catalog search", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator(".tool-card")).toHaveCount(41);
+  await expect(page.locator("#tool-groups .tool-card")).toHaveCount(catalog.length);
   await page.locator("#tool-search").fill("温度");
   await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(1);
   await page.getByRole("button", { name: "清除", exact: true }).click();
-  await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(41);
+  await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(
+    catalog.length,
+  );
   await page.locator("[data-filter=dmv]").click();
   await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(4);
   await page.reload();
