@@ -1,4 +1,6 @@
 import { setupInstall } from "./install.js";
+import { setupCopyResult } from "./copy-result.js";
+import { setupEngage } from "./engage.js";
 const status = document.getElementById("site-status");
 import { normalizeBackup, saveImportedRecords } from "./backup.js";
 document
@@ -99,3 +101,7 @@ for (const name of (document.body.dataset.modules || "")
 document
   .querySelectorAll("[data-print]")
   .forEach((b) => b.addEventListener("click", () => window.print()));
+
+// 复制结果按钮 + 收藏/最近使用/计算历史（纯前端 localStorage）
+setupCopyResult();
+setupEngage();

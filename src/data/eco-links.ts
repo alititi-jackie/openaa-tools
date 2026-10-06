@@ -144,16 +144,44 @@ export function guideEcoLink(slug: string): EcoLink {
   };
 }
 
-/* 首页生态入口 */
-export function homeEcoLinks(): EcoLink[] {
-  const links: Array<Omit<EcoLink, "url"> & { url: string }> = [
-    { url: `${OPENAA}/jobs`, label: "找工作", title: "", description: "" },
-    { url: `${OPENAA}/housing`, label: "找房屋", title: "", description: "" },
-    { url: `${OPENAA}/marketplace`, label: "二手市场", title: "", description: "" },
-    { url: `${OPENAA}/services`, label: "本地服务", title: "", description: "" },
-    { url: `${OPENAA}/news`, label: "华人新闻", title: "", description: "" },
-    { url: DMV, label: "DMV 中文题库", title: "", description: "" },
-    { url: NUMBERMOBI, label: "美国手机靓号", title: "", description: "" },
+/* 首页生态入口卡片：5 个核心服务，campaign=homepage-eco */
+export function homeEcoCards(): Array<EcoLink & { icon: string }> {
+  const cards: Array<Omit<EcoLink, "url"> & { url: string; icon: string }> = [
+    {
+      url: `${OPENAA}/jobs`,
+      label: "找工作",
+      title: "找工作",
+      description: "美国华人招聘求职，发布信息免费。",
+      icon: "💼",
+    },
+    {
+      url: `${OPENAA}/housing`,
+      label: "找租房",
+      title: "找租房",
+      description: "华人房东直租、求租信息汇总。",
+      icon: "🏠",
+    },
+    {
+      url: `${OPENAA}/marketplace`,
+      label: "二手市场",
+      title: "二手市场",
+      description: "在美华人二手闲置买卖。",
+      icon: "🛒",
+    },
+    {
+      url: `${OPENAA}/services`,
+      label: "本地服务",
+      title: "本地服务",
+      description: "装修、月嫂、保洁等华人服务。",
+      icon: "🔧",
+    },
+    {
+      url: DMV,
+      label: "DMV 中文题库",
+      title: "DMV 中文题库",
+      description: "各州 DMV 中文题库与模拟考试。",
+      icon: "🚗",
+    },
   ];
-  return links.map((l) => ({ ...l, url: l.url + utm("home") }));
+  return cards.map((c) => ({ ...c, url: c.url + utm("homepage-eco") }));
 }

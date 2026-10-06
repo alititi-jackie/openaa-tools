@@ -61,7 +61,14 @@ const hasManifest = ["expense-record", "usd-rmb", "nyc-attractions"].includes(
   >
   <div class:list={["tool-shell", { "wide-tool": !!tool.bodyClass }]}>
     <nav class="breadcrumbs" aria-label="面包屑">
-      <a href="/">全部工具</a><span> / {tool.name}</span>
+      <a href="/">全部工具</a><span> / {tool.name}</span><button
+        type="button"
+        class="fav-toggle"
+        data-fav-toggle={tool.id}
+        aria-pressed="false"
+        aria-label="收藏这个工具"
+        ><span class="fav-star-icon" aria-hidden="true">☆</span></button
+      >
     </nav><article
       class:list={["tool-page", { "advanced-tool": !!tool.bodyClass }]}
     >
