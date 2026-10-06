@@ -1,0 +1,66 @@
+<h1>亲戚关系计算器</h1>
+<p class="subtitle">输入“爸爸的妈妈”这样的关系链，一键算出是“奶奶”。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="kin-input">亲戚关系</label
+    ><input
+      id="kin-input"
+      type="text"
+      placeholder="例如：爸爸的妈妈"
+      autocomplete="off"
+    />
+  </div>
+  <button class="btn" id="calculate">算出称呼</button>
+  <div class="note" style="margin-top:10px">
+    试试：
+    <button type="button" class="chip" data-kin-example="妈妈的爸爸">妈妈的爸爸</button>
+    <button type="button" class="chip" data-kin-example="丈夫的妈妈">丈夫的妈妈</button>
+    <button type="button" class="chip" data-kin-example="哥哥的儿子">哥哥的儿子</button>
+    <button type="button" class="chip" data-kin-example="妻子的爸爸">妻子的爸爸</button>
+  </div>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>—</strong><span>输入关系后计算</span>
+</div>
+<div class="note">
+  用“的”连接每一层关系，例如“爸爸的妈妈”“妻子的弟弟”。支持三代以内常见亲戚称呼。
+</div>
+<div class="info">
+  <h2>支持哪些称呼？</h2>
+  <p>
+    爸爸、妈妈、哥哥、弟弟、姐姐、妹妹、丈夫、妻子、儿子、女儿、爷爷、奶奶、外公、外婆、孙子、孙女、外孙、外孙女、伯伯、叔叔、姑姑、舅舅、阿姨、侄子、侄女、外甥、外甥女、岳父、岳母、公公、婆婆，以及“爸爸”“妈妈”等常见别称（父亲、母亲、老公、老婆……）。
+  </p>
+  <h2>常见问题</h2>
+  <div class="faq">
+    <h3>“爸爸的妈妈”为什么是奶奶不是外婆？</h3>
+    <p>爸爸的妈妈是父系这边的祖母，中文叫奶奶；妈妈的妈妈才是外婆。</p>
+  </div>
+  <div class="faq">
+    <h3>“大伯子”和“小叔子”有什么区别？</h3>
+    <p>
+      都是丈夫的兄弟：比丈夫年长的叫大伯子，年幼的叫小叔子；妻子的兄弟则叫大舅子/小舅子。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>算不出的关系怎么办？</h3>
+    <p>
+      目前支持三代以内的常见称呼。更远的亲戚（如堂表亲）各地叫法差异大，建议直接问长辈确认。
+    </p>
+  </div>
+</div>
+<style>
+  .chip {
+    display: inline-block;
+    margin: 2px 4px;
+    padding: 4px 12px;
+    border: 1px solid #bfdbfe;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .chip:hover {
+    background: #dbeafe;
+  }
+</style>

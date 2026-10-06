@@ -140,7 +140,7 @@ for (const [tool, input, expected] of advanced)
     tool,
   );
 
-assert.equal(catalog.length, 41, "all original tools are registered");
+assert.equal(catalog.length, 44, "all original tools are registered");
 assert.equal(new Set(catalog.map((x) => x.id)).size, catalog.length);
 assert.equal(new Set(catalog.map((x) => x.path)).size, catalog.length);
 for (const item of catalog)
