@@ -1,4 +1,7 @@
 import { test, expect } from "./fixtures.mjs";
+import fs from "node:fs";
+
+const catalog = JSON.parse(fs.readFileSync("src/data/tools.json", "utf8"));
 const order = ["usa", "life", "dmv", "auto", "convert", "finance"];
 test("homepage groups all tools in the requested order", async ({
   page,
@@ -10,7 +13,9 @@ test("homepage groups all tools in the requested order", async ({
       .locator("[data-group]")
       .evaluateAll((groups) => groups.map((g) => g.dataset.group)),
   ).toEqual(order);
-  const counts = [6, 7, 4, 4, 8, 12];
+  const counts = order.map(
+    (category) => catalog.filter((tool) => tool.category === category).length,
+  );
   for (let i = 0; i < order.length; i++) {
     await expect(
       page.locator(`[data-group=${order[i]}] .tool-card`),
@@ -19,7 +24,7 @@ test("homepage groups all tools in the requested order", async ({
       page.locator(`[data-group=${order[i]}] [data-group-count]`),
     ).toHaveText(counts[i] + " 个工具");
   }
-  await expect(page.locator(".tool-card")).toHaveCount(41);
+  await expect(page.locator("#tool-groups .tool-card")).toHaveCount(catalog.length);
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -49,11 +54,13 @@ test("search keeps matching groups and returns from a tool with state intact", a
   await page.locator('a[href="/tools/temperature/"]').click();
   await page.locator("[data-go-back]").click();
   await expect(page.locator("#tool-search")).toHaveValue("温度");
-  await expect(page.locator(".tool-card:visible")).toHaveCount(1);
+  await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(1);
   await page.locator("#tool-search").fill("no-such-tool");
   await expect(page.locator("[data-group]:visible")).toHaveCount(0);
   await expect(page.locator("#empty-state")).toBeVisible();
   await page.locator("#clear-search").click();
   await expect(page.locator("[data-group]:visible")).toHaveCount(6);
-  await expect(page.locator(".tool-card:visible")).toHaveCount(41);
+  await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(
+    catalog.length,
+  );
 });
