@@ -153,6 +153,19 @@
       <p class="qr-hint" id="qr-logo-note">上传后自动使用 H 级纠错，保证加 Logo 后仍可扫描。</p>
       <button type="button" class="qr-textbtn" id="qr-logo-clear" hidden>移除 Logo</button>
     </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="qr-caption">二维码配文（可选）</label>
+        <input id="qr-caption" type="text" maxlength="40" placeholder="例如：扫码连接 WiFi" style="font:inherit" />
+      </div>
+      <div class="field">
+        <label for="qr-caption-pos">配文位置</label>
+        <select id="qr-caption-pos" style="font:inherit">
+          <option value="below" selected>下方</option>
+          <option value="above">上方</option>
+        </select>
+      </div>
+    </div>
   </fieldset>
 
   <button class="btn" id="calculate">生成二维码</button>

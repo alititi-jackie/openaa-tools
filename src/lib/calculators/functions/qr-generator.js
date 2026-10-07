@@ -163,7 +163,9 @@ function currentStyle() {
   const fg = $("qr-fg")?.value || "#000000";
   const bg = $("qr-bg")?.value || "#ffffff";
   if (logoImg) ec = "H"; // 有 logo 时强制最高纠错，保证可扫
-  return { ec, fg, bg, size: clampNum($("qr-size")?.value, 240, 1200, 600) };
+  const caption = ($("qr-caption")?.value || "").trim().slice(0, 40);
+  const captionPos = $("qr-caption-pos")?.value === "above" ? "above" : "below";
+  return { ec, fg, bg, size: clampNum($("qr-size")?.value, 240, 1200, 600), caption, captionPos };
 }
 
 // 圆角矩形（含旧浏览器 fallback）
@@ -182,10 +184,10 @@ function rr(ctx, x, y, w, h, r) {
   }
 }
 
-function drawLogo(ctx, px) {
+function drawLogo(ctx, px, yOff = 0) {
   const ls = Math.round(px * 0.22);
   const x = (px - ls) / 2;
-  const y = (px - ls) / 2;
+  const y = (px - ls) / 2 + yOff;
   const rad = Math.round(ls * 0.2);
   ctx.save();
   ctx.fillStyle = "#ffffff";
@@ -203,29 +205,42 @@ function drawLogo(ctx, px) {
   ctx.restore();
 }
 
-function buildSVG(qr, count, margin, fg, bg) {
+function escXml(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function buildSVG(qr, count, margin, fg, bg, captionText, captionPos) {
   const n = count + margin * 2;
+  const capH = captionText ? n * 0.18 : 0; // 配文区高度（模块单位）
+  const qrY = captionText && captionPos === "above" ? capH : 0; // 二维码区 Y 偏移
   let d = "";
   for (let r = 0; r < count; r++) {
     for (let c = 0; c < count; c++) {
-      if (qr.isDark(r, c)) d += `M${c + margin} ${r + margin}h1v1h-1z`;
+      if (qr.isDark(r, c)) d += `M${c + margin} ${r + margin + qrY}h1v1h-1z`;
     }
   }
   let logoSvg = "";
   if (logoImg && logoImg.dataset.url) {
     const ls = n * 0.22;
     const x = (n - ls) / 2;
-    const y = (n - ls) / 2;
+    const y = (n - ls) / 2 + qrY;
     const rad = ls * 0.2;
     const f = (v) => v.toFixed(2);
     logoSvg =
       `<rect x="${f(x)}" y="${f(y)}" width="${f(ls)}" height="${f(ls)}" rx="${f(rad)}" fill="#ffffff"/>` +
       `<image href="${logoImg.dataset.url}" x="${f(x)}" y="${f(y)}" width="${f(ls)}" height="${f(ls)}" preserveAspectRatio="xMidYMid meet"/>`;
   }
+  let captionSvg = "";
+  if (captionText) {
+    const fs = capH * 0.52;
+    const ty = captionPos === "above" ? capH / 2 : n + capH / 2;
+    captionSvg = `<text x="${(n / 2).toFixed(2)}" y="${ty.toFixed(2)}" text-anchor="middle" dominant-baseline="central" font-family="system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="${fs.toFixed(2)}" font-weight="600" fill="${fg}">${escXml(captionText)}</text>`;
+  }
+  const h = n + capH;
   return (
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${n} ${n}" width="600" height="600">` +
-    `<rect width="${n}" height="${n}" fill="${bg}"/>` +
-    `<path d="${d}" fill="${fg}"/>${logoSvg}</svg>`
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${n} ${h}" width="600" height="${(600 * h / n).toFixed(0)}">` +
+    `<rect width="${n}" height="${h}" fill="${bg}"/>` +
+    `<path d="${d}" fill="${fg}"/>${logoSvg}${captionSvg}</svg>`
   );
 }
 
@@ -240,30 +255,48 @@ function downloadLink(href, filename, text) {
 }
 
 function renderResult(qr, style, built) {
-  const { fg, bg, size } = style;
+  const { fg, bg, size, caption, captionPos } = style;
   const count = qr.getModuleCount();
   const margin = 4;
   const scale = Math.max(2, Math.floor(size / (count + margin * 2)));
   const px = (count + margin * 2) * scale;
+  const capH = caption ? Math.round(px * 0.18) : 0; // 配文区像素高度
+  const qrOffY = caption && captionPos === "above" ? capH : 0; // 二维码区 Y 偏移
 
   // PNG（canvas）
   const canvas = document.createElement("canvas");
   canvas.width = px;
-  canvas.height = px;
+  canvas.height = px + capH;
   const ctx = canvas.getContext("2d");
   ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, px, px);
+  ctx.fillRect(0, 0, px, px + capH);
   ctx.fillStyle = fg;
   for (let r = 0; r < count; r++) {
     for (let c = 0; c < count; c++) {
-      if (qr.isDark(r, c)) ctx.fillRect((c + margin) * scale, (r + margin) * scale, scale, scale);
+      if (qr.isDark(r, c))
+        ctx.fillRect((c + margin) * scale, qrOffY + (r + margin) * scale, scale, scale);
     }
   }
-  if (logoImg) drawLogo(ctx, px);
+  if (logoImg) drawLogo(ctx, px, qrOffY);
+  // 配文：居中绘制，超宽自动截断
+  let captionText = "";
+  if (caption) {
+    const fontPx = Math.max(12, Math.round(capH * 0.52));
+    ctx.fillStyle = fg;
+    ctx.font = `600 ${fontPx}px system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    captionText = caption;
+    while (captionText.length > 1 && ctx.measureText(captionText).width > px * 0.92) {
+      captionText = captionText.slice(0, -1);
+    }
+    const ty = captionPos === "above" ? capH / 2 : px + capH / 2;
+    ctx.fillText(captionText, px / 2, ty);
+  }
   const pngUrl = canvas.toDataURL("image/png");
 
   // SVG（矢量）
-  const svg = buildSVG(qr, count, margin, fg, bg);
+  const svg = buildSVG(qr, count, margin, fg, bg, captionText, captionPos);
 
   const result = $("result");
   result.replaceChildren();
@@ -274,7 +307,7 @@ function renderResult(qr, style, built) {
   img.alt = "生成的二维码";
   const show = Math.min(px, 300);
   img.width = show;
-  img.height = show;
+  img.height = Math.round((show * canvas.height) / canvas.width);
   img.style.cssText =
     "image-rendering:pixelated;border:1px solid #e5e7eb;border-radius:12px;background:#fff;display:block;margin:0 auto";
   const btnRow = document.createElement("div");
@@ -354,6 +387,8 @@ function collectState() {
     bg: $("qr-bg")?.value || "#ffffff",
     ec: $("qr-ec")?.value || "M",
     size: $("qr-size")?.value || "600",
+    caption: $("qr-caption")?.value || "",
+    captionPos: $("qr-caption-pos")?.value || "below",
   };
 }
 function saveHistory(built) {
@@ -410,6 +445,8 @@ function restoreHistory(i) {
   if ($("qr-bg")) $("qr-bg").value = st.bg || "#ffffff";
   if ($("qr-ec")) $("qr-ec").value = st.ec || "M";
   if ($("qr-size")) $("qr-size").value = st.size || "600";
+  if ($("qr-caption")) $("qr-caption").value = st.caption || "";
+  if ($("qr-caption-pos")) $("qr-caption-pos").value = st.captionPos || "below";
   clearLogo({ silent: true }); // 文件无法持久化，恢复时清空 logo
   syncWifiPwd();
   generate({ fromAuto: false });
