@@ -111,8 +111,7 @@ function addCardStar(card) {
 }
 function cardLinkToId(card) {
   const href = card.getAttribute("href") || "";
-  const m = href.match(/^\/(?:tools|usa)\/([^/]+)\/$/);
-  return m ? m[1] : null;
+  return toolIndex().find((tool) => tool.path === href)?.id || null;
 }
 
 /** 工具页：面包屑旁的 ★ 收藏按钮（服务端渲染，JS 只绑定行为） */
