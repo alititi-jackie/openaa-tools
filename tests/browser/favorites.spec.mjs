@@ -19,7 +19,7 @@ test("all catalog cards have favorites and DMV favorites persist", async ({ page
     await expect(star).toHaveAttribute("aria-pressed", "true");
     await star.click();
     await expect(star).toHaveAttribute("aria-pressed", "false");
-    await expect(page.locator(`#engage-fav-grid a[href="${tool.path}"]`)).toHaveCount(0);
+    await expect(page.locator(`#engage-fav-grid a[href="${tool.path}"]`)).toBeHidden();
   }
   await expect(page.locator("#engage-fav")).toBeHidden();
 });
