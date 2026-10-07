@@ -41,7 +41,6 @@ const MAX_HIST = 8;
 let currentType = "url";
 let logoImg = null; // HTMLImageElement | null
 let debounceTimer = 0;
-let histTimer = 0;
 
 const val = (id) => ($(id)?.value || "").trim();
 const clampNum = (v, lo, hi, dflt) => {
@@ -240,7 +239,7 @@ function downloadLink(href, filename, text) {
   return a;
 }
 
-function renderResult(qr, style) {
+function renderResult(qr, style, built) {
   const { fg, bg, size } = style;
   const count = qr.getModuleCount();
   const margin = 4;
@@ -280,10 +279,16 @@ function renderResult(qr, style) {
     "image-rendering:pixelated;border:1px solid #e5e7eb;border-radius:12px;background:#fff;display:block;margin:0 auto";
   const btnRow = document.createElement("div");
   btnRow.style.cssText = "display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap";
-  btnRow.append(
-    downloadLink(pngUrl, "qrcode.png", "下载 PNG"),
-    downloadLink("data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg), "qrcode.svg", "下载 SVG"),
+  const pngA = downloadLink(pngUrl, "qrcode.png", "下载 PNG");
+  const svgA = downloadLink(
+    "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg),
+    "qrcode.svg",
+    "下载 SVG",
   );
+  // 下载是最强的"想要这个"信号：点下载即记一条历史（saveHistory 自带去重）
+  pngA.addEventListener("click", () => saveHistory(built));
+  svgA.addEventListener("click", () => saveHistory(built));
+  btnRow.append(pngA, svgA);
   const tip = document.createElement("p");
   tip.className = "note";
   tip.style.marginTop = "10px";
@@ -316,13 +321,9 @@ function generate(opts = {}) {
     const qr = qrcode(0, style.ec);
     qr.addData(built.payload);
     qr.make();
-    renderResult(qr, style);
+    renderResult(qr, style, built);
     if (forceSave) {
       saveHistory(built);
-    } else {
-      // 输入时自动生成：延迟保存一条去重后的历史，避免每敲一个字存一条
-      clearTimeout(histTimer);
-      histTimer = setTimeout(() => saveHistory(built), 1500);
     }
   } catch {
     bad("生成失败，内容可能过长，请缩短后重试");
@@ -521,7 +522,6 @@ function bindRealtime() {
 // 手动"生成二维码"按钮（由 src/features/calculator.js 统一绑定）
 export const calculate = () => {
   clearTimeout(debounceTimer);
-  clearTimeout(histTimer);
   generate({ fromAuto: false, forceSave: true });
 };
 
