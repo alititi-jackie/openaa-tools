@@ -831,6 +831,8 @@ function showToast(text) {
     if (navigator.clipboard) await navigator.clipboard.writeText(text);
     showToast("已复制，可到微信粘贴发送");
   });
+  // Signal readiness only after import handlers and the rest of the UI are bound.
+  $("expenseImportInput")?.setAttribute("data-ready", "true");
   resetForm();
   if ($("expenseMonthPicker")) $("expenseMonthPicker").value = monthNow();
   render();

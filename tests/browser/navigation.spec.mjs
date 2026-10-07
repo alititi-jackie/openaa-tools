@@ -38,6 +38,10 @@ test("invalid import preserves records and valid import can be restored", async 
     { key, row },
   );
   await page.reload();
+  await expect(page.locator("#expenseImportInput")).toHaveAttribute(
+    "data-ready",
+    "true",
+  );
   const messages = [];
   page.on("dialog", async (d) => {
     messages.push(d.message());
