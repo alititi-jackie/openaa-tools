@@ -15,6 +15,23 @@
     "styles": []
   },
   {
+    "id": "qr-generator",
+    "name": "二维码生成器",
+    "heading": "二维码生成器",
+    "description": "免费在线二维码生成器：链接、文本、WiFi、电子名片、电话、短信、邮件 7 种内容，本地生成不上传，可下载 PNG / SVG，无需注册。",
+    "icon": "🔳",
+    "category": "life",
+    "path": "/tools/qr-generator/",
+    "bodyClass": "",
+    "calculator": "qr",
+    "modules": [
+      "calculator"
+    ],
+    "styles": [
+      "qr-generator.css"
+    ]
+  },
+  {
     "id": "age",
     "name": "年龄计算器",
     "heading": "年龄计算器",
@@ -637,23 +654,6 @@
     "styles": [
       "usa-tools.css",
       "usd-rmb.css"
-    ]
-  },
-  {
-    "id": "qr-generator",
-    "name": "二维码生成器",
-    "heading": "二维码生成器",
-    "description": "免费在线二维码生成器：链接、文本、WiFi、电子名片、电话、短信、邮件 7 种内容，本地生成不上传，可下载 PNG / SVG，无需注册。",
-    "icon": "🔳",
-    "category": "life",
-    "path": "/tools/qr-generator/",
-    "bodyClass": "",
-    "calculator": "qr",
-    "modules": [
-      "calculator"
-    ],
-    "styles": [
-      "qr-generator.css"
     ]
   },
   {
