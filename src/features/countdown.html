@@ -1,0 +1,127 @@
+<h1>倒计时</h1>
+<p class="subtitle">记录重要的日子：生日、纪念日、考试、旅行，一个个倒数。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="cd-name">名称</label>
+    <input
+      id="cd-name"
+      type="text"
+      maxlength="40"
+      placeholder="例如：妈妈生日、结婚纪念日"
+      autocomplete="off"
+    />
+  </div>
+  <div class="field">
+    <label for="cd-date">目标日期</label>
+    <input id="cd-date" type="date" />
+  </div>
+  <button class="btn" id="cd-add">添加倒计时</button>
+  <ul class="cd-list" id="cd-list" aria-live="polite"></ul>
+  <div class="cd-empty" id="cd-empty">
+    还没有倒计时。<br />在上面输入名称和日期，添加第一个重要的日子吧。
+  </div>
+</div>
+<div class="note">数据只保存在这台设备的浏览器里，不会上传到任何服务器。</div>
+<div class="info">
+  <h2>怎么用</h2>
+  <p>
+    输入名称和目标日期，点「添加倒计时」即可。列表按目标日期从近到远排序；点每条后面的「删除」可移除。同一天可以添加多条（比如同一天两个人生日）。
+  </p>
+  <h2>常见问题</h2>
+  <div class="faq">
+    <h3>我的数据存在哪里？</h3>
+    <p>
+      存在这台设备浏览器的 localStorage
+      里（键名 openaa_countdown_v1），只有这个浏览器能看到，网站服务器不保存。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>换手机或换浏览器怎么办？</h3>
+    <p>
+      数据只存本机浏览器，换设备后需要重新添加。重要日子建议同时记在日历或备忘录里。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>清除了浏览器数据会怎样？</h3>
+    <p>
+      如果清除了浏览器缓存 / 网站数据，倒计时列表会被清空且无法恢复。
+    </p>
+  </div>
+</div>
+<style>
+  .cd-list {
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0;
+  }
+  .cd-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 4px;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .cd-item:last-child {
+    border-bottom: 0;
+  }
+  .cd-main {
+    flex: 1;
+    min-width: 0;
+  }
+  .cd-title {
+    font-weight: 600;
+    color: #111827;
+    font-size: 15.5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .cd-date {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 2px;
+  }
+  .cd-days {
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1d4ed8;
+    background: #eff6ff;
+    border-radius: 999px;
+    padding: 4px 12px;
+    white-space: nowrap;
+  }
+  .cd-days.today {
+    color: #92400e;
+    background: #fef3c7;
+  }
+  .cd-days.past {
+    color: #6b7280;
+    background: #f3f4f6;
+    font-weight: 600;
+  }
+  .cd-del {
+    flex-shrink: 0;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    color: #9ca3af;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .cd-del:hover {
+    color: #dc2626;
+    border-color: #fecaca;
+  }
+  .cd-empty {
+    margin-top: 14px;
+    padding: 22px 16px;
+    border: 1px dashed #d1d5db;
+    border-radius: 12px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+</style>

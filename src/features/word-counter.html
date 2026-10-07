@@ -1,0 +1,112 @@
+<h1>字数统计</h1>
+<p class="subtitle">输入即时统计：中文字数、英文单词数、字符数、段落行数，全程本地处理。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="wc-input">输入文本</label>
+    <textarea
+      id="wc-input"
+      rows="8"
+      placeholder="在此粘贴或输入要统计的文本……"
+    ></textarea>
+  </div>
+  <dl class="wc-grid" aria-live="polite">
+    <div class="wc-stat">
+      <dt>中文字数</dt>
+      <dd id="wc-cn">0</dd>
+    </div>
+    <div class="wc-stat">
+      <dt>英文单词数</dt>
+      <dd id="wc-words">0</dd>
+    </div>
+    <div class="wc-stat">
+      <dt>英文字母数</dt>
+      <dd id="wc-letters">0</dd>
+    </div>
+    <div class="wc-stat">
+      <dt>总字符数（含空格）</dt>
+      <dd id="wc-with-space">0</dd>
+    </div>
+    <div class="wc-stat">
+      <dt>总字符数（不含空格）</dt>
+      <dd id="wc-no-space">0</dd>
+    </div>
+    <div class="wc-stat">
+      <dt>段落数</dt>
+      <dd id="wc-paragraphs">0</dd>
+    </div>
+    <div class="wc-stat">
+      <dt>行数</dt>
+      <dd id="wc-lines">0</dd>
+    </div>
+  </dl>
+</div>
+<div class="note">
+  全程在浏览器本地统计，文本不上传服务器，可放心粘贴未发表的稿件。
+</div>
+<div class="info">
+  <h2>怎么用</h2>
+  <p>
+    把文本粘贴或输入到文本框，各项数字实时更新，无需点击按钮；清空文本框即清零。
+  </p>
+  <h2>常见问题</h2>
+  <div class="faq">
+    <h3>中英文混排怎么算？</h3>
+    <p>
+      中文字数按汉字字符计（CJK
+      统一表意文字，一个汉字算 1）；英文单词按空格分隔计，hello-world、don't
+      这类连写形式各算 1 个单词；数字和标点不计入中英文字数，只计入总字符数。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>写论文、投稿够用吗？</h3>
+    <p>
+      日常写作、投稿字数要求足够参考；期刊对"字数"的定义各不相同（如是否计空格、图表说明是否计入），正式投稿前请以期刊的具体要求和
+      Word 的字数统计为准。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>粘贴的文本会被上传吗？</h3>
+    <p>不会。统计完全在本地
+      JavaScript 中完成，没有网络请求，未发表的稿件也可以放心粘贴。</p>
+  </div>
+</div>
+<style>
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    resize: vertical;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .wc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 14px 0 0;
+  }
+  .wc-stat {
+    margin: 0;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+    text-align: center;
+  }
+  .wc-stat dt {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 4px;
+  }
+  .wc-stat dd {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1d4ed8;
+    font-variant-numeric: tabular-nums;
+  }
+  @media (min-width: 560px) {
+    .wc-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

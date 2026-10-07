@@ -1,0 +1,121 @@
+<h1>简繁拼音转换</h1>
+<p class="subtitle">简繁互转、汉字转拼音，输入即转，全程本地不上传。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="cc-input">输入中文（简体 / 繁体均可）</label>
+    <textarea id="cc-input" rows="4" maxlength="20000" placeholder="例如：在这里输入文字，简繁拼音一次搞定"></textarea>
+  </div>
+  <p class="cc-count" id="cc-count"></p>
+</div>
+<div class="cc-outputs" aria-live="polite">
+  <section class="cc-out">
+    <h2>简体中文</h2>
+    <div class="cc-text" id="cc-simp" lang="zh-CN"></div>
+  </section>
+  <section class="cc-out">
+    <h2>繁体中文</h2>
+    <div class="cc-text" id="cc-trad" lang="zh-TW"></div>
+  </section>
+  <section class="cc-out">
+    <div class="cc-out-head">
+      <h2>拼音</h2>
+      <div class="cc-tones" role="group" aria-label="拼音声调显示">
+        <button type="button" class="cc-tone is-active" data-tone="marks">带声调</button>
+        <button type="button" class="cc-tone" data-tone="plain">无声调</button>
+      </div>
+    </div>
+    <div class="cc-text" id="cc-pinyin"></div>
+  </section>
+</div>
+<div class="note">
+  繁→简采用 OpenCC 词组级转换；简→繁为单字对照（约 4000 常用字），一字多繁（如发→發/髮）无法按语境判断；拼音取多音字最常用读音。罕见字可能未覆盖，结果仅供参考。
+</div>
+<div class="info">
+  <h2>怎么用</h2>
+  <p>在输入框粘贴或输入中文，简体、繁体、拼音三栏实时更新。用「带声调 / 无声调」切换拼音显示方式。</p>
+  <h2>常见问题</h2>
+  <div class="faq">
+    <h3>简→繁为什么偶尔转错？</h3>
+    <p>简→繁是单字逐字转换，遇到一字对应多个繁体字的情况（如「发」对应發/髮、「干」对应幹/乾/干）只能取最常用的一个，无法像人一样看语境选择。正式文稿请人工校对。</p>
+  </div>
+  <div class="faq">
+    <h3>拼音的多音字准吗？</h3>
+    <p>多音字取最常用读音（如「行」取 xíng、「重」取 zhòng），不做语境判断。「银行」会标成 yín xíng，需要人工修正。</p>
+  </div>
+  <div class="faq">
+    <h3>输入的内容会上传吗？</h3>
+    <p>不会。所有转换都在你的浏览器本地完成，不经过任何服务器。</p>
+  </div>
+</div>
+<style>
+  #cc-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    line-height: 1.7;
+    resize: vertical;
+  }
+  .cc-count {
+    margin: 6px 0 0;
+    font-size: 12px;
+    color: #9ca3af;
+  }
+  .cc-outputs {
+    display: grid;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  .cc-out {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px 14px;
+    background: #fff;
+  }
+  .cc-out h2 {
+    font-size: 14px;
+    margin: 0 0 8px;
+    color: #6b7280;
+    font-weight: 600;
+  }
+  .cc-out-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .cc-out-head h2 {
+    margin: 0;
+  }
+  .cc-text {
+    font-size: 15px;
+    line-height: 1.9;
+    min-height: 2.2em;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+  .cc-text:empty::before {
+    content: "—";
+    color: #d1d5db;
+  }
+  .cc-tones {
+    display: flex;
+    gap: 6px;
+  }
+  .cc-tone {
+    padding: 4px 12px;
+    border: 1px solid #bfdbfe;
+    border-radius: 999px;
+    background: #fff;
+    color: #1d4ed8;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .cc-tone.is-active {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    color: #fff;
+  }
+</style>

@@ -1,0 +1,199 @@
+<h1>图片格式转换</h1>
+<p class="subtitle">JPG、PNG、WebP 批量互转，每张单独下载，全程本地处理不上传。</p>
+<div class="tool-form">
+  <div class="field">
+    <label class="dropzone" id="iv-drop" for="iv-files" tabindex="0">
+      <span class="dz-icon" aria-hidden="true">🔄</span>
+      <span class="dz-text"
+        ><strong>点击选择图片</strong
+        ><span>或把图片拖到这里（可多选，最多 20 张）</span></span
+      >
+      <input
+        id="iv-files"
+        class="visually-hidden"
+        type="file"
+        accept="image/*"
+        multiple
+      />
+    </label>
+    <p class="iv-hint" id="iv-count">尚未选择图片</p>
+  </div>
+  <div class="field">
+    <label for="iv-target">目标格式</label>
+    <select id="iv-target">
+      <option value="jpeg" selected>JPEG（.jpg，体积小，不支持透明）</option>
+      <option value="png">PNG（.png，支持透明）</option>
+      <option value="webp">WebP（.webp，体积小，支持透明）</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="iv-quality">输出质量：<span class="iv-qval" id="iv-qval">0.90</span></label>
+    <div class="iv-range-row">
+      <input
+        id="iv-quality"
+        type="range"
+        min="0.1"
+        max="1"
+        step="0.05"
+        value="0.9"
+      />
+    </div>
+    <p class="iv-hint">只对 JPEG / WebP 有效；转 PNG 时此项不起作用。</p>
+  </div>
+  <button class="btn" id="iv-run" disabled>开始转换</button>
+  <div class="iv-list" id="iv-list"></div>
+</div>
+<div aria-live="polite" class="result" id="iv-result"><strong>—</strong><span>选择图片后开始</span></div>
+<div class="note">全程在浏览器本地处理，图片不上传服务器，关闭页面不留存。</div>
+<div class="info">
+  <h2>怎么用</h2>
+  <p>
+    1. 点击上方区域选择图片，或直接把图片拖进来（可多选）；
+    2. 选择目标格式（JPEG / PNG / WebP），需要时调输出质量；
+    3. 点“开始转换”，转换后点每张图下面的“下载”保存，
+    文件名自动加上 -converted 后缀，如 photo-converted.jpg。
+  </p>
+  <h2>常见问题</h2>
+  <div class="faq">
+    <h3>哪种格式体积最小？</h3>
+    <p>
+      一般是 WebP &lt; JPEG &lt; PNG。照片类图片转 WebP 或 JPEG 最划算；
+      图标、截图、带文字的图片建议转 PNG，边缘更清晰。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>透明图转成 JPEG 会怎样？</h3>
+    <p>
+      JPEG 不支持透明，透明部分会变成不透明底色（通常是白色）。
+      需要保留透明背景请转成 PNG 或 WebP。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>支持 HEIC 格式吗？</h3>
+    <p>
+      不支持。HEIC 是苹果设备常用的照片格式，浏览器无法直接解码。
+      请先在手机或电脑上把照片导出为 JPG，再用本工具转换。
+    </p>
+  </div>
+</div>
+<style>
+  .dropzone {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 18px 16px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    background: #f8fafc;
+    cursor: pointer;
+    text-align: left;
+  }
+  .dropzone:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+  }
+  .dropzone.dragover {
+    border-color: #2563eb;
+    background: #eff6ff;
+  }
+  .dz-icon {
+    font-size: 32px;
+    line-height: 1;
+    flex: none;
+  }
+  .dz-text strong {
+    display: block;
+    font-size: 15px;
+  }
+  .dz-text > span {
+    display: block;
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 2px;
+  }
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .iv-hint {
+    font-size: 13px;
+    color: #64748b;
+    margin: 6px 0 0;
+  }
+  .iv-range-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .iv-range-row input[type="range"] {
+    flex: 1;
+    min-width: 0;
+  }
+  .iv-qval {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+  .iv-list {
+    display: grid;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .iv-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 10px;
+    background: #fff;
+  }
+  .iv-thumb {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #f1f5f9;
+    flex: none;
+  }
+  .iv-meta {
+    min-width: 0;
+    flex: 1;
+  }
+  .iv-name {
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .iv-sizes {
+    font-size: 13px;
+    color: #475569;
+    margin-top: 2px;
+    overflow-wrap: anywhere;
+  }
+  .iv-err {
+    color: #dc2626;
+  }
+  .iv-tip {
+    font-size: 12px;
+    color: #b45309;
+    margin-top: 2px;
+  }
+  .iv-dl {
+    flex: none;
+    font-size: 13px;
+    padding: 8px 12px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .iv-dl[hidden] {
+    display: none;
+  }
+</style>

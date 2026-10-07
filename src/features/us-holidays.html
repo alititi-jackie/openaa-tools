@@ -1,0 +1,196 @@
+<h1>美国联邦假期日历</h1>
+<p class="subtitle">2026 / 2027 年十一个联邦假日中文对照，含顺延日期和拼假攻略。</p>
+<div class="tool-form">
+  <div class="hol-tabs" role="tablist" aria-label="年份选择">
+    <button
+      type="button"
+      class="hol-tab is-active"
+      role="tab"
+      aria-selected="true"
+      data-hol-year="2026"
+    >
+      2026
+    </button>
+    <button
+      type="button"
+      class="hol-tab"
+      role="tab"
+      aria-selected="false"
+      data-hol-year="2027"
+    >
+      2027
+    </button>
+  </div>
+  <div aria-live="polite" class="result hol-next" id="result"></div>
+  <ul class="hol-list" id="hol-list"></ul>
+  <div class="hol-bridge">
+    <h2>2026 拼假攻略</h2>
+    <div class="hol-plan">
+      <h3>🦃 感恩节：请 1 天，休 4 天</h3>
+      <p>
+        11 月 26 日（周四）是法定假日，只需请 11 月 27 日（周五）1
+        天年假，即可 11 月 26–29 日连休 4 天。多请 11 月 25 日（周三），2
+        天年假凑出 5 天。
+      </p>
+    </div>
+    <div class="hol-plan">
+      <h3>🎄 圣诞节：请 1 天，休 4 天</h3>
+      <p>
+        12 月 25 日（周五）是法定假日，请 12 月 24 日（周四）1
+        天年假，即可 12 月 24–27 日连休 4 天。
+      </p>
+    </div>
+    <div class="hol-plan">
+      <h3>🎆 独立日：不请假，白得 3 天</h3>
+      <p>
+        7 月 4 日（周六）是法定假日，按规定顺延到 7 月 3 日（周五）放假，7
+        月 3–5 日直接连休 3 天，无需请假。加请 7 月 2 日（周四）可凑 4 天。
+      </p>
+    </div>
+    <div class="hol-plan">
+      <h3>✨ 年末超级长假：请 5 天，休 11 天</h3>
+      <p>
+        请 12 月 24 日（周四）＋ 12 月 28–31 日（周一至周四），共 5
+        天年假，从 12 月 24 日一直休到 2027 年 1 月 3 日（周日），连休 11
+        天——中间包含圣诞节、2027
+        年元旦两个法定假日和两个周末，是全年性价比最高的拼法。
+      </p>
+    </div>
+  </div>
+</div>
+<div class="note">
+  日期依据美国人事管理局（OPM）公布的联邦假日表；顺延（observed）指假日逢周末时联邦雇员实际放假的工作日。私企放假安排请以公司政策为准。
+</div>
+<div class="info">
+  <h2>联邦假日说明</h2>
+  <p>
+    美国联邦假日由法律（5 U.S.C. 6103）规定，共
+    11 个：联邦政府机构在这几天关闭，联邦雇员带薪休假。银行、股市和多数企业通常跟随，但私企没有法律义务必须放假。
+  </p>
+  <h2>常见问题</h2>
+  <div class="faq">
+    <h3>“顺延（observed）”是什么意思？</h3>
+    <p>
+      联邦假日如果落在周六，大多数联邦雇员改在前一个周五放假；如果落在周日，则顺延到下周一。比如
+      2026 年独立日是周六，实际放假的是 7 月 3 日（周五）。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>私企必须按这个放假吗？</h3>
+    <p>
+      不必须。联邦假日只强制联邦政府机构；私营公司、学校放不放假、放哪天，由各自政策决定，不过多数会参照联邦假日表。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>2027 年的假日在官方哪里看？</h3>
+    <p>
+      美国人事管理局（OPM）官网的 Federal Holidays
+      页面会提前公布未来几年的假日表，本页 2027 年数据即据此整理。
+    </p>
+  </div>
+</div>
+<style>
+  .hol-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .hol-tab {
+    flex: 1;
+    padding: 10px 0;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #f9fafb;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #374151;
+  }
+  .hol-tab.is-active {
+    background: #eff6ff;
+    border-color: #3b82f6;
+    color: #1d4ed8;
+  }
+  .hol-next {
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #fef3c7;
+    color: #92400e;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .hol-list {
+    list-style: none;
+    margin: 0 0 4px;
+    padding: 0;
+  }
+  .hol-item {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 11px 4px;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 15px;
+  }
+  .hol-item:last-child {
+    border-bottom: 0;
+  }
+  .hol-date {
+    flex-shrink: 0;
+    min-width: 118px;
+    font-weight: 700;
+    color: #111827;
+  }
+  .hol-name {
+    flex: 1;
+    min-width: 0;
+  }
+  .hol-name .cn {
+    font-weight: 600;
+    color: #111827;
+  }
+  .hol-name .en {
+    display: block;
+    font-size: 12.5px;
+    color: #6b7280;
+  }
+  .hol-week {
+    flex-shrink: 0;
+    color: #6b7280;
+    font-size: 13.5px;
+  }
+  .hol-obs {
+    display: block;
+    font-size: 12.5px;
+    color: #b45309;
+    margin-top: 2px;
+  }
+  .hol-past {
+    opacity: 0.45;
+  }
+  .hol-bridge {
+    margin-top: 18px;
+  }
+  .hol-bridge > h2 {
+    font-size: 17px;
+    margin: 0 0 10px;
+  }
+  .hol-plan {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    background: #fff;
+  }
+  .hol-plan h3 {
+    margin: 0 0 6px;
+    font-size: 15.5px;
+  }
+  .hol-plan p {
+    margin: 0;
+    font-size: 14.5px;
+    color: #374151;
+    line-height: 1.65;
+  }
+</style>

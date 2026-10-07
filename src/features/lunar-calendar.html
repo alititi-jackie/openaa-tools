@@ -1,0 +1,194 @@
+<h1>公历农历转换</h1>
+<p class="subtitle">公历查农历、农历查公历，附生肖、干支、节气和传统节日。</p>
+<div class="tool-form">
+  <div class="lc-tabs" role="tablist" aria-label="转换方向">
+    <button
+      type="button"
+      class="lc-tab is-active"
+      role="tab"
+      aria-selected="true"
+      data-lc-tab="solar"
+    >
+      公历 → 农历
+    </button>
+    <button
+      type="button"
+      class="lc-tab"
+      role="tab"
+      aria-selected="false"
+      data-lc-tab="lunar"
+    >
+      农历 → 公历
+    </button>
+  </div>
+
+  <div class="lc-panel" data-lc-panel="solar">
+    <div class="field">
+      <label for="lc-solar-date">公历日期</label>
+      <input id="lc-solar-date" type="date" value="" />
+    </div>
+    <div aria-live="polite" class="result" id="result">
+      <strong>—</strong><span>选择公历日期后显示农历</span>
+    </div>
+  </div>
+
+  <div class="lc-panel" data-lc-panel="lunar" hidden>
+    <div class="lc-row">
+      <div class="field">
+        <label for="lc-lunar-year">农历年</label>
+        <input
+          id="lc-lunar-year"
+          type="number"
+          min="1900"
+          max="2100"
+          value="2026"
+          inputmode="numeric"
+        />
+      </div>
+      <div class="field">
+        <label for="lc-lunar-month">农历月</label>
+        <select id="lc-lunar-month">
+          <option value="1">正月</option>
+          <option value="2">二月</option>
+          <option value="3">三月</option>
+          <option value="4">四月</option>
+          <option value="5">五月</option>
+          <option value="6">六月</option>
+          <option value="7">七月</option>
+          <option value="8">八月</option>
+          <option value="9">九月</option>
+          <option value="10">十月</option>
+          <option value="11">冬月</option>
+          <option value="12">腊月</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="lc-lunar-day">农历日</label>
+        <select id="lc-lunar-day"></select>
+      </div>
+    </div>
+    <div class="field lc-leap" id="lc-leap-wrap" hidden>
+      <label class="lc-check"
+        ><input type="checkbox" id="lc-lunar-leap" /> 是闰月（该年该月有闰月）</label
+      >
+    </div>
+    <button class="btn" id="lc-lunar-run">查公历日期</button>
+    <div aria-live="polite" class="result" id="lc-lunar-result">
+      <strong>—</strong><span>选择农历日期后查询</span>
+    </div>
+  </div>
+</div>
+<div class="note">
+  农历数据覆盖 1900–2100
+  年，纯本地计算；节气日期经天文算法逐年核对，传统节日按农历规则推算。
+</div>
+<div class="info">
+  <h2>怎么用</h2>
+  <p>
+    「公历 →
+    农历」选择任意公历日期，即时显示对应的农历日期、生肖、干支纪年、当天节气和传统节日；「农历
+    → 公历」选择农历年月日（有闰月的年份会自动出现“闰月”选项），点按钮查出公历日期。
+  </p>
+  <h2>常见问题</h2>
+  <div class="faq">
+    <h3>闰月是怎么算的？</h3>
+    <p>
+      闰月按农历规则设置：没有中气的月份为闰月，闰哪个月由月球运行决定，不是固定每几年一次。本工具根据所选农历年自动判断该月是否有闰月，有则显示“闰月”勾选框。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>二十四节气是什么？</h3>
+    <p>
+      节气是按太阳在黄道上的位置划分的 24
+      个时段（如立春、清明、冬至），指导农事和传统习俗。注意节气按公历走，与农历月份没有固定对应关系。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>数据准吗？</h3>
+    <p>
+      农历换算、干支生肖、节气时刻均经与开源历法库交叉验证，与常见万年历一致，仅供日常参考，不建议用于命理择吉等需要精确到时辰的用途。
+    </p>
+  </div>
+</div>
+<style>
+  .lc-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .lc-tab {
+    flex: 1;
+    padding: 10px 0;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #f9fafb;
+    font-size: 15px;
+    cursor: pointer;
+    color: #374151;
+  }
+  .lc-tab.is-active {
+    background: #eff6ff;
+    border-color: #3b82f6;
+    color: #1d4ed8;
+    font-weight: 600;
+  }
+  .lc-row {
+    display: flex;
+    gap: 10px;
+  }
+  .lc-row .field {
+    flex: 1;
+    min-width: 0;
+  }
+  .lc-leap {
+    margin: 10px 0;
+  }
+  .lc-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .lc-check input {
+    width: 18px;
+    height: 18px;
+  }
+  .lc-kv {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 6px 12px;
+    text-align: left;
+    font-size: 15px;
+    margin-top: 8px;
+  }
+  .lc-kv dt {
+    color: #6b7280;
+    white-space: nowrap;
+  }
+  .lc-kv dd {
+    margin: 0;
+    font-weight: 600;
+    color: #111827;
+  }
+  .lc-fest {
+    display: inline-block;
+    margin: 2px 4px 2px 0;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: #fef3c7;
+    color: #92400e;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .lc-jieqi {
+    display: inline-block;
+    margin: 2px 4px 2px 0;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: #dcfce7;
+    color: #166534;
+    font-size: 13px;
+    font-weight: 600;
+  }
+</style>

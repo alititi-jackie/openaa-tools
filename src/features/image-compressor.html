@@ -1,0 +1,218 @@
+<h1>图片压缩</h1>
+<p class="subtitle">批量压缩 JPG / PNG / WebP 图片，调质量、限尺寸，全程本地处理不上传。</p>
+<div class="tool-form">
+  <div class="field">
+    <label class="dropzone" id="ic-drop" for="ic-files" tabindex="0">
+      <span class="dz-icon" aria-hidden="true">🖼️</span>
+      <span class="dz-text"
+        ><strong>点击选择图片</strong
+        ><span>或把图片拖到这里（可多选，最多 20 张）</span></span
+      >
+      <input
+        id="ic-files"
+        class="visually-hidden"
+        type="file"
+        accept="image/*"
+        multiple
+      />
+    </label>
+    <p class="ic-hint" id="ic-count">尚未选择图片</p>
+  </div>
+  <div class="field">
+    <label for="ic-quality">压缩质量：<span class="ic-qval" id="ic-qval">0.80</span></label>
+    <div class="ic-range-row">
+      <input
+        id="ic-quality"
+        type="range"
+        min="0.1"
+        max="1"
+        step="0.05"
+        value="0.8"
+      />
+    </div>
+    <p class="ic-hint">只对 JPEG / WebP 输出有效；数值越小体积越小、画质越低。</p>
+  </div>
+  <div class="field-row">
+    <div class="field">
+      <label for="ic-format">输出格式</label>
+      <select id="ic-format">
+        <option value="keep" selected>保持原格式</option>
+        <option value="jpeg">JPEG（体积小，不支持透明）</option>
+        <option value="png">PNG（支持透明）</option>
+        <option value="webp">WebP（体积小，支持透明）</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="ic-maxsize">最大边长</label>
+      <select id="ic-maxsize">
+        <option value="0" selected>不限制</option>
+        <option value="1920">1920 px</option>
+        <option value="1280">1280 px</option>
+        <option value="800">800 px</option>
+      </select>
+    </div>
+  </div>
+  <button class="btn" id="ic-run" disabled>开始压缩</button>
+  <div class="ic-list" id="ic-list"></div>
+</div>
+<div aria-live="polite" class="result" id="ic-result"><strong>—</strong><span>选择图片后开始</span></div>
+<div class="note">全程在浏览器本地处理，图片不上传服务器，关闭页面不留存。</div>
+<div class="info">
+  <h2>怎么用</h2>
+  <p>
+    1. 点击上方区域选择图片，或直接把图片拖进来（可多选）；
+    2. 拖动滑杆调压缩质量，需要时选输出格式、限制最大边长；
+    3. 点“开始压缩”，每张图单独显示压缩前后体积和节省比例；
+    4. 点每张图下面的“下载”保存压缩后的图片。
+  </p>
+  <h2>常见问题</h2>
+  <div class="faq">
+    <h3>压缩质量怎么选？</h3>
+    <p>
+      日常分享 0.8 左右足够；0.6 以下细节损失会比较明显；
+      头像、证件照这类对清晰度要求高的，建议 0.85 以上或直接保持原格式输出。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>透明背景的 PNG 怎么办？</h3>
+    <p>
+      JPEG 不支持透明，转成 JPEG 后透明背景会变成不透明底色（通常是白色）。
+      需要保留透明请选择输出 PNG 或 WebP，或直接“保持原格式”。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>图片会上传到服务器吗？</h3>
+    <p>
+      不会。压缩全部在你的浏览器里完成，图片不经过任何服务器，
+      关闭页面后浏览器也不会保留你的图片。
+    </p>
+  </div>
+</div>
+<style>
+  .dropzone {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 18px 16px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    background: #f8fafc;
+    cursor: pointer;
+    text-align: left;
+  }
+  .dropzone:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+  }
+  .dropzone.dragover {
+    border-color: #2563eb;
+    background: #eff6ff;
+  }
+  .dz-icon {
+    font-size: 32px;
+    line-height: 1;
+    flex: none;
+  }
+  .dz-text strong {
+    display: block;
+    font-size: 15px;
+  }
+  .dz-text > span {
+    display: block;
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 2px;
+  }
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .ic-hint {
+    font-size: 13px;
+    color: #64748b;
+    margin: 6px 0 0;
+  }
+  .ic-range-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ic-range-row input[type="range"] {
+    flex: 1;
+    min-width: 0;
+  }
+  .ic-qval {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+  .ic-list {
+    display: grid;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .ic-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 10px;
+    background: #fff;
+  }
+  .ic-thumb {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #f1f5f9;
+    flex: none;
+  }
+  .ic-meta {
+    min-width: 0;
+    flex: 1;
+  }
+  .ic-name {
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .ic-sizes {
+    font-size: 13px;
+    color: #475569;
+    margin-top: 2px;
+    overflow-wrap: anywhere;
+  }
+  .ic-save {
+    color: #16a34a;
+    font-weight: 600;
+  }
+  .ic-warn {
+    color: #b45309;
+  }
+  .ic-err {
+    color: #dc2626;
+  }
+  .ic-tip {
+    font-size: 12px;
+    color: #b45309;
+    margin-top: 2px;
+  }
+  .ic-dl {
+    flex: none;
+    font-size: 13px;
+    padding: 8px 12px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .ic-dl[hidden] {
+    display: none;
+  }
+</style>

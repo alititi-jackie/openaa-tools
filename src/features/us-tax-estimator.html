@@ -1,0 +1,61 @@
+<h1>美国联邦税估算器</h1>
+<p class="subtitle">输入年收入和报税身份，按 2026 税年联邦税率估算应纳所得税。</p>
+<div class="tax-warning" role="note">
+  ⚠️ 估算仅供参考，非税务建议。实际应纳税额以 IRS 及你的报税软件/会计师计算为准。
+</div>
+<div class="tool-form">
+  <div class="field">
+    <label for="income">年收入（税前，$）</label>
+    <input id="income" type="number" inputmode="decimal" min="0" max="100000000" placeholder="例如：85000" />
+  </div>
+  <div class="field">
+    <label for="status">报税身份</label>
+    <select id="status">
+      <option value="single">单身 Single</option>
+      <option value="mfj">已婚联合报税 Married Filing Jointly</option>
+      <option value="hoh">户主 Head of Household</option>
+      <option value="mfs">已婚分开报税 Married Filing Separately</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="withheld">已预扣税额（可选，$）</label>
+    <input id="withheld" type="number" inputmode="decimal" min="0" max="100000000" placeholder="W-2 或工资单上的已扣税款" />
+  </div>
+  <button class="btn" id="calculate">估算联邦税</button>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>—</strong><span>输入年收入后估算</span>
+</div>
+<div class="note">
+  2026 税年数据：标准扣除额 单身/分开报税 $16,100、联合报税 $32,200、户主 $24,150；7 档税率 10%/12%/22%/24%/32%/35%/37%。本工具假设采用标准扣除额、不含州税与各项抵免（credit）。
+</div>
+<div class="info">
+  <h2>怎么用</h2>
+  <p>填入全年税前总收入，选择报税身份，点「估算联邦税」。如果知道今年已预扣了多少税（看工资单 YTD federal withholding），填入后会一并算出预计退税或补税金额。</p>
+  <h2>常见问题</h2>
+  <div class="faq">
+    <h3>这算的是联邦税还是州税？</h3>
+    <p>仅联邦所得税。州税各州税率和规则不同，本工具不计算，实际报税时需要另行申报。</p>
+  </div>
+  <div class="faq">
+    <h3>为什么结果和报税软件算的不一样？</h3>
+    <p>本工具是简化估算：假设你采用标准扣除额，且不考虑逐项扣除、子女/教育等各类抵免（credit）、退休账户缴款、自雇税等。报税软件会纳入这些因素，所以会有出入。</p>
+  </div>
+  <div class="faq">
+    <h3>边际税率是什么意思？</h3>
+    <p>你最后一美元收入适用的税率。比如边际税率 22%，意思是多挣 100 美元要多交 22 美元税，而不是全部收入都按 22% 交——美国是累进税率，每段收入按对应档位计税。</p>
+  </div>
+</div>
+<style>
+  .tax-warning {
+    margin: 12px 0;
+    padding: 10px 14px;
+    border: 1px solid #fbbf24;
+    border-left-width: 4px;
+    border-radius: 8px;
+    background: #fffbeb;
+    color: #92400e;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+</style>

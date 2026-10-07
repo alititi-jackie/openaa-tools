@@ -1,0 +1,174 @@
+<h1>随机抽奖 / 分组</h1>
+<p class="subtitle">随机数、名单抽奖、随机分组，一键搞定，名单不保存不上传。</p>
+<div class="tool-form">
+  <div class="field">
+    <label for="rp-mode">模式</label>
+    <select id="rp-mode">
+      <option value="number">🎲 随机数</option>
+      <option value="draw">🏆 名单抽奖</option>
+      <option value="group">👥 随机分组</option>
+    </select>
+  </div>
+
+  <div class="rp-panel" id="rp-panel-number">
+    <div class="field rp-row">
+      <div>
+        <label for="rp-min">最小值</label>
+        <input id="rp-min" type="number" value="1" />
+      </div>
+      <div>
+        <label for="rp-max">最大值</label>
+        <input id="rp-max" type="number" value="100" />
+      </div>
+      <div>
+        <label for="rp-count">个数</label>
+        <input id="rp-count" type="number" value="1" min="1" />
+      </div>
+    </div>
+    <div class="field">
+      <label class="check"
+        ><input type="checkbox" id="rp-repeat" /> 允许重复</label
+      >
+    </div>
+  </div>
+
+  <div class="rp-panel" id="rp-panel-draw" hidden>
+    <div class="field">
+      <label for="rp-names">名单（每行一个名字）</label>
+      <textarea
+        id="rp-names"
+        rows="6"
+        placeholder="张三&#10;李四&#10;王五&#10;……"
+      ></textarea>
+    </div>
+    <div class="field">
+      <label for="rp-draw-count">抽取人数</label>
+      <input id="rp-draw-count" type="number" value="1" min="1" />
+    </div>
+  </div>
+
+  <div class="rp-panel" id="rp-panel-group" hidden>
+    <div class="field">
+      <label for="rp-gnames">名单（每行一个名字）</label>
+      <textarea
+        id="rp-gnames"
+        rows="6"
+        placeholder="张三&#10;李四&#10;王五&#10;赵六&#10;……"
+      ></textarea>
+    </div>
+    <div class="field rp-row">
+      <div>
+        <label for="rp-group-mode">分组方式</label>
+        <select id="rp-group-mode">
+          <option value="count">按组数分</option>
+          <option value="size">按每组人数分</option>
+        </select>
+      </div>
+      <div>
+        <label for="rp-group-n">组数 / 每组人数</label>
+        <input id="rp-group-n" type="number" value="2" min="1" />
+      </div>
+    </div>
+  </div>
+
+  <button class="btn" id="rp-go">开始随机</button>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>—</strong><span>选择模式并点击「开始随机」</span>
+</div>
+<div class="note">
+  随机数来自浏览器系统级随机源（crypto.getRandomValues），公平不可预测；名单只在本地内存中处理，不保存、不上传。
+</div>
+<div class="info">
+  <h2>怎么用</h2>
+  <p>
+    随机数：设定范围和个数，可选是否允许重复；名单抽奖：每行粘贴一个名字，设定抽取人数；随机分组：粘贴名单后按组数或每组人数分组。每次点击都会重新随机。
+  </p>
+  <h2>常见问题</h2>
+  <div class="faq">
+    <h3>随机公平吗？</h3>
+    <p>
+      公平。本工具使用浏览器提供的系统级随机源
+      crypto.getRandomValues（与密码学应用同级），不是可预测的
+      Math.random，每次结果都不可预知。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>名单会保存吗？</h3>
+    <p>
+      不会。名单只存在于当前页面的内存里，不写本地存储、不上传服务器，刷新或关闭页面即消失。
+    </p>
+  </div>
+  <div class="faq">
+    <h3>分组人数除不尽怎么办？</h3>
+    <p>
+      采用轮流发牌式分配，多出的人会均匀分到前面的组里，各组人数最多相差
+      1 人。
+    </p>
+  </div>
+</div>
+<style>
+  .rp-row {
+    display: flex;
+    gap: 12px;
+  }
+  .rp-row > div {
+    flex: 1;
+    min-width: 0;
+  }
+  .rp-row input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .check {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .check input {
+    width: 17px;
+    height: 17px;
+    accent-color: #2563eb;
+  }
+  select,
+  textarea,
+  input[type="number"] {
+    font-size: 15px;
+  }
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    resize: vertical;
+  }
+  .rp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .rp-chip {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1d4ed8;
+    font-size: 14px;
+  }
+  .rp-group {
+    margin-top: 10px;
+    text-align: left;
+  }
+  .rp-group h4 {
+    margin: 10px 0 4px;
+    font-size: 14px;
+    color: #334155;
+  }
+  .rp-group ul {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+</style>

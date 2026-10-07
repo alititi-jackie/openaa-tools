@@ -1,0 +1,48 @@
+<h1>BMI 计算器</h1>
+<p class="subtitle">输入身高体重，一键算出 BMI 指数、中国标准分级与你的健康体重范围。</p>
+<div class="tool-form">
+  <div class="field-row">
+    <div class="field">
+      <label for="height">身高（cm）</label>
+      <input id="height" type="number" inputmode="decimal" min="50" max="250" placeholder="例如：170" />
+    </div>
+    <div class="field">
+      <label for="weight">体重（kg）</label>
+      <input id="weight" type="number" inputmode="decimal" min="10" max="500" placeholder="例如：65" />
+    </div>
+  </div>
+  <button class="btn" id="calculate">计算 BMI</button>
+</div>
+<div aria-live="polite" class="result" id="result">
+  <strong>—</strong><span>输入身高体重后计算</span>
+</div>
+<div class="note">
+  BMI = 体重(kg) ÷ 身高(m)²。中国成人标准：偏瘦 &lt;18.5；正常 18.5–24；超重 24–28；肥胖 ≥28。结果仅供参考，不构成医疗建议。
+</div>
+<div class="info">
+  <h2>怎么用</h2>
+  <p>填入身高（厘米）和体重（公斤），点「计算 BMI」，即可看到你的 BMI 数值、所属分级，以及按中国标准算出的健康体重范围。</p>
+  <h2>常见问题</h2>
+  <div class="faq">
+    <h3>BMI 的中国标准和国际标准一样吗？</h3>
+    <p>不完全一样。中国成人标准更严格：正常上限是 24（国际常用 25），肥胖线是 28（国际常用 30）。本工具采用中国标准。</p>
+  </div>
+  <div class="faq">
+    <h3>哪些人不适合用 BMI 判断？</h3>
+    <p>运动员、健身增肌人群（肌肉比重大）、孕妇、老年人和未成年人，BMI 都可能误判，需要结合体脂率、腰围等指标综合评估。</p>
+  </div>
+  <div class="faq">
+    <h3>BMI 有什么局限？</h3>
+    <p>BMI 只看身高体重，分不清脂肪和肌肉。同样体重的人，体脂率可能差很多。把它当作初步筛查工具，正式的健康评估请咨询医生。</p>
+  </div>
+</div>
+<style>
+  .field-row {
+    display: flex;
+    gap: 12px;
+  }
+  .field-row .field {
+    flex: 1;
+    min-width: 0;
+  }
+</style>
