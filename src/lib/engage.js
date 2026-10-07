@@ -226,6 +226,7 @@ function setupToolPage(toolId) {
   renderHistory();
 }
 
+/** @param {(message: string) => void} notify */
 export function setupEngage(notify = () => {}) {
   const toolId = document.body.dataset.toolId;
   if (toolId) {
