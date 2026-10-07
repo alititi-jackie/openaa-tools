@@ -77,6 +77,7 @@ function renderHomeSections() {
     if (!section || !grid) return;
     const items = ids.map((id) => byId.get(id)).filter(Boolean);
     if (!items.length) {
+      grid.replaceChildren();
       section.hidden = true;
       return;
     }
@@ -225,7 +226,7 @@ function setupToolPage(toolId) {
   renderHistory();
 }
 
-export function setupEngage() {
+export function setupEngage(notify = () => {}) {
   const toolId = document.body.dataset.toolId;
   if (toolId) {
     setupToolPage(toolId);
@@ -235,6 +236,17 @@ export function setupEngage() {
       .querySelectorAll("#tool-groups .tool-card")
       .forEach(addCardStar);
   }
+  document.querySelector("[data-clear-recent]")?.addEventListener("click", () => {
+    try {
+      localStorage.removeItem(RECENT_KEY);
+    } catch {
+      notify("清空失败，请检查浏览器存储权限后重试");
+      return;
+    }
+    renderHomeSections();
+    document.getElementById("tool-search")?.focus({ preventScroll: true });
+    notify("已清空最近使用");
+  });
   renderHomeSections();
   document.addEventListener("openaa-fav-change", renderHomeSections);
 }

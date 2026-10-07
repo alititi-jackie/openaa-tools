@@ -104,4 +104,4 @@ document
 
 // 复制结果按钮 + 收藏/最近使用/计算历史（纯前端 localStorage）
 setupCopyResult();
-setupEngage();
+setupEngage(notify);
