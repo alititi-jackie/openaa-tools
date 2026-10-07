@@ -111,7 +111,7 @@ function addCardStar(card) {
 }
 function cardLinkToId(card) {
   const href = card.getAttribute("href") || "";
-  const m = href.match(/^\/tools\/([^/]+)\/$/);
+  const m = href.match(/^\/(?:tools|usa)\/([^/]+)\/$/);
   return m ? m[1] : null;
 }
 
