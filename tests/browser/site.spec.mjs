@@ -81,7 +81,9 @@ test("DMV controls", async ({ page }) => {
     await expect(page.locator("#dmvResult")).toContainText("6 Points");
   }
   await page.goto("/usa/dmv/real-id-checker.html");
-  await page.locator("[data-action=checkRealId]").click();
+  const checkRealIdButton = page.locator("[data-action=checkRealId]");
+  await expect(checkRealIdButton).toHaveAttribute("data-ready", "true");
+  await checkRealIdButton.click();
   await expect(page.locator("#realIdResult")).toContainText("你可能还缺");
 });
 test("network query success and failure", async ({ page }) => {
