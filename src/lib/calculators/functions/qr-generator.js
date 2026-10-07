@@ -299,7 +299,7 @@ function renderResult(qr, style, built) {
 }
 
 function generate(opts = {}) {
-  const { fromAuto = false, forceSave = false } = opts;
+  const { fromAuto = false } = opts;
   const result = $("result");
   if (!result) return;
   const built = buildPayload();
@@ -322,9 +322,6 @@ function generate(opts = {}) {
     qr.addData(built.payload);
     qr.make();
     renderResult(qr, style, built);
-    if (forceSave) {
-      saveHistory(built);
-    }
   } catch {
     bad("生成失败，内容可能过长，请缩短后重试");
   }
@@ -415,7 +412,7 @@ function restoreHistory(i) {
   if ($("qr-size")) $("qr-size").value = st.size || "600";
   clearLogo({ silent: true }); // 文件无法持久化，恢复时清空 logo
   syncWifiPwd();
-  generate({ fromAuto: false, forceSave: true });
+  generate({ fromAuto: false });
   $("result")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
@@ -522,7 +519,7 @@ function bindRealtime() {
 // 手动"生成二维码"按钮（由 src/features/calculator.js 统一绑定）
 export const calculate = () => {
   clearTimeout(debounceTimer);
-  generate({ fromAuto: false, forceSave: true });
+  generate({ fromAuto: false });
 };
 
 bindRealtime();
