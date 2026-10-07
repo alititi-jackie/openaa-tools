@@ -15,6 +15,186 @@
     "styles": []
   },
   {
+    "id": "compound-interest",
+    "name": "复利计算器",
+    "heading": "复利计算器",
+    "description": "复利计算器：输入本金、定期投入、年回报率和投资年数，估算未来金额和利息。",
+    "icon": "📈",
+    "category": "finance",
+    "path": "/tools/compound-interest/",
+    "bodyClass": "",
+    "calculator": "compound",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "credit-card-payoff",
+    "name": "信用卡还款计算器",
+    "heading": "信用卡还款计算器",
+    "description": "美国信用卡还款计算器：输入余额、APR 和每月还款额，估算还清时间和利息。",
+    "icon": "💳",
+    "category": "finance",
+    "path": "/tools/credit-card-payoff/",
+    "bodyClass": "",
+    "calculator": "credit",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "currency",
+    "name": "美元人民币换算",
+    "heading": "美元人民币换算器",
+    "description": "美元人民币换算器：输入金额和汇率，快速进行 USD 与 CNY 双向换算。汇率可自行输入。",
+    "icon": "💱",
+    "category": "finance",
+    "path": "/tools/currency/",
+    "bodyClass": "",
+    "calculator": "currency",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "hourly-to-salary",
+    "name": "时薪转年薪",
+    "heading": "美国时薪转年薪计算器",
+    "description": "美国时薪转年薪计算器：输入时薪、每周工作小时数和每年工作周数，快速估算税前年收入。",
+    "icon": "🧮",
+    "category": "finance",
+    "path": "/tools/hourly-to-salary/",
+    "bodyClass": "",
+    "calculator": "hourly",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "overtime-pay",
+    "name": "加班工资计算器",
+    "heading": "美国加班工资计算器",
+    "description": "美国加班工资计算器：输入时薪、正常工时和加班小时数，快速估算本周税前工资。",
+    "icon": "⏱️",
+    "category": "finance",
+    "path": "/tools/overtime-pay/",
+    "bodyClass": "",
+    "calculator": "overtime",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "salary-calculator",
+    "name": "税前工资估算",
+    "heading": "美国税前工资计算器",
+    "description": "美国工资计算器：输入年薪，快速换算税前月薪和周薪。适合美国工作收入快速估算。",
+    "icon": "💰",
+    "category": "finance",
+    "path": "/tools/salary-calculator/",
+    "bodyClass": "",
+    "calculator": "salary",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "sales-tax",
+    "name": "Sales Tax 计算器",
+    "heading": "美国 Sales Tax 计算器",
+    "description": "美国 Sales Tax 销售税计算器：输入商品价格和税率，快速计算销售税及含税最终价格。适合美国购物。",
+    "icon": "🏷️",
+    "category": "finance",
+    "path": "/tools/sales-tax/",
+    "bodyClass": "",
+    "calculator": "tax",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "savings-cd",
+    "name": "存款/CD收益计算器",
+    "heading": "存款 / CD 收益计算器",
+    "description": "美国储蓄和 CD 收益计算器：输入本金、APY、期限和复利频率，估算利息和到期余额。",
+    "icon": "🏦",
+    "category": "finance",
+    "path": "/tools/savings-cd/",
+    "bodyClass": "",
+    "calculator": "savings",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "split-bill",
+    "name": "AA 分账计算器",
+    "heading": "AA 分账计算器",
+    "description": "美国 AA 分账计算器：输入账单、人数和小费比例，快速计算每个人应该支付多少钱。",
+    "icon": "🧾",
+    "category": "finance",
+    "path": "/tools/split-bill/",
+    "bodyClass": "",
+    "calculator": "split",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "take-home-pay",
+    "name": "美国税后工资计算器",
+    "heading": "美国税后工资计算器",
+    "description": "美国税后工资计算器：按 2026 年联邦税率、标准扣除和 FICA 简化估算税后年收入与月收入。",
+    "icon": "💰",
+    "category": "finance",
+    "path": "/tools/take-home-pay/",
+    "bodyClass": "",
+    "calculator": "takehome",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "tip-calculator",
+    "name": "小费计算器",
+    "heading": "美国小费计算器",
+    "description": "美国小费计算器：输入账单、小费比例和人数，快速计算小费、总金额和每人应付金额。适合美国餐厅、外卖和日常消费。",
+    "icon": "💵",
+    "category": "finance",
+    "path": "/tools/tip-calculator/",
+    "bodyClass": "",
+    "calculator": "tip",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "us-tax-estimator",
+    "name": "美国联邦税估算器",
+    "heading": "美国联邦税估算器",
+    "description": "美国联邦税估算器：输入年收入和报税身份，按2026税年税率估算联邦所得税、边际税率与退税/补税，结果仅供参考。",
+    "icon": "📑",
+    "category": "finance",
+    "path": "/tools/us-tax-estimator/",
+    "bodyClass": "",
+    "calculator": "us-tax-estimator",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
     "id": "6-points-calculator",
     "name": "纽约 DMV 6 Points 计算器",
     "heading": "纽约 DMV 6 Points 计算器",
@@ -34,6 +214,80 @@
     ]
   },
   {
+    "id": "document-checker",
+    "name": "纽约 DMV 材料清单",
+    "heading": "去纽约 DMV 要带什么？",
+    "description": "纽约 DMV 出门材料清单：选择 Standard、REAL ID 或 Enhanced，准备身份证明、Social Security、地址证明、MV-44、原件及认证英文翻译，不重复计算6分。",
+    "icon": "🪪",
+    "category": "dmv",
+    "path": "/usa/dmv/document-checker.html",
+    "bodyClass": "usa-tool-page",
+    "calculator": "",
+    "modules": [
+      "dmv-document-checker"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "dmv-tools.css",
+      "dmv-document-checker.css"
+    ]
+  },
+  {
+    "id": "real-id-checker",
+    "name": "纽约 DMV REAL ID 检查器",
+    "heading": "纽约 DMV REAL ID 检查器",
+    "description": "纽约 REAL ID 文件检查器，帮助你检查身份、SSN、合法身份和地址证明等常见 DMV 材料是否准备齐全。",
+    "icon": "🪪",
+    "category": "dmv",
+    "path": "/usa/dmv/real-id-checker.html",
+    "bodyClass": "usa-tool-page",
+    "calculator": "",
+    "modules": [
+      "dmv-real-id-checker"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "dmv-tools.css",
+      "dmv-real-id-checker.css"
+    ]
+  },
+  {
+    "id": "real-id-vs-standard-vs-enhanced",
+    "name": "我能办哪种纽约驾照？",
+    "heading": "我的资料能办哪一种纽约驾照？",
+    "description": "根据公民身份、lawful status、6 Points、Social Security 和纽约地址材料，同时检查 Standard、REAL ID、Enhanced 申请条件与缺少文件。",
+    "icon": "🪪",
+    "category": "dmv",
+    "path": "/usa/dmv/real-id-vs-standard-vs-enhanced.html",
+    "bodyClass": "usa-tool-page",
+    "calculator": "",
+    "modules": [
+      "dmv-id-comparison"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "dmv-tools.css",
+      "dmv-id-comparison.css"
+    ]
+  },
+  {
+    "id": "qr-generator",
+    "name": "二维码生成器",
+    "heading": "二维码生成器",
+    "description": "免费在线二维码生成器：链接、文本、WiFi、电子名片、电话、短信、邮件 7 种内容，本地生成不上传，可下载 PNG / SVG，无需注册。",
+    "icon": "🔳",
+    "category": "life",
+    "path": "/tools/qr-generator/",
+    "bodyClass": "",
+    "calculator": "qr",
+    "modules": [
+      "calculator"
+    ],
+    "styles": [
+      "qr-generator.css"
+    ]
+  },
+  {
     "id": "age",
     "name": "年龄计算器",
     "heading": "年龄计算器",
@@ -49,36 +303,6 @@
     "styles": []
   },
   {
-    "id": "area",
-    "name": "平方英尺 ↔ 平方米",
-    "heading": "平方英尺 ↔ 平方米换算器",
-    "description": "平方英尺、平方米、英亩在线换算器，适合美国房屋面积、土地和房产信息快速换算。",
-    "icon": "🏠",
-    "category": "convert",
-    "path": "/tools/area/",
-    "bodyClass": "",
-    "calculator": "area",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "area-code",
-    "name": "美国电话区号查询",
-    "heading": "美国电话区号查询",
-    "description": "美国电话区号查询：输入 3 位 Area Code，查询对应地区和城市信息。",
-    "icon": "☎️",
-    "category": "usa",
-    "path": "/tools/area-code/",
-    "bodyClass": "",
-    "calculator": "area",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
     "id": "bmi-calculator",
     "name": "BMI 计算器",
     "heading": "BMI 计算器",
@@ -88,51 +312,6 @@
     "path": "/tools/bmi-calculator/",
     "bodyClass": "",
     "calculator": "bmi-calculator",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "car-monthly-cost",
-    "name": "汽车真实月成本",
-    "heading": "汽车真实月成本计算器",
-    "description": "美国汽车真实月成本计算器：把月供、油费、保险、保养和其他费用合并，估算每月养车成本。",
-    "icon": "🚗",
-    "category": "auto",
-    "path": "/tools/car-monthly-cost/",
-    "bodyClass": "",
-    "calculator": "carcost",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "car-payment",
-    "name": "汽车月供计算器",
-    "heading": "美国汽车贷款月供计算器",
-    "description": "美国汽车贷款月供计算器：输入车价、首付、年利率和贷款期限，估算每月本金和利息付款。",
-    "icon": "🚙",
-    "category": "auto",
-    "path": "/tools/car-payment/",
-    "bodyClass": "",
-    "calculator": "car",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "china-us-time",
-    "name": "中美时间转换",
-    "heading": "中美时间转换器",
-    "description": "中美时间转换器：选择纽约、芝加哥、丹佛或洛杉矶，输入美国当地时间，自动换算中国北京时间，并自动考虑夏令时。",
-    "icon": "🕐",
-    "category": "usa",
-    "path": "/tools/china-us-time/",
-    "bodyClass": "",
-    "calculator": "time",
     "modules": [
       "calculator"
     ],
@@ -169,21 +348,6 @@
     "styles": []
   },
   {
-    "id": "compound-interest",
-    "name": "复利计算器",
-    "heading": "复利计算器",
-    "description": "复利计算器：输入本金、定期投入、年回报率和投资年数，估算未来金额和利息。",
-    "icon": "📈",
-    "category": "finance",
-    "path": "/tools/compound-interest/",
-    "bodyClass": "",
-    "calculator": "compound",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
     "id": "countdown",
     "name": "倒计时",
     "heading": "倒计时",
@@ -195,36 +359,6 @@
     "calculator": "",
     "modules": [
       "countdown"
-    ],
-    "styles": []
-  },
-  {
-    "id": "credit-card-payoff",
-    "name": "信用卡还款计算器",
-    "heading": "信用卡还款计算器",
-    "description": "美国信用卡还款计算器：输入余额、APR 和每月还款额，估算还清时间和利息。",
-    "icon": "💳",
-    "category": "finance",
-    "path": "/tools/credit-card-payoff/",
-    "bodyClass": "",
-    "calculator": "credit",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "currency",
-    "name": "美元人民币换算",
-    "heading": "美元人民币换算器",
-    "description": "美元人民币换算器：输入金额和汇率，快速进行 USD 与 CNY 双向换算。汇率可自行输入。",
-    "icon": "💱",
-    "category": "finance",
-    "path": "/tools/currency/",
-    "bodyClass": "",
-    "calculator": "currency",
-    "modules": [
-      "calculator"
     ],
     "styles": []
   },
@@ -259,73 +393,6 @@
     "styles": []
   },
   {
-    "id": "distance",
-    "name": "英里 ↔ 公里",
-    "heading": "英里 ↔ 公里换算器",
-    "description": "美国英里 Miles 与公里 KM 在线换算器，适合汽车里程、旅行距离和日常生活。",
-    "icon": "🚗",
-    "category": "convert",
-    "path": "/tools/distance/",
-    "bodyClass": "",
-    "calculator": "distance",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "document-checker",
-    "name": "纽约 DMV 材料清单",
-    "heading": "去纽约 DMV 要带什么？",
-    "description": "纽约 DMV 出门材料清单：选择 Standard、REAL ID 或 Enhanced，准备身份证明、Social Security、地址证明、MV-44、原件及认证英文翻译，不重复计算6分。",
-    "icon": "🪪",
-    "category": "dmv",
-    "path": "/usa/dmv/document-checker.html",
-    "bodyClass": "usa-tool-page",
-    "calculator": "",
-    "modules": [
-      "dmv-document-checker"
-    ],
-    "styles": [
-      "usa-tools.css",
-      "dmv-tools.css",
-      "dmv-document-checker.css"
-    ]
-  },
-  {
-    "id": "expense-record",
-    "name": "生活开支记录",
-    "heading": "生活开支记录",
-    "description": "美国生活收支记录工具，帮助记录收入、支出和日常开销，适合美国工作与家庭生活使用。",
-    "icon": "🧾",
-    "category": "usa",
-    "path": "/usa/expense-record/",
-    "bodyClass": "usa-tool-page",
-    "calculator": "",
-    "modules": [
-      "expense-record"
-    ],
-    "styles": [
-      "usa-tools.css",
-      "expense-record.css"
-    ]
-  },
-  {
-    "id": "gas-cost",
-    "name": "加油成本计算器",
-    "heading": "美国汽车加油成本计算器",
-    "description": "美国汽车加油成本计算器：输入里程、MPG 和每加仑油价，快速估算一次行程需要多少油钱。",
-    "icon": "⛽",
-    "category": "auto",
-    "path": "/tools/gas-cost/",
-    "bodyClass": "",
-    "calculator": "gas",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
     "id": "gpa-calculator",
     "name": "GPA 计算器",
     "heading": "GPA 计算器",
@@ -341,66 +408,6 @@
     "styles": []
   },
   {
-    "id": "hourly-to-salary",
-    "name": "时薪转年薪",
-    "heading": "美国时薪转年薪计算器",
-    "description": "美国时薪转年薪计算器：输入时薪、每周工作小时数和每年工作周数，快速估算税前年收入。",
-    "icon": "🧮",
-    "category": "finance",
-    "path": "/tools/hourly-to-salary/",
-    "bodyClass": "",
-    "calculator": "hourly",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "hp-kw",
-    "name": "HP ↔ kW",
-    "heading": "HP ↔ kW 马力千瓦换算器",
-    "description": "HP 马力与 kW 千瓦在线换算器，适合汽车、电机和工业设备参数换算。",
-    "icon": "⚡",
-    "category": "convert",
-    "path": "/tools/hp-kw/",
-    "bodyClass": "",
-    "calculator": "hp",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "image-compressor",
-    "name": "图片压缩",
-    "heading": "图片压缩",
-    "description": "免费在线图片压缩：批量压缩 JPG / PNG / WebP，支持质量调节与尺寸限制，全程本地处理不上传，无需注册。",
-    "icon": "🗜️",
-    "category": "image",
-    "path": "/tools/image-compressor/",
-    "bodyClass": "",
-    "calculator": "",
-    "modules": [
-      "image-compressor"
-    ],
-    "styles": []
-  },
-  {
-    "id": "image-converter",
-    "name": "图片格式转换",
-    "heading": "图片格式转换",
-    "description": "免费在线图片格式转换：JPG、PNG、WebP 批量互转、逐张下载，全程本地处理不上传，无需注册。",
-    "icon": "🔄",
-    "category": "image",
-    "path": "/tools/image-converter/",
-    "bodyClass": "",
-    "calculator": "",
-    "modules": [
-      "image-converter"
-    ],
-    "styles": []
-  },
-  {
     "id": "kinship",
     "name": "亲戚关系计算器",
     "heading": "亲戚关系计算器",
@@ -410,21 +417,6 @@
     "path": "/tools/kinship/",
     "bodyClass": "",
     "calculator": "kinship",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "length",
-    "name": "英寸 ↔ 厘米",
-    "heading": "英寸 ↔ 厘米换算器",
-    "description": "英寸、厘米、英尺、米在线换算器，适合美国华人看房、购物、装修和日常生活。",
-    "icon": "📏",
-    "category": "convert",
-    "path": "/tools/length/",
-    "bodyClass": "",
-    "calculator": "length",
     "modules": [
       "calculator"
     ],
@@ -491,54 +483,6 @@
     "styles": []
   },
   {
-    "id": "mpg",
-    "name": "MPG ↔ L/100km",
-    "heading": "MPG ↔ L/100km 油耗换算器",
-    "description": "美国汽车 MPG 与 L/100km 油耗在线换算器，帮助华人快速看懂美国车辆油耗。",
-    "icon": "⛽",
-    "category": "auto",
-    "path": "/tools/mpg/",
-    "bodyClass": "",
-    "calculator": "mpg",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "nyc-attractions",
-    "name": "纽约周边地址导航",
-    "heading": "纽约周边地址导航",
-    "description": "OpenAA 工具库 纽约及周边地址导航，整理纽约热门景点、大型购物商场、Outlet、品牌直营店和常用实用地点，并提供中文说明、分类筛选、搜索、地图导航、复制地址、分享及添加到桌面。",
-    "icon": "🗽",
-    "category": "usa",
-    "path": "/usa/nyc-attractions/",
-    "bodyClass": "usa-tool-page",
-    "calculator": "",
-    "modules": [
-      "nyc-attractions"
-    ],
-    "styles": [
-      "usa-tools.css",
-      "nyc-attractions.css"
-    ]
-  },
-  {
-    "id": "overtime-pay",
-    "name": "加班工资计算器",
-    "heading": "美国加班工资计算器",
-    "description": "美国加班工资计算器：输入时薪、正常工时和加班小时数，快速估算本周税前工资。",
-    "icon": "⏱️",
-    "category": "finance",
-    "path": "/tools/overtime-pay/",
-    "bodyClass": "",
-    "calculator": "overtime",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
     "id": "password-generator",
     "name": "密码生成器",
     "heading": "密码生成器",
@@ -550,21 +494,6 @@
     "calculator": "",
     "modules": [
       "password-generator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "psi-bar",
-    "name": "PSI ↔ Bar",
-    "heading": "PSI ↔ Bar 压力换算器",
-    "description": "PSI 与 Bar 压力单位在线换算器，适合美国汽车轮胎气压、空压机和工业设备。",
-    "icon": "🔧",
-    "category": "convert",
-    "path": "/tools/psi-bar/",
-    "bodyClass": "",
-    "calculator": "psi",
-    "modules": [
-      "calculator"
     ],
     "styles": []
   },
@@ -584,23 +513,6 @@
     "styles": []
   },
   {
-    "id": "qr-generator",
-    "name": "二维码生成器",
-    "heading": "二维码生成器",
-    "description": "免费在线二维码生成器：链接、文本、WiFi、电子名片、电话、短信、邮件 7 种内容，本地生成不上传，可下载 PNG / SVG，无需注册。",
-    "icon": "🔳",
-    "category": "life",
-    "path": "/tools/qr-generator/",
-    "bodyClass": "",
-    "calculator": "qr",
-    "modules": [
-      "calculator"
-    ],
-    "styles": [
-      "qr-generator.css"
-    ]
-  },
-  {
     "id": "random-picker",
     "name": "随机抽奖",
     "heading": "随机抽奖",
@@ -616,44 +528,6 @@
     "styles": []
   },
   {
-    "id": "real-id-checker",
-    "name": "纽约 DMV REAL ID 检查器",
-    "heading": "纽约 DMV REAL ID 检查器",
-    "description": "纽约 REAL ID 文件检查器，帮助你检查身份、SSN、合法身份和地址证明等常见 DMV 材料是否准备齐全。",
-    "icon": "🪪",
-    "category": "dmv",
-    "path": "/usa/dmv/real-id-checker.html",
-    "bodyClass": "usa-tool-page",
-    "calculator": "",
-    "modules": [
-      "dmv-real-id-checker"
-    ],
-    "styles": [
-      "usa-tools.css",
-      "dmv-tools.css",
-      "dmv-real-id-checker.css"
-    ]
-  },
-  {
-    "id": "real-id-vs-standard-vs-enhanced",
-    "name": "我能办哪种纽约驾照？",
-    "heading": "我的资料能办哪一种纽约驾照？",
-    "description": "根据公民身份、lawful status、6 Points、Social Security 和纽约地址材料，同时检查 Standard、REAL ID、Enhanced 申请条件与缺少文件。",
-    "icon": "🪪",
-    "category": "dmv",
-    "path": "/usa/dmv/real-id-vs-standard-vs-enhanced.html",
-    "bodyClass": "usa-tool-page",
-    "calculator": "",
-    "modules": [
-      "dmv-id-comparison"
-    ],
-    "styles": [
-      "usa-tools.css",
-      "dmv-tools.css",
-      "dmv-id-comparison.css"
-    ]
-  },
-  {
     "id": "rent-vs-buy",
     "name": "租房 vs 买房",
     "heading": "租房 vs 买房计算器",
@@ -663,51 +537,6 @@
     "path": "/tools/rent-vs-buy/",
     "bodyClass": "",
     "calculator": "rentbuy",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "salary-calculator",
-    "name": "税前工资估算",
-    "heading": "美国税前工资计算器",
-    "description": "美国工资计算器：输入年薪，快速换算税前月薪和周薪。适合美国工作收入快速估算。",
-    "icon": "💰",
-    "category": "finance",
-    "path": "/tools/salary-calculator/",
-    "bodyClass": "",
-    "calculator": "salary",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "sales-tax",
-    "name": "Sales Tax 计算器",
-    "heading": "美国 Sales Tax 计算器",
-    "description": "美国 Sales Tax 销售税计算器：输入商品价格和税率，快速计算销售税及含税最终价格。适合美国购物。",
-    "icon": "🏷️",
-    "category": "finance",
-    "path": "/tools/sales-tax/",
-    "bodyClass": "",
-    "calculator": "tax",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "savings-cd",
-    "name": "存款/CD收益计算器",
-    "heading": "存款 / CD 收益计算器",
-    "description": "美国储蓄和 CD 收益计算器：输入本金、APY、期限和复利频率，估算利息和到期余额。",
-    "icon": "🏦",
-    "category": "finance",
-    "path": "/tools/savings-cd/",
-    "bodyClass": "",
-    "calculator": "savings",
     "modules": [
       "calculator"
     ],
@@ -729,30 +558,90 @@
     "styles": []
   },
   {
-    "id": "split-bill",
-    "name": "AA 分账计算器",
-    "heading": "AA 分账计算器",
-    "description": "美国 AA 分账计算器：输入账单、人数和小费比例，快速计算每个人应该支付多少钱。",
-    "icon": "🧾",
-    "category": "finance",
-    "path": "/tools/split-bill/",
+    "id": "word-counter",
+    "name": "字数统计",
+    "heading": "字数统计",
+    "description": "免费在线字数统计：实时统计中文字数、英文单词数、字符数、段落行数，中英文混排分别计算，全程本地处理不上传，无需注册。",
+    "icon": "🔢",
+    "category": "life",
+    "path": "/tools/word-counter/",
     "bodyClass": "",
-    "calculator": "split",
+    "calculator": "",
+    "modules": [
+      "word-counter"
+    ],
+    "styles": []
+  },
+  {
+    "id": "area",
+    "name": "平方英尺 ↔ 平方米",
+    "heading": "平方英尺 ↔ 平方米换算器",
+    "description": "平方英尺、平方米、英亩在线换算器，适合美国房屋面积、土地和房产信息快速换算。",
+    "icon": "🏠",
+    "category": "convert",
+    "path": "/tools/area/",
+    "bodyClass": "",
+    "calculator": "area",
     "modules": [
       "calculator"
     ],
     "styles": []
   },
   {
-    "id": "take-home-pay",
-    "name": "美国税后工资计算器",
-    "heading": "美国税后工资计算器",
-    "description": "美国税后工资计算器：按 2026 年联邦税率、标准扣除和 FICA 简化估算税后年收入与月收入。",
-    "icon": "💰",
-    "category": "finance",
-    "path": "/tools/take-home-pay/",
+    "id": "distance",
+    "name": "英里 ↔ 公里",
+    "heading": "英里 ↔ 公里换算器",
+    "description": "美国英里 Miles 与公里 KM 在线换算器，适合汽车里程、旅行距离和日常生活。",
+    "icon": "🚗",
+    "category": "convert",
+    "path": "/tools/distance/",
     "bodyClass": "",
-    "calculator": "takehome",
+    "calculator": "distance",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "hp-kw",
+    "name": "HP ↔ kW",
+    "heading": "HP ↔ kW 马力千瓦换算器",
+    "description": "HP 马力与 kW 千瓦在线换算器，适合汽车、电机和工业设备参数换算。",
+    "icon": "⚡",
+    "category": "convert",
+    "path": "/tools/hp-kw/",
+    "bodyClass": "",
+    "calculator": "hp",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "length",
+    "name": "英寸 ↔ 厘米",
+    "heading": "英寸 ↔ 厘米换算器",
+    "description": "英寸、厘米、英尺、米在线换算器，适合美国华人看房、购物、装修和日常生活。",
+    "icon": "📏",
+    "category": "convert",
+    "path": "/tools/length/",
+    "bodyClass": "",
+    "calculator": "length",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "psi-bar",
+    "name": "PSI ↔ Bar",
+    "heading": "PSI ↔ Bar 压力换算器",
+    "description": "PSI 与 Bar 压力单位在线换算器，适合美国汽车轮胎气压、空压机和工业设备。",
+    "icon": "🔧",
+    "category": "convert",
+    "path": "/tools/psi-bar/",
+    "bodyClass": "",
+    "calculator": "psi",
     "modules": [
       "calculator"
     ],
@@ -772,69 +661,6 @@
       "calculator"
     ],
     "styles": []
-  },
-  {
-    "id": "tip-calculator",
-    "name": "小费计算器",
-    "heading": "美国小费计算器",
-    "description": "美国小费计算器：输入账单、小费比例和人数，快速计算小费、总金额和每人应付金额。适合美国餐厅、外卖和日常消费。",
-    "icon": "💵",
-    "category": "finance",
-    "path": "/tools/tip-calculator/",
-    "bodyClass": "",
-    "calculator": "tip",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "us-holidays",
-    "name": "美国联邦假期日历",
-    "heading": "美国联邦假期日历",
-    "description": "美国联邦假期日历：2026/2027 十一个联邦假日中文对照，含周末顺延放假日期、下个假日倒计时和 2026 拼假攻略。",
-    "icon": "🗓️",
-    "category": "usa",
-    "path": "/tools/us-holidays/",
-    "bodyClass": "",
-    "calculator": "",
-    "modules": [
-      "us-holidays"
-    ],
-    "styles": []
-  },
-  {
-    "id": "us-tax-estimator",
-    "name": "美国联邦税估算器",
-    "heading": "美国联邦税估算器",
-    "description": "美国联邦税估算器：输入年收入和报税身份，按2026税年税率估算联邦所得税、边际税率与退税/补税，结果仅供参考。",
-    "icon": "📑",
-    "category": "finance",
-    "path": "/tools/us-tax-estimator/",
-    "bodyClass": "",
-    "calculator": "us-tax-estimator",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "usd-rmb",
-    "name": "美元换人民币记录本",
-    "heading": "美元换人民币记录本",
-    "description": "美元换人民币记录本：记录每次换汇的日期、美元金额和实际汇率，自动计算人民币金额，支持月度年度统计、Excel 导出和本地备份。",
-    "icon": "💱",
-    "category": "usa",
-    "path": "/usa/usd-rmb/",
-    "bodyClass": "usa-tool-page",
-    "calculator": "",
-    "modules": [
-      "usd-rmb"
-    ],
-    "styles": [
-      "usa-tools.css",
-      "usd-rmb.css"
-    ]
   },
   {
     "id": "volume",
@@ -867,17 +693,71 @@
     "styles": []
   },
   {
-    "id": "word-counter",
-    "name": "字数统计",
-    "heading": "字数统计",
-    "description": "免费在线字数统计：实时统计中文字数、英文单词数、字符数、段落行数，中英文混排分别计算，全程本地处理不上传，无需注册。",
-    "icon": "🔢",
-    "category": "life",
-    "path": "/tools/word-counter/",
-    "bodyClass": "",
+    "id": "nyc-attractions",
+    "name": "纽约周边地址导航",
+    "heading": "纽约周边地址导航",
+    "description": "OpenAA 工具库 纽约及周边地址导航，整理纽约热门景点、大型购物商场、Outlet、品牌直营店和常用实用地点，并提供中文说明、分类筛选、搜索、地图导航、复制地址、分享及添加到桌面。",
+    "icon": "🗽",
+    "category": "usa",
+    "path": "/usa/nyc-attractions/",
+    "bodyClass": "usa-tool-page",
     "calculator": "",
     "modules": [
-      "word-counter"
+      "nyc-attractions"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "nyc-attractions.css"
+    ]
+  },
+  {
+    "id": "expense-record",
+    "name": "生活开支记录",
+    "heading": "生活开支记录",
+    "description": "美国生活收支记录工具，帮助记录收入、支出和日常开销，适合美国工作与家庭生活使用。",
+    "icon": "🧾",
+    "category": "usa",
+    "path": "/usa/expense-record/",
+    "bodyClass": "usa-tool-page",
+    "calculator": "",
+    "modules": [
+      "expense-record"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "expense-record.css"
+    ]
+  },
+  {
+    "id": "usd-rmb",
+    "name": "美元换人民币记录本",
+    "heading": "美元换人民币记录本",
+    "description": "美元换人民币记录本：记录每次换汇的日期、美元金额和实际汇率，自动计算人民币金额，支持月度年度统计、Excel 导出和本地备份。",
+    "icon": "💱",
+    "category": "usa",
+    "path": "/usa/usd-rmb/",
+    "bodyClass": "usa-tool-page",
+    "calculator": "",
+    "modules": [
+      "usd-rmb"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "usd-rmb.css"
+    ]
+  },
+  {
+    "id": "area-code",
+    "name": "美国电话区号查询",
+    "heading": "美国电话区号查询",
+    "description": "美国电话区号查询：输入 3 位 Area Code，查询对应地区和城市信息。",
+    "icon": "☎️",
+    "category": "usa",
+    "path": "/tools/area-code/",
+    "bodyClass": "",
+    "calculator": "area",
+    "modules": [
+      "calculator"
     ],
     "styles": []
   },
@@ -893,6 +773,126 @@
     "calculator": "zip",
     "modules": [
       "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "china-us-time",
+    "name": "中美时间转换",
+    "heading": "中美时间转换器",
+    "description": "中美时间转换器：选择纽约、芝加哥、丹佛或洛杉矶，输入美国当地时间，自动换算中国北京时间，并自动考虑夏令时。",
+    "icon": "🕐",
+    "category": "usa",
+    "path": "/tools/china-us-time/",
+    "bodyClass": "",
+    "calculator": "time",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "us-holidays",
+    "name": "美国联邦假期日历",
+    "heading": "美国联邦假期日历",
+    "description": "美国联邦假期日历：2026/2027 十一个联邦假日中文对照，含周末顺延放假日期、下个假日倒计时和 2026 拼假攻略。",
+    "icon": "🗓️",
+    "category": "usa",
+    "path": "/tools/us-holidays/",
+    "bodyClass": "",
+    "calculator": "",
+    "modules": [
+      "us-holidays"
+    ],
+    "styles": []
+  },
+  {
+    "id": "car-monthly-cost",
+    "name": "汽车真实月成本",
+    "heading": "汽车真实月成本计算器",
+    "description": "美国汽车真实月成本计算器：把月供、油费、保险、保养和其他费用合并，估算每月养车成本。",
+    "icon": "🚗",
+    "category": "auto",
+    "path": "/tools/car-monthly-cost/",
+    "bodyClass": "",
+    "calculator": "carcost",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "car-payment",
+    "name": "汽车月供计算器",
+    "heading": "美国汽车贷款月供计算器",
+    "description": "美国汽车贷款月供计算器：输入车价、首付、年利率和贷款期限，估算每月本金和利息付款。",
+    "icon": "🚙",
+    "category": "auto",
+    "path": "/tools/car-payment/",
+    "bodyClass": "",
+    "calculator": "car",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "gas-cost",
+    "name": "加油成本计算器",
+    "heading": "美国汽车加油成本计算器",
+    "description": "美国汽车加油成本计算器：输入里程、MPG 和每加仑油价，快速估算一次行程需要多少油钱。",
+    "icon": "⛽",
+    "category": "auto",
+    "path": "/tools/gas-cost/",
+    "bodyClass": "",
+    "calculator": "gas",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "mpg",
+    "name": "MPG ↔ L/100km",
+    "heading": "MPG ↔ L/100km 油耗换算器",
+    "description": "美国汽车 MPG 与 L/100km 油耗在线换算器，帮助华人快速看懂美国车辆油耗。",
+    "icon": "⛽",
+    "category": "auto",
+    "path": "/tools/mpg/",
+    "bodyClass": "",
+    "calculator": "mpg",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "image-compressor",
+    "name": "图片压缩",
+    "heading": "图片压缩",
+    "description": "免费在线图片压缩：批量压缩 JPG / PNG / WebP，支持质量调节与尺寸限制，全程本地处理不上传，无需注册。",
+    "icon": "🗜️",
+    "category": "image",
+    "path": "/tools/image-compressor/",
+    "bodyClass": "",
+    "calculator": "",
+    "modules": [
+      "image-compressor"
+    ],
+    "styles": []
+  },
+  {
+    "id": "image-converter",
+    "name": "图片格式转换",
+    "heading": "图片格式转换",
+    "description": "免费在线图片格式转换：JPG、PNG、WebP 批量互转、逐张下载，全程本地处理不上传，无需注册。",
+    "icon": "🔄",
+    "category": "image",
+    "path": "/tools/image-converter/",
+    "bodyClass": "",
+    "calculator": "",
+    "modules": [
+      "image-converter"
     ],
     "styles": []
   }
