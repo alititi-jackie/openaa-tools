@@ -209,21 +209,44 @@ function escXml(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-function buildSVG(qr, count, margin, fg, bg, captionText, captionPos) {
+// 配文自动换行：按实际渲染宽度贪心分行，最多 maxLines 行，超出部分省略号截断
+function wrapCaption(mctx, text, maxW, maxLines) {
+  const raw = [];
+  let cur = "";
+  for (const ch of text) {
+    if (cur && mctx.measureText(cur + ch).width > maxW) {
+      raw.push(cur);
+      cur = "";
+    }
+    cur += ch;
+  }
+  if (cur) raw.push(cur);
+  if (raw.length <= maxLines) return raw;
+  const head = raw.slice(0, maxLines - 1);
+  let tail = raw.slice(maxLines - 1).join("");
+  while (tail.length > 1 && mctx.measureText(tail + "…").width > maxW) {
+    tail = tail.slice(0, -1);
+  }
+  head.push(tail + "…");
+  return head;
+}
+
+function buildSVG(qr, count, margin, fg, bg, captionLines, captionPos) {
   const n = count + margin * 2;
-  const capH = captionText ? n * 0.18 : 0; // 配文区高度（模块单位）
-  const qrY = captionText && captionPos === "above" ? capH : 0; // 二维码区 Y 偏移
+  const lineHm = n * 0.17;
+  const capHm = lineHm * (captionLines?.length || 0); // 配文区高度（模块单位）
+  const qrYm = capHm && captionPos === "above" ? capHm : 0; // 二维码区 Y 偏移
   let d = "";
   for (let r = 0; r < count; r++) {
     for (let c = 0; c < count; c++) {
-      if (qr.isDark(r, c)) d += `M${c + margin} ${r + margin + qrY}h1v1h-1z`;
+      if (qr.isDark(r, c)) d += `M${c + margin} ${r + margin + qrYm}h1v1h-1z`;
     }
   }
   let logoSvg = "";
   if (logoImg && logoImg.dataset.url) {
     const ls = n * 0.22;
     const x = (n - ls) / 2;
-    const y = (n - ls) / 2 + qrY;
+    const y = (n - ls) / 2 + qrYm;
     const rad = ls * 0.2;
     const f = (v) => v.toFixed(2);
     logoSvg =
@@ -231,14 +254,14 @@ function buildSVG(qr, count, margin, fg, bg, captionText, captionPos) {
       `<image href="${logoImg.dataset.url}" x="${f(x)}" y="${f(y)}" width="${f(ls)}" height="${f(ls)}" preserveAspectRatio="xMidYMid meet"/>`;
   }
   let captionSvg = "";
-  if (captionText) {
-    const fs = capH * 0.52;
-    const ty = captionPos === "above" ? capH / 2 : n + capH / 2;
-    captionSvg = `<text x="${(n / 2).toFixed(2)}" y="${ty.toFixed(2)}" text-anchor="middle" dominant-baseline="central" font-family="system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="${fs.toFixed(2)}" font-weight="600" fill="${fg}">${escXml(captionText)}</text>`;
-  }
-  const h = n + capH;
+  (captionLines || []).forEach((ln, idx) => {
+    const fs = lineHm * 0.64;
+    const ty = captionPos === "above" ? idx * lineHm + lineHm / 2 : n + idx * lineHm + lineHm / 2;
+    captionSvg += `<text x="${(n / 2).toFixed(2)}" y="${ty.toFixed(2)}" text-anchor="middle" dominant-baseline="central" font-family="system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="${fs.toFixed(2)}" font-weight="600" fill="${fg}">${escXml(ln)}</text>`;
+  });
+  const h = n + capHm;
   return (
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${n} ${h}" width="600" height="${(600 * h / n).toFixed(0)}">` +
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${n} ${h}" width="600" height="${((600 * h) / n).toFixed(0)}">` +
     `<rect width="${n}" height="${h}" fill="${bg}"/>` +
     `<path d="${d}" fill="${fg}"/>${logoSvg}${captionSvg}</svg>`
   );
@@ -260,8 +283,19 @@ function renderResult(qr, style, built) {
   const margin = 4;
   const scale = Math.max(2, Math.floor(size / (count + margin * 2)));
   const px = (count + margin * 2) * scale;
-  const capH = caption ? Math.round(px * 0.18) : 0; // 配文区像素高度
-  const qrOffY = caption && captionPos === "above" ? capH : 0; // 二维码区 Y 偏移
+
+  // 配文：按实际宽度自动换行（最多 2 行），字号放大
+  const FONT_STACK = `system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif`;
+  const lineH = Math.round(px * 0.17);
+  const fontPx = Math.max(14, Math.round(lineH * 0.64));
+  let captionLines = [];
+  if (caption) {
+    const mctx = document.createElement("canvas").getContext("2d");
+    mctx.font = `600 ${fontPx}px ${FONT_STACK}`;
+    captionLines = wrapCaption(mctx, caption, px * 0.92, 2);
+  }
+  const capH = lineH * captionLines.length; // 配文区像素高度
+  const qrOffY = captionLines.length && captionPos === "above" ? capH : 0;
 
   // PNG（canvas）
   const canvas = document.createElement("canvas");
@@ -278,25 +312,20 @@ function renderResult(qr, style, built) {
     }
   }
   if (logoImg) drawLogo(ctx, px, qrOffY);
-  // 配文：居中绘制，超宽自动截断
-  let captionText = "";
-  if (caption) {
-    const fontPx = Math.max(12, Math.round(capH * 0.52));
+  if (captionLines.length) {
     ctx.fillStyle = fg;
-    ctx.font = `600 ${fontPx}px system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif`;
+    ctx.font = `600 ${fontPx}px ${FONT_STACK}`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    captionText = caption;
-    while (captionText.length > 1 && ctx.measureText(captionText).width > px * 0.92) {
-      captionText = captionText.slice(0, -1);
-    }
-    const ty = captionPos === "above" ? capH / 2 : px + capH / 2;
-    ctx.fillText(captionText, px / 2, ty);
+    captionLines.forEach((ln, idx) => {
+      const ty = captionPos === "above" ? idx * lineH + lineH / 2 : px + idx * lineH + lineH / 2;
+      ctx.fillText(ln, px / 2, ty);
+    });
   }
   const pngUrl = canvas.toDataURL("image/png");
 
   // SVG（矢量）
-  const svg = buildSVG(qr, count, margin, fg, bg, captionText, captionPos);
+  const svg = buildSVG(qr, count, margin, fg, bg, captionLines, captionPos);
 
   const result = $("result");
   result.replaceChildren();
