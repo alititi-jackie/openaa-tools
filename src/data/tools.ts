@@ -4,6 +4,7 @@ export const tools: Tool[] = catalog;
 export const categories = [
   { id: "usa", name: "美国生活", icon: "🇺🇸" },
   { id: "life", name: "日常生活", icon: "🏠" },
+  { id: "image", name: "图片工具", icon: "🖼️" },
   { id: "dmv", name: "DMV 与证件", icon: "🪪" },
   { id: "auto", name: "汽车出行", icon: "🚗" },
   { id: "convert", name: "单位换算", icon: "📏" },
@@ -29,11 +30,11 @@ const CROSS_LINKS: Record<string, string[]> = {
   currency: ["usd-rmb", "china-us-time", "sales-tax", "expense-record", "nyc-attractions"],
   "hourly-to-salary": ["salary-calculator", "take-home-pay", "overtime-pay", "401k-calculator"],
   "overtime-pay": ["hourly-to-salary", "salary-calculator", "take-home-pay"],
-  "salary-calculator": ["take-home-pay", "hourly-to-salary", "overtime-pay", "sales-tax", "401k-calculator"],
+  "salary-calculator": ["us-tax-estimator", "take-home-pay", "hourly-to-salary", "overtime-pay", "sales-tax", "401k-calculator"],
   "sales-tax": ["tip-calculator", "split-bill", "discount", "currency"],
   "savings-cd": ["compound-interest", "401k-calculator", "mortgage", "credit-card-payoff"],
   "split-bill": ["tip-calculator", "sales-tax", "discount", "expense-record"],
-  "take-home-pay": ["salary-calculator", "hourly-to-salary", "sales-tax", "overtime-pay"],
+  "take-home-pay": ["us-tax-estimator", "salary-calculator", "hourly-to-salary", "sales-tax", "overtime-pay"],
   "tip-calculator": ["split-bill", "sales-tax", "discount", "expense-record"],
   // life
   age: ["date-difference", "china-us-time"],
@@ -43,8 +44,26 @@ const CROSS_LINKS: Record<string, string[]> = {
   "mattress-size": ["length", "area", "shoe-size"],
   mortgage: ["rent-vs-buy", "mortgage-prepay", "compound-interest", "savings-cd", "credit-card-payoff", "401k-calculator", "expense-record"],
   "mortgage-prepay": ["mortgage", "compound-interest", "credit-card-payoff", "rent-vs-buy", "savings-cd"],
-  "qr-generator": ["nyc-attractions", "area-code", "zip-code", "expense-record"],  "rent-vs-buy": ["mortgage", "compound-interest", "savings-cd", "expense-record", "credit-card-payoff"],
-  "shoe-size": ["length", "mattress-size"],
+  "qr-generator": ["qr-decoder", "nyc-attractions", "area-code", "zip-code", "expense-record"],  "rent-vs-buy": ["mortgage", "compound-interest", "savings-cd", "expense-record", "credit-card-payoff"],
+  "shoe-size": ["clothing-size", "length", "mattress-size"],
+  // image
+  "image-compressor": ["image-converter", "qr-generator", "qr-decoder", "word-counter"],
+  "image-converter": ["image-compressor", "qr-generator", "qr-decoder"],
+  // usa
+  "us-holidays": ["china-us-time", "date-difference", "countdown", "lunar-calendar", "nyc-attractions"],
+  // life
+  "lunar-calendar": ["date-difference", "china-us-time", "us-holidays", "countdown", "age"],
+  "qr-decoder": ["qr-generator", "image-compressor", "image-converter"],
+  "gpa-calculator": ["word-counter", "countdown", "date-difference"],
+  "password-generator": ["random-picker", "qr-generator", "word-counter"],
+  "random-picker": ["password-generator", "discount", "split-bill", "word-counter"],
+  "bmi-calculator": ["age", "weight", "length"],
+  "word-counter": ["chinese-converter", "gpa-calculator", "random-picker"],
+  "chinese-converter": ["word-counter", "kinship", "lunar-calendar"],
+  countdown: ["date-difference", "us-holidays", "china-us-time", "gpa-calculator"],
+  "clothing-size": ["shoe-size", "mattress-size", "length"],
+  // finance
+  "us-tax-estimator": ["take-home-pay", "salary-calculator", "hourly-to-salary", "overtime-pay", "401k-calculator", "expense-record"],
   // convert
   area: ["length", "distance", "volume", "weight", "mattress-size"],
   distance: ["mpg", "gas-cost", "length", "area", "nyc-attractions"],

@@ -2,12 +2,12 @@ import { test, expect } from "./fixtures.mjs";
 import fs from "node:fs";
 
 const catalog = JSON.parse(fs.readFileSync("src/data/tools.json", "utf8"));
-const order = ["usa", "life", "dmv", "auto", "convert", "finance"];
+const order = ["usa", "life", "image", "dmv", "auto", "convert", "finance"];
 test("homepage groups all tools in the requested order", async ({
   page,
 }, testInfo) => {
   await page.goto("/");
-  await expect(page.locator("[data-group]")).toHaveCount(6);
+  await expect(page.locator("[data-group]")).toHaveCount(7);
   expect(
     await page
       .locator("[data-group]")
@@ -40,7 +40,7 @@ test("homepage groups all tools in the requested order", async ({
     "usa",
   );
   await page.locator("[data-filter=all]").click();
-  await expect(page.locator("[data-group]:visible")).toHaveCount(6);
+  await expect(page.locator("[data-group]:visible")).toHaveCount(7);
 });
 test("search keeps matching groups and returns from a tool with state intact", async ({
   page,
@@ -59,7 +59,7 @@ test("search keeps matching groups and returns from a tool with state intact", a
   await expect(page.locator("[data-group]:visible")).toHaveCount(0);
   await expect(page.locator("#empty-state")).toBeVisible();
   await page.locator("#clear-search").click();
-  await expect(page.locator("[data-group]:visible")).toHaveCount(6);
+  await expect(page.locator("[data-group]:visible")).toHaveCount(7);
   await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(
     catalog.length,
   );

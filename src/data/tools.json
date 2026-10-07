@@ -15,20 +15,22 @@
     "styles": []
   },
   {
-    "id": "qr-generator",
-    "name": "二维码生成器",
-    "heading": "二维码生成器",
-    "description": "免费在线二维码生成器：链接、文本、WiFi、电子名片、电话、短信、邮件 7 种内容，本地生成不上传，可下载 PNG / SVG，无需注册。",
-    "icon": "🔳",
-    "category": "life",
-    "path": "/tools/qr-generator/",
-    "bodyClass": "",
-    "calculator": "qr",
+    "id": "6-points-calculator",
+    "name": "纽约 DMV 6 Points 计算器",
+    "heading": "纽约 DMV 6 Points 计算器",
+    "description": "纽约普通驾照和 Learner Permit 的 6 Points 中文计算器：检查姓名证明积分、出生日期和纽约地址材料，同类或同来源文件不重复加分。",
+    "icon": "🪪",
+    "category": "dmv",
+    "path": "/usa/dmv/6-points-calculator.html",
+    "bodyClass": "usa-tool-page",
+    "calculator": "",
     "modules": [
-      "calculator"
+      "dmv-6-points"
     ],
     "styles": [
-      "qr-generator.css"
+      "usa-tools.css",
+      "dmv-tools.css",
+      "dmv-6-points.css"
     ]
   },
   {
@@ -62,22 +64,34 @@
     "styles": []
   },
   {
-    "id": "nyc-attractions",
-    "name": "纽约周边地址导航",
-    "heading": "纽约周边地址导航",
-    "description": "OpenAA 工具库 纽约及周边地址导航，整理纽约热门景点、大型购物商场、Outlet、品牌直营店和常用实用地点，并提供中文说明、分类筛选、搜索、地图导航、复制地址、分享及添加到桌面。",
-    "icon": "🗽",
+    "id": "area-code",
+    "name": "美国电话区号查询",
+    "heading": "美国电话区号查询",
+    "description": "美国电话区号查询：输入 3 位 Area Code，查询对应地区和城市信息。",
+    "icon": "☎️",
     "category": "usa",
-    "path": "/usa/nyc-attractions/",
-    "bodyClass": "usa-tool-page",
-    "calculator": "",
+    "path": "/tools/area-code/",
+    "bodyClass": "",
+    "calculator": "area",
     "modules": [
-      "nyc-attractions"
+      "calculator"
     ],
-    "styles": [
-      "usa-tools.css",
-      "nyc-attractions.css"
-    ]
+    "styles": []
+  },
+  {
+    "id": "bmi-calculator",
+    "name": "BMI 计算器",
+    "heading": "BMI 计算器",
+    "description": "BMI计算器：输入身高体重，按中国成人标准算出BMI指数与偏瘦/正常/超重/肥胖分级，并给出健康体重范围。",
+    "icon": "🩺",
+    "category": "life",
+    "path": "/tools/bmi-calculator/",
+    "bodyClass": "",
+    "calculator": "bmi-calculator",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
   },
   {
     "id": "car-monthly-cost",
@@ -110,22 +124,49 @@
     "styles": []
   },
   {
-    "id": "expense-record",
-    "name": "生活开支记录",
-    "heading": "生活开支记录",
-    "description": "美国生活收支记录工具，帮助记录收入、支出和日常开销，适合美国工作与家庭生活使用。",
-    "icon": "🧾",
+    "id": "china-us-time",
+    "name": "中美时间转换",
+    "heading": "中美时间转换器",
+    "description": "中美时间转换器：选择纽约、芝加哥、丹佛或洛杉矶，输入美国当地时间，自动换算中国北京时间，并自动考虑夏令时。",
+    "icon": "🕐",
     "category": "usa",
-    "path": "/usa/expense-record/",
-    "bodyClass": "usa-tool-page",
+    "path": "/tools/china-us-time/",
+    "bodyClass": "",
+    "calculator": "time",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "chinese-converter",
+    "name": "简繁拼音转换",
+    "heading": "简繁拼音转换",
+    "description": "简繁拼音转换：简体繁体互转、汉字转带声调拼音，输入即时转换，全程本地处理不上传。",
+    "icon": "🈁",
+    "category": "life",
+    "path": "/tools/chinese-converter/",
+    "bodyClass": "",
     "calculator": "",
     "modules": [
-      "expense-record"
+      "chinese-converter"
     ],
-    "styles": [
-      "usa-tools.css",
-      "expense-record.css"
-    ]
+    "styles": []
+  },
+  {
+    "id": "clothing-size",
+    "name": "衣服尺码对照",
+    "heading": "衣服尺码对照",
+    "description": "衣服尺码对照表：中国/美国/欧洲服装尺码互查，含上装、裤装、童装对照与尺码反查。",
+    "icon": "👕",
+    "category": "life",
+    "path": "/tools/clothing-size/",
+    "bodyClass": "",
+    "calculator": "",
+    "modules": [
+      "clothing-size"
+    ],
+    "styles": []
   },
   {
     "id": "compound-interest",
@@ -139,6 +180,21 @@
     "calculator": "compound",
     "modules": [
       "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "countdown",
+    "name": "倒计时",
+    "heading": "倒计时",
+    "description": "倒计时：记录生日、纪念日、考试等重要日子，自动计算剩余天数，数据只保存在本机浏览器。",
+    "icon": "⏳",
+    "category": "life",
+    "path": "/tools/countdown/",
+    "bodyClass": "",
+    "calculator": "",
+    "modules": [
+      "countdown"
     ],
     "styles": []
   },
@@ -218,6 +274,43 @@
     "styles": []
   },
   {
+    "id": "document-checker",
+    "name": "纽约 DMV 材料清单",
+    "heading": "去纽约 DMV 要带什么？",
+    "description": "纽约 DMV 出门材料清单：选择 Standard、REAL ID 或 Enhanced，准备身份证明、Social Security、地址证明、MV-44、原件及认证英文翻译，不重复计算6分。",
+    "icon": "🪪",
+    "category": "dmv",
+    "path": "/usa/dmv/document-checker.html",
+    "bodyClass": "usa-tool-page",
+    "calculator": "",
+    "modules": [
+      "dmv-document-checker"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "dmv-tools.css",
+      "dmv-document-checker.css"
+    ]
+  },
+  {
+    "id": "expense-record",
+    "name": "生活开支记录",
+    "heading": "生活开支记录",
+    "description": "美国生活收支记录工具，帮助记录收入、支出和日常开销，适合美国工作与家庭生活使用。",
+    "icon": "🧾",
+    "category": "usa",
+    "path": "/usa/expense-record/",
+    "bodyClass": "usa-tool-page",
+    "calculator": "",
+    "modules": [
+      "expense-record"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "expense-record.css"
+    ]
+  },
+  {
     "id": "gas-cost",
     "name": "加油成本计算器",
     "heading": "美国汽车加油成本计算器",
@@ -229,6 +322,21 @@
     "calculator": "gas",
     "modules": [
       "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "gpa-calculator",
+    "name": "GPA 计算器",
+    "heading": "GPA 计算器",
+    "description": "GPA计算器：输入课程学分与成绩（百分制/Letter/绩点），一键算出加权GPA，附百分制快速换算。",
+    "icon": "🎓",
+    "category": "life",
+    "path": "/tools/gpa-calculator/",
+    "bodyClass": "",
+    "calculator": "",
+    "modules": [
+      "gpa-calculator"
     ],
     "styles": []
   },
@@ -263,6 +371,51 @@
     "styles": []
   },
   {
+    "id": "image-compressor",
+    "name": "图片压缩",
+    "heading": "图片压缩",
+    "description": "免费在线图片压缩：批量压缩 JPG / PNG / WebP，支持质量调节与尺寸限制，全程本地处理不上传，无需注册。",
+    "icon": "🗜️",
+    "category": "image",
+    "path": "/tools/image-compressor/",
+    "bodyClass": "",
+    "calculator": "",
+    "modules": [
+      "image-compressor"
+    ],
+    "styles": []
+  },
+  {
+    "id": "image-converter",
+    "name": "图片格式转换",
+    "heading": "图片格式转换",
+    "description": "免费在线图片格式转换：JPG、PNG、WebP 批量互转、逐张下载，全程本地处理不上传，无需注册。",
+    "icon": "🔄",
+    "category": "image",
+    "path": "/tools/image-converter/",
+    "bodyClass": "",
+    "calculator": "",
+    "modules": [
+      "image-converter"
+    ],
+    "styles": []
+  },
+  {
+    "id": "kinship",
+    "name": "亲戚关系计算器",
+    "heading": "亲戚关系计算器",
+    "description": "中文亲戚称谓计算器：输入如“爸爸的妈妈”，一键算出是奶奶，支持三代以内常见亲戚关系换算。",
+    "icon": "🧧",
+    "category": "life",
+    "path": "/tools/kinship/",
+    "bodyClass": "",
+    "calculator": "kinship",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
     "id": "length",
     "name": "英寸 ↔ 厘米",
     "heading": "英寸 ↔ 厘米换算器",
@@ -274,6 +427,21 @@
     "calculator": "length",
     "modules": [
       "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "lunar-calendar",
+    "name": "公历农历转换",
+    "heading": "公历农历转换",
+    "description": "公历农历转换：公历查农历、农历查公历双向互转，附生肖、干支纪年、二十四节气和传统节日，本地计算无需联网。",
+    "icon": "🌙",
+    "category": "life",
+    "path": "/tools/lunar-calendar/",
+    "bodyClass": "",
+    "calculator": "",
+    "modules": [
+      "lunar-calendar"
     ],
     "styles": []
   },
@@ -308,6 +476,21 @@
     "styles": []
   },
   {
+    "id": "mortgage-prepay",
+    "name": "房贷提前还款计算器",
+    "heading": "房贷提前还款计算器",
+    "description": "房贷提前还款计算器：输入贷款余额、利率、剩余年限和每月多还金额，算出能省多少利息、提前多久还清。",
+    "icon": "🏦",
+    "category": "life",
+    "path": "/tools/mortgage-prepay/",
+    "bodyClass": "",
+    "calculator": "prepay",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
     "id": "mpg",
     "name": "MPG ↔ L/100km",
     "heading": "MPG ↔ L/100km 油耗换算器",
@@ -321,6 +504,24 @@
       "calculator"
     ],
     "styles": []
+  },
+  {
+    "id": "nyc-attractions",
+    "name": "纽约周边地址导航",
+    "heading": "纽约周边地址导航",
+    "description": "OpenAA 工具库 纽约及周边地址导航，整理纽约热门景点、大型购物商场、Outlet、品牌直营店和常用实用地点，并提供中文说明、分类筛选、搜索、地图导航、复制地址、分享及添加到桌面。",
+    "icon": "🗽",
+    "category": "usa",
+    "path": "/usa/nyc-attractions/",
+    "bodyClass": "usa-tool-page",
+    "calculator": "",
+    "modules": [
+      "nyc-attractions"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "nyc-attractions.css"
+    ]
   },
   {
     "id": "overtime-pay",
@@ -338,6 +539,21 @@
     "styles": []
   },
   {
+    "id": "password-generator",
+    "name": "密码生成器",
+    "heading": "密码生成器",
+    "description": "免费在线密码生成器：自定义长度与字符集，一键生成高强度随机密码并显示强度等级，纯本地生成不存储、不上传，无需注册。",
+    "icon": "🔑",
+    "category": "life",
+    "path": "/tools/password-generator/",
+    "bodyClass": "",
+    "calculator": "",
+    "modules": [
+      "password-generator"
+    ],
+    "styles": []
+  },
+  {
     "id": "psi-bar",
     "name": "PSI ↔ Bar",
     "heading": "PSI ↔ Bar 压力换算器",
@@ -351,6 +567,91 @@
       "calculator"
     ],
     "styles": []
+  },
+  {
+    "id": "qr-decoder",
+    "name": "二维码解码",
+    "heading": "二维码解码",
+    "description": "免费在线二维码解码：上传图片或截图即可识别二维码内容，网址自动生成可点击链接，全程本地处理不上传，无需注册。",
+    "icon": "📷",
+    "category": "life",
+    "path": "/tools/qr-decoder/",
+    "bodyClass": "",
+    "calculator": "",
+    "modules": [
+      "qr-decoder"
+    ],
+    "styles": []
+  },
+  {
+    "id": "qr-generator",
+    "name": "二维码生成器",
+    "heading": "二维码生成器",
+    "description": "免费在线二维码生成器：链接、文本、WiFi、电子名片、电话、短信、邮件 7 种内容，本地生成不上传，可下载 PNG / SVG，无需注册。",
+    "icon": "🔳",
+    "category": "life",
+    "path": "/tools/qr-generator/",
+    "bodyClass": "",
+    "calculator": "qr",
+    "modules": [
+      "calculator"
+    ],
+    "styles": [
+      "qr-generator.css"
+    ]
+  },
+  {
+    "id": "random-picker",
+    "name": "随机抽奖",
+    "heading": "随机抽奖",
+    "description": "免费在线随机抽奖工具：支持随机数、名单抽奖、随机分组三种模式，系统级随机源公平不可预测，名单不保存、不上传，无需注册。",
+    "icon": "🎲",
+    "category": "life",
+    "path": "/tools/random-picker/",
+    "bodyClass": "",
+    "calculator": "",
+    "modules": [
+      "random-picker"
+    ],
+    "styles": []
+  },
+  {
+    "id": "real-id-checker",
+    "name": "纽约 DMV REAL ID 检查器",
+    "heading": "纽约 DMV REAL ID 检查器",
+    "description": "纽约 REAL ID 文件检查器，帮助你检查身份、SSN、合法身份和地址证明等常见 DMV 材料是否准备齐全。",
+    "icon": "🪪",
+    "category": "dmv",
+    "path": "/usa/dmv/real-id-checker.html",
+    "bodyClass": "usa-tool-page",
+    "calculator": "",
+    "modules": [
+      "dmv-real-id-checker"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "dmv-tools.css",
+      "dmv-real-id-checker.css"
+    ]
+  },
+  {
+    "id": "real-id-vs-standard-vs-enhanced",
+    "name": "我能办哪种纽约驾照？",
+    "heading": "我的资料能办哪一种纽约驾照？",
+    "description": "根据公民身份、lawful status、6 Points、Social Security 和纽约地址材料，同时检查 Standard、REAL ID、Enhanced 申请条件与缺少文件。",
+    "icon": "🪪",
+    "category": "dmv",
+    "path": "/usa/dmv/real-id-vs-standard-vs-enhanced.html",
+    "bodyClass": "usa-tool-page",
+    "calculator": "",
+    "modules": [
+      "dmv-id-comparison"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "dmv-tools.css",
+      "dmv-id-comparison.css"
+    ]
   },
   {
     "id": "rent-vs-buy",
@@ -488,6 +789,54 @@
     "styles": []
   },
   {
+    "id": "us-holidays",
+    "name": "美国联邦假期日历",
+    "heading": "美国联邦假期日历",
+    "description": "美国联邦假期日历：2026/2027 十一个联邦假日中文对照，含周末顺延放假日期、下个假日倒计时和 2026 拼假攻略。",
+    "icon": "🗓️",
+    "category": "usa",
+    "path": "/tools/us-holidays/",
+    "bodyClass": "",
+    "calculator": "",
+    "modules": [
+      "us-holidays"
+    ],
+    "styles": []
+  },
+  {
+    "id": "us-tax-estimator",
+    "name": "美国联邦税估算器",
+    "heading": "美国联邦税估算器",
+    "description": "美国联邦税估算器：输入年收入和报税身份，按2026税年税率估算联邦所得税、边际税率与退税/补税，结果仅供参考。",
+    "icon": "📑",
+    "category": "finance",
+    "path": "/tools/us-tax-estimator/",
+    "bodyClass": "",
+    "calculator": "us-tax-estimator",
+    "modules": [
+      "calculator"
+    ],
+    "styles": []
+  },
+  {
+    "id": "usd-rmb",
+    "name": "美元换人民币记录本",
+    "heading": "美元换人民币记录本",
+    "description": "美元换人民币记录本：记录每次换汇的日期、美元金额和实际汇率，自动计算人民币金额，支持月度年度统计、Excel 导出和本地备份。",
+    "icon": "💱",
+    "category": "usa",
+    "path": "/usa/usd-rmb/",
+    "bodyClass": "usa-tool-page",
+    "calculator": "",
+    "modules": [
+      "usd-rmb"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "usd-rmb.css"
+    ]
+  },
+  {
     "id": "volume",
     "name": "加仑 ↔ 升",
     "heading": "加仑 ↔ 升换算器",
@@ -518,111 +867,17 @@
     "styles": []
   },
   {
-    "id": "usd-rmb",
-    "name": "美元换人民币记录本",
-    "heading": "美元换人民币记录本",
-    "description": "美元换人民币记录本：记录每次换汇的日期、美元金额和实际汇率，自动计算人民币金额，支持月度年度统计、Excel 导出和本地备份。",
-    "icon": "💱",
-    "category": "usa",
-    "path": "/usa/usd-rmb/",
-    "bodyClass": "usa-tool-page",
-    "calculator": "",
-    "modules": [
-      "usd-rmb"
-    ],
-    "styles": [
-      "usa-tools.css",
-      "usd-rmb.css"
-    ]
-  },
-  {
-    "id": "6-points-calculator",
-    "name": "纽约 DMV 6 Points 计算器",
-    "heading": "纽约 DMV 6 Points 计算器",
-    "description": "纽约普通驾照和 Learner Permit 的 6 Points 中文计算器：检查姓名证明积分、出生日期和纽约地址材料，同类或同来源文件不重复加分。",
-    "icon": "🪪",
-    "category": "dmv",
-    "path": "/usa/dmv/6-points-calculator.html",
-    "bodyClass": "usa-tool-page",
-    "calculator": "",
-    "modules": [
-      "dmv-6-points"
-    ],
-    "styles": [
-      "usa-tools.css",
-      "dmv-tools.css",
-      "dmv-6-points.css"
-    ]
-  },
-  {
-    "id": "real-id-checker",
-    "name": "纽约 DMV REAL ID 检查器",
-    "heading": "纽约 DMV REAL ID 检查器",
-    "description": "纽约 REAL ID 文件检查器，帮助你检查身份、SSN、合法身份和地址证明等常见 DMV 材料是否准备齐全。",
-    "icon": "🪪",
-    "category": "dmv",
-    "path": "/usa/dmv/real-id-checker.html",
-    "bodyClass": "usa-tool-page",
-    "calculator": "",
-    "modules": [
-      "dmv-real-id-checker"
-    ],
-    "styles": [
-      "usa-tools.css",
-      "dmv-tools.css",
-      "dmv-real-id-checker.css"
-    ]
-  },
-  {
-    "id": "real-id-vs-standard-vs-enhanced",
-    "name": "我能办哪种纽约驾照？",
-    "heading": "我的资料能办哪一种纽约驾照？",
-    "description": "根据公民身份、lawful status、6 Points、Social Security 和纽约地址材料，同时检查 Standard、REAL ID、Enhanced 申请条件与缺少文件。",
-    "icon": "🪪",
-    "category": "dmv",
-    "path": "/usa/dmv/real-id-vs-standard-vs-enhanced.html",
-    "bodyClass": "usa-tool-page",
-    "calculator": "",
-    "modules": [
-      "dmv-id-comparison"
-    ],
-    "styles": [
-      "usa-tools.css",
-      "dmv-tools.css",
-      "dmv-id-comparison.css"
-    ]
-  },
-  {
-    "id": "document-checker",
-    "name": "纽约 DMV 材料清单",
-    "heading": "去纽约 DMV 要带什么？",
-    "description": "纽约 DMV 出门材料清单：选择 Standard、REAL ID 或 Enhanced，准备身份证明、Social Security、地址证明、MV-44、原件及认证英文翻译，不重复计算6分。",
-    "icon": "🪪",
-    "category": "dmv",
-    "path": "/usa/dmv/document-checker.html",
-    "bodyClass": "usa-tool-page",
-    "calculator": "",
-    "modules": [
-      "dmv-document-checker"
-    ],
-    "styles": [
-      "usa-tools.css",
-      "dmv-tools.css",
-      "dmv-document-checker.css"
-    ]
-  },
-  {
-    "id": "area-code",
-    "name": "美国电话区号查询",
-    "heading": "美国电话区号查询",
-    "description": "美国电话区号查询：输入 3 位 Area Code，查询对应地区和城市信息。",
-    "icon": "☎️",
-    "category": "usa",
-    "path": "/tools/area-code/",
+    "id": "word-counter",
+    "name": "字数统计",
+    "heading": "字数统计",
+    "description": "免费在线字数统计：实时统计中文字数、英文单词数、字符数、段落行数，中英文混排分别计算，全程本地处理不上传，无需注册。",
+    "icon": "🔢",
+    "category": "life",
+    "path": "/tools/word-counter/",
     "bodyClass": "",
-    "calculator": "area",
+    "calculator": "",
     "modules": [
-      "calculator"
+      "word-counter"
     ],
     "styles": []
   },
@@ -636,51 +891,6 @@
     "path": "/tools/zip-code/",
     "bodyClass": "",
     "calculator": "zip",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "china-us-time",
-    "name": "中美时间转换",
-    "heading": "中美时间转换器",
-    "description": "中美时间转换器：选择纽约、芝加哥、丹佛或洛杉矶，输入美国当地时间，自动换算中国北京时间，并自动考虑夏令时。",
-    "icon": "🕐",
-    "category": "usa",
-    "path": "/tools/china-us-time/",
-    "bodyClass": "",
-    "calculator": "time",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "kinship",
-    "name": "亲戚关系计算器",
-    "heading": "亲戚关系计算器",
-    "description": "中文亲戚称谓计算器：输入如“爸爸的妈妈”，一键算出是奶奶，支持三代以内常见亲戚关系换算。",
-    "icon": "🧧",
-    "category": "life",
-    "path": "/tools/kinship/",
-    "bodyClass": "",
-    "calculator": "kinship",
-    "modules": [
-      "calculator"
-    ],
-    "styles": []
-  },
-  {
-    "id": "mortgage-prepay",
-    "name": "房贷提前还款计算器",
-    "heading": "房贷提前还款计算器",
-    "description": "房贷提前还款计算器：输入贷款余额、利率、剩余年限和每月多还金额，算出能省多少利息、提前多久还清。",
-    "icon": "🏦",
-    "category": "life",
-    "path": "/tools/mortgage-prepay/",
-    "bodyClass": "",
-    "calculator": "prepay",
     "modules": [
       "calculator"
     ],
