@@ -3,6 +3,9 @@ import fs from "node:fs";
 
 const catalog = JSON.parse(fs.readFileSync("src/data/tools.json", "utf8"));
 const order = ["usa", "life", "image", "dmv", "auto", "convert", "finance"];
+// 首页 DMV 分组首张为外链推荐卡（dmv.openaa.com 中文题库），不计入 tools.json
+const extraCards = { dmv: 1 };
+const extraTotal = Object.values(extraCards).reduce((a, b) => a + b, 0);
 test("homepage groups all tools in the requested order", async ({
   page,
 }, testInfo) => {
@@ -14,7 +17,9 @@ test("homepage groups all tools in the requested order", async ({
       .evaluateAll((groups) => groups.map((g) => g.dataset.group)),
   ).toEqual(order);
   const counts = order.map(
-    (category) => catalog.filter((tool) => tool.category === category).length,
+    (category) =>
+      catalog.filter((tool) => tool.category === category).length +
+      (extraCards[category] || 0),
   );
   for (let i = 0; i < order.length; i++) {
     await expect(
@@ -24,7 +29,9 @@ test("homepage groups all tools in the requested order", async ({
       page.locator(`[data-group=${order[i]}] [data-group-count]`),
     ).toHaveText(counts[i] + " 个工具");
   }
-  await expect(page.locator("#tool-groups .tool-card")).toHaveCount(catalog.length);
+  await expect(page.locator("#tool-groups .tool-card")).toHaveCount(
+    catalog.length + extraTotal,
+  );
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -41,6 +48,16 @@ test("homepage groups all tools in the requested order", async ({
   );
   await page.locator("[data-filter=all]").click();
   await expect(page.locator("[data-group]:visible")).toHaveCount(7);
+});
+test("dmv group shows external quiz card first", async ({ page }) => {
+  await page.goto("/");
+  const card = page.locator('[data-group=dmv] .tool-card[data-external="true"]');
+  await expect(card).toHaveCount(1);
+  await expect(card).toHaveAttribute("href", /https:\/\/dmv\.openaa\.com\//);
+  await expect(card).toHaveAttribute("target", "_blank");
+  await expect(card.locator("h3")).toHaveText("DMV 题库练习");
+  const first = page.locator("[data-group=dmv] .tool-card").first();
+  await expect(first).toHaveAttribute("data-external", "true");
 });
 test("search keeps matching groups and returns from a tool with state intact", async ({
   page,
@@ -61,6 +78,6 @@ test("search keeps matching groups and returns from a tool with state intact", a
   await page.locator("#clear-search").click();
   await expect(page.locator("[data-group]:visible")).toHaveCount(7);
   await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(
-    catalog.length,
+    catalog.length + extraTotal,
   );
 });

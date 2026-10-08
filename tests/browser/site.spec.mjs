@@ -39,17 +39,19 @@ for (const tool of catalog) {
 }
 test("home and catalog search", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator("#tool-groups .tool-card")).toHaveCount(catalog.length);
+  await expect(page.locator("#tool-groups .tool-card")).toHaveCount(
+    catalog.length + 1,
+  ); // +1 为 DMV 分组首张外链推荐卡
   await page.locator("#tool-search").fill("温度");
   await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(1);
   await page.getByRole("button", { name: "清除", exact: true }).click();
   await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(
-    catalog.length,
+    catalog.length + 1,
   );
   await page.locator("[data-filter=dmv]").click();
-  await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(4);
+  await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(5); // dmv 4 工具 + 1 外链卡
   await page.reload();
-  await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(4);
+  await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(5); // dmv 4 工具 + 1 外链卡
   await page.locator("#tool-search").fill("not-a-tool");
   await expect(page.locator("#empty-state")).toBeVisible();
 });
