@@ -65,7 +65,9 @@ function toolCardHTML(t) {
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
-  return `<a class="tool-card" href="${esc(t.path)}"><span class="tool-icon" aria-hidden="true">${esc(t.icon)}</span><div><h3>${esc(t.name)}</h3><p>${esc(t.description)}</p></div><span class="card-arrow" aria-hidden="true">↗</span></a>`;
+  const external = /^https?:\/\//.test(t.path || "");
+  const extAttr = external ? ' target="_blank" rel="noopener noreferrer"' : "";
+  return `<a class="tool-card" href="${esc(t.path)}"${extAttr}><span class="tool-icon" aria-hidden="true">${esc(t.icon)}</span><div><h3>${esc(t.name)}</h3><p>${esc(t.description)}</p></div><span class="card-arrow" aria-hidden="true">↗</span></a>`;
 }
 function renderHomeSections() {
   const index = toolIndex();

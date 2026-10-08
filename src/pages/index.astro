@@ -31,13 +31,23 @@ const ecoCards = homeEcoCards();
       type="application/json"
       id="openaa-tool-index"
       set:html={JSON.stringify(
-        tools.map((t) => ({
-          id: t.id,
-          name: t.name,
-          path: t.path,
-          description: t.description,
-          icon: t.icon,
-        })),
+        tools
+          .map((t) => ({
+            id: t.id,
+            name: t.name,
+            path: t.path,
+            description: t.description,
+            icon: t.icon,
+          }))
+          .concat([
+            {
+              id: "dmv-quiz",
+              name: "DMV 题库练习",
+              path: "https://dmv.openaa.com/?utm_source=tools.openaa.com&utm_medium=referral&utm_campaign=dmv-group-card",
+              description: "美国各州 DMV 中文题库与模拟考试",
+              icon: "🚗",
+            },
+          ]),
       ).replace(/</g, "\\u003c")}
     />
     <div class="search-form" role="search">
