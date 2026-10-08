@@ -8,7 +8,7 @@ const ecoCards = homeEcoCards();
 
 <BaseLayout
   title="美国生活免费在线工具大全"
-  description="OpenAA 工具库提供 41 个免费中文工具，按美国生活、日常生活、DMV 与证件、汽车出行、单位换算、工资与理财分类浏览，支持搜索，无需注册。"
+  description="OpenAA 工具库提供 58 个免费中文工具，按美国生活、日常生活、DMV 与证件、汽车出行、单位换算、工资与理财分类浏览，支持搜索，无需注册。"
   modules={["catalog"]}
 >
   <div class="container catalog">
@@ -82,6 +82,23 @@ const ecoCards = homeEcoCards();
                 </span>
               </div>
               <div class="tool-grid">
+                {c.id === "dmv" && (
+                  <a
+                    class="tool-card"
+                    href="https://dmv.openaa.com/?utm_source=tools.openaa.com&utm_medium=referral&utm_campaign=dmv-group-card"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-category="dmv"
+                    data-search="dmv 题库练习 美国各州 dmv 中文题库与模拟考试"
+                  >
+                    <span class="tool-icon" aria-hidden="true">🚗</span>
+                    <div>
+                      <h3>DMV 题库练习</h3>
+                      <p>美国各州 DMV 中文题库与模拟考试</p>
+                    </div>
+                    <span class="card-arrow" aria-hidden="true">↗</span>
+                  </a>
+                )}
                 {items.map((tool) => (
                   <ToolCard tool={tool} />
                 ))}

@@ -177,7 +177,7 @@ img {
   border: 1px solid #cbd5e1;
   border-radius: 14px;
   gap: 8px;
-  max-width: 680px;
+  max-width: 100%;
   box-shadow: 0 6px 20px #0f172a04;
 }
 .search-form input {
@@ -307,6 +307,12 @@ img {
   background: var(--brand);
   border-color: var(--brand);
   color: #fff;
+}
+/* 横滑导向栏通用：首项吸左固定，其余横向滑动 */
+.pin-first > :first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
 }
 .catalog-count {
   color: var(--muted);
@@ -685,11 +691,32 @@ img {
     font-size: 25px;
   }
   .filter-bar {
+    flex-wrap: nowrap;
     gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+  }
+  .filter-bar::-webkit-scrollbar {
+    display: none;
   }
   .filter-bar a {
+    flex: 0 0 auto;
     font-size: 12px;
     padding: 7px 11px;
+  }
+  .filter-bar a:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: #fff;
+    box-shadow: 2px 0 8px rgba(15, 23, 42, 0.1);
+  }
+  .filter-bar a:first-child[aria-current="true"] {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: #fff;
   }
   .page-heading h1 {
     font-size: 28px;
