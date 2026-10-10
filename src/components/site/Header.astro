@@ -1,33 +1,28 @@
 ---
 import { site } from "../../config/site";
-const path = Astro.url.pathname;
 ---
 
 <header class="site-header">
   <div class="header-inner">
-    <a class="brand" href="/" aria-label="OpenAA 工具库首页"
-      ><img src="/assets/openaa-logo.png" width="36" height="36" alt="" /><span
-        ><b><em>Open</em>AA</b><small>工具库</small></span
-      ></a
-    >
-    <nav class="site-nav" aria-label="主导航">
-      <a href="/" aria-current={path === "/" ? "page" : undefined}>首页</a><a
-        href={site.parent}
-        target="_blank"
-        rel="noopener noreferrer">OpenAA</a
-      >
-    </nav>
+    <a class="brand" href="/" aria-label="OpenAA 工具库首页">
+      <img src="/assets/openaa-logo.png" width="34" height="34" alt="OpenAA" />
+      <span class="brand-name">
+        <b><em>Open</em>AA</b>
+        <i class="brand-dot" aria-hidden="true"></i>
+        <small>工具库</small>
+      </span>
+    </a>
+
     <div class="header-actions" aria-label="页面操作">
-      <button
-        class="share-button"
-        type="button"
-        data-install
-        aria-label="下载到桌面"
-        title="下载到桌面"
+      <a
+        class="share-button go-button"
+        href="https://go.openaa.com/"
+        aria-label="打开 OpenAA Go 导航"
+        title="OpenAA Go 导航"
       >
         <svg
-          width="19"
-          height="19"
+          width="20"
+          height="20"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -36,93 +31,37 @@ const path = Astro.url.pathname;
           stroke-linejoin="round"
           aria-hidden="true"
         >
-          <path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path
-            d="M5 21h14"></path>
+          <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+          <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+          <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
         </svg>
-      </button>
+      </a>
       <button
         class="share-button"
         type="button"
         data-share
         aria-label="分享当前页面"
-        title="分享"
+        title="分享当前页面"
       >
         <svg
-          width="19"
-          height="19"
+          width="20"
+          height="20"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
           stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
           aria-hidden="true"
         >
-          <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"
-          ></circle><circle cx="18" cy="19" r="3"></circle><path
-            d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4"></path>
+          <circle cx="18" cy="5" r="3"></circle>
+          <circle cx="6" cy="12" r="3"></circle>
+          <circle cx="18" cy="19" r="3"></circle>
+          <path d="m8.7 10.7 6.6-4.4"></path>
+          <path d="m8.7 13.3 6.6 4.4"></path>
         </svg>
       </button>
     </div>
   </div>
 </header>
-
-<style is:global>
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-
-  @media (max-width: 760px) {
-    .header-inner {
-      padding-left: 10px;
-      padding-right: 10px;
-      gap: 6px;
-    }
-
-    .site-nav {
-      gap: 8px;
-    }
-
-    .site-nav a:first-child {
-      display: inline !important;
-    }
-
-    .header-actions {
-      gap: 2px;
-    }
-
-    .header-actions .share-button {
-      width: 44px;
-      height: 44px;
-    }
-
-    .header-actions .share-button svg {
-      width: 16px;
-      height: 16px;
-    }
-  }
-
-  @media (max-width: 390px) {
-    .header-inner {
-      gap: 5px;
-    }
-
-    .site-nav {
-      gap: 7px;
-    }
-
-    .site-nav a {
-      font-size: 11px;
-    }
-
-    .header-actions {
-      gap: 2px;
-    }
-
-    .header-actions .share-button {
-      width: 44px;
-      height: 44px;
-    }
-  }
-</style>

@@ -17,5 +17,31 @@ import { site } from "../../config/site";
       target="_blank"
       rel="noopener noreferrer">意见反馈</a
     >
-  </nav><small>© {new Date().getFullYear()} OpenAA · 免费使用，无需注册</small>
+  </nav><button type="button" class="footer-install" data-install>添加到桌面</button>
+  <small>© {new Date().getFullYear()} OpenAA · 免费使用，无需注册</small>
 </footer>
+
+<style>
+  .footer-install {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    margin: 2px auto 14px;
+    padding: 7px 15px;
+    border: 1px solid #dbe3ee;
+    border-radius: 999px;
+    background: #fff;
+    color: #475569;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .footer-install:hover {
+    border-color: #bfdbfe;
+    color: #1d4ed8;
+  }
+  .footer-install:focus-visible {
+    outline: 2px solid #93c5fd;
+    outline-offset: 2px;
+  }
+</style>
