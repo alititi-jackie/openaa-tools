@@ -81,6 +81,44 @@
     copyBtn.disabled = !hasText;
     downloadBtn.disabled = !hasText;
   }
+  let tesseractLoadPromise = null;
+  async function loadTesseract() {
+    if (window.Tesseract && window.Tesseract.createWorker) return window.Tesseract;
+    if (!tesseractLoadPromise) {
+      tesseractLoadPromise = (async () => {
+        const cdns = [
+          { base: "https://cdn.jsdelivr.net/npm", src: "https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/tesseract.min.js" },
+          { base: "https://unpkg.com", src: "https://unpkg.com/tesseract.js@6.0.1/dist/tesseract.min.js" }
+        ];
+        let lastError;
+        for (const cdn of cdns) {
+          try {
+            await new Promise((resolve, reject) => {
+              const script = document.createElement("script");
+              script.src = cdn.src;
+              script.async = true;
+              script.onload = () => resolve();
+              script.onerror = () => {
+                script.remove();
+                reject(new Error("无法加载 OCR 脚本：" + cdn.src));
+              };
+              document.head.appendChild(script);
+            });
+            if (window.Tesseract && window.Tesseract.createWorker) {
+              window.Tesseract.__openaaCdnBase = cdn.base;
+              return window.Tesseract;
+            }
+            throw new Error("OCR 脚本已加载，但识别引擎未初始化。");
+          } catch (error) {
+            lastError = error;
+          }
+        }
+        throw lastError || new Error("所有 OCR 资源地址均加载失败。");
+      })();
+    }
+    return tesseractLoadPromise;
+  }
+
   async function recognize() {
     if (!file || busy) return;
     busy = true;
@@ -95,9 +133,12 @@
     setProgress(2, "正在加载识别程序…");
     setStatus("正在准备", "首次使用需要下载识别程序和语言数据，请保持页面打开。");
     try {
-      const { createWorker } = await import(/* @vite-ignore */ "https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/tesseract.esm.min.js");
+      // Use the browser UMD build instead of importing the ESM bundle dynamically.
+      // The ESM bundle can fail on mobile browsers/CDN module resolution before OCR starts.
+      const tesseract = await loadTesseract();
       const lang = language.value;
-      worker = await createWorker(lang, 1, {
+      const cdnBase = tesseract.__openaaCdnBase || "https://cdn.jsdelivr.net/npm";
+      worker = await tesseract.createWorker(lang, 1, {
         logger: (message) => {
           if (!message) return;
           if (typeof message.progress === "number") {
@@ -115,8 +156,8 @@
             setProgress(5, "正在准备识别环境…");
           }
         },
-        workerPath: "https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/worker.min.js",
-        corePath: "https://cdn.jsdelivr.net/npm/tesseract.js-core@6.0.0",
+        workerPath: cdnBase + "/tesseract.js@6.0.1/dist/worker.min.js",
+        corePath: cdnBase + "/tesseract.js-core@6.0.0",
         langPath: "https://tessdata.projectnaptha.com/4.0.0"
       });
       setProgress(8, "正在读取图片…");
@@ -132,7 +173,8 @@
     } catch (error) {
       console.error("OpenAA OCR error:", error);
       setProgress(0, "识别未完成");
-      setStatus("识别失败", "可能是网络无法加载识别资源。请检查网络后重试；图片本身不会上传。");
+      const detail = error && error.message ? String(error.message).slice(0, 180) : "未知错误";
+      setStatus("识别失败", "识别引擎或语言模型加载失败。请稍后重试；图片不会上传。错误信息：" + detail);
     } finally {
       if (worker) {
         try { await worker.terminate(); } catch (_) {}
