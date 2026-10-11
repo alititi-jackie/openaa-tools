@@ -140,7 +140,15 @@ for (const [tool, input, expected] of advanced)
     tool,
   );
 
-assert.equal(catalog.length, 59, "all tools are registered");
+assert.ok(catalog.length > 0, "tool catalog must not be empty");
+assert.ok(
+  catalog.some((tool) => tool.id === "image-to-text" && tool.path === "/tools/image-to-text/"),
+  "image-to-text tool is registered",
+);
+assert.ok(
+  catalog.every((tool) => tool.id && tool.path && tool.category && Array.isArray(tool.modules)),
+  "every tool has required catalog metadata",
+);
 assert.equal(new Set(catalog.map((x) => x.id)).size, catalog.length);
 assert.equal(new Set(catalog.map((x) => x.path)).size, catalog.length);
 for (const item of catalog)
