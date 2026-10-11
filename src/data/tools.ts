@@ -47,7 +47,8 @@ const CROSS_LINKS: Record<string, string[]> = {
   "qr-generator": ["qr-decoder", "nyc-attractions", "area-code", "zip-code", "expense-record"],  "rent-vs-buy": ["mortgage", "compound-interest", "savings-cd", "expense-record", "credit-card-payoff"],
   "shoe-size": ["clothing-size", "length", "mattress-size"],
   // image
-  "image-compressor": ["image-converter", "qr-generator", "qr-decoder", "word-counter"],
+  "image-compressor": ["image-converter", "image-to-text", "qr-generator", "qr-decoder", "word-counter"],
+  "image-to-text": ["image-compressor", "image-converter", "qr-decoder", "word-counter"],
   "image-converter": ["image-compressor", "qr-generator", "qr-decoder"],
   // usa
   "us-holidays": ["china-us-time", "date-difference", "countdown", "lunar-calendar", "nyc-attractions"],
