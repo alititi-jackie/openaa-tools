@@ -867,21 +867,6 @@
     "styles": []
   },
   {
-    "id": "image-to-text",
-    "name": "图片转文字",
-    "heading": "OpenAA 图片转文字",
-    "description": "免费在线图片转文字 OCR：识别英文、简体中文和中英文混合图片文字，支持复制与下载 TXT，图片在浏览器本地处理不上传。",
-    "icon": "🔎",
-    "category": "image",
-    "path": "/tools/image-to-text/",
-    "bodyClass": "",
-    "calculator": "",
-    "modules": [
-      "image-to-text"
-    ],
-    "styles": []
-  },
-  {
     "id": "image-compressor",
     "name": "图片压缩",
     "heading": "图片压缩",
