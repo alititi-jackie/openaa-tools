@@ -47,7 +47,7 @@
     preview.removeAttribute("src");
   }
   function setFile(next) {
-    if (!next) return;
+    if (!next || busy) return;
     if (!next.type || !next.type.startsWith("image/")) {
       setStatus("文件格式不支持", "请选择 JPG、PNG、WebP 等图片文件。");
       return;
@@ -67,6 +67,7 @@
     progressWrap.hidden = true;
   }
   function clearImage() {
+    if (busy) return;
     file = null;
     input.value = "";
     revokePreview();
@@ -85,6 +86,9 @@
     busy = true;
     runBtn.disabled = true;
     language.disabled = true;
+    input.disabled = true;
+    clearImageBtn.disabled = true;
+    resetBtn.disabled = true;
     runBtn.textContent = "识别中…";
     result.value = "";
     syncActions();
@@ -138,6 +142,9 @@
       runBtn.disabled = !file;
       runBtn.textContent = "开始识别文字";
       language.disabled = false;
+      input.disabled = false;
+      clearImageBtn.disabled = false;
+      resetBtn.disabled = false;
     }
   }
 
