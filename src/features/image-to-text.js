@@ -204,7 +204,12 @@
       syncActions();
       setProgress(100, "识别完成");
       if (result.value) {
-        setStatus("识别完成", "请检查文字，特别是数字、日期、地址和专有名称。");
+        const confidence = Number(data && data.confidence);
+        if (Number.isFinite(confidence) && confidence < 55) {
+          setStatus("识别完成，但准确度可能较低", "结果中可能有乱码。请确认识别语言与图片一致；再尝试更清晰、正向、光线均匀的图片。");
+        } else {
+          setStatus("识别完成", "请检查文字，特别是数字、日期、地址和专有名称。若结果像乱码，请确认识别语言与图片一致后重试。");
+        }
       } else {
         setStatus("没有识别到文字", "尝试使用更清晰、光线更好或文字更大的图片。");
       }
