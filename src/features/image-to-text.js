@@ -91,7 +91,7 @@
     setProgress(2, "正在加载识别程序…");
     setStatus("正在准备", "首次使用需要下载识别程序和语言数据，请保持页面打开。");
     try {
-      const { createWorker } = await import("https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/tesseract.esm.min.js");
+      const { createWorker } = await import(/* @vite-ignore */ "https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/tesseract.esm.min.js");
       const lang = language.value;
       worker = await createWorker(lang, 1, {
         logger: (message) => {
