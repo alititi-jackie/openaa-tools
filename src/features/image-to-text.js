@@ -116,7 +116,11 @@
         throw lastError || new Error("所有 OCR 资源地址均加载失败。");
       })();
     }
-    return tesseractLoadPromise;
+    return tesseractLoadPromise.catch((error) => {
+      // Allow a later user retry after transient CDN/network failures.
+      tesseractLoadPromise = null;
+      throw error;
+    });
   }
 
   async function recognize() {
