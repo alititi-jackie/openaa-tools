@@ -123,6 +123,35 @@
     });
   }
 
+  // Improve OCR input on mobile photos and screenshots: enlarge small text and
+  // normalize grayscale/contrast without uploading the image anywhere.
+  async function prepareImageForOCR(sourceFile) {
+    const bitmap = await createImageBitmap(sourceFile);
+    try {
+      const maxSide = 4200;
+      const scale = Math.min(2, maxSide / Math.max(bitmap.width, bitmap.height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+      canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const pixels = frame.data;
+      for (let i = 0; i < pixels.length; i += 4) {
+        const gray = Math.round(0.299 * pixels[i] + 0.587 * pixels[i + 1] + 0.114 * pixels[i + 2]);
+        // A gentle contrast stretch improves faint print while retaining anti-aliasing.
+        const enhanced = Math.max(0, Math.min(255, (gray - 128) * 1.18 + 128));
+        pixels[i] = enhanced;
+        pixels[i + 1] = enhanced;
+        pixels[i + 2] = enhanced;
+      }
+      ctx.putImageData(frame, 0, 0);
+      return canvas;
+    } finally {
+      bitmap.close();
+    }
+  }
+
   async function recognize() {
     if (!file || busy) return;
     busy = true;
@@ -164,8 +193,13 @@
         corePath: cdnBase + "/tesseract.js-core@6.0.0",
         langPath: "https://tessdata.projectnaptha.com/4.0.0"
       });
-      setProgress(8, "正在读取图片…");
-      const { data } = await worker.recognize(file);
+      setProgress(8, "正在优化图片…");
+      const preparedImage = await prepareImageForOCR(file);
+      // A single uniform text block is the common case for screenshots and documents.
+      // This avoids Tesseract treating each line as unrelated fragments.
+      await worker.setParameters({ tessedit_pageseg_mode: "6" });
+      setProgress(12, "正在识别图片文字…");
+      const { data } = await worker.recognize(preparedImage);
       result.value = (data && data.text ? data.text : "").trim();
       syncActions();
       setProgress(100, "识别完成");
