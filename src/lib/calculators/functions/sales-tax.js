@@ -11,6 +11,7 @@ const CITY_RATES = [
   ["SEA", "西雅图 Seattle", 10.55],
   ["BOS", "波士顿 Boston", 6.25],
   ["PHL", "费城 Philadelphia", 8],
+  ["PIT", "匹兹堡 Pittsburgh", 7],
   ["DAL", "达拉斯 Dallas", 8.25],
   ["AUS", "奥斯汀 Austin", 8.25],
   ["SD", "圣地亚哥 San Diego", 7.75],
