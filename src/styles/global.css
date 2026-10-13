@@ -371,6 +371,12 @@ img {
   color: #64748b;
   margin: 6px 0 0;
 }
+.result-note {
+  font-size: 13px;
+  color: #64748b;
+  text-align: center;
+  margin: 10px 0 0;
+}
 .field input,
 .field select,
 .field textarea {
