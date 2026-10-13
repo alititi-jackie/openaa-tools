@@ -366,6 +366,11 @@ img {
   font-weight: 650;
   margin-bottom: 6px;
 }
+.field .hint {
+  font-size: 13px;
+  color: #64748b;
+  margin: 6px 0 0;
+}
 .field input,
 .field select,
 .field textarea {

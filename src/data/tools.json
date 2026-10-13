@@ -108,7 +108,7 @@
     "id": "sales-tax",
     "name": "Sales Tax 计算器",
     "heading": "美国 Sales Tax 计算器",
-    "description": "美国 Sales Tax 销售税计算器：输入商品价格和税率，快速计算销售税及含税最终价格。适合美国购物。",
+    "description": "美国 Sales Tax 销售税计算器：输入商品价格，选择州自动填入税率，快速计算销售税及含税最终价格。覆盖50州+DC，适合美国购物。",
     "icon": "🏷️",
     "category": "finance",
     "path": "/tools/sales-tax/",

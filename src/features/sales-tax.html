@@ -6,6 +6,12 @@
     ><input id="price" min="0" step="0.01" type="number" value="100" />
   </div>
   <div class="field">
+    <label for="state">选择州（自动填入州税率）</label
+    ><select id="state">
+      <option value="">-- 手动输入税率 --</option>
+    </select>
+  </div>
+  <div class="field">
     <label for="tax">销售税率 (%)</label
     ><input
       id="tax"
@@ -15,6 +21,7 @@
       type="number"
       value="8.875"
     />
+    <p class="hint" id="rate-note">可手动调整；同一州内各县市实际税率可能不同。</p>
   </div>
   <button class="btn" id="calculate">计算销售税</button>
 </div>
