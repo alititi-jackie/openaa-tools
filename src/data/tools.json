@@ -694,8 +694,8 @@
   },
   {
     "id": "nyc-attractions",
-    "name": "纽约周边地址导航",
-    "heading": "纽约周边地址导航",
+    "name": "纽约景点与品牌店地址导航",
+    "heading": "纽约景点与品牌店地址导航",
     "description": "OpenAA 工具库纽约及周边地址导航，整理纽约热门景点、购物商场、Outlet、Apple 与 Samsung 官方门店及常用实用地点，提供中文说明、中英文别名搜索、分类筛选、地图导航、复制地址和官方信息链接。",
     "icon": "🗽",
     "category": "usa",
