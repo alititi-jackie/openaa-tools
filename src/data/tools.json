@@ -694,9 +694,9 @@
   },
   {
     "id": "nyc-attractions",
-    "name": "纽约景点与品牌店地址导航",
-    "heading": "纽约景点与品牌店地址导航",
-    "description": "OpenAA 工具库纽约及周边地址导航，整理纽约热门景点、购物商场、Outlet、Apple 与 Samsung 官方门店及常用实用地点，提供中文说明、中英文别名搜索、分类筛选、地图导航、复制地址和官方信息链接。",
+    "name": "纽约景点、品牌店与地铁地址导航",
+    "heading": "纽约景点、品牌店与地铁地址导航",
+    "description": "纽约及周边地址导航，包含热门景点、购物商场、代表性 Apple 与 Samsung 门店、华人常用地铁站；支持中英文别名搜索、地图导航和底部复制地址。多家分店请查看纽约品牌门店地址大全。",
     "icon": "🗽",
     "category": "usa",
     "path": "/usa/nyc-attractions/",
@@ -704,6 +704,24 @@
     "calculator": "",
     "modules": [
       "nyc-attractions"
+    ],
+    "styles": [
+      "usa-tools.css",
+      "nyc-attractions.css"
+    ]
+  },
+  {
+    "id": "brand-stores",
+    "name": "纽约品牌门店地址大全",
+    "heading": "纽约品牌门店地址大全｜Apple 苹果与 Samsung 三星",
+    "description": "整理纽约及周边 Apple 苹果官方零售店与 Samsung 三星体验店地址，支持按品牌搜索、地图导航、复制地址，并链接官方门店信息。",
+    "icon": "🏬",
+    "category": "usa",
+    "path": "/usa/brand-stores/",
+    "bodyClass": "usa-tool-page",
+    "calculator": "",
+    "modules": [
+      "brand-stores"
     ],
     "styles": [
       "usa-tools.css",
