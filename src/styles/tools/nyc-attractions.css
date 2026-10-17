@@ -68,7 +68,7 @@
 }
 .nyc-tab {
   flex: 0 0 auto;
-  min-height: 36px;
+  min-height: 32px;
   border: 1px solid #dbe3ee;
   border-radius: 999px;
   background: #fff;
@@ -99,8 +99,8 @@
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 14px;
-  padding: 8px;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  padding: 6px;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
   cursor: default;
   transition:
     border-color 0.15s ease,
@@ -111,10 +111,10 @@
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.07);
 }
 .nyc-card-inner {
-  min-height: 96px;
-  border-radius: 11px;
-  background: #f8fafc;
-  padding: 13px;
+  min-height: 0;
+  border-radius: 9px;
+  background: #fff;
+  padding: 9px 10px;
 }
 .nyc-title-row {
   display: flex;
@@ -131,13 +131,13 @@
   line-height: 1.35;
 }
 .nyc-note {
-  margin-top: 7px;
-  color: #334155;
-  font-size: 13px;
-  line-height: 1.5;
+  margin-top: 4px;
+  color: #475569;
+  font-size: 12.5px;
+  line-height: 1.4;
 }
 .nyc-address {
-  margin-top: 7px;
+  margin-top: 5px;
   padding-right: 4px;
   color: #64748b;
   font-size: 12.5px;
@@ -182,8 +182,8 @@
 .nyc-card-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 6px;
+  margin-top: 8px;
 }
 .nyc-card-actions .nyc-btn {
   display: inline-flex;
@@ -192,6 +192,8 @@
   min-height: 36px;
   text-decoration: none;
   font-size: 12px;
+  padding: 0 10px;
+  border-radius: 8px;
 }
 .nyc-card-actions .nyc-map {
   border-color: #3b82f6;
@@ -271,3 +273,9 @@
     font-size: 23px;
   }
 }
+
+/* Compact address cards: actions live together beneath the address. */
+.nyc-card-actions .nyc-copy { cursor: pointer; }
+.nyc-card-actions .nyc-other-stores { color: #2563eb; border-color: #bfdbfe; }
+.nyc-card-actions .nyc-official { color: #64748b; }
+.nyc-card-actions .nyc-btn:active { transform: translateY(1px); }
