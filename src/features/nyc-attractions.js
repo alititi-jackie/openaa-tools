@@ -155,11 +155,273 @@ const PLACES = [
     note: "布鲁克林 36 街附近 Costco 大型会员制超市。",
     address: "976 3rd Ave Brooklyn, NY 11232",
   },
+
+  {
+    category: "购物",
+    name: "Macy's Herald Square 梅西百货旗舰店",
+    note: "纽约著名百货旗舰店，位于 Herald Square；建议出发前查看官方营业时间。",
+    address: "151 W 34th St, New York, NY 10001",
+    officialUrl: "https://www.macys.com/stores/ny/newyork/herald-square_3.html",
+    aliases: ["梅西百货", "Macy's", "Macy’s", "Herald Square"],
+  },
+  {
+    category: "品牌店",
+    name: "Apple Fifth Avenue 苹果第五大道旗舰店",
+    note: "苹果官方直营零售店，标志性的玻璃立方体入口；官方页面提供营业时间和店内服务。",
+    address: "767 Fifth Ave, New York, NY 10153",
+    storeType: "Apple 官方零售店",
+    officialUrl: "https://www.apple.com/retail/fifthavenue/",
+    aliases: ["苹果", "Apple Store", "第五大道苹果店"],
+  },
+  {
+    category: "品牌店",
+    name: "Apple Grand Central 苹果中央车站店",
+    note: "位于 Grand Central Terminal 内的苹果官方零售店。",
+    address: "45 Grand Central Terminal, New York, NY 10017",
+    storeType: "Apple 官方零售店",
+    officialUrl: "https://www.apple.com/retail/storelist/",
+    aliases: ["苹果", "Grand Central Apple"],
+  },
+  {
+    category: "品牌店",
+    name: "Apple SoHo 苹果苏活区店",
+    note: "位于 Prince Street 的苹果官方零售店。",
+    address: "103 Prince St, New York, NY 10012",
+    storeType: "Apple 官方零售店",
+    officialUrl: "https://www.apple.com/retail/storelist/",
+    aliases: ["苹果", "SoHo Apple"],
+  },
+  {
+    category: "品牌店",
+    name: "Apple World Trade Center 苹果世贸中心店",
+    note: "位于 Oculus / Westfield World Trade Center 区域的苹果官方零售店。",
+    address: "185 Greenwich St, New York, NY 10007",
+    storeType: "Apple 官方零售店",
+    officialUrl: "https://www.apple.com/retail/storelist/",
+    aliases: ["苹果", "WTC Apple", "Oculus Apple"],
+  },
+  {
+    category: "品牌店",
+    name: "Apple West 14th Street 苹果西14街店",
+    note: "曼哈顿 Meatpacking District 附近的苹果官方零售店。",
+    address: "401 W 14th St, New York, NY 10014",
+    storeType: "Apple 官方零售店",
+    officialUrl: "https://www.apple.com/retail/storelist/",
+    aliases: ["苹果", "West 14th Apple"],
+  },
+  {
+    category: "品牌店",
+    name: "Apple Upper West Side 苹果上西区店",
+    note: "位于 Broadway 的苹果官方零售店。",
+    address: "1981 Broadway, New York, NY 10023",
+    storeType: "Apple 官方零售店",
+    officialUrl: "https://www.apple.com/retail/storelist/",
+    aliases: ["苹果", "Upper West Side Apple"],
+  },
+  {
+    category: "品牌店",
+    name: "Apple Upper East Side 苹果上东区店",
+    note: "位于 Madison Avenue 的苹果官方零售店。",
+    address: "940 Madison Ave, New York, NY 10021",
+    storeType: "Apple 官方零售店",
+    officialUrl: "https://www.apple.com/retail/storelist/",
+    aliases: ["苹果", "Upper East Side Apple"],
+  },
+  {
+    category: "品牌店",
+    name: "Apple Downtown Brooklyn 苹果布鲁克林市中心店",
+    note: "布鲁克林 Downtown 区域的苹果官方零售店。",
+    address: "123 Flatbush Ave, Brooklyn, NY 11217",
+    storeType: "Apple 官方零售店",
+    officialUrl: "https://www.apple.com/retail/storelist/",
+    aliases: ["苹果", "Brooklyn Apple"],
+  },
+  {
+    category: "品牌店",
+    name: "Apple Williamsburg 苹果威廉斯堡店",
+    note: "位于 Bedford Avenue 的苹果官方零售店。",
+    address: "247 Bedford Ave, Brooklyn, NY 11211",
+    storeType: "Apple 官方零售店",
+    officialUrl: "https://www.apple.com/retail/storelist/",
+    aliases: ["苹果", "Williamsburg Apple"],
+  },
+  {
+    category: "品牌店",
+    name: "Samsung Experience Store Queens Center 三星皇后中心体验店",
+    note: "三星官方体验店，位于 Queens Center 商场一层，靠近 Zara 和 Shake Shack。",
+    address: "90-15 Queens Blvd, Space 1060, Elmhurst, NY 11373",
+    storeType: "Samsung 官方体验店",
+    officialUrl: "https://www.samsung.com/us/samsung-experience-store/queens-center/",
+    aliases: ["三星", "Samsung", "Queens Center Samsung"],
+  },
+  {
+    category: "品牌店",
+    name: "Samsung Experience Store Roosevelt Field 三星罗斯福购物中心体验店",
+    note: "三星官方体验店，位于长岛 Garden City 的 Roosevelt Field 商场二层。",
+    address: "630 Old Country Rd, Garden City, NY 11530",
+    storeType: "Samsung 官方体验店",
+    officialUrl: "https://www.samsung.com/us/store/",
+    aliases: ["三星", "Samsung", "Roosevelt Field Samsung"],
+  },
+  {
+    category: "购物",
+    name: "Bloomingdale's 布鲁明戴尔百货",
+    note: "曼哈顿知名百货公司，位于 Lexington Avenue 与 59 街附近。",
+    address: "1000 Third Ave, New York, NY 10022",
+    aliases: ["Bloomingdale's", "布鲁明戴尔"],
+  },
+  {
+    category: "购物",
+    name: "Saks Fifth Avenue 萨克斯第五大道百货",
+    note: "第五大道知名高端百货，位于 Rockefeller Center 对面一带。",
+    address: "611 Fifth Ave, New York, NY 10022",
+    aliases: ["Saks", "萨克斯百货"],
+  },
+  {
+    category: "购物",
+    name: "Bergdorf Goodman 伯格多夫古德曼百货",
+    note: "第五大道奢侈品百货，位于 Central Park 南侧。",
+    address: "754 Fifth Ave, New York, NY 10019",
+    aliases: ["Bergdorf Goodman", "伯格多夫"],
+  },
+  {
+    category: "购物",
+    name: "Nintendo NY 任天堂纽约店",
+    note: "Rockefeller Center 内的任天堂官方品牌零售店。",
+    address: "10 Rockefeller Plaza, New York, NY 10020",
+    aliases: ["Nintendo", "任天堂"],
+  },
+  {
+    category: "购物",
+    name: "LEGO Store Rockefeller Center 乐高洛克菲勒中心店",
+    note: "洛克菲勒中心附近的乐高品牌店。",
+    address: "620 Fifth Ave, New York, NY 10020",
+    aliases: ["LEGO", "乐高"],
+  },
+  {
+    category: "购物",
+    name: "Nike House of Innovation 耐克第五大道旗舰店",
+    note: "耐克第五大道大型品牌零售店；营业和楼层服务以官方信息为准。",
+    address: "650 Fifth Ave, New York, NY 10019",
+    aliases: ["Nike", "耐克"],
+  },
+  {
+    category: "景点",
+    name: "帝国大厦 Empire State Building",
+    note: "纽约经典摩天大楼观景地标，观景台入场通常需要购票。",
+    address: "20 W 34th St, New York, NY 10001",
+    aliases: ["Empire State", "帝国大厦"],
+  },
+  {
+    category: "景点",
+    name: "洛克菲勒中心 Rockefeller Center",
+    note: "曼哈顿中城地标，包含 Top of the Rock、广场及季节性活动。",
+    address: "45 Rockefeller Plaza, New York, NY 10111",
+    aliases: ["Rockefeller Center", "洛克菲勒中心"],
+  },
+  {
+    category: "景点",
+    name: "中央车站 Grand Central Terminal",
+    note: "纽约历史悠久的交通地标，主大厅和室内建筑值得参观。",
+    address: "89 E 42nd St, New York, NY 10017",
+    aliases: ["Grand Central", "中央车站"],
+  },
+  {
+    category: "景点",
+    name: "纽约公共图书馆主馆 NYPL",
+    note: "第五大道与 42 街附近的标志性公共图书馆建筑。",
+    address: "476 Fifth Ave, New York, NY 10018",
+    aliases: ["New York Public Library", "NYPL", "纽约图书馆"],
+  },
+  {
+    category: "景点",
+    name: "布莱恩特公园 Bryant Park",
+    note: "位于纽约公共图书馆后方，适合休息、散步及季节性活动。",
+    address: "Bryant Park, New York, NY 10018",
+    aliases: ["Bryant Park", "布莱恩特公园"],
+  },
+  {
+    category: "景点",
+    name: "高线公园 The High Line",
+    note: "由旧高架铁路改造的城市空中公园；入口分布在多个街口。",
+    address: "820 Washington St, New York, NY 10014",
+    aliases: ["High Line", "高线公园"],
+  },
+  {
+    category: "景点",
+    name: "Vessel 哈德逊园区 Vessel",
+    note: "Hudson Yards 的标志性建筑，参观规则和开放情况请以官方信息为准。",
+    address: "20 Hudson Yards, New York, NY 10001",
+    aliases: ["Vessel", "Hudson Yards"],
+  },
+  {
+    category: "景点",
+    name: "Edge NYC 哈德逊园区观景台",
+    note: "位于 30 Hudson Yards 的高空观景台，建议提前查看票务和入场时间。",
+    address: "30 Hudson Yards, New York, NY 10001",
+    aliases: ["Edge", "Edge NYC", "观景台"],
+  },
+  {
+    category: "景点",
+    name: "现代艺术博物馆 MoMA",
+    note: "纽约重要现代与当代艺术博物馆，入场安排请查看官网。",
+    address: "11 W 53rd St, New York, NY 10019",
+    aliases: ["MoMA", "现代艺术博物馆"],
+  },
+  {
+    category: "景点",
+    name: "大都会艺术博物馆 The Met",
+    note: "位于第五大道博物馆大道的世界知名艺术博物馆。",
+    address: "1000 Fifth Ave, New York, NY 10028",
+    aliases: ["The Met", "Metropolitan Museum", "大都会博物馆"],
+  },
+  {
+    category: "景点",
+    name: "美国自然历史博物馆 AMNH",
+    note: "位于 Central Park 西侧，适合家庭和自然科学主题参观。",
+    address: "200 Central Park West, New York, NY 10024",
+    aliases: ["American Museum of Natural History", "自然历史博物馆"],
+  },
+  {
+    category: "景点",
+    name: "布鲁克林博物馆 Brooklyn Museum",
+    note: "布鲁克林大型艺术博物馆，靠近 Prospect Park 和植物园。",
+    address: "200 Eastern Pkwy, Brooklyn, NY 11238",
+    aliases: ["Brooklyn Museum", "布鲁克林博物馆"],
+  },
+  {
+    category: "景点",
+    name: "布鲁克林植物园 Brooklyn Botanic Garden",
+    note: "布鲁克林植物园，季节性花期和入园安排以官网为准。",
+    address: "990 Washington Ave, Brooklyn, NY 11225",
+    aliases: ["Brooklyn Botanic Garden", "植物园"],
+  },
+  {
+    category: "购物",
+    name: "Chelsea Market 切尔西市场",
+    note: "室内食品市场和购物空间，适合与 High Line 一起安排。",
+    address: "75 Ninth Ave, New York, NY 10011",
+    aliases: ["Chelsea Market", "切尔西市场"],
+  },
+  {
+    category: "景点",
+    name: "Staten Island Ferry Whitehall Terminal 史泰登岛渡轮码头",
+    note: "前往免费史泰登岛渡轮的曼哈顿出发码头；出行前查看渡轮服务公告。",
+    address: "4 Whitehall St, New York, NY 10004",
+    aliases: ["Staten Island Ferry", "史泰登岛渡轮"],
+  },
+  {
+    category: "景点",
+    name: "One World Observatory 世贸中心观景台",
+    note: "位于 One World Trade Center 内的观景台，建议查看官网购票信息。",
+    address: "117 West St, New York, NY 10007",
+    aliases: ["One World", "世贸中心观景台"],
+  },
 ];
 const CATEGORY_LABELS = {
   景点: "景点",
   购物: "购物商场",
-  品牌店: "品牌直营店",
+  品牌店: "品牌门店",
   实用: "实用地点",
 };
 const list = document.getElementById("placeList"),
@@ -222,7 +484,9 @@ function render() {
         x.name.toLowerCase().includes(q) ||
         x.note.toLowerCase().includes(q) ||
         x.address.toLowerCase().includes(q) ||
-        x.category.toLowerCase().includes(q)),
+        x.category.toLowerCase().includes(q) ||
+        (x.storeType || "").toLowerCase().includes(q) ||
+        (x.aliases || []).some((alias) => alias.toLowerCase().includes(q))),
   );
   count.textContent =
     activeCategory === "all"
@@ -232,7 +496,7 @@ function render() {
     ? items
         .map(
           (x) =>
-            `<article class="nyc-card" role="link" tabindex="0" data-map="${esc(x.address)}"><div class="nyc-card-inner"><div class="nyc-title-row"><div class="nyc-name">${esc(x.name)}</div><button class="nyc-copy" type="button" data-copy="${esc(x.address)}">复制</button></div><div class="nyc-note">${esc(x.note)}</div><div class="nyc-address">${esc(x.address)}</div><span class="nyc-category">${esc(CATEGORY_LABELS[x.category] || x.category)}</span></div></article>`,
+            `<article class="nyc-card"><div class="nyc-card-inner"><div class="nyc-title-row"><div class="nyc-name">${esc(x.name)}</div><button class="nyc-copy" type="button" data-copy="${esc(x.address)}" aria-label="复制${esc(x.name)}地址">复制地址</button></div><div class="nyc-note">${esc(x.note)}</div><div class="nyc-address">${esc(x.address)}</div><div class="nyc-badges"><span class="nyc-category">${esc(CATEGORY_LABELS[x.category] || x.category)}</span>${x.storeType ? `<span class="nyc-category">${esc(x.storeType)}</span>` : ""}</div><div class="nyc-card-actions"><button class="nyc-btn primary nyc-map" type="button" data-map-address="${esc(x.address)}">地图导航</button>${x.officialUrl ? `<a class="nyc-btn" href="${esc(x.officialUrl)}" target="_blank" rel="noopener noreferrer">官方信息 ↗</a>` : ""}</div></div></article>`,
         )
         .join("")
     : '<div class="nyc-empty">没有找到相关地点</div>';
@@ -256,15 +520,8 @@ list.addEventListener("click", async (e) => {
     setTimeout(() => (c.textContent = old), 1400);
     return;
   }
-  const card = e.target.closest(".nyc-card[data-map]");
-  if (card) openMap(card.dataset.map);
-});
-list.addEventListener("keydown", (e) => {
-  if (e.key !== "Enter" && e.key !== " ") return;
-  const card = e.target.closest(".nyc-card[data-map]");
-  if (!card || e.target.closest("[data-copy]")) return;
-  e.preventDefault();
-  openMap(card.dataset.map);
+  const mapButton = e.target.closest("[data-map-address]");
+  if (mapButton) openMap(mapButton.dataset.mapAddress);
 });
 search.addEventListener("input", render);
 if ("serviceWorker" in navigator)
