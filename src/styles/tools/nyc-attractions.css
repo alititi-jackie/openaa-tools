@@ -68,7 +68,7 @@
 }
 .nyc-tab {
   flex: 0 0 auto;
-  min-height: 32px;
+  min-height: 36px;
   border: 1px solid #dbe3ee;
   border-radius: 999px;
   background: #fff;
@@ -189,7 +189,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 36px;
+  min-height: 32px;
   text-decoration: none;
   font-size: 12px;
   padding: 0 10px;
