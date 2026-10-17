@@ -20,7 +20,7 @@ test("NYC address page keeps cards compact, promotes only representative brand s
   await expect(page.locator("#storeList .nyc-card")).toHaveCount(2);
 
   await page.goto("/usa/nyc-attractions/");
-  await page.locator("#searchInput").fill("法拉盛");
+  await page.locator("#searchInput").fill("缅街地铁");
   await expect(page.locator("#placeList .nyc-card")).toHaveCount(1);
   await expect(page.getByText("法拉盛缅街地铁站 Flushing–Main Street")).toBeVisible();
 });
