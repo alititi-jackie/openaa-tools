@@ -4,7 +4,7 @@ test("NYC address page keeps cards compact, promotes only representative brand s
   await page.goto("/usa/nyc-attractions/");
   await expect(page.locator("#placeList .nyc-card").first()).toBeVisible();
   await page.locator('[data-category="品牌店"]').click();
-  await expect(page.locator("#placeList .nyc-card")).toHaveCount(8);
+  await expect(page.locator("#placeList .nyc-card")).toHaveCount(9);
   await expect(page.getByText("Apple Fifth Avenue 苹果第五大道旗舰店")).toBeVisible();
   await expect(page.getByText("Apple Grand Central 苹果中央车站店")).toHaveCount(0);
   await expect(page.getByText("Samsung Experience Store Queens Center 三星皇后中心体验店")).toBeVisible();
