@@ -101,18 +101,15 @@
   border-radius: 14px;
   padding: 8px;
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
-  cursor: pointer;
+  cursor: default;
   transition:
-    transform 0.15s ease,
+    border-color 0.15s ease,
     border-color 0.15s ease,
     box-shadow 0.15s ease;
 }
 .nyc-card:hover {
   border-color: #dbeafe;
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.07);
-}
-.nyc-card:active {
-  transform: scale(0.992);
 }
 .nyc-card-inner {
   min-height: 96px;
@@ -173,6 +170,38 @@
   color: #64748b;
   font-size: 11px;
   font-weight: 800;
+}
+.nyc-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.nyc-badges .nyc-category {
+  margin-top: 8px;
+}
+.nyc-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.nyc-card-actions .nyc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  text-decoration: none;
+  font-size: 12px;
+}
+.nyc-card-actions .nyc-map {
+  border-color: #3b82f6;
+}
+.nyc-btn:focus-visible,
+.nyc-copy:focus-visible,
+.nyc-tab:focus-visible {
+  outline: 3px solid rgba(59, 130, 246, 0.28);
+  outline-offset: 2px;
 }
 .nyc-empty {
   grid-column: 1/-1;
