@@ -9,7 +9,9 @@ test("NYC address page keeps cards compact, promotes only representative brand s
   await expect(page.getByText("Apple Grand Central 苹果中央车站店")).toHaveCount(0);
   await expect(page.getByText("Samsung Experience Store Queens Center 三星皇后中心体验店")).toBeVisible();
   await expect(page.locator(".nyc-card-actions .nyc-copy").first()).toBeVisible();
-  await expect(page.locator(".nyc-card-actions a[href*='brand-stores']")).toBeVisible();
+  const otherStoreLinks = page.locator(".nyc-card-actions a[href*='brand-stores']");
+  await expect(otherStoreLinks).toHaveCount(2);
+  await expect(otherStoreLinks.first()).toBeVisible();
 
   await page.goto("/usa/brand-stores/#apple-stores");
   await expect(page.locator("#storeList .nyc-card")).toHaveCount(10);
