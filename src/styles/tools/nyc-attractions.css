@@ -3,6 +3,28 @@
   margin: 0 auto;
   padding: 0 16px 28px;
 }
+.nyc-back-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  margin: 8px 0 0;
+  padding: 0 12px;
+  border: 1px solid #dbe3ee;
+  border-radius: 9px;
+  color: #475569;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.nyc-back-link:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+.nyc-back-link:focus-visible {
+  outline: 3px solid rgba(59, 130, 246, 0.28);
+  outline-offset: 2px;
+}
 .nyc-head {
   margin: 18px 0 14px;
 }
