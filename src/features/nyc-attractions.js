@@ -247,6 +247,15 @@ const PLACES = [
   },
   {
     category: "品牌店",
+    name: "Apple Roosevelt Field 苹果罗斯福购物中心店",
+    note: "苹果官方零售店，位于长岛 Garden City 的 Roosevelt Field 商场。",
+    address: "630 Old Country Rd, Garden City, NY 11530",
+    storeType: "Apple 官方零售店",
+    officialUrl: "https://www.apple.com/retail/rooseveltfield/",
+    aliases: ["苹果", "Apple Store", "Roosevelt Field Apple"],
+  },
+  {
+    category: "品牌店",
     name: "Samsung Experience Store Queens Center 三星皇后中心体验店",
     note: "三星官方体验店，位于 Queens Center 商场一层，靠近 Zara 和 Shake Shack。",
     address: "90-15 Queens Blvd, Space 1060, Elmhurst, NY 11373",
