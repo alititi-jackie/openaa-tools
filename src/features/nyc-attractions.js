@@ -426,6 +426,41 @@ const PLACES = [
     address: "117 West St, New York, NY 10007",
     aliases: ["One World", "世贸中心观景台"],
   },
+  {
+    category: "实用",
+    name: "法拉盛缅街地铁站 Flushing–Main Street",
+    note: "7 号线终点站，步行可到缅街、罗斯福大道及法拉盛华人商业区。",
+    address: "41-42 Main St, Flushing, NY 11355",
+    aliases: ["法拉盛地铁", "缅街地铁", "Flushing Main Street", "7号线", "7 train"],
+  },
+  {
+    category: "实用",
+    name: "布鲁克林八大道地铁站 8 Av",
+    note: "N 号线车站，方便前往日落公园八大道华人商业街。",
+    address: "8th Ave & 62nd St, Brooklyn, NY 11220",
+    aliases: ["八大道地铁", "布鲁克林八大道", "8 Avenue station", "N train"],
+  },
+  {
+    category: "实用",
+    name: "曼哈顿华埠 Canal Street 地铁站",
+    note: "华埠及周边购物区域常用交通点；Canal Street 有多个不同线路站点，导航到 Broadway 交界附近。",
+    address: "Canal St & Broadway, New York, NY 10013",
+    aliases: ["唐人街地铁", "曼哈顿唐人街", "华埠地铁", "Canal Street subway"],
+  },
+  {
+    category: "实用",
+    name: "曼哈顿华埠 Grand Street 地铁站",
+    note: "服务华埠东侧及下东城周边，适合前往 Grand Street 一带。",
+    address: "Grand St & Chrystie St, New York, NY 10002",
+    aliases: ["Grand Street subway", "唐人街东边地铁"],
+  },
+  {
+    category: "实用",
+    name: "曼哈顿华埠 East Broadway 地铁站",
+    note: "方便前往华埠东部、East Broadway 和下东城一带。",
+    address: "East Broadway & Rutgers St, New York, NY 10002",
+    aliases: ["East Broadway subway", "东百老汇地铁"],
+  },
 ];
 const CATEGORY_LABELS = {
   景点: "景点",
@@ -488,6 +523,9 @@ function render() {
   const q = search.value.trim().toLowerCase();
   const items = PLACES.filter(
     (x) =>
+      // 主页面仅显示 Apple 与 Samsung 的代表门店；完整分店集中在品牌门店页。
+      (!x.name.startsWith("Apple ") || x.name.includes("Fifth Avenue")) &&
+      (!x.name.startsWith("Samsung ") || x.name.includes("Queens Center")) &&
       (activeCategory === "all" || x.category === activeCategory) &&
       (!q ||
         x.name.toLowerCase().includes(q) ||
@@ -505,7 +543,7 @@ function render() {
     ? items
         .map(
           (x) =>
-            `<article class="nyc-card"><div class="nyc-card-inner"><div class="nyc-title-row"><div class="nyc-name">${esc(x.name)}</div><button class="nyc-copy" type="button" data-copy="${esc(x.address)}" aria-label="复制${esc(x.name)}地址">复制地址</button></div><div class="nyc-note">${esc(x.note)}</div><div class="nyc-address">${esc(x.address)}</div><div class="nyc-badges"><span class="nyc-category">${esc(CATEGORY_LABELS[x.category] || x.category)}</span>${x.storeType ? `<span class="nyc-category">${esc(x.storeType)}</span>` : ""}</div><div class="nyc-card-actions"><button class="nyc-btn primary nyc-map" type="button" data-map-address="${esc(x.address)}">地图导航</button>${x.officialUrl ? `<a class="nyc-btn" href="${esc(x.officialUrl)}" target="_blank" rel="noopener noreferrer">官方信息 ↗</a>` : ""}</div></div></article>`,
+            `<article class="nyc-card"><div class="nyc-card-inner"><div class="nyc-title-row"><div class="nyc-name">${esc(x.name)}</div><span class="nyc-category">${esc(CATEGORY_LABELS[x.category] || x.category)}</span></div><div class="nyc-address">${esc(x.address)}</div><div class="nyc-note">${esc(x.note)}</div><div class="nyc-card-actions"><button class="nyc-btn primary nyc-map" type="button" data-map-address="${esc(x.address)}">地图导航</button><button class="nyc-btn nyc-copy" type="button" data-copy="${esc(x.address)}" aria-label="复制${esc(x.name)}地址">复制地址</button>${x.name.startsWith("Apple ") ? `<a class="nyc-btn nyc-other-stores" href="/usa/brand-stores/#apple-stores">其它苹果店 ↗</a>` : ""}${x.name.startsWith("Samsung ") ? `<a class="nyc-btn nyc-other-stores" href="/usa/brand-stores/#samsung-stores">其它三星店 ↗</a>` : ""}${x.officialUrl ? `<a class="nyc-btn nyc-official" href="${esc(x.officialUrl)}" target="_blank" rel="noopener noreferrer">官方信息 ↗</a>` : ""}</div></div></article>`,
         )
         .join("")
     : '<div class="nyc-empty">没有找到相关地点</div>';
