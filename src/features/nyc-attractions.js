@@ -138,25 +138,6 @@ const PLACES = [
     address: "15 E 57th St, New York, NY 10022",
   },
   {
-    category: "实用",
-    name: "7大道地铁口",
-    note: "布鲁克林 7 大道与 62 街附近地铁入口。",
-    address: "Seventh Avenue & 62nd Street Brooklyn, NY 11220",
-  },
-  {
-    category: "实用",
-    name: "36街地铁口",
-    note: "布鲁克林 36 街与第四大道附近地铁入口。",
-    address: "36th Street & Fourth Avenue Brooklyn, NY 11232",
-  },
-  {
-    category: "实用",
-    name: "36街 Costco 好市多",
-    note: "布鲁克林 36 街附近 Costco 大型会员制超市。",
-    address: "976 3rd Ave Brooklyn, NY 11232",
-  },
-
-  {
     category: "购物",
     name: "Macy's Herald Square 梅西百货旗舰店",
     note: "纽约著名百货旗舰店，位于 Herald Square；建议出发前查看官方营业时间。",
@@ -461,6 +442,25 @@ const PLACES = [
     address: "East Broadway & Rutgers St, New York, NY 10002",
     aliases: ["East Broadway subway", "东百老汇地铁"],
   },
+  {
+    category: "实用",
+    name: "7大道地铁口",
+    note: "布鲁克林 7 大道与 62 街附近地铁入口。",
+    address: "Seventh Avenue & 62nd Street Brooklyn, NY 11220",
+  },
+  {
+    category: "实用",
+    name: "36街地铁口",
+    note: "布鲁克林 36 街与第四大道附近地铁入口。",
+    address: "36th Street & Fourth Avenue Brooklyn, NY 11232",
+  },
+  {
+    category: "实用",
+    name: "36街 Costco 好市多",
+    note: "布鲁克林 36 街附近 Costco 大型会员制超市。",
+    address: "976 3rd Ave Brooklyn, NY 11232",
+  },
+
 ];
 const CATEGORY_LABELS = {
   景点: "景点",
