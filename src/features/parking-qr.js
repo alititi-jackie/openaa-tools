@@ -223,40 +223,67 @@ if (root && !root.dataset.initialized) {
     catch { showError("卡片导出失败，请刷新页面后重试。"); }
   });
   const makePdf = async (copies) => {
-    const canvas = await renderCardCanvas();
+    const originalCanvas = await renderCardCanvas();
+    // The double-card PDF uses the complete original card rotated 90 degrees,
+    // with two identical landscape cards stacked on a portrait A4 page.
+    let canvas = originalCanvas;
+    if (copies === 2) {
+      canvas = document.createElement("canvas");
+      canvas.width = originalCanvas.height;
+      canvas.height = originalCanvas.width;
+      const rotateCtx = canvas.getContext("2d");
+      rotateCtx.fillStyle = "#fff";
+      rotateCtx.fillRect(0, 0, canvas.width, canvas.height);
+      rotateCtx.translate(canvas.width, 0);
+      rotateCtx.rotate(Math.PI / 2);
+      rotateCtx.drawImage(originalCanvas, 0, 0);
+    }
+    const imageWidth = canvas.width, imageHeight = canvas.height;
     const jpeg = Uint8Array.from(atob(canvas.toDataURL("image/jpeg", 0.94).split(",")[1]), c => c.charCodeAt(0));
-    const pageW = 595.28, pageH = 841.89, margin = 38, cardW = copies === 1 ? pageW - 2 * margin : Math.min(pageW - 2 * margin, ((pageH - 3 * margin) / 2) * 0.75), cardH = cardW * 4 / 3;
-    const ys = copies === 1 ? [(pageH-cardH)/2] : [pageH-margin-cardH, margin];
+    const pageW = 595.28, pageH = 841.89, margin = 30;
+    let cardW, cardH, positions;
+    if (copies === 1) {
+      cardW = Math.min(pageW - 2 * margin, (pageH - 2 * margin) * imageWidth / imageHeight);
+      cardH = cardW * imageHeight / imageWidth;
+      positions = [{ x: (pageW - cardW) / 2, y: (pageH - cardH) / 2 }];
+    } else {
+      cardH = (pageH - 3 * margin) / 2;
+      cardW = cardH * imageWidth / imageHeight;
+      const x = (pageW - cardW) / 2;
+      positions = [{ x, y: pageH - margin - cardH }, { x, y: margin }];
+    }
     const enc = new TextEncoder(), objects = [];
     objects.push("<< /Type /Catalog /Pages 2 0 R >>");
     objects.push("");
-    objects.push("<< /Type /XObject /Subtype /Image /Width 1200 /Height 1600 /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length "+jpeg.length+" >>\nstream\n");
+    objects.push("<< /Type /XObject /Subtype /Image /Width " + imageWidth + " /Height " + imageHeight + " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " + jpeg.length + " >>\\nstream\\n");
     const imageObjectId = 3, pageIds = [];
-    for (let i=0;i<copies;i++) {
-      const content = "q\n"+cardW.toFixed(2)+" 0 0 "+cardH.toFixed(2)+" "+margin+" "+ys[i].toFixed(2)+" cm\n/Im0 Do\nQ";
-      const contentId = objects.length+1;
-      objects.push("<< /Length "+enc.encode(content).length+" >>\nstream\n"+content+"\nendstream");
-      const pageId = objects.length+1;
-      objects.push("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 "+pageW+" "+pageH+"] /Resources << /XObject << /Im0 "+imageObjectId+" 0 R >> >> /Contents "+contentId+" 0 R >>");
+    for (let i = 0; i < copies; i++) {
+      const p = positions[i];
+      const draw = "q\\n" + cardW.toFixed(2) + " 0 0 " + cardH.toFixed(2) + " " + p.x.toFixed(2) + " " + p.y.toFixed(2) + " cm\\n/Im0 Do\\nQ";
+      const contentId = objects.length + 1;
+      objects.push("<< /Length " + enc.encode(draw).length + " >>\\nstream\\n" + draw + "\\nendstream");
+      const pageId = objects.length + 1;
+      objects.push("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + pageW + " " + pageH + "] /Resources << /XObject << /Im0 " + imageObjectId + " 0 R >> >> /Contents " + contentId + " 0 R >>");
       pageIds.push(pageId);
     }
-    objects[1] = "<< /Type /Pages /Kids ["+pageIds.map(id=>id+" 0 R").join(" ")+"] /Count "+copies+" >>";
-    const chunks=[enc.encode("%PDF-1.4\n%OpenAA\n")], offsets=[0]; let total=chunks[0].length;
-    objects.forEach((obj,i)=>{
+    objects[1] = "<< /Type /Pages /Kids [" + pageIds.map(id => id + " 0 R").join(" ") + "] /Count " + copies + " >>";
+    const chunks = [enc.encode("%PDF-1.4\\n%OpenAA\\n")], offsets = [0]; let total = chunks[0].length;
+    objects.forEach((obj, i) => {
       offsets.push(total);
       let bytes;
-      if(i+1===imageObjectId) {
-        const head=enc.encode((i+1)+" 0 obj\n"+obj), tail=enc.encode("\nendstream\nendobj\n");
-        bytes=new Uint8Array(head.length+jpeg.length+tail.length); bytes.set(head); bytes.set(jpeg,head.length); bytes.set(tail,head.length+jpeg.length);
-      } else bytes=enc.encode((i+1)+" 0 obj\n"+obj+"\nendobj\n");
-      chunks.push(bytes); total+=bytes.length;
+      if (i + 1 === imageObjectId) {
+        const head = enc.encode((i + 1) + " 0 obj\\n" + obj), tail = enc.encode("\\nendstream\\nendobj\\n");
+        bytes = new Uint8Array(head.length + jpeg.length + tail.length);
+        bytes.set(head); bytes.set(jpeg, head.length); bytes.set(tail, head.length + jpeg.length);
+      } else bytes = enc.encode((i + 1) + " 0 obj\\n" + obj + "\\nendobj\\n");
+      chunks.push(bytes); total += bytes.length;
     });
-    const xrefAt=total;
-    let xref="xref\n0 "+(objects.length+1)+"\n0000000000 65535 f \n";
-    offsets.slice(1).forEach(n=>xref+=String(n).padStart(10,"0")+" 00000 n \n");
-    xref+="trailer\n<< /Size "+(objects.length+1)+" /Root 1 0 R >>\nstartxref\n"+xrefAt+"\n%%EOF";
+    const xrefAt = total;
+    let xref = "xref\\n0 " + (objects.length + 1) + "\\n0000000000 65535 f \\n";
+    offsets.slice(1).forEach(n => xref += String(n).padStart(10, "0") + " 00000 n \\n");
+    xref += "trailer\\n<< /Size " + (objects.length + 1) + " /Root 1 0 R >>\\nstartxref\\n" + xrefAt + "\\n%%EOF";
     chunks.push(enc.encode(xref));
-    downloadBlob(new Blob(chunks,{type:"application/pdf"}),copies===1?"openaa-parking-card-a4-single.pdf":"openaa-parking-card-a4-double.pdf");
+    downloadBlob(new Blob(chunks, { type: "application/pdf" }), copies === 1 ? "openaa-parking-card-a4-single.pdf" : "openaa-parking-card-a4-double.pdf");
   };
   $("parking-pdf-single").addEventListener("click", async () => { try { await makePdf(1); } catch { showError("PDF 导出失败，请刷新页面后重试。"); } });
   $("parking-pdf-double").addEventListener("click", async () => { try { await makePdf(2); } catch { showError("PDF 导出失败，请刷新页面后重试。"); } });
