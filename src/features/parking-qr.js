@@ -100,7 +100,7 @@ if (root && !root.dataset.initialized) {
     error.hidden = true;
     const phone = cleanPhone($("parking-phone").value);
     if (!phone) { showError(copy[language].invalid); return; }
-    const url = new URL("/parking-qr/", window.location.origin);
+    const url = new URL("/tools/parking-qr/", window.location.origin);
     url.hash = "phone=" + encodeURIComponent(phone);
     currentPayload = url.href;
     try {
