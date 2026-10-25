@@ -73,3 +73,8 @@ body.parking-contact-mode .tool-page { border: 0 !important; box-shadow: none !i
   .parking-actions .parking-text-button { grid-column: 1 / -1; }
   .parking-contact-actions { grid-template-columns: 1fr 1fr; }
 }
+
+@media (min-width: 900px) {
+  .parking-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .parking-actions > .btn { white-space: nowrap; padding-inline: 10px; font-size: 14px; }
+}
