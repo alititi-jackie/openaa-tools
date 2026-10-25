@@ -8,7 +8,7 @@ test("scanned parking QR page shows all three languages without selector or rela
   await expect(page.getByText("Need this vehicle moved? Please contact the owner.")).toBeVisible();
   await expect(page.getByText("¿Necesitas mover este vehículo? Contacta al propietario.")).toBeVisible();
   await expect(page.locator("#parking-contact-language")).toHaveCount(0);
-  await expect(page.locator(".related-tools")).toBeHidden();
+  await expect(page.locator(".related-tools:visible")).toHaveCount(0);
   await expect(page.locator(".eco-card")).toBeHidden();
   await expect(page.locator("#parking-contact-number")).toHaveText("+1 646 889 7111");
   await expect(page.locator("#parking-call")).toHaveAttribute("href", "tel:+16468897111");
