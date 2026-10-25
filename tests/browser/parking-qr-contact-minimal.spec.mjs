@@ -10,7 +10,7 @@ test("scanned parking QR page shows all three languages without selector or rela
   await expect(page.locator("#parking-contact-language")).toHaveCount(0);
   await expect(page.locator(".related-tools")).toBeHidden();
   await expect(page.locator(".eco-card")).toBeHidden();
-  await expect(page.locator("#parking-contact-number")).toHaveText("+16468897111");
+  await expect(page.locator("#parking-contact-number")).toHaveText("+1 646 889 7111");
   await expect(page.locator("#parking-call")).toHaveAttribute("href", "tel:+16468897111");
   await expect(page.locator("#parking-sms")).toHaveAttribute("href", "sms:+16468897111");
   const createLinks = page.locator(".parking-create-link");
