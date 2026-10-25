@@ -10,7 +10,7 @@ if (root && !root.dataset.initialized) {
       temporaryParking:"临时停靠，请多关照",
       phoneLabel:"你的联系电话", phoneHint:"只需输入美国 10 位电话号码，例如 212 555 0100；国家区号 +1 已默认添加。", showPhone:"在卡片上显示手机号",
       languageLabel:"挪车页面语言", generate:"生成我的挪车码", parkingTitle:"扫码联系车主",
-      scanPrompt:"如需挪车，请扫码联系车主", noPhonePrinted:"二维码卡片不会直接印出你的电话号码。",
+      scanPrompt:"挡到您了抱歉，扫码联系我", noPhonePrinted:"二维码卡片不会直接印出你的电话号码。",
       downloadPng:"下载完整卡片 PNG", pdfSingle:"下载 PDF（A4 单张版）", pdfDouble:"下载 PDF（A4 双张版）", copyLink:"复制挪车链接",
       printHint:"PNG 和 PDF 都会包含完整卡片及 OpenAA 标志；建议下载后先用手机扫码测试。",
       howTitle:"怎么使用？", step1:"输入你的电话号码并生成二维码。", step2:"下载二维码，或打印 / 保存为 PDF。",
@@ -26,7 +26,7 @@ if (root && !root.dataset.initialized) {
       temporaryParking:"Temporary parking. Thank you for your understanding.",
       phoneLabel:"Your phone number", phoneHint:"Enter only the 10-digit US number, e.g. 212 555 0100. The +1 country code is added automatically.", showPhone:"Print my phone number on the card",
       languageLabel:"Contact page language", generate:"Create my parking QR", parkingTitle:"Scan to contact driver",
-      scanPrompt:"Need this car moved? Scan to contact the driver.", noPhonePrinted:"Your phone number is not printed directly on this card.",
+      scanPrompt:"Sorry if I'm in your way — scan to reach me.", noPhonePrinted:"Your phone number is not printed directly on this card.",
       downloadPng:"Download full card PNG", pdfSingle:"Download PDF (A4, 1 card)", pdfDouble:"Download PDF (A4, 2 cards)", copyLink:"Copy parking link",
       printHint:"PNG and PDF include the complete card and OpenAA logo. Test the QR with your phone after downloading.",
       howTitle:"How it works", step1:"Enter your phone number and generate the QR code.", step2:"Download the QR or print / save it as a PDF.",
@@ -42,7 +42,7 @@ if (root && !root.dataset.initialized) {
       temporaryParking:"Estacionamiento temporal. Gracias por su comprensión.",
       phoneLabel:"Tu número de teléfono", phoneHint:"Introduce solo los 10 dígitos del número de EE. UU., por ejemplo 212 555 0100. El código +1 se añade automáticamente.", showPhone:"Imprimir mi número en la tarjeta",
       languageLabel:"Idioma de la página", generate:"Crear mi código QR", parkingTitle:"Escanea para contactar al conductor",
-      scanPrompt:"¿Necesitas mover este auto? Escanea para contactar al conductor.", noPhonePrinted:"Tu número no se imprime directamente en esta tarjeta.",
+      scanPrompt:"Si le estorbo, disculpe — escanee para contactarme.", noPhonePrinted:"Tu número no se imprime directamente en esta tarjeta.",
       downloadPng:"Descargar tarjeta completa en PNG", pdfSingle:"Descargar PDF (A4, 1 tarjeta)", pdfDouble:"Descargar PDF (A4, 2 tarjetas)", copyLink:"Copiar enlace",
       printHint:"PNG y PDF incluyen la tarjeta completa y el logotipo OpenAA. Prueba el QR con tu teléfono después de descargarlo.",
       howTitle:"Cómo funciona", step1:"Introduce tu número y genera el código QR.", step2:"Descarga el QR o imprímelo / guárdalo como PDF.",
@@ -238,9 +238,9 @@ if (root && !root.dataset.initialized) {
       ctx.fillText(phoneDisplay, width / 2, y);
       y += 78;
     }
-    y = wrapped("Need this car moved? Scan to contact the driver.", y, fit("Need this car moved? Scan to contact the driver.", "700", 38, 1040), 1040, 52) + 12;
-    y = wrapped("¿Necesitas mover este auto? Escanea para contactar al conductor.", y, fit("¿Necesitas mover este auto? Escanea para contactar al conductor.", "600", 33, 1040), 1040, 48) + 12;
-    y = wrapped("如需挪车，请扫码联系车主", y, fit("如需挪车，请扫码联系车主", "700", 44, 1040), 1040, 56) + 26;
+    y = wrapped("Sorry if I'm in your way — scan to reach me.", y, fit("Sorry if I'm in your way — scan to reach me.", "700", 38, 1040), 1040, 52) + 12;
+    y = wrapped("Si le estorbo, disculpe — escanee para contactarme.", y, fit("Si le estorbo, disculpe — escanee para contactarme.", "600", 33, 1040), 1040, 48) + 12;
+    y = wrapped("挡到您了抱歉，扫码联系我", y, fit("挡到您了抱歉，扫码联系我", "700", 44, 1040), 1040, 56) + 26;
     ctx.font = "600 28px Arial, sans-serif"; ctx.fillStyle = "#64748b"; ctx.textAlign = "center";
     ctx.fillText("OpenAA.com", width / 2, y + 16);
     return canvas;
