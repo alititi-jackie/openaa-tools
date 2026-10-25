@@ -8,7 +8,7 @@ if (root && !root.dataset.initialized) {
     zh: {
       intro:"免费生成专属挪车二维码。打印后放在车内，别人扫码即可联系你。",
       temporaryParking:"临时停靠，请多关照",
-      phoneLabel:"你的联系电话", phoneHint:"只需输入美国 10 位电话号码，例如 212 555 0100；国家区号 +1 已默认添加。",
+      phoneLabel:"你的联系电话", phoneHint:"只需输入美国 10 位电话号码，例如 212 555 0100；国家区号 +1 已默认添加。", showPhone:"在卡片上显示手机号",
       languageLabel:"挪车页面语言", generate:"生成我的挪车码", parkingTitle:"扫码联系车主",
       scanPrompt:"如需挪车，请扫码联系车主", noPhonePrinted:"二维码卡片不会直接印出你的电话号码。",
       downloadPng:"下载完整卡片 PNG", pdfSingle:"下载 PDF（A4 单张版）", pdfDouble:"下载 PDF（A4 双张版）", copyLink:"复制挪车链接",
@@ -24,7 +24,7 @@ if (root && !root.dataset.initialized) {
     en: {
       intro:"Create a free parking QR code. Print it and place it inside your car so people can contact you.",
       temporaryParking:"Temporary parking. Thank you for your understanding.",
-      phoneLabel:"Your phone number", phoneHint:"Enter only the 10-digit US number, e.g. 212 555 0100. The +1 country code is added automatically.",
+      phoneLabel:"Your phone number", phoneHint:"Enter only the 10-digit US number, e.g. 212 555 0100. The +1 country code is added automatically.", showPhone:"Print my phone number on the card",
       languageLabel:"Contact page language", generate:"Create my parking QR", parkingTitle:"Scan to contact driver",
       scanPrompt:"Need this car moved? Scan to contact the driver.", noPhonePrinted:"Your phone number is not printed directly on this card.",
       downloadPng:"Download full card PNG", pdfSingle:"Download PDF (A4, 1 card)", pdfDouble:"Download PDF (A4, 2 cards)", copyLink:"Copy parking link",
@@ -40,7 +40,7 @@ if (root && !root.dataset.initialized) {
     es: {
       intro:"Crea gratis un código QR para estacionamiento. Imprímelo y colócalo dentro del auto para que puedan contactarte.",
       temporaryParking:"Estacionamiento temporal. Gracias por su comprensión.",
-      phoneLabel:"Tu número de teléfono", phoneHint:"Introduce solo los 10 dígitos del número de EE. UU., por ejemplo 212 555 0100. El código +1 se añade automáticamente.",
+      phoneLabel:"Tu número de teléfono", phoneHint:"Introduce solo los 10 dígitos del número de EE. UU., por ejemplo 212 555 0100. El código +1 se añade automáticamente.", showPhone:"Imprimir mi número en la tarjeta",
       languageLabel:"Idioma de la página", generate:"Crear mi código QR", parkingTitle:"Escanea para contactar al conductor",
       scanPrompt:"¿Necesitas mover este auto? Escanea para contactar al conductor.", noPhonePrinted:"Tu número no se imprime directamente en esta tarjeta.",
       downloadPng:"Descargar tarjeta completa en PNG", pdfSingle:"Descargar PDF (A4, 1 tarjeta)", pdfDouble:"Descargar PDF (A4, 2 tarjetas)", copyLink:"Copiar enlace",
@@ -182,15 +182,28 @@ if (root && !root.dataset.initialized) {
     input.setSelectionRange(nextPosition, nextPosition);
   });
   $("parking-generate").addEventListener("click", create);
+  $("parking-show-phone").addEventListener("change", () => { if (currentSvg) updateCardPreview(currentPayload); });
   $("parking-phone").addEventListener("keydown", (event) => { if (event.key === "Enter") create(); });
   const renderCardCanvas = async () => {
     if (!currentSvg) throw new Error("Generate a QR code first.");
-    const width = 1200, height = 1280;
+    const width = 1200;
+    let phoneDisplay = "";
+    if ($("parking-show-phone").checked) {
+      const raw = new URLSearchParams(new URL(currentPayload).hash.slice(1)).get("phone") || "";
+      if (/^\+1\d{10}$/.test(raw)) phoneDisplay = formatPhoneDisplay(raw);
+    }
+    const height = phoneDisplay ? 1480 : 1400;
     const canvas = document.createElement("canvas"); canvas.width = width; canvas.height = height;
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, width, height);
     ctx.strokeStyle = "#cbd5e1"; ctx.lineWidth = 4;
     ctx.beginPath(); ctx.roundRect(16, 16, 1168, height - 32, 34); ctx.stroke();
+    const fit = (text, weight, size, maxWidth) => {
+      let s = size;
+      ctx.font = weight + " " + s + "px Arial, sans-serif";
+      while (s > 10 && ctx.measureText(text).width > maxWidth) { s -= 1; ctx.font = weight + " " + s + "px Arial, sans-serif"; }
+      return weight + " " + s + "px Arial, sans-serif";
+    };
     const wrapped = (text, y, font, maxWidth, lineHeight) => {
       ctx.font = font; ctx.fillStyle = "#0f172a"; ctx.textAlign = "center";
       let line = ""; const lines = [];
@@ -202,11 +215,11 @@ if (root && !root.dataset.initialized) {
       lines.forEach((value, i) => ctx.fillText(value, width / 2, y + i * lineHeight));
       return y + lines.length * lineHeight;
     };
-    let y = 86;
-    y = wrapped("Temporary parking. Thank you for your understanding.", y, "700 34px Arial, sans-serif", 1020, 46) + 16;
-    y = wrapped("Estacionamiento temporal. Gracias por su comprensión.", y, "600 29px Arial, sans-serif", 1020, 42) + 12;
-    y = wrapped("临时停靠，请多关照", y, "700 38px Arial, sans-serif", 1020, 48) + 24;
-    const qrSize = 680, qrX = (width - qrSize) / 2, qrY = y;
+    let y = 98;
+    y = wrapped("Temporary parking. Thank you for your understanding.", y, fit("Temporary parking. Thank you for your understanding.", "700", 40, 1020), 1020, 56) + 18;
+    y = wrapped("Estacionamiento temporal. Gracias por su comprensión.", y, fit("Estacionamiento temporal. Gracias por su comprensión.", "600", 34, 1020), 1020, 50) + 14;
+    y = wrapped("临时停靠，请多关照", y, fit("临时停靠，请多关照", "700", 46, 1020), 1020, 58) + 30;
+    const qrSize = 720, qrX = (width - qrSize) / 2, qrY = y;
     const cleanSvg = currentSvg.replace(/<image\b[^>]*\/>/g, "");
     const svgUrl = URL.createObjectURL(new Blob([cleanSvg], { type: "image/svg+xml;charset=utf-8" }));
     try {
@@ -216,15 +229,20 @@ if (root && !root.dataset.initialized) {
     } finally { URL.revokeObjectURL(svgUrl); }
     const logo = new Image(); logo.src = new URL("/assets/openaa-logo.png", window.location.origin).href;
     await new Promise((resolve, reject) => { logo.onload = resolve; logo.onerror = reject; });
-    const logoSize = 122;
-    ctx.fillStyle = "#fff"; ctx.fillRect(width/2-logoSize/2-9, qrY+qrSize/2-logoSize/2-9, logoSize+18, logoSize+18);
+    const logoSize = 130;
+    ctx.fillStyle = "#fff"; ctx.fillRect(width/2-logoSize/2-10, qrY+qrSize/2-logoSize/2-10, logoSize+20, logoSize+20);
     ctx.drawImage(logo, width/2-logoSize/2, qrY+qrSize/2-logoSize/2, logoSize, logoSize);
-    y = qrY + qrSize + 48;
-    y = wrapped("Need this car moved? Scan to contact the driver.", y, "700 31px Arial, sans-serif", 1040, 42) + 10;
-    y = wrapped("¿Necesitas mover este auto? Escanea para contactar al conductor.", y, "600 27px Arial, sans-serif", 1040, 38) + 10;
-    y = wrapped("如需挪车，请扫码联系车主", y, "700 36px Arial, sans-serif", 1040, 46) + 20;
-    ctx.font = "600 25px Arial, sans-serif"; ctx.fillStyle = "#64748b"; ctx.textAlign = "center";
-    ctx.fillText("OpenAA.com", width / 2, Math.min(y + 12, 1540));
+    y = qrY + qrSize + 54;
+    if (phoneDisplay) {
+      ctx.font = "700 46px Arial, sans-serif"; ctx.fillStyle = "#0f172a"; ctx.textAlign = "center";
+      ctx.fillText(phoneDisplay, width / 2, y);
+      y += 78;
+    }
+    y = wrapped("Need this car moved? Scan to contact the driver.", y, fit("Need this car moved? Scan to contact the driver.", "700", 38, 1040), 1040, 52) + 12;
+    y = wrapped("¿Necesitas mover este auto? Escanea para contactar al conductor.", y, fit("¿Necesitas mover este auto? Escanea para contactar al conductor.", "600", 33, 1040), 1040, 48) + 12;
+    y = wrapped("如需挪车，请扫码联系车主", y, fit("如需挪车，请扫码联系车主", "700", 44, 1040), 1040, 56) + 26;
+    ctx.font = "600 28px Arial, sans-serif"; ctx.fillStyle = "#64748b"; ctx.textAlign = "center";
+    ctx.fillText("OpenAA.com", width / 2, y + 16);
     return canvas;
   };
   const downloadBlob = (blob, filename) => {

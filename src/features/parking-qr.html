@@ -1,11 +1,15 @@
 <section class="parking-qr" data-parking-qr>
   <div id="parking-builder" data-parking-builder>
-    <h1>扫码挪车码</h1>
+    <div class="parking-title-row">
+      <h1>扫码挪车码</h1>
+      <a class="parking-other-qr" href="/tools/qr-generator/">其它二维码 →</a>
+    </div>
     <p class="subtitle" data-i18n="intro">免费生成专属挪车二维码。打印后放在车内，别人扫码即可联系你。</p>
     <div class="parking-panel">
       <label for="parking-phone" data-i18n="phoneLabel">你的联系电话</label>
       <div class="parking-phone-field"><span class="parking-phone-prefix" aria-hidden="true">+1</span><input id="parking-phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="212 555 0100" aria-describedby="parking-phone-hint" /></div>
       <p id="parking-phone-hint" class="parking-hint" data-i18n="phoneHint">只需输入美国 10 位电话号码，例如 212 555 0100；国家区号 +1 已默认添加。</p>
+      <label class="parking-show-phone" for="parking-show-phone"><input type="checkbox" id="parking-show-phone" /><span data-i18n="showPhone">在卡片上显示手机号</span></label>
       <button type="button" class="btn" id="parking-generate" data-i18n="generate">生成我的挪车码</button>
       <p class="parking-error" id="parking-error" role="alert" hidden></p>
     </div>
