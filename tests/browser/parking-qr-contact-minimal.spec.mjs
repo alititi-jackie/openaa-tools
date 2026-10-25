@@ -4,9 +4,9 @@ test("scanned parking QR page shows all three languages without selector or rela
   await page.goto("/tools/parking-qr/#phone=%2B16468897111");
   await expect(page.locator("#parking-contact")).toBeVisible();
   await expect(page.locator("#parking-contact-heading")).toBeVisible().catch(() => {});
-  await expect(page.getByText("如需挪车，请联系车主")).toBeVisible();
-  await expect(page.getByText("Need this vehicle moved? Please contact the owner.")).toBeVisible();
-  await expect(page.getByText("¿Necesitas mover este vehículo? Contacta al propietario.")).toBeVisible();
+  await expect(page.getByText("不好意思，给您添麻烦了。请电话或短信联系我，我马上就来。")).toBeVisible();
+  await expect(page.getByText("Sorry for the inconvenience. Please call or text me — I'll be right over.")).toBeVisible();
+  await expect(page.getByText("Disculpe las molestias. Por favor llámeme o escríbame — vendré enseguida.")).toBeVisible();
   await expect(page.locator("#parking-contact-language")).toHaveCount(0);
   await expect(page.locator(".related-tools:visible")).toHaveCount(0);
   await expect(page.locator(".eco-card")).toBeHidden();

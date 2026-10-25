@@ -530,7 +530,7 @@
       },
       {
         "heading": "第二步：联系页长什么样",
-        "html": "<p>联系页从上到下是：三语提示（Need this vehicle moved? Please contact the owner. / ¿Necesitas mover este vehículo? Contacta al propietario. / 如需挪车，请联系车主）、你的<strong>电话号码</strong>（格式化显示成 +1 212 555 0100 这样）、两个大按钮——绿色 <strong>Call / Llamar / 拨打电话</strong> 和 <strong>Text / Mensaje / 发送短信</strong>。按钮做得很大，就是方便对方在车外、光线强的情况下一键点准。页面底部还有一个「制作我的挪车二维码」的入口，感兴趣的人可以自己也做一张。</p>"
+        "html": "<p>联系页从上到下是：三语提示（Sorry for the inconvenience. Please call or text me — I'll be right over. / Disculpe las molestias. Por favor llámeme o escríbame — vendré enseguida. / 不好意思，给您添麻烦了。请电话或短信联系我，我马上就来。）、你的<strong>电话号码</strong>（格式化显示成 +1 212 555 0100 这样）、两个大按钮——绿色 <strong>Call / Llamar / 拨打电话</strong> 和 <strong>Text / Mensaje / 发送短信</strong>。按钮做得很大，就是方便对方在车外、光线强的情况下一键点准。页面底部还有一个「制作我的挪车二维码」的入口，感兴趣的人可以自己也做一张。</p>"
       },
       {
         "heading": "第三步：车主这边收到什么",
