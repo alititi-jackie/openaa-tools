@@ -93,12 +93,19 @@ if (root && !root.dataset.initialized) {
     const national = digits.length === 11 && digits.startsWith("1") ? digits.slice(1) : digits;
     return /^\d{10}$/.test(national) ? "+1" + national : null;
   };
-  const formatPhoneDisplay = (phone) => {
+  const normalizeUsPhone = (phone) => {
     const digits = digitsOnly(phone);
+    if (digits.length === 10) return "+1" + digits;
+    if (digits.length === 11 && digits.startsWith("1")) return "+" + digits;
+    return phone;
+  };
+  const formatPhoneDisplay = (phone) => {
+    const normalized = normalizeUsPhone(phone);
+    const digits = digitsOnly(normalized);
     if (digits.length === 11 && digits.startsWith("1")) {
       return "+1 " + digits.slice(1, 4) + " " + digits.slice(4, 7) + " " + digits.slice(7);
     }
-    return phone;
+    return normalized;
   };
     const createQrSvg = (payload, size = 640) => {
     const qr = qrcode(0, "H");
@@ -149,10 +156,11 @@ if (root && !root.dataset.initialized) {
       $("parking-call").hidden = true;
       $("parking-sms").hidden = true;
     } else {
-      const display = formatPhoneDisplay(phone);
+      const normalizedPhone = normalizeUsPhone(phone);
+      const display = formatPhoneDisplay(normalizedPhone);
       $("parking-contact-number").textContent = display;
-      $("parking-call").href = "tel:" + phone;
-      $("parking-sms").href = "sms:" + phone;
+      $("parking-call").href = "tel:" + normalizedPhone;
+      $("parking-sms").href = "sms:" + normalizedPhone;
       $("parking-call").hidden = false;
       $("parking-sms").hidden = false;
     }
