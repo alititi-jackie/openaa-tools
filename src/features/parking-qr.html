@@ -4,8 +4,8 @@
     <p class="subtitle" data-i18n="intro">免费生成专属挪车二维码。打印后放在车内，别人扫码即可联系你。</p>
     <div class="parking-panel">
       <label for="parking-phone" data-i18n="phoneLabel">你的联系电话</label>
-      <input id="parking-phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="30" placeholder="+1 212-555-0100" aria-describedby="parking-phone-hint" />
-      <p id="parking-phone-hint" class="parking-hint" data-i18n="phoneHint">建议填写带国家区号的号码，例如 +1 212-555-0100。</p>
+      <div class="parking-phone-field"><span class="parking-phone-prefix" aria-hidden="true">+1</span><input id="parking-phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="212 555 0100" aria-describedby="parking-phone-hint" /></div>
+      <p id="parking-phone-hint" class="parking-hint" data-i18n="phoneHint">只需输入美国 10 位电话号码，例如 212 555 0100；国家区号 +1 已默认添加。</p>
       <button type="button" class="btn" id="parking-generate" data-i18n="generate">生成我的挪车码</button>
       <p class="parking-error" id="parking-error" role="alert" hidden></p>
     </div>
