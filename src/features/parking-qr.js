@@ -138,7 +138,8 @@ if (root && !root.dataset.initialized) {
     }
     $("parking-builder").hidden = true;
     $("parking-contact").hidden = false;
-    document.title = language === "en" ? "Contact the Driver | OpenAA" : language === "es" ? "Contactar al conductor | OpenAA" : "挪车联系｜OpenAA";
+    document.body.classList.add("parking-contact-mode");
+    document.title = "Parking Contact | OpenAA";
   };
   root.querySelectorAll("[data-parking-language-select]").forEach((select) => select.addEventListener("change", (event) => {
     setLanguage(event.target.value);
@@ -188,6 +189,7 @@ if (root && !root.dataset.initialized) {
     else {
       $("parking-contact").hidden = true;
       $("parking-builder").hidden = false;
+      document.body.classList.remove("parking-contact-mode");
       document.title = "扫码挪车码｜OpenAA";
     }
   };
