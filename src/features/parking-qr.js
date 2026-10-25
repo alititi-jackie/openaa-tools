@@ -11,8 +11,8 @@ if (root && !root.dataset.initialized) {
       phoneLabel:"你的联系电话", phoneHint:"只需输入美国 10 位电话号码，例如 212 555 0100；国家区号 +1 已默认添加。",
       languageLabel:"挪车页面语言", generate:"生成我的挪车码", parkingTitle:"扫码联系车主",
       scanPrompt:"如需挪车，请扫码联系车主", noPhonePrinted:"二维码卡片不会直接印出你的电话号码。",
-      downloadPng:"下载二维码 PNG", printPdf:"打印 / 保存为 PDF", copyLink:"复制挪车链接",
-      printHint:"打印时可在系统打印窗口选择“保存为 PDF”。建议先用手机实际扫码测试，再打印使用。",
+      downloadPng:"下载完整卡片 PNG", pdfSingle:"下载 PDF（A4 单张版）", pdfDouble:"下载 PDF（A4 双张版）", copyLink:"复制挪车链接",
+      printHint:"PNG 和 PDF 都会包含完整卡片及 OpenAA 标志；建议下载后先用手机扫码测试。",
       howTitle:"怎么使用？", step1:"输入你的电话号码并生成二维码。", step2:"下载二维码，或打印 / 保存为 PDF。",
       step3:"把卡片放在车内容易看到的位置。", privacyTitle:"隐私说明",
       privacyText:"号码只写入二维码链接的 # 后面，由扫码者的浏览器读取；不会上传或保存到本工具服务器。但任何拿到二维码的人都可能读取号码，请只使用你愿意公开的联系电话。",
@@ -27,8 +27,8 @@ if (root && !root.dataset.initialized) {
       phoneLabel:"Your phone number", phoneHint:"Enter only the 10-digit US number, e.g. 212 555 0100. The +1 country code is added automatically.",
       languageLabel:"Contact page language", generate:"Create my parking QR", parkingTitle:"Scan to contact driver",
       scanPrompt:"Need this car moved? Scan to contact the driver.", noPhonePrinted:"Your phone number is not printed directly on this card.",
-      downloadPng:"Download QR as PNG", printPdf:"Print / Save as PDF", copyLink:"Copy parking link",
-      printHint:"Choose “Save as PDF” in your print dialog. Test the QR with your phone before printing.",
+      downloadPng:"Download full card PNG", pdfSingle:"Download PDF (A4, 1 card)", pdfDouble:"Download PDF (A4, 2 cards)", copyLink:"Copy parking link",
+      printHint:"PNG and PDF include the complete card and OpenAA logo. Test the QR with your phone after downloading.",
       howTitle:"How it works", step1:"Enter your phone number and generate the QR code.", step2:"Download the QR or print / save it as a PDF.",
       step3:"Place the card somewhere visible inside your car.", privacyTitle:"Privacy",
       privacyText:"Your number is stored after the # in the QR link and read by the visitor’s browser. It is not uploaded to or stored on our server. Anyone with the QR may be able to read the number, so use a number you are comfortable sharing.",
@@ -43,8 +43,8 @@ if (root && !root.dataset.initialized) {
       phoneLabel:"Tu número de teléfono", phoneHint:"Introduce solo los 10 dígitos del número de EE. UU., por ejemplo 212 555 0100. El código +1 se añade automáticamente.",
       languageLabel:"Idioma de la página", generate:"Crear mi código QR", parkingTitle:"Escanea para contactar al conductor",
       scanPrompt:"¿Necesitas mover este auto? Escanea para contactar al conductor.", noPhonePrinted:"Tu número no se imprime directamente en esta tarjeta.",
-      downloadPng:"Descargar QR en PNG", printPdf:"Imprimir / Guardar como PDF", copyLink:"Copiar enlace",
-      printHint:"En la ventana de impresión, elige “Guardar como PDF”. Prueba el QR con tu teléfono antes de imprimirlo.",
+      downloadPng:"Descargar tarjeta completa en PNG", pdfSingle:"Descargar PDF (A4, 1 tarjeta)", pdfDouble:"Descargar PDF (A4, 2 tarjetas)", copyLink:"Copiar enlace",
+      printHint:"PNG y PDF incluyen la tarjeta completa y el logotipo OpenAA. Prueba el QR con tu teléfono después de descargarlo.",
       howTitle:"Cómo funciona", step1:"Introduce tu número y genera el código QR.", step2:"Descarga el QR o imprímelo / guárdalo como PDF.",
       step3:"Coloca la tarjeta en un lugar visible dentro del auto.", privacyTitle:"Privacidad",
       privacyText:"El número se incluye después del símbolo # en el enlace y lo lee el navegador del visitante. No se sube ni se guarda en nuestro servidor. Cualquier persona con el QR podría leer el número; usa solo uno que aceptes compartir.",
@@ -170,33 +170,96 @@ if (root && !root.dataset.initialized) {
   });
   $("parking-generate").addEventListener("click", create);
   $("parking-phone").addEventListener("keydown", (event) => { if (event.key === "Enter") create(); });
-  $("parking-download").addEventListener("click", () => {
-    if (!currentSvg) return;
-    const blob = new Blob([currentSvg], { type: "image/svg+xml;charset=utf-8" });
-    const img = new Image();
-    const url = URL.createObjectURL(blob);
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = canvas.height = 1200;
-      const ctx = canvas.getContext("2d");
-      ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, 1200, 1200);
-      ctx.drawImage(img, 0, 0, 1200, 1200);
-      URL.revokeObjectURL(url);
-      canvas.toBlob((png) => {
-        if (!png) return;
-        const a = document.createElement("a");
-        const pngUrl = URL.createObjectURL(png);
-        a.href = pngUrl; a.download = "openaa-parking-qr.png"; a.click();
-        URL.revokeObjectURL(pngUrl);
-      }, "image/png");
+  const renderCardCanvas = async () => {
+    if (!currentSvg) throw new Error("Generate a QR code first.");
+    const width = 1200, height = 1600;
+    const canvas = document.createElement("canvas"); canvas.width = width; canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, width, height);
+    ctx.strokeStyle = "#cbd5e1"; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.roundRect(16, 16, 1168, 1568, 34); ctx.stroke();
+    const wrapped = (text, y, font, maxWidth, lineHeight) => {
+      ctx.font = font; ctx.fillStyle = "#0f172a"; ctx.textAlign = "center";
+      let line = ""; const lines = [];
+      for (const char of Array.from(text)) {
+        if (line && ctx.measureText(line + char).width > maxWidth) { lines.push(line); line = char; }
+        else line += char;
+      }
+      if (line) lines.push(line);
+      lines.forEach((value, i) => ctx.fillText(value, width / 2, y + i * lineHeight));
+      return y + lines.length * lineHeight;
     };
-    img.onerror = () => URL.revokeObjectURL(url);
-    img.src = url;
+    let y = 86;
+    y = wrapped("Temporary parking. Thank you for your understanding.", y, "700 34px Arial, sans-serif", 1020, 46) + 16;
+    y = wrapped("Estacionamiento temporal. Gracias por su comprensión.", y, "600 29px Arial, sans-serif", 1020, 42) + 12;
+    y = wrapped("临时停靠，请多关照", y, "700 38px Arial, sans-serif", 1020, 48) + 24;
+    const qrSize = 680, qrX = (width - qrSize) / 2, qrY = y;
+    const cleanSvg = currentSvg.replace(/<image\b[^>]*\/>/g, "");
+    const svgUrl = URL.createObjectURL(new Blob([cleanSvg], { type: "image/svg+xml;charset=utf-8" }));
+    try {
+      const qrImage = new Image();
+      await new Promise((resolve, reject) => { qrImage.onload = resolve; qrImage.onerror = reject; qrImage.src = svgUrl; });
+      ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
+    } finally { URL.revokeObjectURL(svgUrl); }
+    const logo = new Image(); logo.src = new URL("/assets/openaa-logo.png", window.location.origin).href;
+    await new Promise((resolve, reject) => { logo.onload = resolve; logo.onerror = reject; });
+    const logoSize = 122;
+    ctx.fillStyle = "#fff"; ctx.fillRect(width/2-logoSize/2-9, qrY+qrSize/2-logoSize/2-9, logoSize+18, logoSize+18);
+    ctx.drawImage(logo, width/2-logoSize/2, qrY+qrSize/2-logoSize/2, logoSize, logoSize);
+    y = qrY + qrSize + 48;
+    y = wrapped("Need this car moved? Scan to contact the driver.", y, "700 31px Arial, sans-serif", 1040, 42) + 10;
+    y = wrapped("¿Necesitas mover este auto? Escanea para contactar al conductor.", y, "600 27px Arial, sans-serif", 1040, 38) + 10;
+    y = wrapped("如需挪车，请扫码联系车主", y, "700 36px Arial, sans-serif", 1040, 46) + 20;
+    ctx.font = "600 25px Arial, sans-serif"; ctx.fillStyle = "#64748b"; ctx.textAlign = "center";
+    ctx.fillText("OpenAA.com", width / 2, Math.min(y + 12, 1540));
+    return canvas;
+  };
+  const downloadBlob = (blob, filename) => {
+    const url = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = url; a.download = filename; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  $("parking-download").addEventListener("click", async () => {
+    try { (await renderCardCanvas()).toBlob(blob => { if (blob) downloadBlob(blob, "openaa-parking-card.png"); }, "image/png"); }
+    catch { showError("卡片导出失败，请刷新页面后重试。"); }
   });
-  $("parking-print").addEventListener("click", () => {
-    if (!currentSvg) create();
-    if (currentSvg) window.print();
-  });
+  const makePdf = async (copies) => {
+    const canvas = await renderCardCanvas();
+    const jpeg = Uint8Array.from(atob(canvas.toDataURL("image/jpeg", 0.94).split(",")[1]), c => c.charCodeAt(0));
+    const pageW = 595.28, pageH = 841.89, margin = 38, cardW = pageW - 2 * margin, cardH = cardW * 4 / 3;
+    const ys = copies === 1 ? [(pageH-cardH)/2] : [pageH-margin-cardH, margin];
+    const enc = new TextEncoder(), objects = [];
+    objects.push("<< /Type /Catalog /Pages 2 0 R >>");
+    objects.push("");
+    objects.push("<< /Type /XObject /Subtype /Image /Width 1200 /Height 1600 /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length "+jpeg.length+" >>\nstream\n");
+    const imageObjectId = 3, pageIds = [];
+    for (let i=0;i<copies;i++) {
+      const content = "q\n"+cardW.toFixed(2)+" 0 0 "+cardH.toFixed(2)+" "+margin+" "+ys[i].toFixed(2)+" cm\n/Im0 Do\nQ";
+      const contentId = objects.length+1;
+      objects.push("<< /Length "+enc.encode(content).length+" >>\nstream\n"+content+"\nendstream");
+      const pageId = objects.length+1;
+      objects.push("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 "+pageW+" "+pageH+"] /Resources << /XObject << /Im0 "+imageObjectId+" 0 R >> >> /Contents "+contentId+" 0 R >>");
+      pageIds.push(pageId);
+    }
+    objects[1] = "<< /Type /Pages /Kids ["+pageIds.map(id=>id+" 0 R").join(" ")+"] /Count "+copies+" >>";
+    const chunks=[enc.encode("%PDF-1.4\n%OpenAA\n")], offsets=[0]; let total=chunks[0].length;
+    objects.forEach((obj,i)=>{
+      offsets.push(total);
+      let bytes;
+      if(i+1===imageObjectId) {
+        const head=enc.encode((i+1)+" 0 obj\n"+obj), tail=enc.encode("\nendstream\nendobj\n");
+        bytes=new Uint8Array(head.length+jpeg.length+tail.length); bytes.set(head); bytes.set(jpeg,head.length); bytes.set(tail,head.length+jpeg.length);
+      } else bytes=enc.encode((i+1)+" 0 obj\n"+obj+"\nendobj\n");
+      chunks.push(bytes); total+=bytes.length;
+    });
+    const xrefAt=total;
+    let xref="xref\n0 "+(objects.length+1)+"\n0000000000 65535 f \n";
+    offsets.slice(1).forEach(n=>xref+=String(n).padStart(10,"0")+" 00000 n \n");
+    xref+="trailer\n<< /Size "+(objects.length+1)+" /Root 1 0 R >>\nstartxref\n"+xrefAt+"\n%%EOF";
+    chunks.push(enc.encode(xref));
+    downloadBlob(new Blob(chunks,{type:"application/pdf"}),copies===1?"openaa-parking-card-a4-single.pdf":"openaa-parking-card-a4-double.pdf");
+  };
+  $("parking-pdf-single").addEventListener("click", async () => { try { await makePdf(1); } catch { showError("PDF 导出失败，请刷新页面后重试。"); } });
+  $("parking-pdf-double").addEventListener("click", async () => { try { await makePdf(2); } catch { showError("PDF 导出失败，请刷新页面后重试。"); } });
   $("parking-copy").addEventListener("click", async () => {
     if (!currentPayload) return;
     try {
