@@ -67,7 +67,7 @@ if (root && !root.dataset.initialized) {
       const key = node.dataset.i18n;
       if (dictionary[key]) node.textContent = dictionary[key];
     });
-    if ($("parking-language")) $("parking-language").value = language;
+    root.querySelectorAll("[data-parking-language-select]").forEach((select) => { select.value = language; });
     try { localStorage.setItem("openaa_parking_qr_lang", language); } catch {}
     document.documentElement.lang = language === "zh" ? "zh-CN" : language;
   };
@@ -77,8 +77,7 @@ if (root && !root.dataset.initialized) {
     if (!/^\+?\d{7,15}$/.test(normalized)) return null;
     return normalized.startsWith("+") ? normalized : normalized;
   };
-  const phoneForLink = (phone) => phone.startsWith("+") ? phone : "+" + phone;
-  const createQrSvg = (payload, size = 640) => {
+    const createQrSvg = (payload, size = 640) => {
     const qr = qrcode(0, "M");
     qr.addData(payload, "Byte");
     qr.make();
@@ -102,7 +101,7 @@ if (root && !root.dataset.initialized) {
     const phone = cleanPhone($("parking-phone").value);
     if (!phone) { showError(copy[language].invalid); return; }
     const url = new URL("/parking-qr/", window.location.origin);
-    url.hash = "phone=" + encodeURIComponent(phoneForLink(phone));
+    url.hash = "phone=" + encodeURIComponent(phone);
     currentPayload = url.href;
     try {
       const generated = createQrSvg(currentPayload);
@@ -123,7 +122,7 @@ if (root && !root.dataset.initialized) {
       $("parking-call").hidden = true;
       $("parking-sms").hidden = true;
     } else {
-      const display = phone.startsWith("+") ? phone : "+" + phone;
+      const display = phone;
       $("parking-contact-number").textContent = display;
       $("parking-call").href = "tel:" + display;
       $("parking-sms").href = "sms:" + display;
@@ -134,10 +133,10 @@ if (root && !root.dataset.initialized) {
     $("parking-contact").hidden = false;
     document.title = language === "en" ? "Contact the Driver | OpenAA" : language === "es" ? "Contactar al conductor | OpenAA" : "挪车联系｜OpenAA";
   };
-  $("parking-language").addEventListener("change", (event) => {
+  root.querySelectorAll("[data-parking-language-select]").forEach((select) => select.addEventListener("change", (event) => {
     setLanguage(event.target.value);
     if (window.location.hash.startsWith("#phone=")) showContact();
-  });
+  }));
   $("parking-generate").addEventListener("click", create);
   $("parking-phone").addEventListener("keydown", (event) => { if (event.key === "Enter") create(); });
   $("parking-download").addEventListener("click", () => {
