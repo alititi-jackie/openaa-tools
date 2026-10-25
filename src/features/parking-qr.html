@@ -11,9 +11,17 @@
     </div>
     <section class="parking-preview" id="parking-preview" hidden aria-live="polite">
       <div class="parking-card" id="parking-print-card">
-        <p class="parking-card-greeting" data-i18n="temporaryParking">临时停靠，请多关照</p>
+        <div class="parking-card-greeting" aria-label="Temporary parking message in English, Spanish, and Chinese">
+          <p>Temporary parking. Thank you for your understanding.</p>
+          <p>Estacionamiento temporal. Gracias por su comprensión.</p>
+          <p>临时停靠，请多关照</p>
+        </div>
         <div class="parking-qr-image" id="parking-qr-image"></div>
-        <p class="parking-card-message" data-i18n="scanPrompt">如需挪车，请扫码联系车主</p>
+        <div class="parking-card-message" aria-label="Scan instructions in English, Spanish, and Chinese">
+          <p>Need this car moved? Scan to contact the driver.</p>
+          <p>¿Necesitas mover este auto? Escanea para contactar al conductor.</p>
+          <p>如需挪车，请扫码联系车主</p>
+        </div>
         <a class="parking-card-brand-link" href="https://openaa.com/" target="_blank" rel="noopener noreferrer">OpenAA.com</a>
       </div>
       <div class="parking-actions">
