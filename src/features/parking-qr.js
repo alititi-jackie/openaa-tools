@@ -108,10 +108,10 @@ if (root && !root.dataset.initialized) {
       }
     }
     const center = total / 2;
-    const plateRadius = total * 0.115;
-    const logoRadius = total * 0.088;
-    const logoTextSize = total * 0.125;
-    return { qr, count, margin, total, svg: `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${total} ${total}" role="img" aria-label="OpenAA parking contact QR code"><rect width="${total}" height="${total}" fill="#fff"/><path d="${path}" fill="#111827"/><circle cx="${center}" cy="${center}" r="${plateRadius}" fill="#fff"/><circle cx="${center}" cy="${center}" r="${logoRadius}" fill="#111"/><text x="${center}" y="${center + logoTextSize * 0.34}" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="${logoTextSize}" font-weight="900" letter-spacing="-1" fill="#fff">AA</text></svg>` };
+    const logoSize = total * 0.205;
+    const logoOffset = center - logoSize / 2;
+    const logoUrl = new URL("/assets/openaa-logo.png", window.location.origin).href;
+    return { qr, count, margin, total, svg: `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${total} ${total}" role="img" aria-label="OpenAA parking contact QR code"><rect width="${total}" height="${total}" fill="#fff"/><path d="${path}" fill="#111827"/><image href="${logoUrl}" x="${logoOffset}" y="${logoOffset}" width="${logoSize}" height="${logoSize}" preserveAspectRatio="xMidYMid meet"/></svg>` };
   };
   let currentPayload = "";
   let currentSvg = "";
