@@ -256,17 +256,13 @@ if (root && !root.dataset.initialized) {
     objects.push("<< /Type /Catalog /Pages 2 0 R >>");
     objects.push("");
     objects.push("<< /Type /XObject /Subtype /Image /Width " + imageWidth + " /Height " + imageHeight + " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " + jpeg.length + " >>\nstream\n");
-    const imageObjectId = 3, pageIds = [];
-    for (let i = 0; i < copies; i++) {
-      const p = positions[i];
-      const draw = "q\n" + cardW.toFixed(2) + " 0 0 " + cardH.toFixed(2) + " " + p.x.toFixed(2) + " " + p.y.toFixed(2) + " cm\n/Im0 Do\nQ";
-      const contentId = objects.length + 1;
-      objects.push("<< /Length " + enc.encode(draw).length + " >>\nstream\n" + draw + "\nendstream");
-      const pageId = objects.length + 1;
-      objects.push("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + pageW + " " + pageH + "] /Resources << /XObject << /Im0 " + imageObjectId + " 0 R >> >> /Contents " + contentId + " 0 R >>");
-      pageIds.push(pageId);
-    }
-    objects[1] = "<< /Type /Pages /Kids [" + pageIds.map(id => id + " 0 R").join(" ") + "] /Count " + copies + " >>";
+    const imageObjectId = 3;
+    const draw = positions.map(p => "q\n" + cardW.toFixed(2) + " 0 0 " + cardH.toFixed(2) + " " + p.x.toFixed(2) + " " + p.y.toFixed(2) + " cm\n/Im0 Do\nQ").join("\n");
+    const contentId = objects.length + 1;
+    objects.push("<< /Length " + enc.encode(draw).length + " >>\nstream\n" + draw + "\nendstream");
+    const pageId = objects.length + 1;
+    objects.push("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + pageW + " " + pageH + "] /Resources << /XObject << /Im0 " + imageObjectId + " 0 R >> >> /Contents " + contentId + " 0 R >>");
+    objects[1] = "<< /Type /Pages /Kids [" + pageId + " 0 R] /Count 1 >>";
     const chunks = [enc.encode("%PDF-1.4\n%OpenAA\n")], offsets = [0]; let total = chunks[0].length;
     objects.forEach((obj, i) => {
       offsets.push(total);
