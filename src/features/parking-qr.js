@@ -225,7 +225,7 @@ if (root && !root.dataset.initialized) {
   const makePdf = async (copies) => {
     const canvas = await renderCardCanvas();
     const jpeg = Uint8Array.from(atob(canvas.toDataURL("image/jpeg", 0.94).split(",")[1]), c => c.charCodeAt(0));
-    const pageW = 595.28, pageH = 841.89, margin = 38, cardW = pageW - 2 * margin, cardH = cardW * 4 / 3;
+    const pageW = 595.28, pageH = 841.89, margin = 38, cardW = copies === 1 ? pageW - 2 * margin : Math.min(pageW - 2 * margin, ((pageH - 3 * margin) / 2) * 0.75), cardH = cardW * 4 / 3;
     const ys = copies === 1 ? [(pageH-cardH)/2] : [pageH-margin-cardH, margin];
     const enc = new TextEncoder(), objects = [];
     objects.push("<< /Type /Catalog /Pages 2 0 R >>");
