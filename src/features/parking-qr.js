@@ -93,7 +93,11 @@ if (root && !root.dataset.initialized) {
         if (qr.isDark(row, col)) path += `M${col + margin} ${row + margin}h1v1h-1z`;
       }
     }
-    const center = total / 2;\n    const plateRadius = total * 0.145;\n    const logoRadius = total * 0.115;\n    const logoTextSize = total * 0.17;\n    return { qr, count, margin, total, svg: `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${total} ${total}" role="img" aria-label="OpenAA parking contact QR code"><rect width="${total}" height="${total}" fill="#fff"/><path d="${path}" fill="#111827"/><circle cx="${center}" cy="${center}" r="${plateRadius}" fill="#fff"/><circle cx="${center}" cy="${center}" r="${logoRadius}" fill="#111"/><text x="${center}" y="${center + logoTextSize * 0.34}" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="${logoTextSize}" font-weight="900" letter-spacing="-1" fill="#fff">AA</text></svg>` };
+    const center = total / 2;
+    const plateRadius = total * 0.145;
+    const logoRadius = total * 0.115;
+    const logoTextSize = total * 0.17;
+    return { qr, count, margin, total, svg: `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${total} ${total}" role="img" aria-label="OpenAA parking contact QR code"><rect width="${total}" height="${total}" fill="#fff"/><path d="${path}" fill="#111827"/><circle cx="${center}" cy="${center}" r="${plateRadius}" fill="#fff"/><circle cx="${center}" cy="${center}" r="${logoRadius}" fill="#111"/><text x="${center}" y="${center + logoTextSize * 0.34}" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="${logoTextSize}" font-weight="900" letter-spacing="-1" fill="#fff">AA</text></svg>` };
   };
   let currentPayload = "";
   let currentSvg = "";
