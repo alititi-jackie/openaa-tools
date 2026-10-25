@@ -31,13 +31,11 @@
   background: #fff;
   color: #0f172a;
 }
-.parking-card-brand { display: flex; justify-content: center; align-items: baseline; gap: 10px; font-size: 15px; font-weight: 800; color: #2563eb; }
-.parking-card-brand span { color: #0f172a; font-size: 18px; }
-.parking-qr-image { width: min(100%, 300px); margin: 18px auto 10px; }
+.parking-card-greeting { margin: 0; font-size: 19px; line-height: 1.5; font-weight: 800; letter-spacing: .02em; color: #0f172a; }
+.parking-qr-image { width: min(100%, 300px); margin: 14px auto 12px; }
 .parking-qr-image svg { display: block; width: 100%; height: auto; }
-.parking-card-message { margin: 8px 0 4px; font-size: 17px; font-weight: 750; }
-.parking-card-note { margin: 0; color: #64748b; font-size: 12px; }
-.parking-card-brand-link { display: inline-block; margin-top: 13px; font-size: 11px; color: #64748b; }
+.parking-card-message { margin: 10px 0 0; font-size: 16px; line-height: 1.55; font-weight: 750; color: #0f172a; }
+.parking-card-brand-link { display: inline-block; margin-top: 12px; font-size: 11px; color: #64748b; text-decoration: none; }
 .parking-actions { display: grid; gap: 10px; margin-top: 16px; }
 .parking-secondary { display: inline-flex; align-items: center; justify-content: center; border: 1px solid #bfdbfe; background: #eff6ff; color: #1d4ed8; text-decoration: none; }
 .parking-text-button { padding: 10px; border: 0; background: transparent; color: var(--brand); font-weight: 700; }
