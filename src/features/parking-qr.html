@@ -7,7 +7,7 @@
       <input id="parking-phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="30" placeholder="+1 212-555-0100" aria-describedby="parking-phone-hint" />
       <p id="parking-phone-hint" class="parking-hint" data-i18n="phoneHint">建议填写带国家区号的号码，例如 +1 212-555-0100。</p>
       <label for="parking-language" data-i18n="languageLabel">挪车页面语言</label>
-      <select id="parking-language">
+      <select id="parking-language" data-parking-language-select>
         <option value="zh">简体中文</option>
         <option value="en">English</option>
         <option value="es">Español</option>
@@ -42,6 +42,7 @@
     </div>
   </div>
   <section class="parking-contact" data-parking-contact hidden>
+    <div class="parking-contact-language"><label for="parking-contact-language" data-i18n="languageLabel">挪车页面语言</label><select id="parking-contact-language" data-parking-language-select><option value="zh">简体中文</option><option value="en">English</option><option value="es">Español</option></select></div>
     <p class="parking-contact-eyebrow">OpenAA · Parking contact</p>
     <h1 data-i18n="contactTitle">挪车联系</h1>
     <p class="subtitle" data-i18n="contactIntro">如果这辆车挡住了你的通行，请礼貌联系车主。</p>
