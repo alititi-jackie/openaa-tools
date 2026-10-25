@@ -59,7 +59,7 @@ body.parking-contact-mode .tool-shell { max-width: 560px !important; padding-top
 body.parking-contact-mode .tool-page { border: 0 !important; box-shadow: none !important; padding: 12px 18px !important; }
 .parking-contact-eyebrow { margin: 0 0 8px; color: #2563eb; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .parking-contact-title { margin: 0 0 8px; font-size: 30px; line-height: 1.4; }
-.parking-contact-number { margin: 24px 0; font-size: clamp(25px, 6vw, 36px); font-weight: 800; letter-spacing: .02em; overflow-wrap: anywhere; }
+.parking-contact-number { margin: 24px 0; font-size: clamp(24px, 5.5vw, 34px); font-weight: 800; letter-spacing: .015em; overflow-wrap: anywhere; white-space: nowrap; }
 .parking-contact-actions { display: grid; gap: 12px; }
 .parking-contact-actions .btn { display: block; text-align: center; text-decoration: none; }
 .parking-contact-footer { margin-top: 28px; color: #64748b; font-size: 12px; }
