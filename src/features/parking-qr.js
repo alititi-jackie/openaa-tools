@@ -8,7 +8,7 @@ if (root && !root.dataset.initialized) {
     zh: {
       intro:"免费生成专属挪车二维码。打印后放在车内，别人扫码即可联系你。",
       temporaryParking:"临时停靠，请多关照",
-      phoneLabel:"你的联系电话", phoneHint:"建议填写带国家区号的号码，例如 +1 212-555-0100。",
+      phoneLabel:"你的联系电话", phoneHint:"只需输入美国 10 位电话号码，例如 212 555 0100；国家区号 +1 已默认添加。",
       languageLabel:"挪车页面语言", generate:"生成我的挪车码", parkingTitle:"扫码联系车主",
       scanPrompt:"如需挪车，请扫码联系车主", noPhonePrinted:"二维码卡片不会直接印出你的电话号码。",
       downloadPng:"下载二维码 PNG", printPdf:"打印 / 保存为 PDF", copyLink:"复制挪车链接",
@@ -24,7 +24,7 @@ if (root && !root.dataset.initialized) {
     en: {
       intro:"Create a free parking QR code. Print it and place it inside your car so people can contact you.",
       temporaryParking:"Temporary parking. Thank you for your understanding.",
-      phoneLabel:"Your phone number", phoneHint:"Include your country code, for example +1 212-555-0100.",
+      phoneLabel:"Your phone number", phoneHint:"Enter only the 10-digit US number, e.g. 212 555 0100. The +1 country code is added automatically.",
       languageLabel:"Contact page language", generate:"Create my parking QR", parkingTitle:"Scan to contact driver",
       scanPrompt:"Need this car moved? Scan to contact the driver.", noPhonePrinted:"Your phone number is not printed directly on this card.",
       downloadPng:"Download QR as PNG", printPdf:"Print / Save as PDF", copyLink:"Copy parking link",
@@ -40,7 +40,7 @@ if (root && !root.dataset.initialized) {
     es: {
       intro:"Crea gratis un código QR para estacionamiento. Imprímelo y colócalo dentro del auto para que puedan contactarte.",
       temporaryParking:"Estacionamiento temporal. Gracias por su comprensión.",
-      phoneLabel:"Tu número de teléfono", phoneHint:"Incluye el código de país, por ejemplo +1 212-555-0100.",
+      phoneLabel:"Tu número de teléfono", phoneHint:"Introduce solo los 10 dígitos del número de EE. UU., por ejemplo 212 555 0100. El código +1 se añade automáticamente.",
       languageLabel:"Idioma de la página", generate:"Crear mi código QR", parkingTitle:"Escanea para contactar al conductor",
       scanPrompt:"¿Necesitas mover este auto? Escanea para contactar al conductor.", noPhonePrinted:"Tu número no se imprime directamente en esta tarjeta.",
       downloadPng:"Descargar QR en PNG", printPdf:"Imprimir / Guardar como PDF", copyLink:"Copiar enlace",
@@ -105,7 +105,7 @@ if (root && !root.dataset.initialized) {
   const showError = (message) => { error.textContent = message; error.hidden = false; };
   const create = () => {
     error.hidden = true;
-    const phone = cleanPhone($("parking-phone").value);
+    const phone = phoneForCreation($("parking-phone").value);
     if (!phone) { showError(copy[language].invalid); return; }
     const url = new URL("/tools/parking-qr/", window.location.origin);
     url.hash = "phone=" + encodeURIComponent(phone);
