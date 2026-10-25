@@ -63,7 +63,8 @@ body.parking-contact-mode .tool-page { border: 0 !important; box-shadow: none !i
 .parking-contact-actions { display: grid; gap: 12px; }
 .parking-contact-actions .btn { display: block; text-align: center; text-decoration: none; }
 .parking-contact-footer { margin-top: 28px; color: #64748b; font-size: 12px; }
-.parking-create-link { display: inline-block; margin-top: 20px; font-weight: 700; }
+.parking-create-link { display: block; margin-top: 12px; font-weight: 700; line-height: 1.6; color: var(--brand); text-decoration: none; }
+.parking-contact-footer > p { margin: 18px 0 0; }
 @media (min-width: 520px) {
   .parking-actions { grid-template-columns: 1fr 1fr; }
   .parking-actions .parking-text-button { grid-column: 1 / -1; }
