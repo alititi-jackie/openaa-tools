@@ -18,6 +18,8 @@ test("scanned parking QR page shows all three languages without selector or rela
   await expect(createLinks.nth(0)).toHaveText("Make my own parking QR code");
   await expect(createLinks.nth(1)).toHaveText("Crear mi propio código QR de estacionamiento");
   await expect(createLinks.nth(2)).toHaveText("制作我的挪车二维码 →");
-  await expect(createLinks).toHaveAttribute("href", "https://tools.openaa.com/tools/parking-qr/");
+  for (let i = 0; i < 3; i++) {
+    await expect(createLinks.nth(i)).toHaveAttribute("href", "https://tools.openaa.com/tools/parking-qr/");
+  }
   await expect(page.locator(".parking-contact-footer > p a")).toHaveText("OpenAA.com");
 });
