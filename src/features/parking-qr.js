@@ -192,7 +192,7 @@ if (root && !root.dataset.initialized) {
       const raw = new URLSearchParams(new URL(currentPayload).hash.slice(1)).get("phone") || "";
       if (/^\+1\d{10}$/.test(raw)) phoneDisplay = formatPhoneDisplay(raw);
     }
-    const height = phoneDisplay ? 1480 : 1400;
+    const height = phoneDisplay ? 1560 : 1480;
     const canvas = document.createElement("canvas"); canvas.width = width; canvas.height = height;
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, width, height);
@@ -238,9 +238,9 @@ if (root && !root.dataset.initialized) {
       ctx.fillText(phoneDisplay, width / 2, y);
       y += 78;
     }
-    y = wrapped("Sorry if I'm in your way — scan to reach me.", y, fit("Sorry if I'm in your way — scan to reach me.", "700", 38, 1040), 1040, 52) + 12;
-    y = wrapped("Si le estorbo, disculpe — escanee para contactarme.", y, fit("Si le estorbo, disculpe — escanee para contactarme.", "600", 33, 1040), 1040, 48) + 12;
-    y = wrapped("挡到您了抱歉，扫码联系我", y, fit("挡到您了抱歉，扫码联系我", "700", 44, 1040), 1040, 56) + 26;
+    y = wrapped("Sorry if I'm in your way — scan to reach me.", y, fit("Sorry if I'm in your way — scan to reach me.", "700", 56, 1040), 1040, 64) + 12;
+    y = wrapped("Si le estorbo, disculpe — escanee para contactarme.", y, fit("Si le estorbo, disculpe — escanee para contactarme.", "600", 50, 1040), 1040, 58) + 12;
+    y = wrapped("挡到您了抱歉，扫码联系我", y, fit("挡到您了抱歉，扫码联系我", "700", 58, 1040), 1040, 72) + 26;
     ctx.font = "600 28px Arial, sans-serif"; ctx.fillStyle = "#64748b"; ctx.textAlign = "center";
     ctx.fillText("OpenAA.com", width / 2, y + 16);
     return canvas;
