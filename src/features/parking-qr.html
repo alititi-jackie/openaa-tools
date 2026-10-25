@@ -4,8 +4,8 @@
     <p class="subtitle" data-i18n="intro">免费生成专属挪车二维码。打印后放在车内，别人扫码即可联系你。</p>
     <div class="parking-panel">
       <label for="parking-phone" data-i18n="phoneLabel">你的联系电话</label>
-      <input id="parking-phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="30" placeholder="+1 212-555-0100" aria-describedby="parking-phone-hint" />
-      <p id="parking-phone-hint" class="parking-hint" data-i18n="phoneHint">建议填写带国家区号的号码，例如 +1 212-555-0100。</p>
+      <div class="parking-phone-field"><span class="parking-phone-prefix" aria-hidden="true">+1</span><input id="parking-phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="212 555 0100" aria-describedby="parking-phone-hint" /></div>
+      <p id="parking-phone-hint" class="parking-hint" data-i18n="phoneHint">只需输入美国 10 位电话号码，例如 212 555 0100；国家区号 +1 已默认添加。</p>
       <button type="button" class="btn" id="parking-generate" data-i18n="generate">生成我的挪车码</button>
       <p class="parking-error" id="parking-error" role="alert" hidden></p>
     </div>
@@ -53,6 +53,11 @@
       <a class="btn" id="parking-call" href="#" aria-label="Call / Llamar / 拨打电话">Call / Llamar / 拨打电话</a>
       <a class="btn parking-secondary" id="parking-sms" href="#" aria-label="Text / Mensaje / 发送短信">Text / Mensaje / 发送短信</a>
     </div>
-    <p class="parking-contact-footer"><a href="https://openaa.com/" target="_blank" rel="noopener noreferrer">OpenAA.com</a></p>
+    <div class="parking-contact-footer">
+      <a class="parking-create-link" href="https://tools.openaa.com/tools/parking-qr/">Make my own parking QR code</a>
+      <a class="parking-create-link" href="https://tools.openaa.com/tools/parking-qr/">Crear mi propio código QR de estacionamiento</a>
+      <a class="parking-create-link" href="https://tools.openaa.com/tools/parking-qr/">制作我的挪车二维码 →</a>
+      <p><a href="https://openaa.com/" target="_blank" rel="noopener noreferrer">OpenAA.com</a></p>
+    </div>
   </section>
 </section>

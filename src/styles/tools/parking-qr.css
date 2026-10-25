@@ -8,6 +8,9 @@
   background: #f8fafc;
 }
 .parking-panel label { font-weight: 700; font-size: 14px; }
+ .parking-phone-field { display: flex; align-items: center; min-height: 48px; border: 1px solid #cbd5e1; border-radius: 10px; background: #fff; overflow: hidden; }
+.parking-phone-prefix { padding: 0 0 0 14px; color: #334155; font-size: 16px; font-weight: 700; white-space: nowrap; }
+.parking-panel .parking-phone-field input { min-width: 0; flex: 1; width: 100%; min-height: 46px; border: 0; border-radius: 0; box-shadow: none; }
 .parking-panel input,
 .parking-panel select {
   width: 100%;
@@ -59,11 +62,12 @@ body.parking-contact-mode .tool-shell { max-width: 560px !important; padding-top
 body.parking-contact-mode .tool-page { border: 0 !important; box-shadow: none !important; padding: 12px 18px !important; }
 .parking-contact-eyebrow { margin: 0 0 8px; color: #2563eb; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .parking-contact-title { margin: 0 0 8px; font-size: 30px; line-height: 1.4; }
-.parking-contact-number { margin: 24px 0; font-size: clamp(25px, 6vw, 36px); font-weight: 800; letter-spacing: .02em; overflow-wrap: anywhere; }
+.parking-contact-number { margin: 24px 0; font-size: clamp(24px, 5.5vw, 34px); font-weight: 800; letter-spacing: .015em; overflow-wrap: anywhere; white-space: nowrap; }
 .parking-contact-actions { display: grid; gap: 12px; }
 .parking-contact-actions .btn { display: block; text-align: center; text-decoration: none; }
 .parking-contact-footer { margin-top: 28px; color: #64748b; font-size: 12px; }
-.parking-create-link { display: inline-block; margin-top: 20px; font-weight: 700; }
+.parking-create-link { display: block; margin-top: 12px; font-weight: 700; line-height: 1.6; color: var(--brand); text-decoration: none; }
+.parking-contact-footer > p { margin: 18px 0 0; }
 @media (min-width: 520px) {
   .parking-actions { grid-template-columns: 1fr 1fr; }
   .parking-actions .parking-text-button { grid-column: 1 / -1; }

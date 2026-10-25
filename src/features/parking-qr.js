@@ -8,7 +8,7 @@ if (root && !root.dataset.initialized) {
     zh: {
       intro:"免费生成专属挪车二维码。打印后放在车内，别人扫码即可联系你。",
       temporaryParking:"临时停靠，请多关照",
-      phoneLabel:"你的联系电话", phoneHint:"建议填写带国家区号的号码，例如 +1 212-555-0100。",
+      phoneLabel:"你的联系电话", phoneHint:"只需输入美国 10 位电话号码，例如 212 555 0100；国家区号 +1 已默认添加。",
       languageLabel:"挪车页面语言", generate:"生成我的挪车码", parkingTitle:"扫码联系车主",
       scanPrompt:"如需挪车，请扫码联系车主", noPhonePrinted:"二维码卡片不会直接印出你的电话号码。",
       downloadPng:"下载二维码 PNG", printPdf:"打印 / 保存为 PDF", copyLink:"复制挪车链接",
@@ -24,7 +24,7 @@ if (root && !root.dataset.initialized) {
     en: {
       intro:"Create a free parking QR code. Print it and place it inside your car so people can contact you.",
       temporaryParking:"Temporary parking. Thank you for your understanding.",
-      phoneLabel:"Your phone number", phoneHint:"Include your country code, for example +1 212-555-0100.",
+      phoneLabel:"Your phone number", phoneHint:"Enter only the 10-digit US number, e.g. 212 555 0100. The +1 country code is added automatically.",
       languageLabel:"Contact page language", generate:"Create my parking QR", parkingTitle:"Scan to contact driver",
       scanPrompt:"Need this car moved? Scan to contact the driver.", noPhonePrinted:"Your phone number is not printed directly on this card.",
       downloadPng:"Download QR as PNG", printPdf:"Print / Save as PDF", copyLink:"Copy parking link",
@@ -40,7 +40,7 @@ if (root && !root.dataset.initialized) {
     es: {
       intro:"Crea gratis un código QR para estacionamiento. Imprímelo y colócalo dentro del auto para que puedan contactarte.",
       temporaryParking:"Estacionamiento temporal. Gracias por su comprensión.",
-      phoneLabel:"Tu número de teléfono", phoneHint:"Incluye el código de país, por ejemplo +1 212-555-0100.",
+      phoneLabel:"Tu número de teléfono", phoneHint:"Introduce solo los 10 dígitos del número de EE. UU., por ejemplo 212 555 0100. El código +1 se añade automáticamente.",
       languageLabel:"Idioma de la página", generate:"Crear mi código QR", parkingTitle:"Escanea para contactar al conductor",
       scanPrompt:"¿Necesitas mover este auto? Escanea para contactar al conductor.", noPhonePrinted:"Tu número no se imprime directamente en esta tarjeta.",
       downloadPng:"Descargar QR en PNG", printPdf:"Imprimir / Guardar como PDF", copyLink:"Copiar enlace",
@@ -74,11 +74,25 @@ if (root && !root.dataset.initialized) {
     try { localStorage.setItem("openaa_parking_qr_lang", language); } catch {}
     document.documentElement.lang = language === "zh" ? "zh-CN" : language;
   };
-  const cleanPhone = (value) => {
-    const trimmed = String(value || "").trim();
-    const normalized = trimmed.replace(/[\s().-]/g, "");
-    if (!/^\+?\d{7,15}$/.test(normalized)) return null;
-    return normalized.startsWith("+") ? normalized : normalized;
+  const digitsOnly = (value) => String(value || "").replace(/\D/g, "");
+  const formatUsInput = (value) => {
+    let digits = digitsOnly(value);
+    if (digits.startsWith("1") && digits.length === 11) digits = digits.slice(1);
+    digits = digits.slice(0, 10);
+    if (digits.length > 6) return digits.slice(0, 3) + " " + digits.slice(3, 6) + " " + digits.slice(6);
+    if (digits.length > 3) return digits.slice(0, 3) + " " + digits.slice(3);
+    return digits;
+  };
+  const phoneForCreation = (value) => {
+    const digits = digitsOnly(value);
+    return /^\d{10}$/.test(digits) ? "+1" + digits : null;
+  };
+  const formatPhoneDisplay = (phone) => {
+    const digits = digitsOnly(phone);
+    if (digits.length === 11 && digits.startsWith("1")) {
+      return "+1 " + digits.slice(1, 4) + " " + digits.slice(4, 7) + " " + digits.slice(7);
+    }
+    return phone;
   };
     const createQrSvg = (payload, size = 640) => {
     const qr = qrcode(0, "H");
@@ -94,9 +108,9 @@ if (root && !root.dataset.initialized) {
       }
     }
     const center = total / 2;
-    const plateRadius = total * 0.145;
-    const logoRadius = total * 0.115;
-    const logoTextSize = total * 0.17;
+    const plateRadius = total * 0.115;
+    const logoRadius = total * 0.088;
+    const logoTextSize = total * 0.125;
     return { qr, count, margin, total, svg: `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${total} ${total}" role="img" aria-label="OpenAA parking contact QR code"><rect width="${total}" height="${total}" fill="#fff"/><path d="${path}" fill="#111827"/><circle cx="${center}" cy="${center}" r="${plateRadius}" fill="#fff"/><circle cx="${center}" cy="${center}" r="${logoRadius}" fill="#111"/><text x="${center}" y="${center + logoTextSize * 0.34}" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="${logoTextSize}" font-weight="900" letter-spacing="-1" fill="#fff">AA</text></svg>` };
   };
   let currentPayload = "";
@@ -105,7 +119,7 @@ if (root && !root.dataset.initialized) {
   const showError = (message) => { error.textContent = message; error.hidden = false; };
   const create = () => {
     error.hidden = true;
-    const phone = cleanPhone($("parking-phone").value);
+    const phone = phoneForCreation($("parking-phone").value);
     if (!phone) { showError(copy[language].invalid); return; }
     const url = new URL("/tools/parking-qr/", window.location.origin);
     url.hash = "phone=" + encodeURIComponent(phone);
@@ -123,16 +137,16 @@ if (root && !root.dataset.initialized) {
   const showContact = () => {
     const params = new URLSearchParams(window.location.hash.slice(1));
     const raw = params.get("phone") || "";
-    const phone = cleanPhone(raw);
+    const phone = /^\+1\d{10}$/.test(raw) ? raw : null;
     if (!phone) {
       $("parking-contact-number").textContent = copy[language].missing;
       $("parking-call").hidden = true;
       $("parking-sms").hidden = true;
     } else {
-      const display = phone;
+      const display = formatPhoneDisplay(phone);
       $("parking-contact-number").textContent = display;
-      $("parking-call").href = "tel:" + display;
-      $("parking-sms").href = "sms:" + display;
+      $("parking-call").href = "tel:" + phone;
+      $("parking-sms").href = "sms:" + phone;
       $("parking-call").hidden = false;
       $("parking-sms").hidden = false;
     }
@@ -145,6 +159,14 @@ if (root && !root.dataset.initialized) {
     setLanguage(event.target.value);
     if (window.location.hash.startsWith("#phone=")) showContact();
   }));
+  $("parking-phone").addEventListener("input", (event) => {
+    const input = event.target;
+    const start = input.selectionStart;
+    const before = input.value.slice(0, start);
+    input.value = formatUsInput(input.value);
+    const nextPosition = formatUsInput(before).length;
+    input.setSelectionRange(nextPosition, nextPosition);
+  });
   $("parking-generate").addEventListener("click", create);
   $("parking-phone").addEventListener("keydown", (event) => { if (event.key === "Enter") create(); });
   $("parking-download").addEventListener("click", () => {
