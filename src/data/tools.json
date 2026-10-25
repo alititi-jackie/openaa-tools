@@ -288,6 +288,23 @@
     ]
   },
   {
+    "id": "parking-qr",
+    "name": "扫码挪车码",
+    "heading": "免费扫码挪车码生成器",
+    "description": "免费在线挪车二维码生成器：输入电话号码即可制作专属挪车码，扫码显示拨打和短信按钮，支持中文、英文、西班牙文；本地生成，无需注册。",
+    "icon": "🚘",
+    "category": "auto",
+    "path": "/parking-qr/",
+    "bodyClass": "",
+    "calculator": "",
+    "modules": [
+      "parking-qr"
+    ],
+    "styles": [
+      "parking-qr.css"
+    ]
+  },
+  {
     "id": "age",
     "name": "年龄计算器",
     "heading": "年龄计算器",
