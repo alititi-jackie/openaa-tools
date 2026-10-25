@@ -250,7 +250,8 @@ if (root && !root.dataset.initialized) {
       cardH = (pageH - 3 * margin) / 2;
       cardW = cardH * imageWidth / imageHeight;
       const x = (pageW - cardW) / 2;
-      positions = [{ x, y: pageH - margin - cardH }, { x, y: margin }];
+      const halfGap = (pageH / 2 - cardH) / 2;
+      positions = [{ x, y: pageH / 2 + halfGap }, { x, y: halfGap }];
     }
     const enc = new TextEncoder(), objects = [];
     objects.push("<< /Type /Catalog /Pages 2 0 R >>");
