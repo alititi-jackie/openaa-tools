@@ -150,17 +150,16 @@ if (root && !root.dataset.initialized) {
   const showContact = () => {
     const params = new URLSearchParams(window.location.hash.slice(1));
     const raw = params.get("phone") || "";
-    const phone = cleanPhone(raw);
+    const phone = /^\\+1\\d{10}$/.test(raw) ? raw : null;
     if (!phone) {
       $("parking-contact-number").textContent = copy[language].missing;
       $("parking-call").hidden = true;
       $("parking-sms").hidden = true;
     } else {
-      const normalizedPhone = normalizeUsPhone(phone);
-      const display = formatPhoneDisplay(normalizedPhone);
+      const display = formatPhoneDisplay(phone);
       $("parking-contact-number").textContent = display;
-      $("parking-call").href = "tel:" + normalizedPhone;
-      $("parking-sms").href = "sms:" + normalizedPhone;
+      $("parking-call").href = "tel:" + phone;
+      $("parking-sms").href = "sms:" + phone;
       $("parking-call").hidden = false;
       $("parking-sms").hidden = false;
     }
