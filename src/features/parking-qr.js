@@ -7,6 +7,7 @@ if (root && !root.dataset.initialized) {
   const copy = {
     zh: {
       intro:"免费生成专属挪车二维码。打印后放在车内，别人扫码即可联系你。",
+      temporaryParking:"临时停靠，请多关照",
       phoneLabel:"你的联系电话", phoneHint:"建议填写带国家区号的号码，例如 +1 212-555-0100。",
       languageLabel:"挪车页面语言", generate:"生成我的挪车码", parkingTitle:"扫码联系车主",
       scanPrompt:"如需挪车，请扫码联系车主", noPhonePrinted:"二维码卡片不会直接印出你的电话号码。",
@@ -22,6 +23,7 @@ if (root && !root.dataset.initialized) {
     },
     en: {
       intro:"Create a free parking QR code. Print it and place it inside your car so people can contact you.",
+      temporaryParking:"Temporary parking. Thank you for your understanding.",
       phoneLabel:"Your phone number", phoneHint:"Include your country code, for example +1 212-555-0100.",
       languageLabel:"Contact page language", generate:"Create my parking QR", parkingTitle:"Scan to contact driver",
       scanPrompt:"Need this car moved? Scan to contact the driver.", noPhonePrinted:"Your phone number is not printed directly on this card.",
@@ -37,6 +39,7 @@ if (root && !root.dataset.initialized) {
     },
     es: {
       intro:"Crea gratis un código QR para estacionamiento. Imprímelo y colócalo dentro del auto para que puedan contactarte.",
+      temporaryParking:"Estacionamiento temporal. Gracias por su comprensión.",
       phoneLabel:"Tu número de teléfono", phoneHint:"Incluye el código de país, por ejemplo +1 212-555-0100.",
       languageLabel:"Idioma de la página", generate:"Crear mi código QR", parkingTitle:"Escanea para contactar al conductor",
       scanPrompt:"¿Necesitas mover este auto? Escanea para contactar al conductor.", noPhonePrinted:"Tu número no se imprime directamente en esta tarjeta.",
@@ -78,7 +81,7 @@ if (root && !root.dataset.initialized) {
     return normalized.startsWith("+") ? normalized : normalized;
   };
     const createQrSvg = (payload, size = 640) => {
-    const qr = qrcode(0, "M");
+    const qr = qrcode(0, "H");
     qr.addData(payload, "Byte");
     qr.make();
     const count = qr.getModuleCount();
@@ -90,7 +93,7 @@ if (root && !root.dataset.initialized) {
         if (qr.isDark(row, col)) path += `M${col + margin} ${row + margin}h1v1h-1z`;
       }
     }
-    return { qr, count, margin, total, svg: `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${total} ${total}" role="img" aria-label="Parking contact QR code"><rect width="${total}" height="${total}" fill="#fff"/><path d="${path}" fill="#111827"/></svg>` };
+    const center = total / 2;\n    const plateRadius = total * 0.145;\n    const logoRadius = total * 0.115;\n    const logoTextSize = total * 0.17;\n    return { qr, count, margin, total, svg: `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${total} ${total}" role="img" aria-label="OpenAA parking contact QR code"><rect width="${total}" height="${total}" fill="#fff"/><path d="${path}" fill="#111827"/><circle cx="${center}" cy="${center}" r="${plateRadius}" fill="#fff"/><circle cx="${center}" cy="${center}" r="${logoRadius}" fill="#111"/><text x="${center}" y="${center + logoTextSize * 0.34}" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="${logoTextSize}" font-weight="900" letter-spacing="-1" fill="#fff">AA</text></svg>` };
   };
   let currentPayload = "";
   let currentSvg = "";
