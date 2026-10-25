@@ -83,29 +83,16 @@ if (root && !root.dataset.initialized) {
     if (digits.length > 3) return digits.slice(0, 3) + " " + digits.slice(3);
     return digits;
   };
-  const cleanPhone = (value) => {
-    const normalized = String(value || "").trim().replace(/[\s().-]/g, "");
-    if (!/^\+?\d{7,15}$/.test(normalized)) return null;
-    return normalized;
-  };
   const phoneForCreation = (value) => {
     const digits = digitsOnly(value);
-    const national = digits.length === 11 && digits.startsWith("1") ? digits.slice(1) : digits;
-    return /^\d{10}$/.test(national) ? "+1" + national : null;
-  };
-  const normalizeUsPhone = (phone) => {
-    const digits = digitsOnly(phone);
-    if (digits.length === 10) return "+1" + digits;
-    if (digits.length === 11 && digits.startsWith("1")) return "+" + digits;
-    return phone;
+    return /^\d{10}$/.test(digits) ? "+1" + digits : null;
   };
   const formatPhoneDisplay = (phone) => {
-    const normalized = normalizeUsPhone(phone);
-    const digits = digitsOnly(normalized);
+    const digits = digitsOnly(phone);
     if (digits.length === 11 && digits.startsWith("1")) {
       return "+1 " + digits.slice(1, 4) + " " + digits.slice(4, 7) + " " + digits.slice(7);
     }
-    return normalized;
+    return phone;
   };
     const createQrSvg = (payload, size = 640) => {
     const qr = qrcode(0, "H");
