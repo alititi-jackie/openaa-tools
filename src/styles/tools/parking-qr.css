@@ -31,13 +31,11 @@
   background: #fff;
   color: #0f172a;
 }
-.parking-card-brand { display: flex; justify-content: center; align-items: baseline; gap: 10px; font-size: 15px; font-weight: 800; color: #2563eb; }
-.parking-card-brand span { color: #0f172a; font-size: 18px; }
-.parking-qr-image { width: min(100%, 300px); margin: 18px auto 10px; }
+.parking-card-greeting { margin: 0; font-size: 19px; line-height: 1.5; font-weight: 800; letter-spacing: .02em; color: #0f172a; }
+.parking-qr-image { width: min(100%, 300px); margin: 14px auto 12px; }
 .parking-qr-image svg { display: block; width: 100%; height: auto; }
-.parking-card-message { margin: 8px 0 4px; font-size: 17px; font-weight: 750; }
-.parking-card-note { margin: 0; color: #64748b; font-size: 12px; }
-.parking-card-brand-link { display: inline-block; margin-top: 13px; font-size: 11px; color: #64748b; }
+.parking-card-message { margin: 10px 0 0; font-size: 16px; line-height: 1.55; font-weight: 750; color: #0f172a; }
+.parking-card-brand-link { display: inline-block; margin-top: 12px; font-size: 11px; color: #64748b; text-decoration: none; }
 .parking-actions { display: grid; gap: 10px; margin-top: 16px; }
 .parking-secondary { display: inline-flex; align-items: center; justify-content: center; border: 1px solid #bfdbfe; background: #eff6ff; color: #1d4ed8; text-decoration: none; }
 .parking-text-button { padding: 10px; border: 0; background: transparent; color: var(--brand); font-weight: 700; }
@@ -45,10 +43,20 @@
 .parking-info h2 { margin: 22px 0 8px; font-size: 19px; }
 .parking-info ol { padding-left: 22px; }
 .parking-info li { margin: 7px 0; }
-.parking-contact-language { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-bottom: 22px; text-align: left; }
-.parking-contact-language label { font-size: 13px; color: #64748b; }
-.parking-contact-language select { max-width: 180px; min-height: 42px; padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 9px; background: #fff; font-size: 14px; }
 .parking-contact { max-width: 560px; margin: 0 auto; padding: 24px 0; text-align: center; }
+.parking-contact-heading { margin: 0 auto 24px; max-width: 440px; }
+.parking-contact-heading p { margin: 5px 0; font-size: 16px; line-height: 1.55; font-weight: 700; color: #0f172a; }
+.parking-contact-heading p + p { font-size: 14px; font-weight: 500; color: #475569; }
+body.parking-contact-mode .site-header,
+body.parking-contact-mode .site-footer,
+body.parking-contact-mode .breadcrumbs,
+body.parking-contact-mode .related-tools,
+body.parking-contact-mode .eco-card,
+body.parking-contact-mode .tool-actions,
+body.parking-contact-mode .tool-shell > nav,
+body.parking-contact-mode .tool-shell > .related-tools { display: none !important; }
+body.parking-contact-mode .tool-shell { max-width: 560px !important; padding-top: 12px !important; }
+body.parking-contact-mode .tool-page { border: 0 !important; box-shadow: none !important; padding: 12px 18px !important; }
 .parking-contact-eyebrow { margin: 0 0 8px; color: #2563eb; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .parking-contact-title { margin: 0 0 8px; font-size: 30px; line-height: 1.4; }
 .parking-contact-number { margin: 24px 0; font-size: clamp(25px, 6vw, 36px); font-weight: 800; letter-spacing: .02em; overflow-wrap: anywhere; }
