@@ -8,6 +8,9 @@
   background: #f8fafc;
 }
 .parking-panel label { font-weight: 700; font-size: 14px; }
+ .parking-phone-field { display: flex; align-items: center; min-height: 48px; border: 1px solid #cbd5e1; border-radius: 10px; background: #fff; overflow: hidden; }
+.parking-phone-prefix { padding: 0 0 0 14px; color: #334155; font-size: 16px; font-weight: 700; white-space: nowrap; }
+.parking-panel .parking-phone-field input { min-width: 0; flex: 1; width: 100%; min-height: 46px; border: 0; border-radius: 0; box-shadow: none; }
 .parking-panel input,
 .parking-panel select {
   width: 100%;
