@@ -73,18 +73,3 @@ body.parking-contact-mode .tool-page { border: 0 !important; box-shadow: none !i
   .parking-actions .parking-text-button { grid-column: 1 / -1; }
   .parking-contact-actions { grid-template-columns: 1fr 1fr; }
 }
-@media print {
-  @page { size: A4 portrait; margin: 15mm; }
-  body { max-width: none !important; min-height: 0 !important; box-shadow: none !important; background: #fff !important; }
-  body > * { display: none !important; }
-  body > main { display: block !important; }
-  body > main > .tool-shell { display: block !important; max-width: none !important; margin: 0 !important; padding: 0 !important; }
-  .breadcrumbs, .related-tools, .tool-actions, .site-header, .site-footer, .parking-panel, .parking-actions, .parking-info, .subtitle, .parking-hint, .parking-error { display: none !important; }
-  .tool-page { border: 0 !important; padding: 0 !important; }
-  .parking-preview { display: block !important; margin: 0 !important; }
-  .parking-card { width: 95mm !important; min-height: 125mm; margin: 0 auto !important; border: 1px solid #d1d5db !important; border-radius: 4mm !important; padding: 10mm !important; break-inside: avoid; }
-  .parking-qr-image { width: 72mm !important; margin: 8mm auto 4mm !important; }
-  .parking-card-message { font-size: 16pt !important; }
-  .parking-card-note, .parking-card-brand-link { font-size: 9pt !important; }
-  .parking-contact { display: none !important; }
-}
