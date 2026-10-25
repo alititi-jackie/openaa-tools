@@ -172,12 +172,12 @@ if (root && !root.dataset.initialized) {
   $("parking-phone").addEventListener("keydown", (event) => { if (event.key === "Enter") create(); });
   const renderCardCanvas = async () => {
     if (!currentSvg) throw new Error("Generate a QR code first.");
-    const width = 1200, height = 1600;
+    const width = 1200, height = 1280;
     const canvas = document.createElement("canvas"); canvas.width = width; canvas.height = height;
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, width, height);
     ctx.strokeStyle = "#cbd5e1"; ctx.lineWidth = 4;
-    ctx.beginPath(); ctx.roundRect(16, 16, 1168, 1568, 34); ctx.stroke();
+    ctx.beginPath(); ctx.roundRect(16, 16, 1168, height - 32, 34); ctx.stroke();
     const wrapped = (text, y, font, maxWidth, lineHeight) => {
       ctx.font = font; ctx.fillStyle = "#0f172a"; ctx.textAlign = "center";
       let line = ""; const lines = [];
