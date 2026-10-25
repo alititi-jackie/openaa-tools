@@ -74,11 +74,31 @@ if (root && !root.dataset.initialized) {
     try { localStorage.setItem("openaa_parking_qr_lang", language); } catch {}
     document.documentElement.lang = language === "zh" ? "zh-CN" : language;
   };
+  const digitsOnly = (value) => String(value || "").replace(/\D/g, "");
+  const formatUsInput = (value) => {
+    let digits = digitsOnly(value);
+    if (digits.startsWith("1") && digits.length === 11) digits = digits.slice(1);
+    digits = digits.slice(0, 10);
+    if (digits.length > 6) return digits.slice(0, 3) + " " + digits.slice(3, 6) + " " + digits.slice(6);
+    if (digits.length > 3) return digits.slice(0, 3) + " " + digits.slice(3);
+    return digits;
+  };
   const cleanPhone = (value) => {
-    const trimmed = String(value || "").trim();
-    const normalized = trimmed.replace(/[\s().-]/g, "");
+    const normalized = String(value || "").trim().replace(/[\s().-]/g, "");
     if (!/^\+?\d{7,15}$/.test(normalized)) return null;
-    return normalized.startsWith("+") ? normalized : normalized;
+    return normalized;
+  };
+  const phoneForCreation = (value) => {
+    const digits = digitsOnly(value);
+    const national = digits.length === 11 && digits.startsWith("1") ? digits.slice(1) : digits;
+    return /^\d{10}$/.test(national) ? "+1" + national : null;
+  };
+  const formatPhoneDisplay = (phone) => {
+    const digits = digitsOnly(phone);
+    if (digits.length === 11 && digits.startsWith("1")) {
+      return "+1 " + digits.slice(1, 4) + " " + digits.slice(4, 7) + " " + digits.slice(7);
+    }
+    return phone;
   };
     const createQrSvg = (payload, size = 640) => {
     const qr = qrcode(0, "H");
@@ -94,9 +114,9 @@ if (root && !root.dataset.initialized) {
       }
     }
     const center = total / 2;
-    const plateRadius = total * 0.145;
-    const logoRadius = total * 0.115;
-    const logoTextSize = total * 0.17;
+    const plateRadius = total * 0.115;
+    const logoRadius = total * 0.088;
+    const logoTextSize = total * 0.125;
     return { qr, count, margin, total, svg: `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${total} ${total}" role="img" aria-label="OpenAA parking contact QR code"><rect width="${total}" height="${total}" fill="#fff"/><path d="${path}" fill="#111827"/><circle cx="${center}" cy="${center}" r="${plateRadius}" fill="#fff"/><circle cx="${center}" cy="${center}" r="${logoRadius}" fill="#111"/><text x="${center}" y="${center + logoTextSize * 0.34}" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="${logoTextSize}" font-weight="900" letter-spacing="-1" fill="#fff">AA</text></svg>` };
   };
   let currentPayload = "";
@@ -129,10 +149,10 @@ if (root && !root.dataset.initialized) {
       $("parking-call").hidden = true;
       $("parking-sms").hidden = true;
     } else {
-      const display = phone;
+      const display = formatPhoneDisplay(phone);
       $("parking-contact-number").textContent = display;
-      $("parking-call").href = "tel:" + display;
-      $("parking-sms").href = "sms:" + display;
+      $("parking-call").href = "tel:" + phone;
+      $("parking-sms").href = "sms:" + phone;
       $("parking-call").hidden = false;
       $("parking-sms").hidden = false;
     }
@@ -145,6 +165,14 @@ if (root && !root.dataset.initialized) {
     setLanguage(event.target.value);
     if (window.location.hash.startsWith("#phone=")) showContact();
   }));
+  $("parking-phone").addEventListener("input", (event) => {
+    const input = event.target;
+    const start = input.selectionStart;
+    const before = input.value.slice(0, start);
+    input.value = formatUsInput(input.value);
+    const nextPosition = formatUsInput(before).length;
+    input.setSelectionRange(nextPosition, nextPosition);
+  });
   $("parking-generate").addEventListener("click", create);
   $("parking-phone").addEventListener("keydown", (event) => { if (event.key === "Enter") create(); });
   $("parking-download").addEventListener("click", () => {
