@@ -34,6 +34,7 @@
   background: #fff;
   color: #0f172a;
 }
+.parking-card-img { display: block; width: min(100%, 420px); height: auto; margin: 0 auto; }
 .parking-card-greeting { margin: 0; font-size: 19px; line-height: 1.5; font-weight: 800; letter-spacing: .02em; color: #0f172a; }
 .parking-qr-image { width: min(100%, 300px); margin: 14px auto 12px; }
 .parking-qr-image svg { display: block; width: 100%; height: auto; }

@@ -131,8 +131,21 @@ if (root && !root.dataset.initialized) {
       $("parking-qr-image").innerHTML = currentSvg;
       $("parking-preview").hidden = false;
       $("parking-preview").scrollIntoView({ behavior: "smooth", block: "nearest" });
+      $("parking-print-card").hidden = true;
+      updateCardPreview(currentPayload);
     } catch {
       showError("二维码生成失败，请刷新页面后重试。");
+    }
+  };
+  const updateCardPreview = async (payload) => {
+    try {
+      const canvas = await renderCardCanvas();
+      if (payload !== currentPayload) return;
+      const img = $("parking-card-img");
+      img.src = canvas.toDataURL("image/png");
+      img.hidden = false;
+    } catch {
+      if (payload === currentPayload) $("parking-print-card").hidden = false;
     }
   };
   const showContact = () => {
