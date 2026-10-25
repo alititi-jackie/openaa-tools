@@ -176,5 +176,14 @@ if (root && !root.dataset.initialized) {
     }
   });
   setLanguage(language);
+  const syncContactRoute = () => {
+    if (window.location.hash.startsWith("#phone=")) showContact();
+    else {
+      $("parking-contact").hidden = true;
+      $("parking-builder").hidden = false;
+      document.title = "扫码挪车码｜OpenAA";
+    }
+  };
+  window.addEventListener("hashchange", syncContactRoute);
   if (window.location.hash.startsWith("#phone=")) showContact();
 }
