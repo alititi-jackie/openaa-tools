@@ -294,7 +294,7 @@
     "description": "免费在线挪车二维码生成器：输入电话号码即可制作专属挪车码，扫码显示拨打和短信按钮，支持中文、英文、西班牙文；本地生成，无需注册。",
     "icon": "🚘",
     "category": "auto",
-    "path": "/parking-qr/",
+    "path": "/tools/parking-qr/",
     "bodyClass": "",
     "calculator": "",
     "modules": [
