@@ -33,7 +33,7 @@ if (root && !root.dataset.initialized) {
       step3:"Place the card somewhere visible inside your car.", privacyTitle:"Privacy",
       privacyText:"Your number is stored after the # in the QR link and read by the visitor’s browser. It is not uploaded to or stored on our server. Anyone with the QR may be able to read the number, so use a number you are comfortable sharing.",
       contactTitle:"Contact the driver", contactIntro:"If this vehicle is blocking your way, please contact the driver politely.",
-      call:"Call driver", sms:"Send a text", contactPrivacy:"This page reads the number from the QR link and does not save it to a server.",
+      call:"Call / Llamar / 拨打电话", sms:"Text / Mensaje / 发送短信", contactPrivacy:"This page reads the number from the QR link and does not save it to a server.",
       makeYourOwn:"Create your free parking QR", invalid:"Enter a valid phone number with at least 7 digits.",
       copySuccess:"Parking link copied.", copyFallback:"Copy this link:", missing:"No valid phone number was found in this QR link."
     },
