@@ -13,6 +13,7 @@ export type Guide = {
   sections: { heading: string; html: string }[];
   faq: { question: string; answer: string }[];
   reviewed: string;
+  lang?: "en" | "es";
   path?: string;
   scope?: string;
   sources?: { name: string; url: string }[];
@@ -59,7 +60,11 @@ export const toolGuides: Guide[] = toolGuidesData.map((g) => ({
   path: `/tools/${g.toolIds[0]}/${g.slug}/`,
   sources: g.sources ?? [],
   scope:
-    "本文为中文整理的生活指南，数字为估算或区间，具体以官方最新公布为准。",
+    g.lang === "en"
+      ? "This guide is general information compiled by OpenAA. Rules and practices can change; check the official sources linked below for the latest."
+      : g.lang === "es"
+        ? "Esta guía es información general recopilada por OpenAA. Las normas y prácticas pueden cambiar; consulta las fuentes oficiales enlazadas abajo para lo más reciente."
+        : "本文为中文整理的生活指南，数字为估算或区间，具体以官方最新公布为准。",
 }));
 export const guides: Guide[] = [...dmvGuides, ...toolGuides];
 export const guideBySlug = (slug: string) =>

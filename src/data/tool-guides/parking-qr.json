@@ -646,5 +646,265 @@
       }
     ],
     "reviewed": "2026-10-25"
+  },
+  {
+    "slug": "how-to-make-a-parking-qr-code",
+    "title": "How to Make a Parking QR Code for Your Car (Free, No Sign-Up)",
+    "description": "Make a free parking QR code in about a minute: enter your US phone number, download a printable card, and let anyone who scans it call or text you.",
+    "toolIds": [
+      "parking-qr"
+    ],
+    "lang": "en",
+    "intro": "Short answer: a parking QR code takes about a minute to make. Enter your 10-digit US phone number in a free generator, download the printable card (PNG or PDF), and place it inside your windshield. Anyone who scans it sees call and text buttons — no app to install, no account, nothing to buy. This guide walks through every step, the print sizes that scan reliably, and the one-minute test that prevents the most common mistake.",
+    "sections": [
+      {
+        "heading": "What a parking QR code is (and is not)",
+        "html": "<p>A parking QR code is a printed card with a QR code that opens a simple contact page: your phone number with big <strong>Call</strong> and <strong>Text</strong> buttons, plus a polite note in English, Spanish and Chinese. It is made for one job — letting someone reach you when your car is in their way. It is <strong>not</strong> a parking permit, a payment code or a vehicle registration, and it does not connect to any government system. The person scanning needs nothing special: every modern iPhone and Android phone reads QR codes with its built-in camera.</p>"
+      },
+      {
+        "heading": "Step 1: Enter the phone number you actually answer",
+        "html": "<p>Use a <strong>10-digit US number</strong>; the +1 country code is added for you. Pick a number you genuinely answer — the whole point is that a stranger can reach you in the moment, not your voicemail. If you do not want to use your main number, a free second number (for example Google Voice) works just as well and keeps your personal number off the card entirely. Double-check the digits before generating: a single wrong digit sends callers to a stranger.</p>"
+      },
+      {
+        "heading": "Step 2: Generate the code and download the card",
+        "html": "<p>Open the free <a href=\"https://tools.openaa.com/tools/parking-qr/\">parking QR code generator</a>, type your number and press the generate button. The code is created <strong>locally in your browser</strong> — your number is not uploaded to a server. Then download the finished card: a <strong>PNG</strong> if you want the image file, or a <strong>PDF</strong> sized for US Letter / A4 paper, in a one-card or two-cards-per-page version. The card already carries a trilingual parking message, and your number is <strong>not printed on it</strong> unless you tick the option to show it.</p>"
+      },
+      {
+        "heading": "Step 3: Print it at a size that scans through glass",
+        "html": "<p>Print at <strong>100% scale</strong> — do not use “fit to page” shrink options that make the code tiny. A card around credit-card-to-postcard size scans reliably from a step or two away, even through a windshield. Plain paper works, but a plastic sleeve or lamination keeps sun and condensation from fading it. Avoid glossy photo paper if your windshield reflects a lot of light; matte finishes scan more consistently at an angle.</p>"
+      },
+      {
+        "heading": "Step 4: Place it, then test like a stranger",
+        "html": "<p>Put the card <strong>inside</strong> the car, facing out: lower corner of the windshield or flat on the dashboard where it is easy to see without walking around the car. Then do the test most people skip — borrow any other phone, stand where a blocked driver would stand, and scan it. Confirm the contact page opens and the Call and Text buttons show your correct number. Test once more after dark or on a bright day if your windows are tinted; if it scans in the worst light, it scans anywhere.</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "Do I need an app to make or scan a parking QR code?",
+        "answer": "No. The generator runs in your browser, and the person scanning just uses their phone's built-in camera — iPhone and Android both open the contact page directly."
+      },
+      {
+        "question": "How much does it cost to make one?",
+        "answer": "Nothing on this site: no sign-up, no watermark, no per-card fee. That differs from the paid QR stickers and subscription services sold for the same purpose."
+      },
+      {
+        "question": "Will my phone number be printed on the card?",
+        "answer": "Not by default. The number lives inside the QR link and appears on the contact page after someone scans. It is only printed on the card if you tick the “show phone number” option."
+      },
+      {
+        "question": "What if I change my phone number later?",
+        "answer": "Make a fresh card with the new number — it takes a minute — and replace the old print. The old code still points to your old number, so do not leave it in the car."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Wikipedia: QR code (how it works)",
+        "url": "https://en.wikipedia.org/wiki/QR_code"
+      },
+      {
+        "name": "Apple Support: Scan a QR code with your iPhone camera",
+        "url": "https://support.apple.com/en-us/108796"
+      },
+      {
+        "name": "ZXing project: What a QR code can contain",
+        "url": "https://github.com/zxing/zxing/wiki/Barcode-Contents"
+      }
+    ],
+    "reviewed": "2026-10-26"
+  },
+  {
+    "slug": "is-a-parking-qr-code-safe",
+    "title": "Is a Parking QR Code Safe? What Others Can (and Can't) See",
+    "description": "A parking QR code is not anonymous: anyone who scans it can reach the number inside. What is actually exposed, what is not, and how to use one safely.",
+    "toolIds": [
+      "parking-qr"
+    ],
+    "lang": "en",
+    "intro": "Short answer: a parking QR code is as safe as the number you put in it. It does not publish your number on a website or hand it to a company — but it is not anonymous either. Anyone who scans the code, or simply photographs it, can open the contact page and call or text that number. Used with a number you are comfortable sharing, it is still more discreet than a handwritten note on your dashboard, because the number cannot be read at a glance. Here is exactly what is exposed, and the habits that keep the risk low.",
+    "sections": [
+      {
+        "heading": "What someone who scans your code actually gets",
+        "html": "<p>Scanning opens a contact page showing the number you entered, with Call and Text buttons and a polite “please contact me” message. That is all. The code contains <strong>no name, no home address, no license plate and no account</strong> — nothing links it to you except the number itself. If the number is your personal cell, a scanner learns your personal cell. If it is a second number, that is all they ever see.</p>"
+      },
+      {
+        "heading": "What is not collected when you generate the code",
+        "html": "<p>With the <a href=\"https://tools.openaa.com/tools/parking-qr/\">parking QR code generator</a> on this site, the code is created <strong>in your browser</strong>. Your number is placed after the # in the link — the part browsers do not send to servers — and it is <strong>not uploaded, stored or registered</strong> anywhere. There is no account, no database of car owners and no scan counter attached to your code. This is the main structural difference from app-based services, where your number sits in a company's database for as long as you subscribe.</p>"
+      },
+      {
+        "heading": "The real risks, stated honestly",
+        "html": "<p>Three risks are real. First, <strong>anyone can keep the number</strong>: a photo of your card is a copy of the code, and it keeps working after you drive away. Second, <strong>spam and nuisance calls</strong> are possible, the same as with any number you share publicly. Third, a determined person could try <strong>social engineering</strong> — calling with a made-up story about your car. None of these are unique to QR codes; they are the risks of sharing a number at all, and they are managed by choosing which number to share.</p>"
+      },
+      {
+        "heading": "How to use one with much less exposure",
+        "html": "<p><strong>Use a second number.</strong> A free Google Voice number that rings your phone gives you a layer you can mute, filter or replace without touching your real number. <strong>Do not print the number</strong> on the card (the default here) — it stays invisible until someone deliberately scans. <strong>Display the card only when it is useful</strong>: it needs to be visible while you are parked in shared or tight spaces, not necessarily 24/7. And <strong>remove every print when you sell the car</strong> or stop using that number, because old cards keep working.</p>"
+      },
+      {
+        "heading": "QR card vs. paper note vs. paid masking services",
+        "html": "<p>A <strong>paper note</strong> with your number is readable by every passerby, forever, from several feet away — the most exposure of the three. <strong>Paid sticker services</strong> mask your number behind their relay system, which hides it well, but calls route through their platform, they cost money, and your data lives in their database. A <strong>self-made QR card</strong> sits in between: the number is not readable at a glance, only someone who stops and scans gets it, contact is direct with no middleman — and it is free. For most drivers, that trade-off is the sweet spot.</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "Can people read my number just by looking at the card?",
+        "answer": "No — by default the number is not printed on the card, and a QR pattern cannot be read by eye. But any free scanner app decodes it in a second, so treat the number as shared with anyone who bothers to scan."
+      },
+      {
+        "question": "Does the code track who scans it or when?",
+        "answer": "No. The code contains only the contact link with your number. Generating it creates no account, no scan log and no database entry — the page that opens is static."
+      },
+      {
+        "question": "Is a QR card safer than leaving my number on a note?",
+        "answer": "Generally yes. A note exposes the number in plain text to everyone walking past; a QR card requires a deliberate scan and shows nothing at reading distance. Both share the number with whoever acts, so the number you choose still matters most."
+      },
+      {
+        "question": "What if I lose the card or sell my car?",
+        "answer": "Take down any remaining prints. A photographed copy would still work, which is why a replaceable second number is the safest setup: if a code escapes, you can retire that number and print a fresh card."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Wikipedia: QR code (how it works)",
+        "url": "https://en.wikipedia.org/wiki/QR_code"
+      },
+      {
+        "name": "Apple Support: Scan a QR code with your iPhone camera",
+        "url": "https://support.apple.com/en-us/108796"
+      },
+      {
+        "name": "ZXing project: What a QR code can contain",
+        "url": "https://github.com/zxing/zxing/wiki/Barcode-Contents"
+      }
+    ],
+    "reviewed": "2026-10-26"
+  },
+  {
+    "slug": "como-crear-codigo-qr-para-mover-el-coche",
+    "title": "Cómo crear un código QR para mover el coche (gratis y sin registro)",
+    "description": "Crea gratis un código QR para mover el coche en un minuto: escribe tu número de EE. UU., descarga la tarjeta imprimible y deja que te contacten al escanearla.",
+    "toolIds": [
+      "parking-qr"
+    ],
+    "lang": "es",
+    "intro": "Respuesta breve: crear un código QR para mover el coche toma aproximadamente un minuto. Escribe tu número de teléfono de EE. UU. (10 dígitos) en un generador gratuito, descarga la tarjeta para imprimir (PNG o PDF) y colócala dentro del parabrisas. Quien lo escanee verá botones para llamarte o enviarte un mensaje, sin instalar aplicaciones y sin registrarse. Aquí va el paso a paso completo, los tamaños de impresión que se escanean bien y la prueba de un minuto que evita el error más común.",
+    "sections": [
+      {
+        "heading": "Qué es un código QR para mover el coche (y qué no es)",
+        "html": "<p>Es una tarjeta impresa con un código QR que abre una página de contacto sencilla: tu número de teléfono con botones grandes para <strong>llamar</strong> o <strong>enviar un mensaje</strong>, y un aviso amable en español, inglés y chino. Sirve para una sola cosa: que alguien pueda avisarte cuando tu auto está estorbando. <strong>No es</strong> un permiso de estacionamiento, ni un código de pago, ni un registro del vehículo, y no se conecta con ningún sistema oficial. Para escanearlo no hace falta nada especial: cualquier iPhone o Android moderno lo lee con la cámara.</p>"
+      },
+      {
+        "heading": "Paso 1: escribe el número en el que sí contestas",
+        "html": "<p>Usa un <strong>número de EE. UU. de 10 dígitos</strong>; el código de país +1 se agrega solo. Elige un número en el que realmente atiendas: la idea es que un desconocido te localice en el momento, no que le salte el buzón de voz. Si no quieres usar tu número principal, un número secundario gratuito (por ejemplo Google Voice) funciona igual y mantiene tu número personal fuera de la tarjeta. Revisa bien los dígitos antes de generar: un número equivocado manda las llamadas a otra persona.</p>"
+      },
+      {
+        "heading": "Paso 2: genera el código y descarga la tarjeta",
+        "html": "<p>Abre el <a href=\"https://tools.openaa.com/tools/parking-qr/\">generador de código QR para mover el coche</a>, escribe tu número y pulsa el botón de generar. El código se crea <strong>localmente en tu navegador</strong>: tu número no se sube a ningún servidor. Después descarga la tarjeta terminada: en <strong>PNG</strong> si quieres el archivo de imagen, o en <strong>PDF</strong> listo para papel Carta / A4, con una o dos tarjetas por página. La tarjeta ya trae el mensaje en tres idiomas y tu número <strong>no se imprime</strong> en ella, salvo que marques la opción de mostrarlo.</p>"
+      },
+      {
+        "heading": "Paso 3: imprímelo en un tamaño que se lea a través del vidrio",
+        "html": "<p>Imprime al <strong>100% de escala</strong>; no uses opciones de “ajustar a la página” que achican el código. Una tarjeta entre el tamaño de una tarjeta de crédito y una postal se escanea bien a uno o dos pasos de distancia, incluso a través del parabrisas. El papel común sirve, pero una funda plástica o laminado evita que el sol y la humedad lo borren. Si tu parabrisas refleja mucha luz, el papel mate se lee mejor en ángulo que el papel fotográfico brillante.</p>"
+      },
+      {
+        "heading": "Paso 4: colócalo y pruébalo como un desconocido",
+        "html": "<p>Pon la tarjeta <strong>por dentro</strong> del auto, mirando hacia fuera: en la esquina inferior del parabrisas o sobre el tablero, donde se vea sin dar la vuelta al auto. Luego haz la prueba que casi todos se saltan: pide otro teléfono, párate donde se pararía el conductor bloqueado y escanea. Confirma que se abre la página de contacto y que los botones muestran tu número correcto. Repite la prueba con poca luz o con sol fuerte si tus vidrios son polarizados; si se lee en el peor caso, se lee siempre.</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "¿Necesito una aplicación para crear o escanear el código?",
+        "answer": "No. El generador funciona en el navegador, y quien escanea solo usa la cámara de su teléfono: iPhone y Android abren la página de contacto directamente."
+      },
+      {
+        "question": "¿Cuánto cuesta crear un código QR para mover el coche?",
+        "answer": "En este sitio es gratis: sin registro, sin marca de agua y sin pagar por tarjeta. Es distinto de las calcomanías QR y servicios de suscripción que se venden con el mismo fin."
+      },
+      {
+        "question": "¿Mi número de teléfono aparece impreso en la tarjeta?",
+        "answer": "No, por defecto no. El número va dentro del enlace del código y aparece en la página de contacto cuando alguien escanea. Solo se imprime si activas la opción de mostrar el número en la tarjeta."
+      },
+      {
+        "question": "¿Qué pasa si cambio de número de teléfono?",
+        "answer": "Crea una tarjeta nueva con el número nuevo — toma un minuto — y retira la impresión anterior. El código viejo seguirá apuntando a tu número anterior, así que no lo dejes en el auto."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Wikipedia: Código QR (cómo funciona)",
+        "url": "https://es.wikipedia.org/wiki/C%C3%B3digo_QR"
+      },
+      {
+        "name": "Apple Support: Escanear un código QR con la cámara del iPhone",
+        "url": "https://support.apple.com/es-us/108796"
+      },
+      {
+        "name": "Proyecto ZXing: Qué puede contener un código QR",
+        "url": "https://github.com/zxing/zxing/wiki/Barcode-Contents"
+      }
+    ],
+    "reviewed": "2026-10-26"
+  },
+  {
+    "slug": "codigo-qr-en-el-auto-es-seguro",
+    "title": "¿Es seguro poner un código QR en tu auto? Qué ve quien lo escanea",
+    "description": "Un código QR en el auto no es anónimo: quien lo escanea puede contactar el número que lleva. Qué se expone, qué no, y cómo usarlo con más seguridad.",
+    "toolIds": [
+      "parking-qr"
+    ],
+    "lang": "es",
+    "intro": "Respuesta breve: un código QR para el auto es tan seguro como el número que pongas en él. No publica tu número en internet ni se lo entrega a una empresa, pero tampoco es anónimo: cualquiera que escanee el código — o simplemente le tome una foto — puede abrir la página de contacto y llamarte o escribirte. Usado con un número que aceptas compartir, sigue siendo más discreto que dejar una nota con tu número en el tablero, porque no se puede leer de un vistazo. Esto es exactamente lo que se expone y cómo mantener el riesgo bajo.",
+    "sections": [
+      {
+        "heading": "Qué obtiene exactamente quien escanea tu código",
+        "html": "<p>Al escanear se abre una página de contacto con el número que escribiste, botones para llamar o enviar un mensaje y un aviso amable. Eso es todo. El código <strong>no contiene tu nombre, ni tu dirección, ni la placa del auto, ni ninguna cuenta</strong>: lo único que te vincula es el número en sí. Si el número es tu celular personal, quien escanee conocerá tu celular personal; si es un número secundario, eso es todo lo que verá.</p>"
+      },
+      {
+        "heading": "Qué no se guarda cuando generas el código",
+        "html": "<p>Con el <a href=\"https://tools.openaa.com/tools/parking-qr/\">generador de código QR para mover el coche</a> de este sitio, el código se crea <strong>en tu navegador</strong>. Tu número se coloca después del símbolo # en el enlace — la parte que el navegador no envía a los servidores — y <strong>no se sube, no se guarda ni se registra</strong> en ninguna parte. No hay cuenta, ni base de datos de dueños de autos, ni contador de escaneos asociado a tu código. Es la diferencia estructural con los servicios de aplicación, donde tu número vive en la base de datos de una empresa mientras pagues la suscripción.</p>"
+      },
+      {
+        "heading": "Los riesgos reales, dichos con claridad",
+        "html": "<p>Hay tres riesgos reales. Primero, <strong>cualquiera puede quedarse con el número</strong>: una foto de tu tarjeta es una copia del código y sigue funcionando cuando te vas. Segundo, pueden llegar <strong>llamadas o mensajes de spam</strong>, igual que con cualquier número que compartes en público. Tercero, alguien podría intentar <strong>engañarte con un cuento</strong> sobre tu auto para sacarte información. Ninguno es exclusivo de los códigos QR: son los riesgos de compartir un número, y se controlan eligiendo bien qué número compartes.</p>"
+      },
+      {
+        "heading": "Cómo usarlo con mucha menos exposición",
+        "html": "<p><strong>Usa un número secundario.</strong> Un número gratuito de Google Voice que suene en tu teléfono te da una capa que puedes silenciar, filtrar o cambiar sin tocar tu número real. <strong>No imprimas el número</strong> en la tarjeta (es la opción por defecto aquí): permanece invisible hasta que alguien decide escanear. <strong>Muestra la tarjeta solo cuando sirve</strong>: debe verse mientras estás estacionado en espacios compartidos o estrechos, no necesariamente todo el día. Y <strong>retira todas las impresiones al vender el auto</strong> o al dejar de usar ese número, porque las tarjetas viejas siguen funcionando.</p>"
+      },
+      {
+        "heading": "Tarjeta QR, nota de papel o servicios pagos de enmascarado",
+        "html": "<p>Una <strong>nota de papel</strong> con tu número la puede leer cualquier transeúnte, a varios metros y para siempre: es la opción con más exposición. Los <strong>servicios pagos de calcomanías</strong> ocultan tu número detrás de su sistema de retransmisión, pero las llamadas pasan por su plataforma, cuestan dinero y tus datos viven en su base de datos. La <strong>tarjeta QR hecha por ti</strong> queda en el medio: el número no se lee de un vistazo, solo lo obtiene quien se detiene a escanear, el contacto es directo y sin intermediarios — y es gratis. Para la mayoría de los conductores, ese equilibrio es el punto justo.</p>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "¿Se puede leer mi número solo mirando la tarjeta?",
+        "answer": "No: por defecto el número no va impreso y el dibujo de un QR no se puede leer a simple vista. Pero cualquier aplicación de escaneo lo decodifica en un segundo, así que trata el número como compartido con quien se moleste en escanear."
+      },
+      {
+        "question": "¿El código registra quién lo escanea y cuándo?",
+        "answer": "No. El código contiene solo el enlace de contacto con tu número. Al generarlo no se crea ninguna cuenta, ningún registro de escaneos ni ninguna ficha en una base de datos: la página que se abre es estática."
+      },
+      {
+        "question": "¿Es más seguro que dejar mi número en una nota?",
+        "answer": "En general sí. La nota expone el número en texto claro a todo el que pasa; la tarjeta QR exige un escaneo deliberado y no muestra nada a distancia de lectura. En ambos casos compartes el número con quien actúe, por eso el número que eliges es lo que más importa."
+      },
+      {
+        "question": "¿Qué pasa si pierdo la tarjeta o vendo el auto?",
+        "answer": "Retira las impresiones que queden. Una copia fotografiada seguiría funcionando; por eso la configuración más segura es un número secundario reemplazable: si un código se escapa, retiras ese número e imprimes una tarjeta nueva."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Wikipedia: Código QR (cómo funciona)",
+        "url": "https://es.wikipedia.org/wiki/C%C3%B3digo_QR"
+      },
+      {
+        "name": "Apple Support: Escanear un código QR con la cámara del iPhone",
+        "url": "https://support.apple.com/es-us/108796"
+      },
+      {
+        "name": "Proyecto ZXing: Qué puede contener un código QR",
+        "url": "https://github.com/zxing/zxing/wiki/Barcode-Contents"
+      }
+    ],
+    "reviewed": "2026-10-26"
   }
 ]

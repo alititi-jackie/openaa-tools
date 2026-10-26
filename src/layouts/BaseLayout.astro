@@ -15,6 +15,7 @@ interface Props {
   modules?: string[];
   noindex?: boolean;
   manifest?: string;
+  lang?: string;
 }
 const {
   title,
@@ -27,6 +28,7 @@ const {
   modules = [],
   noindex = false,
   manifest = "/site.webmanifest",
+  lang = "zh-CN",
 } = Astro.props;
 const url = new URL(canonical, site.origin).href;
 const schema = {
@@ -44,7 +46,7 @@ const schema = {
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta

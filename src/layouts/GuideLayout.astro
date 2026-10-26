@@ -8,6 +8,24 @@ interface Props {
 const { guide } = Astro.props;
 const tool = tools.find((t) => t.id === guide.toolIds[0])!;
 const path = guide.path!;
+const lang = guide.lang ?? "zh";
+const htmlLang = lang === "zh" ? "zh-CN" : lang;
+const localizedToolNames: Record<string, { en: string; es: string }> = {
+  "parking-qr": { en: "Parking QR Code", es: "Código QR de estacionamiento" },
+};
+const toolName =
+  lang === "zh" ? tool.name : (localizedToolNames[tool.id]?.[lang] ?? tool.name);
+const L = {
+  zh: { crumbLabel: "面包屑", home: "工具库", allTools: "全部工具", guideWord: "攻略", aside: "先用工具检查自己的材料，再看下面的中文解释。", faq: "常见问题", check: "检查我的材料", usePrefix: "→ 使用", checkTail: "。按需要继续使用下面的相关工具。", sourcesTitle: "官方来源与适用范围", related: "相关文章" },
+  en: { crumbLabel: "Breadcrumb", home: "Tools", allTools: "All tools", guideWord: "Guide", aside: "Try the free tool first, then read the explanation below.", faq: "Frequently asked questions", check: "Try it yourself", usePrefix: "→ Use the ", checkTail: ". Then browse the related tools below if you need more.", sourcesTitle: "Official sources and scope", related: "Related guides" },
+  es: { crumbLabel: "Ruta de navegación", home: "Herramientas", allTools: "Todas las herramientas", guideWord: "Guía", aside: "Prueba primero la herramienta gratuita y luego lee la explicación.", faq: "Preguntas frecuentes", check: "Pruébalo tú mismo", usePrefix: "→ Usa ", checkTail: ". Después revisa también las herramientas relacionadas.", sourcesTitle: "Fuentes oficiales y alcance", related: "Guías relacionadas" },
+}[lang];
+const noteText =
+  lang === "zh"
+    ? `官方规则核对：${guide.reviewed} · OpenAA 中文整理`
+    : lang === "en"
+      ? `Checked against official sources: ${guide.reviewed} · Compiled by OpenAA`
+      : `Verificado con fuentes oficiales: ${guide.reviewed} · Recopilado por OpenAA`;
 const same = guides.filter(
   (g) => g.slug !== guide.slug && g.toolIds.includes(tool.id),
 );
@@ -16,8 +34,11 @@ const cross = guides.filter(
     g.toolIds[0] !== tool.id &&
     tools.find((t) => t.id === g.toolIds[0])?.category === tool.category,
 );
+const sameSorted = [...same].sort(
+  (a, b) => Number((b.lang ?? "zh") === lang) - Number((a.lang ?? "zh") === lang),
+);
 const related = [
-  ...same.slice(0, 4),
+  ...sameSorted.slice(0, 4),
   ...cross.filter(
     (g, i) =>
       cross.findIndex((other) => other.toolIds[0] === g.toolIds[0]) === i,
@@ -29,7 +50,7 @@ const articleSchema = {
   "@type": "Article",
   headline: guide.title,
   description: guide.description,
-  inLanguage: "zh-CN",
+  inLanguage: htmlLang,
   mainEntityOfPage: `https://tools.openaa.com${path}`,
   author: { "@type": "Organization", name: "OpenAA" },
   publisher: {
@@ -40,6 +61,18 @@ const articleSchema = {
 };
 import { guideEcoLink } from "../data/eco-links";
 const eco = guideEcoLink(guide.slug);
+const ecoFinal =
+  lang === "zh"
+    ? eco
+    : {
+        url: `https://openaa.com/?utm_source=tools.openaa.com&utm_medium=referral&utm_campaign=${guide.slug}`,
+        label: lang === "en" ? "Visit OpenAA.com" : "Visita OpenAA.com",
+        title: lang === "en" ? "From the OpenAA community" : "De la comunidad OpenAA",
+        description:
+          lang === "en"
+            ? "OpenAA.com is a community platform for life in the US — jobs, housing, a marketplace and local services."
+            : "OpenAA.com es una comunidad en línea sobre la vida en EE. UU.: empleo, vivienda, compraventa y servicios locales.",
+      };
 const breadcrumb = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -47,13 +80,13 @@ const breadcrumb = {
     {
       "@type": "ListItem",
       position: 1,
-      name: "工具库",
+      name: L.home,
       item: "https://tools.openaa.com/",
     },
     {
       "@type": "ListItem",
       position: 2,
-      name: tool.name,
+      name: toolName,
       item: `https://tools.openaa.com${tool.path}`,
     },
     {
@@ -72,6 +105,7 @@ const breadcrumb = {
   canonical={path}
   bodyClass="guide-page"
   ogType="article"
+  lang={htmlLang}
 >
   <Fragment slot="head"
     ><script
@@ -84,16 +118,16 @@ const breadcrumb = {
   >
   <div class="guide-shell">
     <aside class="guide-tool">
-      <a href={tool.path}>→ {tool.name}</a><p>
-        先用工具检查自己的材料，再看下面的中文解释。
+      <a href={tool.path}>→ {toolName}</a><p>
+        {L.aside}
       </p>
-    </aside><nav class="guide-breadcrumb" aria-label="面包屑">
-      <a href="/">全部工具</a> / <a href={tool.path}>{tool.name}</a> / 攻略
+    </aside><nav class="guide-breadcrumb" aria-label={L.crumbLabel}>
+      <a href="/">{L.allTools}</a> / <a href={tool.path}>{toolName}</a> / {L.guideWord}
     </nav><article class="guide-article">
       <h1>{guide.title}</h1><p class="guide-lead">{guide.intro}</p><p
         class="guide-note"
       >
-        官方规则核对：{guide.reviewed} · OpenAA 中文整理
+        {noteText}
       </p><div class="guide-content">
         {
           guide.sections.map((s) => (
@@ -105,7 +139,7 @@ const breadcrumb = {
             </section>
           ))
         }<section>
-          <h2>常见问题</h2>{
+          <h2>{L.faq}</h2>{
             guide.faq.map((f) => (
               <>
                 <>
@@ -116,9 +150,9 @@ const breadcrumb = {
             ))
           }
         </section><section>
-          <h2>检查我的材料</h2><p>
-            <a href={tool.path}>→ 使用{tool.name}</a
-            >。按需要继续使用下面的相关工具。
+          <h2>{L.check}</h2><p>
+            <a href={tool.path}>{L.usePrefix}{toolName}</a
+            >{L.checkTail}
           </p><ul>
             {
               tools
@@ -131,7 +165,7 @@ const breadcrumb = {
             }
           </ul>
         </section><section>
-          <h2>官方来源与适用范围</h2><p>{guide.scope}</p><ul>
+          <h2>{L.sourcesTitle}</h2><p>{guide.scope}</p><ul>
             {
               sources.map((s) => (
                 <li>
@@ -144,14 +178,14 @@ const breadcrumb = {
           </ul>
         </section>
       </div><section class="guide-related">
-        <h2>相关文章</h2>{related.map((g) => <a href={g.path}>{g.title} →</a>)}
+        <h2>{L.related}</h2>{related.map((g) => <a href={g.path}>{g.title} →</a>)}
       </section>
       <section class="guide-eco">
-        <h2>{eco.title}</h2>
+        <h2>{ecoFinal.title}</h2>
         <p>
-          {eco.description}
-          <a href={eco.url} target="_blank" rel="noopener noreferrer"
-            >{eco.label} →</a
+          {ecoFinal.description}
+          <a href={ecoFinal.url} target="_blank" rel="noopener noreferrer"
+            >{ecoFinal.label} →</a
           >
         </p>
       </section>
