@@ -9,11 +9,11 @@ if (root && !root.dataset.initialized) {
       intro:"免费生成专属挪车二维码。打印后放在车内，别人扫码即可联系你。",
       temporaryParking:"临时停靠，请多关照",
       phoneLabel:"你的联系电话", phoneHint:"只需输入美国 10 位电话号码，例如 212 555 0100；国家区号 +1 已默认添加。", showPhone:"在卡片上显示手机号",
-      languageLabel:"挪车页面语言", generate:"生成我的挪车码", parkingTitle:"扫码联系车主",
+      languageLabel:"页面语言", pageTitle:"扫码挪车码", otherQr:"其它二维码 →", docTitle:"免费扫码挪车码生成器｜OpenAA 工具库", generate:"生成我的挪车码", parkingTitle:"扫码联系车主",
       scanPrompt:"挡到您了抱歉，扫码联系我", noPhonePrinted:"二维码卡片不会直接印出你的电话号码。",
       downloadPng:"下载完整卡片 PNG", pdfSingle:"下载 PDF（A4 单张版）", pdfDouble:"下载 PDF（A4 双张版）", copyLink:"复制挪车链接",
-      printHint:"PNG 和 PDF 都会包含完整卡片及 OpenAA 标志；建议下载后先用手机扫码测试。",
-      howTitle:"怎么使用？", step1:"输入你的电话号码并生成二维码。", step2:"下载二维码，或打印 / 保存为 PDF。",
+      printHint:"打印时可在系统打印窗口选择“保存为 PDF”。建议先用手机实际扫码测试，再打印使用。",
+      howTitle:"怎么使用？", step1:"输入你的电话号码并生成二维码。", step2:"下载完整卡片 PNG，或选择 A4 单张 / 双张 PDF。",
       step3:"把卡片放在车内容易看到的位置。", privacyTitle:"隐私说明",
       privacyText:"号码只写入二维码链接的 # 后面，由扫码者的浏览器读取；不会上传或保存到本工具服务器。但任何拿到二维码的人都可能读取号码，请只使用你愿意公开的联系电话。",
       contactTitle:"挪车联系", contactIntro:"如果这辆车挡住了你的通行，请礼貌联系车主。",
@@ -25,11 +25,11 @@ if (root && !root.dataset.initialized) {
       intro:"Create a free parking QR code. Print it and place it inside your car so people can contact you.",
       temporaryParking:"Temporary parking. Thank you for your understanding.",
       phoneLabel:"Your phone number", phoneHint:"Enter only the 10-digit US number, e.g. 212 555 0100. The +1 country code is added automatically.", showPhone:"Print my phone number on the card",
-      languageLabel:"Contact page language", generate:"Create my parking QR", parkingTitle:"Scan to contact driver",
+      languageLabel:"Page language", pageTitle:"Parking QR Code", otherQr:"More QR codes →", docTitle:"Free Parking QR Code Generator | OpenAA Tools", generate:"Create my parking QR", parkingTitle:"Scan to contact driver",
       scanPrompt:"Sorry if I'm in your way — scan to reach me.", noPhonePrinted:"Your phone number is not printed directly on this card.",
       downloadPng:"Download full card PNG", pdfSingle:"Download PDF (A4, 1 card)", pdfDouble:"Download PDF (A4, 2 cards)", copyLink:"Copy parking link",
-      printHint:"PNG and PDF include the complete card and OpenAA logo. Test the QR with your phone after downloading.",
-      howTitle:"How it works", step1:"Enter your phone number and generate the QR code.", step2:"Download the QR or print / save it as a PDF.",
+      printHint:"When printing, you can choose “Save as PDF” in the print dialog. Test the QR code with your phone before printing.",
+      howTitle:"How it works", step1:"Enter your phone number and generate the QR code.", step2:"Download the full card PNG, or choose the A4 single or double PDF.",
       step3:"Place the card somewhere visible inside your car.", privacyTitle:"Privacy",
       privacyText:"Your number is stored after the # in the QR link and read by the visitor’s browser. It is not uploaded to or stored on our server. Anyone with the QR may be able to read the number, so use a number you are comfortable sharing.",
       contactTitle:"Contact the driver", contactIntro:"If this vehicle is blocking your way, please contact the driver politely.",
@@ -41,11 +41,11 @@ if (root && !root.dataset.initialized) {
       intro:"Crea gratis un código QR para estacionamiento. Imprímelo y colócalo dentro del auto para que puedan contactarte.",
       temporaryParking:"Estacionamiento temporal. Gracias por su comprensión.",
       phoneLabel:"Tu número de teléfono", phoneHint:"Introduce solo los 10 dígitos del número de EE. UU., por ejemplo 212 555 0100. El código +1 se añade automáticamente.", showPhone:"Imprimir mi número en la tarjeta",
-      languageLabel:"Idioma de la página", generate:"Crear mi código QR", parkingTitle:"Escanea para contactar al conductor",
+      languageLabel:"Idioma de la página", pageTitle:"Código QR de estacionamiento", otherQr:"Más códigos QR →", docTitle:"Generador de código QR de estacionamiento | OpenAA Tools", generate:"Crear mi código QR", parkingTitle:"Escanea para contactar al conductor",
       scanPrompt:"Si le estorbo, disculpe — escanee para contactarme.", noPhonePrinted:"Tu número no se imprime directamente en esta tarjeta.",
       downloadPng:"Descargar tarjeta completa en PNG", pdfSingle:"Descargar PDF (A4, 1 tarjeta)", pdfDouble:"Descargar PDF (A4, 2 tarjetas)", copyLink:"Copiar enlace",
-      printHint:"PNG y PDF incluyen la tarjeta completa y el logotipo OpenAA. Prueba el QR con tu teléfono después de descargarlo.",
-      howTitle:"Cómo funciona", step1:"Introduce tu número y genera el código QR.", step2:"Descarga el QR o imprímelo / guárdalo como PDF.",
+      printHint:"Al imprimir, puedes elegir «Guardar como PDF» en el cuadro de diálogo. Prueba el código QR con tu teléfono antes de imprimir.",
+      howTitle:"Cómo funciona", step1:"Introduce tu número y genera el código QR.", step2:"Descarga la tarjeta completa en PNG, o elige el PDF A4 de 1 o 2 tarjetas.",
       step3:"Coloca la tarjeta en un lugar visible dentro del auto.", privacyTitle:"Privacidad",
       privacyText:"El número se incluye después del símbolo # en el enlace y lo lee el navegador del visitante. No se sube ni se guarda en nuestro servidor. Cualquier persona con el QR podría leer el número; usa solo uno que aceptes compartir.",
       contactTitle:"Contactar al conductor", contactIntro:"Si este vehículo bloquea tu paso, comunícate con el conductor con respeto.",
@@ -71,6 +71,7 @@ if (root && !root.dataset.initialized) {
       if (dictionary[key]) node.textContent = dictionary[key];
     });
     root.querySelectorAll("[data-parking-language-select]").forEach((select) => { select.value = language; });
+    if (dictionary.docTitle) document.title = dictionary.docTitle;
     try { localStorage.setItem("openaa_parking_qr_lang", language); } catch {}
     document.documentElement.lang = language === "zh" ? "zh-CN" : language;
   };
@@ -331,7 +332,7 @@ if (root && !root.dataset.initialized) {
       $("parking-contact").hidden = true;
       $("parking-builder").hidden = false;
       document.body.classList.remove("parking-contact-mode");
-      document.title = "扫码挪车码｜OpenAA";
+      document.title = copy[language].docTitle;
     }
   };
   window.addEventListener("hashchange", syncContactRoute);
