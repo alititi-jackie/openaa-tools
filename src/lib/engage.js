@@ -147,6 +147,7 @@ function setupToolPage(toolId) {
       .map((sel) => document.querySelector(sel))
       .find(Boolean) || null;
   if (!result) return;
+  const collapsibleHistory = result.hasAttribute("data-collapse-history");
   let lastSaved = "";
   const snapshot = () => {
     const form = document.querySelector(".tool-form");
@@ -182,23 +183,27 @@ function setupToolPage(toolId) {
       return;
     }
     if (!section) {
-      section = document.createElement("section");
+      section = document.createElement(collapsibleHistory ? "details" : "section");
       section.id = "calc-history";
       section.className = "calc-history";
-      section.setAttribute("aria-label", "最近计算");
+      if (collapsibleHistory) {
+        section.append(document.createElement("summary"), document.createElement("ul"));
+      } else {
+        section.setAttribute("aria-label", "最近计算");
+        section.innerHTML = "<h2>最近计算</h2><ul></ul>";
+      }
       const anchor =
         document.getElementById("copy-result-btn") || result;
       anchor.insertAdjacentElement("afterend", section);
     }
-    section.innerHTML =
-      "<h2>最近计算</h2><ul>" +
-      list
+    const summary = section.querySelector("summary");
+    if (summary) summary.textContent = `最近计算（${list.length} 条）`;
+    section.querySelector("ul").innerHTML = list
         .map(
           (h) =>
             `<li><time>${new Date(h.t).toLocaleString("zh-CN", { hour12: false })}</time>${escapeHtml(h.inputs)} → <strong>${escapeHtml(h.result)}</strong></li>`,
         )
-        .join("") +
-      "</ul>";
+        .join("");
   };
   const escapeHtml = (s) =>
     String(s || "")

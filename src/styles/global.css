@@ -504,6 +504,14 @@ img {
   font-size: 15px;
   margin: 0 0 8px;
 }
+.calc-history summary {
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+}
+.calc-history[open] summary {
+  margin-bottom: 8px;
+}
 .calc-history ul {
   margin: 0;
   padding: 0;
