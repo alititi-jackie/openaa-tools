@@ -33,6 +33,7 @@ def target(url,source):
  if p.is_dir():p=p/'index.html'
  return p
 for f in ROOT.rglob('*.html'):
+ if f.name.startswith('baidu_verify_'):continue
  text=f.read_text();p=Parser();p.feed(text)
  if p.h1!=1:errors.append(f'{f.relative_to(ROOT)}: h1 count {p.h1}')
  if not p.title or not p.description:errors.append(f'{f}: missing metadata')
