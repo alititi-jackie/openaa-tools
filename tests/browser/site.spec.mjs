@@ -223,6 +223,7 @@ test("USD/RMB fields calculate in both directions and save the entered RMB", asy
   await expect(page.locator("#fxRate")).toHaveValue("7.253");
   await expect(page.locator("#fxUsd")).toHaveValue("100.00");
   await expect(page.locator("#fxRoundingNote")).toContainText("¥0.03");
+  await page.locator("#fxNote").fill("<b>核对</b>");
   await page.locator("#fxForm button[type=submit]").click();
 
   const records = await page.evaluate(() =>
@@ -235,6 +236,8 @@ test("USD/RMB fields calculate in both directions and save the entered RMB", asy
   await page.locator("[data-goto=all]").first().click();
   await expect(page.locator("#allList")).toContainText("725.33");
   await expect(page.locator("#allList")).toContainText("7.253");
+  await expect(page.locator("#allList")).toContainText("<b>核对</b>");
+  await expect(page.locator("#allList b")).toHaveCount(0);
   await page.locator("[data-edit]").first().click();
   await expect(page.locator("#fxCny")).toHaveValue("725.33");
   await page.locator("[data-calc-target=usd]").click();
