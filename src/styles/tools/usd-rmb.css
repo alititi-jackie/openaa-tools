@@ -115,6 +115,20 @@
   font-size: 17px;
   outline: none;
 }
+.fx-type-toggle[hidden] {
+  display: none !important;
+}
+/* Keep native iOS Safari date controls inside the form card. */
+#fxApp .fx-field {
+  min-width: 0;
+}
+#fxApp #fxDate {
+  display: block;
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+}
 .fx-input:focus {
   border-color: #60a5fa;
   box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.18);
