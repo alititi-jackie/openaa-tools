@@ -221,7 +221,7 @@ test("USD/RMB fields calculate in both directions and save the entered RMB", asy
   // Editing a calculated total reverses the calculation into the rate.
   await page.locator("#fxCny").fill("725.33");
   await expect(page.locator("#fxRate")).toHaveValue("7.253");
-  await expect(page.locator("#fxUsd")).toHaveValue("100");
+  await expect(page.locator("#fxUsd")).toHaveValue("100.00");
   await expect(page.locator("#fxRoundingNote")).toContainText("¥0.03");
   await page.locator("#fxForm button[type=submit]").click();
 
