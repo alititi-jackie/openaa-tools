@@ -56,18 +56,26 @@ export function normalizeBackup(data, kind) {
     }
     const usd = number(r.usd),
       rate = number(r.rate);
+    const hasCny = Object.prototype.hasOwnProperty.call(r, "cny");
+    const cny = hasCny ? number(r.cny) : null;
+    const subtract = r.type === "subtract" || usd < 0;
     if (
       !Number.isFinite(usd) ||
       !Number.isFinite(rate) ||
       rate < 0 ||
-      !Number.isFinite(usd * rate)
+      !Number.isFinite(usd * rate) ||
+      (hasCny &&
+        (!Number.isFinite(cny) ||
+          (subtract && cny > 0) ||
+          (!subtract && cny < 0)))
     )
       return fail();
     return {
       ...base,
       usd,
       rate,
-      type: r.type === "subtract" || usd < 0 ? "subtract" : "add",
+      ...(hasCny ? { cny } : {}),
+      type: subtract ? "subtract" : "add",
     };
   });
 }
@@ -86,7 +94,7 @@ export function serializeBackup(rows, kind) {
       kind === "expense"
         ? "OpenAA Expense Records"
         : "OpenAA USD RMB Rate Records",
-    version: 1,
+    version: kind === "fx" ? 2 : 1,
     exportedAt: new Date().toISOString(),
     records,
   });

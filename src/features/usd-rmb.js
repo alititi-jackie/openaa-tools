@@ -4,6 +4,12 @@ import {
 } from "../lib/dialog.js";
 import { localDate, readRecords, writeRecords } from "../lib/records.js";
 import {
+  FX_FIELDS,
+  calculateFxTarget,
+  fxRoundingDifference,
+  roundFx,
+} from "../lib/fx-calculator.js";
+import {
   readBackupFile,
   saveImportedRecords,
   serializeBackup,
@@ -22,6 +28,11 @@ function showToast(text) {
 (function initFxApp() {
   const KEY = "openaa_usd_rmb_records_v1";
   const $ = (id) => document.getElementById(id);
+  const fxInputs = { usd: "fxUsd", rate: "fxRate", cny: "fxCny" };
+  const fxLabels = { usd: "美金金额", rate: "汇率", cny: "人民币金额" };
+  let calculationTarget = "cny";
+  let lastManualField = "rate";
+  const touchedFields = new Set();
   const views = () => Array.from(document.querySelectorAll("#fxApp .fx-view"));
   const money = (n, prefix = "") =>
     prefix +
@@ -36,8 +47,8 @@ function showToast(text) {
     });
   const fixedRate = (n) =>
     (Number(n) || 0).toLocaleString("zh-CN", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      minimumFractionDigits: 3,
+      maximumFractionDigits: 3,
     });
   const num = (v) => Number.parseFloat(v) || 0;
   const today = () => localDate();
@@ -48,6 +59,10 @@ function showToast(text) {
     writeRecords(KEY, rows);
   }
   function calcCny(row) {
+    if (row.cny !== undefined && row.cny !== null && row.cny !== "") {
+      const saved = Number(row.cny);
+      if (Number.isFinite(saved)) return roundFx(saved, 2);
+    }
     return +(num(row.usd) * num(row.rate)).toFixed(2);
   }
   function sorted() {
@@ -293,7 +308,7 @@ function showToast(text) {
       .forEach((btn) =>
         btn.classList.toggle("active", btn.dataset.typeValue === value),
       );
-    updatePreview();
+    updateCalculationState();
   }
   function resetForm() {
     $("editId").value = "";
@@ -301,19 +316,90 @@ function showToast(text) {
     $("fxDate").value = today();
     $("fxUsd").value = "";
     $("fxRate").value = "";
+    $("fxCny").value = "";
     $("fxNote").value = "";
+    calculationTarget = "cny";
+    lastManualField = "rate";
+    touchedFields.clear();
     setRecordType("add");
-    updatePreview();
   }
-  function updatePreview() {
-    const sign = $("fxType")?.value === "subtract" ? -1 : 1;
-    const cny = num($("fxUsd").value) * num($("fxRate").value) * sign;
-    const box = $("fxCnyPreview");
-    if (box) {
-      box.textContent = signedMoneyText(cny, "¥");
-      box.classList.toggle("fx-negative", cny < 0);
+  function currentFxValues() {
+    return Object.fromEntries(
+      FX_FIELDS.map((field) => [field, $(fxInputs[field]).value]),
+    );
+  }
+  function updateCalculationState() {
+    const values = currentFxValues();
+    document.querySelectorAll("[data-calc-target]").forEach((button) => {
+      const active = button.dataset.calcTarget === calculationTarget;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    document.querySelectorAll("[data-calc-field]").forEach((field) => {
+      field.classList.toggle(
+        "is-calculated",
+        field.dataset.calcField === calculationTarget,
+      );
+    });
+    const hint = $("fxCalcHint");
+    if (hint)
+      hint.textContent =
+        FX_FIELDS.filter((field) => values[field] !== "").length < 2
+          ? "任意输入两项，自动计算第三项。"
+          : "当前自动计算：" + fxLabels[calculationTarget] + "（也可直接修改）";
+    const roundingNote = $("fxRoundingNote");
+    if (roundingNote) {
+      const difference =
+        calculationTarget === "cny" ? 0 : fxRoundingDifference(values);
+      roundingNote.hidden = difference < 0.01;
+      roundingNote.textContent = roundingNote.hidden
+        ? ""
+        : `汇率按三位小数显示，换算差额 ¥${difference.toFixed(2)}；你输入的人民币金额会原样保存。`;
     }
     updateInputWarnings();
+  }
+  function calculateSelectedField() {
+    const result = calculateFxTarget(calculationTarget, currentFxValues());
+    if (result !== null) $(fxInputs[calculationTarget]).value = result;
+    updateCalculationState();
+  }
+  function onFxInput(field) {
+    touchedFields.add(field);
+    const values = currentFxValues();
+    const filled = FX_FIELDS.filter((id) => values[id] !== "");
+    if (values[field] === "") {
+      // Keep a field blank while it is being cleared or replaced.
+      calculationTarget = field;
+    } else if (filled.length === 2) {
+      calculationTarget = FX_FIELDS.find((id) => values[id] === "");
+      calculateSelectedField();
+    } else if (filled.length === 3) {
+      if (field === calculationTarget) {
+        // A user changed the computed value: keep the earlier manual input,
+        // and recalculate the other previously entered value instead.
+        calculationTarget =
+          lastManualField !== field
+            ? lastManualField
+            : { usd: "cny", rate: "cny", cny: "rate" }[field];
+      }
+      calculateSelectedField();
+    }
+    lastManualField = field;
+    updateCalculationState();
+  }
+  function normalizeTouchedInput(field) {
+    if (!touchedFields.has(field)) return;
+    const input = $(fxInputs[field]);
+    if (!input.value || !Number.isFinite(Number(input.value))) return;
+    const decimals = field === "rate" ? 3 : 2;
+    const rounded = roundFx(Number(input.value), decimals);
+    if (!Number.isFinite(rounded) || rounded < 0) return;
+    const formatted = rounded.toFixed(decimals);
+    if (input.value !== formatted) {
+      input.value = formatted;
+      if (calculationTarget !== field) calculateSelectedField();
+    }
+    updateCalculationState();
   }
   function getInputWarnings() {
     const warnings = [];
@@ -376,9 +462,12 @@ function showToast(text) {
     $("fxDate").value = r.date;
     $("fxUsd").value = Math.abs(num(r.usd));
     $("fxRate").value = r.rate;
+    $("fxCny").value = Math.abs(calcCny(r)).toFixed(2);
     $("fxNote").value = r.note || "";
+    calculationTarget = "cny";
+    lastManualField = "rate";
+    touchedFields.clear();
     setRecordType(recordType(r));
-    updatePreview();
     goto("input");
   }
   function deleteRecord(id) {
@@ -1032,8 +1121,17 @@ function showToast(text) {
     const del = e.target.closest("[data-delete]");
     if (del) deleteRecord(del.dataset.delete);
   });
-  ["fxUsd", "fxRate"].forEach((id) =>
-    $(id)?.addEventListener("input", updatePreview),
+  FX_FIELDS.forEach((field) => {
+    $(fxInputs[field])?.addEventListener("input", () => onFxInput(field));
+    $(fxInputs[field])?.addEventListener("blur", () =>
+      normalizeTouchedInput(field),
+    );
+  });
+  document.querySelectorAll("[data-calc-target]").forEach((button) =>
+    button.addEventListener("click", () => {
+      calculationTarget = button.dataset.calcTarget;
+      calculateSelectedField();
+    }),
   );
   document
     .querySelectorAll(".fx-type-btn")
@@ -1042,6 +1140,20 @@ function showToast(text) {
     );
   $("fxForm")?.addEventListener("submit", (e) => {
     e.preventDefault();
+    FX_FIELDS.forEach(normalizeTouchedInput);
+    const usdValue = Number($("fxUsd").value);
+    const rateValue = Number($("fxRate").value);
+    const cnyValue = Number($("fxCny").value);
+    if (
+      ![usdValue, rateValue, cnyValue].every(Number.isFinite) ||
+      usdValue < 0 ||
+      rateValue <= 0 ||
+      cnyValue < 0 ||
+      (usdValue === 0 && cnyValue !== 0)
+    ) {
+      alert("请输入有效金额和大于零的汇率，不能用零美金反算非零人民币。");
+      return;
+    }
     updateInputWarnings();
     if (!confirmInputWarnings()) return;
     const rows = load();
@@ -1049,13 +1161,15 @@ function showToast(text) {
       $("editId").value ||
       "r_" + Date.now() + "_" + Math.random().toString(16).slice(2);
     const type = $("fxType")?.value === "subtract" ? "subtract" : "add";
-    const signedUsd = num($("fxUsd").value) * (type === "subtract" ? -1 : 1);
+    const sign = type === "subtract" ? -1 : 1;
+    const signedUsd = usdValue * sign;
     const row = {
       id,
       type,
       date: $("fxDate").value,
       usd: signedUsd,
-      rate: num($("fxRate").value),
+      rate: rateValue,
+      cny: roundFx(cnyValue * sign, 2),
       note: $("fxNote").value.trim(),
       createdAt: new Date().toISOString(),
     };
