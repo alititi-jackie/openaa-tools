@@ -76,7 +76,10 @@ test("DMV controls", async ({ page }) => {
   ]) {
     const radio = page.locator(`input[name="docType"][value="${value}"]`);
     // Click the visible label, as users do with these custom radio cards.
-    await page.locator(".doc-type-options label").filter({ has: radio }).click();
+    await page
+      .locator(".doc-type-options label")
+      .filter({ has: radio })
+      .click();
     await expect(radio).toBeChecked();
     await page.locator("[data-action=checkDmvDocs]").click();
     await expect(page.locator("#dmvResult")).toContainText(`${title} 材料清单`);
@@ -205,6 +208,46 @@ for (const app of ["expense-record", "usd-rmb"])
       )
       .toBe(2);
   });
+
+test("USD/RMB fields calculate in both directions and save the entered RMB", async ({
+  page,
+}) => {
+  await page.goto("/usa/usd-rmb/");
+  await page.locator("[data-goto=input]").first().click();
+  await page.locator("#fxUsd").fill("100");
+  await page.locator("#fxRate").fill("7.235");
+  await expect(page.locator("#fxCny")).toHaveValue("723.50");
+
+  // Editing a calculated total reverses the calculation into the rate.
+  await page.locator("#fxCny").fill("725.33");
+  await expect(page.locator("#fxRate")).toHaveValue("7.253");
+  await expect(page.locator("#fxUsd")).toHaveValue("100.00");
+  await expect(page.locator("#fxRoundingNote")).toContainText("¥0.03");
+  await page.locator("#fxNote").fill("<b>核对</b>");
+  await page.locator("#fxForm button[type=submit]").click();
+
+  const records = await page.evaluate(() =>
+    JSON.parse(localStorage.getItem("openaa_usd_rmb_records_v1")),
+  );
+  expect(records[0].cny).toBe(725.33);
+  expect(records[0].rate).toBe(7.253);
+
+  await page.locator('[data-view="saved"] [data-goto="home"]').click();
+  await page.locator("[data-goto=all]").first().click();
+  await expect(page.locator("#allList")).toContainText("725.33");
+  await expect(page.locator("#allList")).toContainText("7.253");
+  await expect(page.locator("#allList")).toContainText("<b>核对</b>");
+  await expect(page.locator("#allList b")).toHaveCount(0);
+  await page.locator("[data-edit]").first().click();
+  await expect(page.locator("#fxCny")).toHaveValue("725.33");
+  await page.locator("[data-calc-target=usd]").click();
+  await page.locator("#fxRate").fill("7.200");
+  await page.locator("#fxCny").fill("720.00");
+  await expect(page.locator("#fxUsd")).toHaveValue("100.00");
+  await page.locator("[data-calc-target=cny]").click();
+  await page.locator("#fxRate").fill("7.100");
+  await expect(page.locator("#fxCny")).toHaveValue("710.00");
+});
 test("offline records keep other tool caches", async ({ page, context }) => {
   await page.goto("/usa/expense-record/");
   await page.waitForLoadState("networkidle");

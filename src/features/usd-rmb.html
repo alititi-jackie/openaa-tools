@@ -6,13 +6,13 @@
           <div class="fx-hero">
             <h1>美元换人民币记录本</h1>
             <p>
-              单机本地保存。输入日期、美金和汇率，自动计算人民币；可查看全部、月度年度汇总，并导出
+              单机本地保存。美金、汇率和人民币任意输入两项即可计算第三项；可查看全部、月度年度汇总，并导出
               WPS 可打开的数据。
             </p>
           </div>
           <div class="fx-home-grid">
             <button class="fx-big-btn" data-goto="input" type="button">
-              <strong>输入</strong><span>日期 / 美金 / 汇率</span>
+              <strong>输入</strong><span>日期 / 美金 / 汇率 / 人民币</span>
             </button>
             <button class="fx-big-btn" data-goto="all" type="button">
               <strong>查看</strong><span>全部记录、编辑删除</span>
@@ -99,7 +99,7 @@
                 <label for="fxDate">日期</label
                 ><input class="fx-input" id="fxDate" required="" type="date" />
               </div>
-              <div class="fx-field">
+              <div class="fx-field" data-calc-field="usd">
                 <label for="fxUsd">美金金额</label
                 ><input
                   class="fx-input"
@@ -115,21 +115,72 @@
                   ⚠️ 美金金额看起来可能有误，请确认是否输入正确。
                 </div>
               </div>
-              <div class="fx-field">
+              <div class="fx-field" data-calc-field="rate">
                 <label for="fxRate">汇率</label
                 ><input
                   class="fx-input"
                   id="fxRate"
                   inputmode="decimal"
                   min="0"
-                  placeholder="例如 7.25"
+                  placeholder="例如 7.235"
                   required=""
-                  step="0.0001"
+                  step="any"
                   type="number"
                 />
                 <div class="fx-input-warning" id="fxRateWarning">
                   ⚠️ 汇率看起来可能有误，请确认是否输入正确。
                 </div>
+              </div>
+              <div class="fx-field fx-cny-field" data-calc-field="cny">
+                <label for="fxCny">人民币金额</label>
+                <input
+                  class="fx-input"
+                  id="fxCny"
+                  inputmode="decimal"
+                  min="0"
+                  placeholder="例如 723.50"
+                  required=""
+                  step="0.01"
+                  type="number"
+                />
+              </div>
+              <div class="fx-calculation-panel">
+                <p id="fxCalcHint" aria-live="polite">
+                  任意输入两项，自动计算第三项。
+                </p>
+                <div
+                  class="fx-calc-options"
+                  aria-label="指定计算哪一项"
+                  role="group"
+                >
+                  <button
+                    class="fx-calc-target"
+                    data-calc-target="usd"
+                    type="button"
+                  >
+                    计算美金
+                  </button>
+                  <button
+                    class="fx-calc-target"
+                    data-calc-target="rate"
+                    type="button"
+                  >
+                    计算汇率
+                  </button>
+                  <button
+                    class="fx-calc-target active"
+                    data-calc-target="cny"
+                    type="button"
+                  >
+                    计算人民币
+                  </button>
+                </div>
+                <p
+                  class="fx-rounding-note"
+                  id="fxRoundingNote"
+                  role="status"
+                  hidden
+                ></p>
               </div>
               <div class="fx-field">
                 <label for="fxNote">备注（可不填）</label
@@ -140,10 +191,6 @@
                   placeholder="例如 转账、工资、兑换"
                   type="text"
                 />
-              </div>
-              <div class="fx-result-box">
-                <span>人民币金额自动计算</span
-                ><strong id="fxCnyPreview">¥0.00</strong>
               </div>
               <div class="fx-actions">
                 <button class="fx-small-btn" data-goto="home" type="button">
@@ -374,7 +421,7 @@
           <h3>美元换人民币怎样计算？</h3>
           <p>
             人民币金额 = 美金金额 ×
-            汇率。你只需要输入日期、美金金额和当时使用的汇率，工具会自动计算人民币金额，并保存到当前设备浏览器中。
+            汇率。美金、汇率、人民币任意输入两项，就会自动算出第三项；也可以修改计算结果，或点击按钮指定要计算的项目。汇率显示三位小数，记录保存在当前设备浏览器中。
           </p>
         </div>
         <div class="faq-item">
@@ -406,7 +453,7 @@
           这个美元人民币汇率记录工具适合在美国生活、工作、做生意或经常需要记录美元收入的华人使用。日常生活中，很多人会遇到工资、转账、换汇、汇款、现金兑换、家庭账目或生意收入需要换算成人民币的情况。使用普通计算器虽然可以临时计算，但时间久了很难查找每一笔记录，也不方便按月份或年份统计。
         </p>
         <p>
-          通过这个美金换人民币计算器，你可以手动输入日期、美金金额和汇率，系统会自动计算人民币金额。所有记录会保存在本地浏览器中，手机打开也能使用，适合随手记录美元收入、换汇记录和人民币换算结果。工具提供全部记录、按月查看和年度记录，方便查看每个月美金总金额、平均汇率、人民币总金额和记录行数。
+          通过这个美金换人民币计算器，你可以手动输入日期、美金金额、汇率或人民币金额，任意输入其中两项即可自动计算另一项。所有记录会保存在本地浏览器中，手机打开也能使用，适合随手记录美元收入、换汇记录和人民币换算结果。工具提供全部记录、按月查看和年度记录，方便查看每个月美金总金额、平均汇率、人民币总金额和记录行数。
         </p>
         <p>
           导出 Excel
