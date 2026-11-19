@@ -324,6 +324,7 @@ function showToast(text) {
   }
   function resetForm() {
     $("editId").value = "";
+    document.querySelector("#fxApp .fx-type-toggle").hidden = false;
     $("inputTitle").textContent = "输入记录";
     $("fxDate").value = today();
     $("fxUsd").value = "";
@@ -470,6 +471,7 @@ function showToast(text) {
     const r = load().find((x) => x.id === id);
     if (!r) return;
     $("editId").value = r.id;
+    document.querySelector("#fxApp .fx-type-toggle").hidden = true;
     $("inputTitle").textContent = "编辑记录";
     $("fxDate").value = r.date;
     $("fxUsd").value = Math.abs(num(r.usd));
