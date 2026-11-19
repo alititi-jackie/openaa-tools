@@ -51,6 +51,18 @@ function showToast(text) {
       maximumFractionDigits: 3,
     });
   const num = (v) => Number.parseFloat(v) || 0;
+  const escapeHtml = (value) =>
+    String(value ?? "").replace(
+      /[&<>"']/g,
+      (char) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[char],
+    );
   const today = () => localDate();
   function load() {
     return readRecords(KEY);
