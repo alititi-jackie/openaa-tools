@@ -3,6 +3,22 @@ import { test, expect } from "./fixtures.mjs";
 const expenseKey = "openaa_expense_records_v1";
 const fxKey = "openaa_usd_rmb_records_v1";
 
+// A page.click() remains pending while a native alert/prompt is open. Handle
+// the dialog in parallel with the click so the browser test cannot deadlock.
+async function clickAndHandleDialog(page, selector, action = "accept") {
+  const dialogHandled = page.waitForEvent("dialog").then(async (dialog) => {
+    const result = { type: dialog.type(), message: dialog.message() };
+    if (action === "dismiss") await dialog.dismiss();
+    else await dialog.accept();
+    return result;
+  });
+  const [, result] = await Promise.all([
+    page.locator(selector).click(),
+    dialogHandled,
+  ]);
+  return result;
+}
+
 test("expense copies the chosen month with categories and a clear confirmation", async ({
   page,
 }) => {
@@ -57,12 +73,9 @@ test("expense copies the chosen month with categories and a clear confirmation",
   await expect(page.locator("#expenseCopySummaryBtn")).toHaveText(
     /2026年10月汇总/,
   );
-  const alert = page.waitForEvent("dialog");
-  await page.locator("#expenseCopySummaryBtn").click();
-  const dialog = await alert;
-  expect(dialog.type()).toBe("alert");
-  expect(dialog.message()).toContain("已复制");
-  await dialog.accept();
+  const dialog = await clickAndHandleDialog(page, "#expenseCopySummaryBtn");
+  expect(dialog.type).toBe("alert");
+  expect(dialog.message).toContain("已复制");
   const copied = await page.evaluate(() => window.copiedSummary);
   expect(copied).toContain("2026年10月生活开支汇总");
   expect(copied).toContain("开支总金额：$25.00");
@@ -114,11 +127,8 @@ test("fx copy preserves the total summary and reports success", async ({
   await page.waitForLoadState("networkidle");
   await page.locator("[data-goto=export]").first().click();
   await expect(page.locator("#copySummaryBtn")).toHaveText(/全部汇总/);
-  const alert = page.waitForEvent("dialog");
-  await page.locator("#copySummaryBtn").click();
-  const dialog = await alert;
-  expect(dialog.type()).toBe("alert");
-  await dialog.accept();
+  const dialog = await clickAndHandleDialog(page, "#copySummaryBtn");
+  expect(dialog.type).toBe("alert");
   expect(await page.evaluate(() => window.copiedSummary)).toContain(
     "美金净金额：$50.00",
   );
@@ -141,12 +151,13 @@ test("clipboard denial never claims success and offers manual text", async ({
   await page.goto("/usa/expense-record/");
   await page.waitForLoadState("networkidle");
   await page.locator("[data-expense-goto=export]").first().click();
-  const manual = page.waitForEvent("dialog");
-  await page.locator("#expenseCopySummaryBtn").click();
-  const dialog = await manual;
-  expect(dialog.type()).toBe("prompt");
-  expect(dialog.message()).toContain("手动复制");
-  await dialog.dismiss();
+  const dialog = await clickAndHandleDialog(
+    page,
+    "#expenseCopySummaryBtn",
+    "dismiss",
+  );
+  expect(dialog.type).toBe("prompt");
+  expect(dialog.message).toContain("手动复制");
   await expect(page.locator("#site-status")).toHaveText(
     "自动复制失败，请手动复制",
   );
