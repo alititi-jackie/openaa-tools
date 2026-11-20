@@ -4,6 +4,12 @@ import {
 } from "../lib/dialog.js";
 import { localDate, readRecords, writeRecords } from "../lib/records.js";
 import {
+  showFeedback as showToast,
+  copyText,
+  showCopyResult,
+} from "../lib/feedback.js";
+import { shareFileOrDownload } from "../lib/share-file.js";
+import {
   FX_FIELDS,
   calculateFxTarget,
   fxRoundingDifference,
@@ -15,15 +21,6 @@ import {
   serializeBackup,
   clearRecords,
 } from "../lib/backup.js";
-function showToast(text) {
-  const old = document.querySelector(".toast");
-  if (old) old.remove();
-  const t = document.createElement("div");
-  t.className = "toast";
-  t.textContent = text;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 2400);
-}
 /* 美元人民币汇率记录工具：本地保存 + 导出分享 */
 (function initFxApp() {
   const KEY = "openaa_usd_rmb_records_v1";
@@ -315,11 +312,11 @@ function showToast(text) {
     const value = type === "subtract" ? "subtract" : "add";
     const input = $("fxType");
     if (input) input.value = value;
-    document
-      .querySelectorAll(".fx-type-btn")
-      .forEach((btn) =>
-        btn.classList.toggle("active", btn.dataset.typeValue === value),
-      );
+    document.querySelectorAll(".fx-type-btn").forEach((btn) => {
+      const active = btn.dataset.typeValue === value;
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-pressed", String(active));
+    });
     updateCalculationState();
   }
   function resetForm() {
@@ -1007,37 +1004,7 @@ function showToast(text) {
     }, 500);
   }
   async function shareBlob(blob, name, title) {
-    const ua = navigator.userAgent.toLowerCase();
-    const file = new File([blob], name, { type: blob.type });
-    if (/micromessenger/.test(ua)) {
-      downloadBlob(blob, name);
-      showToast("微信里已改为下载文件");
-      alert(
-        "微信内置浏览器通常不能直接分享文件。文件已下载；如需转发，请在微信聊天里选择文件发送，或用 Safari/Chrome 打开本页再分享。",
-      );
-      return;
-    }
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({ title, text: title, files: [file] });
-    } else {
-      downloadBlob(blob, name);
-      showToast("当前浏览器不支持直接分享文件，已改为下载");
-    }
-  }
-  async function copyText(text) {
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch (e) {
-      const area = document.createElement("textarea");
-      area.value = text;
-      area.style.position = "fixed";
-      area.style.left = "-9999px";
-      document.body.appendChild(area);
-      area.focus();
-      area.select();
-      document.execCommand("copy");
-      area.remove();
-    }
+    await shareFileOrDownload(blob, name, title, downloadBlob);
   }
   function filename(ext) {
     return "美元换人民币记录本_" + today().replaceAll("-", "") + ext;
@@ -1222,6 +1189,7 @@ function showToast(text) {
   $("downloadXlsBtn")?.addEventListener("click", () => {
     downloadBlob(makeXlsxBlob(), filename(".xlsx"));
     closeActionSheets();
+    showToast("已尝试下载 Excel，请查看浏览器下载记录");
   });
   $("shareXlsBtn")?.addEventListener("click", async () => {
     await shareBlob(makeXlsxBlob(), filename(".xlsx"), "美元换人民币记录本");
@@ -1252,14 +1220,14 @@ function showToast(text) {
       signedMoneyText(s.monthAvgUsd, "$") +
       "\n每月平均人民币：" +
       signedMoneyText(s.monthAvgCny, "¥");
-    await copyText(text);
-    showToast("已复制，可到微信粘贴发送");
-    alert("汇总内容已复制。请打开微信聊天窗口，长按输入框粘贴发送。");
+    const copied = await copyText(text);
+    showCopyResult(copied, text, "全部汇总内容");
   }
   $("copySummaryBtn")?.addEventListener("click", copySummary);
   $("downloadBackupBtn")?.addEventListener("click", () => {
     downloadBlob(makeBackupBlob(), backupFilename());
     closeActionSheets();
+    showToast("已尝试下载数据备份，请查看浏览器下载记录");
   });
   $("shareBackupBtn")?.addEventListener("click", async () => {
     await shareBackupFile();

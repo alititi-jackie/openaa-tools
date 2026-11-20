@@ -4,20 +4,17 @@ import {
 } from "../lib/dialog.js";
 import { localDate, readRecords, writeRecords } from "../lib/records.js";
 import {
+  showFeedback as showToast,
+  copyText,
+  showCopyResult,
+} from "../lib/feedback.js";
+import { shareFileOrDownload } from "../lib/share-file.js";
+import {
   readBackupFile,
   saveImportedRecords,
   serializeBackup,
   clearRecords,
 } from "../lib/backup.js";
-function showToast(text) {
-  const old = document.querySelector(".toast");
-  if (old) old.remove();
-  const t = document.createElement("div");
-  t.className = "toast";
-  t.textContent = text;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 2400);
-}
 /* OpenAA 工具库 生活开支记录工具：本地保存 + 汇总 + 导出备份 */
 (function initExpenseApp() {
   const KEY = "openaa_expense_records_v1";
@@ -156,6 +153,12 @@ function showToast(text) {
   function render() {
     const rows = sorted();
     const month = $("expenseMonthPicker")?.value || monthNow();
+    const copyButton = $("expenseCopySummaryBtn");
+    if (copyButton)
+      copyButton.textContent =
+        month === monthNow()
+          ? "📋 复制本月汇总"
+          : "📋 复制" + month.replace("-", "年") + "月汇总";
     const monthRows = rows.filter(
       (r) => String(r.date || "").slice(0, 7) === month,
     );
@@ -207,15 +210,13 @@ function showToast(text) {
     const id = kind === "payment" ? "expensePayment" : "expenseCategory";
     const selector = kind === "payment" ? "[data-payment]" : "[data-category]";
     $(id).value = value;
-    document
-      .querySelectorAll(selector)
-      .forEach((btn) =>
-        btn.classList.toggle(
-          "active",
-          (kind === "payment" ? btn.dataset.payment : btn.dataset.category) ===
-            value,
-        ),
-      );
+    document.querySelectorAll(selector).forEach((btn) => {
+      const active =
+        (kind === "payment" ? btn.dataset.payment : btn.dataset.category) ===
+        value;
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-pressed", String(active));
+    });
   }
   function resetForm() {
     $("expenseEditId").value = "";
@@ -229,7 +230,10 @@ function showToast(text) {
       .querySelectorAll(
         "#expensePaymentGrid .expense-choice-card, #expenseCategoryGrid .expense-choice-card",
       )
-      .forEach((b) => b.classList.remove("active"));
+      .forEach((b) => {
+        b.classList.remove("active");
+        b.setAttribute("aria-pressed", "false");
+      });
     validateAmount();
   }
   function validateAmount() {
@@ -653,13 +657,7 @@ function showToast(text) {
     }, 500);
   }
   async function shareBlob(b, name, title) {
-    const file = new File([b], name, { type: b.type });
-    if (navigator.canShare && navigator.canShare({ files: [file] }))
-      await navigator.share({ title, files: [file] });
-    else {
-      downloadBlob(b, name);
-      showToast("当前浏览器不支持直接分享，已改为下载");
-    }
+    await shareFileOrDownload(b, name, title, downloadBlob);
   }
   function excelBlob() {
     return makeXlsxBlob();
@@ -781,6 +779,7 @@ function showToast(text) {
   $("expenseDownloadExcelBtn")?.addEventListener("click", () => {
     downloadBlob(excelBlob(), fname(".xlsx"));
     closeSheets();
+    showToast("已尝试下载 Excel，请查看浏览器下载记录");
   });
   $("expenseShareExcelBtn")?.addEventListener("click", async () => {
     await shareBlob(excelBlob(), fname(".xlsx"), "生活开支记录");
@@ -789,6 +788,7 @@ function showToast(text) {
   $("expenseDownloadBackupBtn")?.addEventListener("click", () => {
     downloadBlob(backupBlob(), fname(".backup"));
     closeSheets();
+    showToast("已尝试下载数据备份，请查看浏览器下载记录");
   });
   $("expenseShareBackupBtn")?.addEventListener("click", async () => {
     await shareBlob(backupBlob(), fname(".backup"), "生活开支数据备份");
@@ -815,21 +815,27 @@ function showToast(text) {
     }
   });
   $("expenseCopySummaryBtn")?.addEventListener("click", async () => {
+    const month = $("expenseMonthPicker")?.value || monthNow();
     const rows = sorted().filter(
-      (r) => String(r.date || "").slice(0, 7) === monthNow(),
+      (r) => String(r.date || "").slice(0, 7) === month,
     );
     const s = summarize(rows);
+    const categories = CATEGORIES.filter((c) => s.byCategory[c] > 0)
+      .map((c) => c + "：" + money(s.byCategory[c]))
+      .join("\n");
     const text =
-      "生活开支本月汇总\n\n开支总金额：" +
+      month.replace("-", "年") +
+      "月生活开支汇总\n\n开支总金额：" +
       money(s.total) +
       "\n记录笔数：" +
       s.count +
       " 笔\n现金总额：" +
       money(s.cash) +
       "\n银行卡总额：" +
-      money(s.card);
-    if (navigator.clipboard) await navigator.clipboard.writeText(text);
-    showToast("已复制，可到微信粘贴发送");
+      money(s.card) +
+      (categories ? "\n\n分类开支：\n" + categories : "");
+    const copied = await copyText(text);
+    showCopyResult(copied, text, month.replace("-", "年") + "月汇总内容");
   });
   // Signal readiness only after import handlers and the rest of the UI are bound.
   $("expenseImportInput")?.setAttribute("data-ready", "true");

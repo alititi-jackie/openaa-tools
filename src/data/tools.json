@@ -760,7 +760,8 @@
     ],
     "styles": [
       "usa-tools.css",
-      "expense-record.css"
+      "expense-record.css",
+      "record-tools.css"
     ]
   },
   {
@@ -778,7 +779,8 @@
     ],
     "styles": [
       "usa-tools.css",
-      "usd-rmb.css"
+      "usd-rmb.css",
+      "record-tools.css"
     ]
   },
   {

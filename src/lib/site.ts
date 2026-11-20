@@ -1,8 +1,9 @@
 import { setupInstall } from "./install.js";
 import { setupCopyResult } from "./copy-result.js";
 import { setupEngage } from "./engage.js";
-const status = document.getElementById("site-status");
+import { showFeedback as notify } from "./feedback.js";
 import { normalizeBackup, saveImportedRecords } from "./backup.js";
+export { notify };
 document
   .querySelectorAll<HTMLButtonElement>("[data-restore-import]")
   .forEach((button) => {
@@ -38,14 +39,6 @@ document
       }
     });
   });
-let timer: ReturnType<typeof setTimeout>;
-export function notify(message: string) {
-  if (!status) return;
-  status.textContent = message;
-  status.classList.add("visible");
-  clearTimeout(timer);
-  timer = setTimeout(() => status.classList.remove("visible"), 3500);
-}
 async function share() {
   const url = new URL(
     document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href ||

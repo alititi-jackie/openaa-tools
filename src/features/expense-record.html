@@ -378,6 +378,10 @@
               🗑️ 清空全部数据
             </button>
           </div>
+          <p class="expense-help">
+            复制汇总后，可直接到微信聊天框粘贴发送。默认复制本月；如果在“查看记录”里选了其他月份，则复制所选月份。
+            Excel 适合查阅和分享；数据备份可以用于以后导入恢复。
+          </p>
           <input
             accept=".json,.backup,application/json"
             hidden=""
@@ -479,23 +483,41 @@
           ><strong>分享给朋友</strong
           ><span>一键调用系统分享，不支持时会自动复制链接</span></span
         >
+        <svg
+          aria-hidden="true"
+          class="expense-share-arrow"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewbox="0 0 24 24"
+        >
+          <path d="m9 18 6-6-6-6"></path>
+        </svg>
       </button>
       <article class="template-card expense-seo-card">
         <h2>常见问题</h2>
-        <h3>这个生活开支记录工具会上传数据吗？</h3>
-        <p>
-          不会。所有记录默认只保存在当前浏览器中，不需要登录，也不会上传到
-          OpenAA 服务器。
-        </p>
-        <h3>为什么分类只有六个？</h3>
-        <p>
-          这个工具重点是手机端快速记录，所以只保留购物、餐饮、交通、房屋、账单和其它六个大分类，减少选择成本。
-        </p>
-        <h3>清理缓存前要做什么？</h3>
-        <p>
-          清理缓存、清除网站数据、重装浏览器或更换设备前，建议先导出 Excel
-          或数据备份。Excel 适合查看和保存，数据备份适合以后导入恢复。
-        </p>
+        <div class="faq-item">
+          <h3>这个生活开支记录工具会上传数据吗？</h3>
+          <p>
+            不会。所有记录默认只保存在当前浏览器中，不需要登录，也不会上传到
+            OpenAA 服务器。
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3>为什么分类只有六个？</h3>
+          <p>
+            这个工具重点是手机端快速记录，所以只保留购物、餐饮、交通、房屋、账单和其它六个大分类，减少选择成本。
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3>清理缓存前要做什么？</h3>
+          <p>
+            清理缓存、清除网站数据、重装浏览器或更换设备前，建议先导出 Excel
+            或数据备份。Excel 适合查看和保存，数据备份适合以后导入恢复。
+          </p>
+        </div>
       </article>
     </section>
   </div>

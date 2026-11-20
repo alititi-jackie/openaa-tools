@@ -1,0 +1,140 @@
+/* Shared UI contract for the two local record tools. Business-specific
+   calculator, category and positive/negative colors stay in their own CSS. */
+:is(.expense-big-btn, .fx-big-btn) {
+  min-height: 88px;
+  border-radius: 18px;
+  padding: 14px;
+}
+:is(.expense-page-title, .fx-page-title) h2 {
+  font-size: 20px;
+}
+:is(
+  .expense-small-btn,
+  .expense-primary-btn,
+  .expense-danger-btn,
+  .fx-small-btn,
+  .fx-primary-btn,
+  .fx-danger-btn
+) {
+  min-height: 44px;
+  border-radius: 999px;
+  font-size: 14px;
+}
+:is(.expense-input, .fx-input, .expense-select) {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  height: 52px;
+  border-radius: 14px;
+  font-size: 17px;
+}
+:is(#expenseApp, #fxApp) :is(.expense-field, .fx-field) {
+  min-width: 0;
+}
+/* iOS date controls can otherwise exceed the input card and shrink digits. */
+:is(#expenseApp, #fxApp) :is(#expenseDate, #fxDate) {
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  font-size: 18px;
+  text-align: center;
+}
+:is(#expenseDate, #fxDate)::-webkit-date-and-time-value {
+  margin: 0;
+  line-height: 50px;
+  text-align: center;
+}
+:is(
+  .expense-stat,
+  .expense-category-stat,
+  .fx-stat,
+  .expense-record,
+  .fx-record
+) {
+  border: 1px solid #eceef3;
+  border-radius: 16px;
+  background: #fff;
+  padding: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+:is(.expense-chip-btn, .fx-chip-btn) {
+  min-height: 44px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+:is(.expense-help, .fx-help) {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.65;
+  margin: 12px 0 0;
+}
+:is(.expense-action-sheet, .fx-action-sheet) {
+  max-height: calc(100dvh - 32px - env(safe-area-inset-bottom));
+  overflow-y: auto;
+}
+:is(.expense-seo-card, .fx-seo-card) .faq-item {
+  border-top: 1px solid #eef2f7;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+:is(.expense-seo-card, .fx-seo-card) .faq-item:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+:is(.expense-share-card, .fx-share-card) {
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+:is(.expense-share-card, .fx-share-card):hover {
+  border-color: #bfdbfe;
+  box-shadow:
+    0 12px 28px rgba(15, 23, 42, 0.12),
+    0 2px 8px rgba(37, 99, 235, 0.08);
+}
+:is(.expense-share-card, .fx-share-card):active {
+  transform: scale(0.99);
+}
+:is(.expense-share-arrow, .fx-share-arrow) {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: #60a5fa;
+  transition: transform 0.2s ease;
+}
+:is(.expense-share-card, .fx-share-card):hover
+  :is(.expense-share-arrow, .fx-share-arrow) {
+  transform: translateX(2px);
+}
+:is(
+  .expense-big-btn,
+  .fx-big-btn,
+  .expense-small-btn,
+  .fx-small-btn,
+  .expense-primary-btn,
+  .fx-primary-btn,
+  .expense-danger-btn,
+  .fx-danger-btn,
+  .expense-chip-btn,
+  .fx-chip-btn,
+  .expense-tab,
+  .fx-calc-target,
+  .expense-choice-card,
+  .fx-type-btn,
+  .expense-share-card,
+  .fx-share-card
+):focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 2px;
+}
+@media (max-width: 360px) {
+  :is(.expense-big-btn, .fx-big-btn) {
+    min-height: 76px;
+  }
+}
