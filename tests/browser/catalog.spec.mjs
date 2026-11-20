@@ -51,7 +51,9 @@ test("homepage groups all tools in the requested order", async ({
 });
 test("dmv group shows external quiz card first", async ({ page }) => {
   await page.goto("/");
-  const card = page.locator('[data-group=dmv] .tool-card[data-external="true"]');
+  const card = page.locator(
+    '[data-group=dmv] .tool-card[data-external="true"]',
+  );
   await expect(card).toHaveCount(1);
   await expect(card).toHaveAttribute("href", /https:\/\/dmv\.openaa\.com\//);
   await expect(card).toHaveAttribute("target", "_blank");
@@ -70,6 +72,7 @@ test("search keeps matching groups and returns from a tool with state intact", a
   ).toHaveText("1 个工具");
   await page.locator('a[href="/tools/temperature/"]').click();
   await page.locator("[data-go-back]").click();
+  await expect(page).toHaveURL(/\/\?category=convert&q=/);
   await expect(page.locator("#tool-search")).toHaveValue("温度");
   await expect(page.locator("#tool-groups .tool-card:visible")).toHaveCount(1);
   await page.locator("#tool-search").fill("no-such-tool");

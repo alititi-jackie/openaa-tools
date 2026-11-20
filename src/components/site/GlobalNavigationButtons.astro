@@ -37,53 +37,54 @@ const fallback = Astro.url.pathname === "/" ? site.parent : "/";
     >
   </a>
 </nav>
-<script>
-  const navigation = document.querySelector<HTMLElement>(
-    ".floating-navigation",
-  );
-  const top = document.querySelector<HTMLButtonElement>("[data-scroll-top]");
-  const update = () => {
-    if (top) top.hidden = window.scrollY <= 900;
-  };
-  update();
-  window.addEventListener("scroll", update, { passive: true });
-  window.addEventListener("pageshow", update);
-  top?.addEventListener("click", () =>
-    window.scrollTo({
-      top: 0,
-      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? "instant"
-        : "smooth",
-    }),
-  );
-  document
-    .querySelector("[data-go-back]")
-    ?.addEventListener("click", (event) => {
-      if (
-        event instanceof MouseEvent &&
-        (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
-      )
-        return;
-      if (history.length > 1) {
-        event.preventDefault();
-        history.back();
-      }
-    });
-  const updateKeyboard = () => {
-    const editing = document.activeElement?.matches(
-      "input, textarea, [contenteditable=true]",
+<!-- Bind back navigation immediately, before deferred tool bundles load. -->
+<script is:inline>
+  (() => {
+    const navigation = document.querySelector(".floating-navigation");
+    const topButton = document.querySelector("[data-scroll-top]");
+    const update = () => {
+      if (topButton) topButton.hidden = window.scrollY <= 900;
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("pageshow", update);
+    topButton?.addEventListener("click", () =>
+      window.scrollTo({
+        top: 0,
+        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "instant"
+          : "smooth",
+      }),
     );
-    const keyboardOpen =
-      editing &&
-      window.visualViewport &&
-      window.innerHeight - window.visualViewport.height > 150;
-    navigation?.classList.toggle("keyboard-open", !!keyboardOpen);
-  };
-  window.visualViewport?.addEventListener("resize", updateKeyboard);
-  document.addEventListener("focusin", updateKeyboard);
-  document.addEventListener("focusout", () =>
-    requestAnimationFrame(updateKeyboard),
-  );
+    document
+      .querySelector("[data-go-back]")
+      ?.addEventListener("click", (event) => {
+        if (
+          event instanceof MouseEvent &&
+          (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+        )
+          return;
+        if (history.length > 1) {
+          event.preventDefault();
+          history.back();
+        }
+      });
+    const updateKeyboard = () => {
+      const editing = document.activeElement?.matches(
+        "input, textarea, [contenteditable=true]",
+      );
+      const keyboardOpen =
+        editing &&
+        window.visualViewport &&
+        window.innerHeight - window.visualViewport.height > 150;
+      navigation?.classList.toggle("keyboard-open", !!keyboardOpen);
+    };
+    window.visualViewport?.addEventListener("resize", updateKeyboard);
+    document.addEventListener("focusin", updateKeyboard);
+    document.addEventListener("focusout", () =>
+      requestAnimationFrame(updateKeyboard),
+    );
+  })();
 </script>
 <style>
   .floating-navigation {
