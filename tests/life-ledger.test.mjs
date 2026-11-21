@@ -174,3 +174,15 @@ test("year with remittances only has a negative USD balance in summary and full 
     assert.ok(xml.includes('<c r="G2" t="n"><v>715.47</v>'));
   }
 });
+
+import { detectBackup } from "../src/lib/ledger.js";
+test("import identifies the destination from the file", () => {
+  const books = { expense: [expense], income: [{...expense, method:"cash"}], remittance:[remit] };
+  for (const [kind, rows] of Object.entries(books))
+    assert.equal(detectBackup(JSON.stringify(backup(kind, rows))).kind, kind);
+  assert.equal(detectBackup(JSON.stringify(fullBackup(books))).kind, "all");
+  assert.equal(detectBackup(JSON.stringify([{...expense, payment:"现金"}])).kind, "expense");
+  assert.equal(detectBackup(JSON.stringify([{...remit, usd:100}])).kind, "remittance");
+  assert.throws(() => detectBackup("[]"));
+  assert.throws(() => detectBackup("{}"));
+});

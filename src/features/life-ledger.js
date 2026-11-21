@@ -3,7 +3,8 @@ import {
   normalize,
   totals,
   backup,
-  parseBackup,
+  detectBackup,
+  restorableBooks,
   load,
   save,
   importRows,
@@ -11,7 +12,6 @@ import {
   readBooks,
   balances,
   fullBackup,
-  parseFullBackup,
   importBooks,
   clearBooks,
   reportXlsx,
@@ -277,8 +277,8 @@ function exportsPage() {
   ${nav({ current, all: "全部记录" }, "scope", scope, "导出范围")}
   <section class="panel"><h2>汇总文字</h2>${button("copy", "复制" + title)}</section>
   <section class="panel"><h2>Excel 表格</h2><p>${all ? "一份 Excel 包含开支、收入、汇款各自的汇总、明细、月度和年度汇总，以及收支总览、收支月度和年度汇总。" : overview ? "逐年列出收支和结余，末行列出全部年份合计。" : "包含本账本全部年份的总合计、逐笔明细、月度汇总和年度汇总。"}</p><div class="controls">${button("excel", "下载" + fileLabel + " Excel")}${button("shareExcel", "分享" + fileLabel + " Excel")}</div></section>
-  ${all || !overview ? `<section class="panel"><h2>${backupLabel}备份</h2><p>${backupScope}清除网站数据、重装浏览器或换手机前，请下载 JSON 备份并确认文件已保存。</p><div class="controls">${button("backup", "下载" + backupLabel + "备份")}${button("shareBackup", "分享" + backupLabel + "备份")}</div><label class="file">导入${backupLabel}备份<input type="file" name="file" accept=".json,application/json"></label>${!all ? button("restore", "恢复导入前的记录") : ""}</section>` : ""}
-  ${preview ? importPanel() : ""}
+  ${all || !overview ? `<section class="panel"><h2>${backupLabel}备份</h2><p>${backupScope}清除网站数据、重装浏览器或换手机前，请下载 JSON 备份并确认文件已保存。</p><div class="controls">${button("backup", "下载" + backupLabel + "备份")}${button("shareBackup", "分享" + backupLabel + "备份")}</div></section>` : ""}
+  <details class="panel import-fold" ${preview ? "open" : ""}><summary>导入备份</summary><label class="file">选择 JSON 备份文件<input type="file" name="file" accept=".json,application/json"></label>${preview ? importPanel() : ""}${restorableBooks().map(k => button("restore", "恢复" + names[k] + "导入前的记录", `data-restore="${k}"`)).join("")}</details>
   ${!overview || all ? `<div class="clear-section">${button("clear", overview ? "清空三个账本" : "清空" + names[kind] + "记录", `data-clear="${clearTarget}" class="clear-entry"`)}</div>` : ""}`;
 }
 function backupFile(target) {
@@ -324,8 +324,8 @@ function confirmClear(target) {
 function importPanel() {
   if (preview.books)
     return `<section class="panel" id="import-preview"><h2>完整备份导入预览</h2><p>${escape(preview.filename)}</p><p>${counts(preview.books)}</p><p>合并会保留已有记录并跳过重复编号。覆盖会替换三个账本，包括备份中为零笔的账本。</p><div class="controls">${button("merge", "合并导入")}${button("replace", "覆盖三个账本")}${button("abort", "取消")}</div></section>`;
-  const pick = preview.legacy && kind === "remittance";
-  return `<section class="panel" id="import-preview"><h2>${names[kind]}导入预览</h2><p>${escape(preview.filename)}</p><p>可导入 ${preview.rows.length} 笔。${preview.skipped ? "已排除 " + preview.skipped + " 笔减去记录。" : ""}</p>${pick ? "<p>勾选确实属于汇款的记录。</p>" : ""}<div class="preview-list">${preview.rows.map((r, i) => `<label>${pick ? `<input type="checkbox" data-import="${i}">` : ""}${escape(r.date)} · ${money(r.amount)} ${escape(r.note)}</label>`).join("")}</div><div class="controls">${button("merge", "合并导入")}${button("replace", "覆盖导入")}${button("abort", "取消")}</div></section>`;
+  const pick = preview.legacy && preview.kind === "remittance";
+  return `<section class="panel" id="import-preview"><h2>${names[preview.kind]}导入预览</h2><p>${escape(preview.filename)}</p><p>可导入 ${preview.rows.length} 笔。${preview.skipped ? "已排除 " + preview.skipped + " 笔减去记录。" : ""}</p>${pick ? "<p>勾选确实属于汇款的记录。</p>" : ""}<div class="preview-list">${preview.rows.map((r, i) => `<label>${pick ? `<input type="checkbox" data-import="${i}">` : ""}${escape(r.date)} · ${money(r.amount)} ${escape(r.note)}</label>`).join("")}</div><div class="controls">${button("merge", "合并导入")}${button("replace", "覆盖导入")}${button("abort", "取消")}</div></section>`;
 }
 function render() {
   root.innerHTML =
@@ -512,7 +512,7 @@ root.addEventListener(
       const current = kind,
         initialScope = scope,
         file = field.files[0];
-      const limit = scope === "all" ? 16 : 5;
+      const limit = 16;
       if (file.size > limit * 1024 * 1024)
         throw new Error("备份超过 " + limit + " MB。");
       const contents = await file.text();
@@ -524,10 +524,7 @@ root.addEventListener(
         !field.isConnected
       )
         return;
-      const parsed =
-        scope === "all"
-          ? { books: parseFullBackup(contents) }
-          : parseBackup(kind, contents);
+      const parsed = detectBackup(contents);
       preview = { ...parsed, filename: file.name };
       render();
       root.querySelector("#import-preview").scrollIntoView();
@@ -625,8 +622,9 @@ root.addEventListener(
       }
       return;
     }
-    if (a === "restore" && confirm("将当前账本恢复到上次导入前？")) {
-      restore(kind);
+    if (a === "restore" && confirm("将" + names[b.dataset.restore] + "账本恢复到上次导入前？")) {
+      restore(b.dataset.restore);
+      preview = null;
       render();
       showFeedback("已恢复");
       return;
@@ -651,7 +649,7 @@ root.addEventListener(
         return;
       }
       let rows = preview.rows;
-      if (preview.legacy && kind === "remittance") {
+      if (preview.legacy && preview.kind === "remittance") {
         rows = [...root.querySelectorAll("[data-import]:checked")].map(
           (c) => rows[Number(c.dataset.import)],
         );
@@ -659,10 +657,10 @@ root.addEventListener(
       }
       if (
         a === "replace" &&
-        !confirm(`确认用「${preview.filename}」的 ${rows.length} 笔记录覆盖全部${names[kind]}记录？`)
+        !confirm(`确认用「${preview.filename}」的 ${rows.length} 笔记录覆盖全部${names[preview.kind]}记录？`)
       )
         return;
-      importRows(kind, rows, a);
+      importRows(preview.kind, rows, a);
       preview = null;
       render();
       showFeedback("已完成导入");

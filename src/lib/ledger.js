@@ -102,6 +102,25 @@ export function backup(kind, rows) {
   check(new Blob([JSON.stringify(data)]).size <= maxBytes, "备份超过 5 MB。");
   return data;
 }
+export function detectBackup(text) {
+  let data;
+  try { data = JSON.parse(text); }
+  catch { throw new Error("文件不是有效的 JSON 备份。"); }
+  if (data?.app === app && data.kind === "all")
+    return { kind: "all", books: parseFullBackup(text) };
+  let kind;
+  if (data?.app === app) kind = data.kind;
+  else if (Array.isArray(data) && data.length) {
+    const expense = data.every(r => r?.payment != null && r.category != null && r.amount != null);
+    const remit = data.every(r => r?.usd != null && r.rate != null);
+    if (expense !== remit) kind = expense ? "expense" : "remittance";
+  } else kind = Object.keys(legacyApps).find(k => legacyApps[k] === data?.app);
+  check(kinds.includes(kind), "无法识别备份类型，请选择账本导出的 JSON 文件。");
+  return { kind, ...parseBackup(kind, text) };
+}
+export function restorableBooks() {
+  return kinds.filter(k => localStorage.getItem(key(k) + "_before_import") !== null);
+}
 export function parseBackup(kind, input) {
   key(kind);
   const text = typeof input === "string" ? input : JSON.stringify(input);
