@@ -1051,7 +1051,7 @@ import {
     try {
       const incoming = await readBackupFile(file, "fx");
       if (!incoming.length) {
-        alert("备份文件里没有可导入的记录。");
+        alert("备份中没有可导入的换汇记录。");
         return;
       }
       const current = load();
@@ -1059,7 +1059,7 @@ import {
         const choice = prompt(
           "检测到当前浏览器已有 " +
             current.length +
-            " 条记录，备份文件有 " +
+            " 条记录，可导入 " +
             incoming.length +
             " 条记录。\n\n请输入导入方式：\n1 = 覆盖当前数据\n2 = 合并数据\n0 = 取消",
         );
@@ -1074,6 +1074,7 @@ import {
           return;
         }
       } else {
+        if (!confirm(`可导入 ${incoming.length} 笔换汇记录，确认导入吗？`)) return;
         saveImportedRecords(KEY, incoming);
         showToast("导入成功");
       }

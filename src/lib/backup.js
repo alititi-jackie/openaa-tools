@@ -1,3 +1,5 @@
+import { parseBackup, parseFullBackup } from "./ledger.js";
+
 const MAX_RECORDS = 10000;
 export const MAX_BACKUP_BYTES = 5 * 1024 * 1024;
 export function validDate(value) {
@@ -103,14 +105,27 @@ export function serializeBackup(rows, kind) {
   return text;
 }
 export async function readBackupFile(file, kind) {
-  if (file.size > MAX_BACKUP_BYTES) throw new Error("备份文件不能超过 5 MB。");
+  if (file.size > 3 * MAX_BACKUP_BYTES + 1024 || typeof file.text !== "function")
+    throw new Error("单项备份限 5 MB，完整账本备份限约 15 MB。");
   let data;
   try {
     data = JSON.parse(await file.text());
   } catch {
     throw new Error("文件不是有效的 JSON 备份。");
   }
-  return normalizeBackup(data, kind);
+  const target = kind === "expense" ? "expense" : "remittance";
+  const label = kind === "expense" ? "开支" : "汇款";
+  if (data?.app === "OpenAA Life Ledger" && data.kind === "all") {
+    data = parseFullBackup(data)[target];
+  } else {
+    if (file.size > MAX_BACKUP_BYTES) throw new Error("单项备份不能超过 5 MB。");
+    if (data?.app !== "OpenAA Life Ledger") return normalizeBackup(data, kind);
+    if (data.kind !== target) throw new Error("所选备份不包含" + label + "记录。");
+    data = parseBackup(target, data).rows;
+  }
+  return normalizeBackup(data.map(row => kind === "expense"
+    ? { ...row, payment: row.method === "cash" ? "现金" : "银行卡" }
+    : { ...row, usd: row.amount, type: "add" }), kind);
 }
 // Retain a single pre-import snapshot. A failed snapshot write prevents replacement.
 export function saveImportedRecords(key, rows) {

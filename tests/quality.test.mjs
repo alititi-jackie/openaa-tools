@@ -154,3 +154,25 @@ test("query failures distinguish absent data from unavailable service", () => {
   assert.match(queryError({ status: 429 }, "区号"), /过于频繁/);
   assert.match(queryError({ name: "AbortError" }, "区号"), /超时/);
 });
+
+test("extract only the matching records from full and single ledger backups", async () => {
+  const { backup, fullBackup } = await import("../src/lib/ledger.js");
+  const base = { id: "a", date: "2026-11-21", amount: 123, note: "原备注" };
+  const books = {
+    expense: [{ ...base, category: "购物", method: "card" }],
+    remittance: [{ ...base, rate: 7.123, cny: 876.12 }],
+    income: [{ ...base, method: "cash" }],
+  };
+  const read = (data, kind) => readBackupFile(new Blob([JSON.stringify(data)]), kind);
+  for (const [source, target] of [["expense", "expense"], ["remittance", "fx"]]) {
+    for (const file of [fullBackup(books), backup(source, books[source])]) {
+      const [row] = await read(file, target);
+      assert.equal(row.id, base.id);
+      assert.equal(row.note, base.note);
+      if (target === "expense") assert.equal(row.payment, "银行卡");
+      else assert.deepEqual([row.type, row.usd, row.rate, row.cny], ["add", 123, 7.123, 876.12]);
+    }
+    await assert.rejects(read(backup("income", books.income), target), /不包含/);
+    assert.deepEqual(await read(fullBackup({ ...books, [source]: [] }), target), []);
+  }
+});

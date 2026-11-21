@@ -675,10 +675,14 @@ import {
   async function importBackup(file) {
     try {
       const rows = await readBackupFile(file, "expense");
+      if (!rows.length) {
+        alert("备份中没有可导入的开支记录。");
+        return;
+      }
       const current = load();
       if (current.length) {
         const choice = prompt(
-          "当前浏览器已有数据。请输入导入方式：\n1 = 覆盖当前数据\n2 = 合并数据\n0 = 取消",
+          `可导入 ${rows.length} 笔开支记录。` + "当前浏览器已有数据。请输入导入方式：\n1 = 覆盖当前数据\n2 = 合并数据\n0 = 取消",
         );
         if (choice === "1") saveImportedRecords(KEY, rows);
         else if (choice === "2")
@@ -687,7 +691,10 @@ import {
             ...rows.filter((r) => !current.some((x) => x.id === r.id)),
           ]);
         else return;
-      } else saveImportedRecords(KEY, rows);
+      } else {
+        if (!confirm(`可导入 ${rows.length} 笔开支记录，确认导入吗？`)) return;
+        saveImportedRecords(KEY, rows);
+      }
       showToast("导入成功");
       render();
       goto("home");
