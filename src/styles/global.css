@@ -330,15 +330,6 @@ img {
 .wide-tool {
   max-width: 1000px;
 }
-.breadcrumbs {
-  font-size: 12px;
-  color: var(--muted);
-  margin: 0 0 18px;
-  overflow-wrap: anywhere;
-}
-.breadcrumbs a {
-  color: #475569;
-}
 .tool-page {
   background: #fff;
   border: 1px solid var(--border);
@@ -440,29 +431,6 @@ img {
   background: #dbeafe;
 }
 /* 收藏星标：工具页面包屑旁 + 首页卡片右上角 */
-.fav-toggle {
-  display: inline-grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  margin-left: 8px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: #fff;
-  cursor: pointer;
-  vertical-align: middle;
-}
-.fav-toggle .fav-star-icon {
-  font-size: 17px;
-  line-height: 1;
-  color: #94a3b8;
-}
-.fav-toggle.is-fav .fav-star-icon {
-  color: #f59e0b;
-}
-.fav-toggle:hover {
-  border-color: #f59e0b;
-}
 .tool-card .fav-star-btn {
   position: absolute;
   top: 10px;

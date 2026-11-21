@@ -118,9 +118,9 @@ function cardLinkToId(card) {
 }
 
 /** 工具页：面包屑旁的 ★ 收藏按钮（服务端渲染，JS 只绑定行为） */
-function setupToolFav(toolId) {
+export function setupToolFav() {
   document.querySelectorAll("[data-fav-toggle]").forEach((btn) => {
-    const id = btn.dataset.favToggle || toolId;
+    const id = btn.dataset.favToggle;
     paintFavButton(btn, isFav(id));
     btn.addEventListener("click", (e) => {
       e.preventDefault();
@@ -136,7 +136,7 @@ function setupToolPage(toolId) {
   recent.unshift(toolId);
   writeList(RECENT_KEY, recent.slice(0, MAX_RECENT));
 
-  setupToolFav(toolId);
+  setupToolFav();
 
   // 自带富历史记录的工具自己管理历史（同存储键），跳过通用监听
   if (NO_AUTO_HISTORY.has(toolId)) return;

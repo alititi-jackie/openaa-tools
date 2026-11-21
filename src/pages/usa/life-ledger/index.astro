@@ -1,5 +1,8 @@
 ---
 import introduction from "../../../features/life-ledger.html?raw";
+import ToolBreadcrumbs from "../../../components/tools/ToolBreadcrumbs.astro";
+import { tools } from "../../../data/tools";
+const tool = tools.find(tool => tool.id === "life-ledger")!;
 import Header from "../../../components/site/Header.astro";
 import "../../../styles/ledger-header.css";
 import "../../../styles/tools/life-ledger.css";
@@ -10,10 +13,12 @@ import "../../../styles/tools/life-ledger.css";
 <title>生活收支账本｜OpenAA 工具库</title><meta name="description" content="记下每一笔开支、收入和美元汇款，按月或按年查看结余，导出 Excel 或备份账本。" /><link rel="canonical" href="https://tools.openaa.com/usa/life-ledger/" />
 <meta name="theme-color" content="#2563eb"/><link rel="icon" href="/assets/openaa-logo.png"/>
 <meta name="apple-mobile-web-app-title" content="生活账本"/><link rel="manifest" href="./manifest.json"/><link rel="apple-touch-icon" href="/icons/icon-192.png"/>
-</head><body><Header/><main id="ledger" set:html={introduction}></main>
+</head><body><Header/><div class="ledger-trail"><ToolBreadcrumbs tool={tool} /></div><main id="ledger" set:html={introduction}></main>
 <output id="header-status" role="status" aria-live="polite"></output>
 <script>
 import "../../../features/life-ledger.js";
+import { setupToolFav } from "../../../lib/engage.js";
+setupToolFav();
 document.querySelector("[data-share]")?.addEventListener("click", async ()=>{
  const url=new URL(".",location.href).href;
  const status=document.querySelector("#header-status");
@@ -32,3 +37,8 @@ if(import.meta.env.PROD && "serviceWorker" in navigator){
  navigator.serviceWorker.register("./sw.js").catch(()=>{});
 }
 </script></body></html>
+<style>
+.ledger-trail { max-width: 1000px; margin: 0 auto; padding: 20px 20px 0; }
+.ledger-trail :global(.breadcrumbs) { margin: 0; }
+@media (max-width: 760px) { .ledger-trail { padding: 16px 14px 0; } }
+</style>

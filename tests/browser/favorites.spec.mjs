@@ -46,3 +46,32 @@ test("external DMV quiz card star toggles and opens in new tab from favorites", 
   await expect(star).toHaveAttribute("aria-pressed", "false");
   await expect(favCard).toBeHidden();
 });
+
+test("ledger tabs share a favorite with the tool library home", async ({ page }) => {
+  const path = "/usa/life-ledger/";
+  await page.goto(path);
+  const star = page.locator('[data-fav-toggle="life-ledger"]');
+  await page.setViewportSize({ width: 390, height: 500 });
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await expect.poll(() => page.evaluate(() => {
+    const bottom = document.querySelector(".site-header").getBoundingClientRect().bottom;
+    const tabs = document.querySelector("#ledger .book").getBoundingClientRect();
+    const trail = document.querySelector(".ledger-trail").getBoundingClientRect();
+    return trail.bottom <= bottom && Math.abs(tabs.top - bottom) <= 1;
+  })).toBe(true);
+  await star.click();
+  for (const book of ["income", "remittance", "summary", "expense"]) {
+    await page.locator(`[data-book="${book}"]`).click();
+    await expect(star).toHaveAttribute("aria-pressed", "true");
+  }
+  await page.reload();
+  await expect(star).toHaveText("★");
+  const home = page.getByRole("link", { name: "全部工具", exact: true });
+  await home.click();
+  const favorite = page.locator(`#engage-fav-grid a[href="${path}"]`);
+  await favorite.locator("h3").click();
+  await star.click();
+  await expect(star).toHaveText("☆");
+  await home.click();
+  await expect(favorite).toHaveCount(0);
+});

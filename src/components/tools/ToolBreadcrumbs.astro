@@ -1,0 +1,53 @@
+---
+import type { Tool } from "../../data/tools";
+interface Props {
+  tool: Pick<Tool, "id" | "name">;
+}
+const { tool } = Astro.props;
+---
+
+<nav class="breadcrumbs" aria-label="面包屑">
+  <a href="/">全部工具</a><span> / {tool.name}</span><button
+    type="button"
+    class="fav-toggle"
+    data-fav-toggle={tool.id}
+    aria-pressed="false"
+    aria-label="收藏这个工具"
+    ><span class="fav-star-icon" aria-hidden="true">☆</span></button
+  >
+</nav>
+<style>
+  .breadcrumbs {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0 0 18px;
+    overflow-wrap: anywhere;
+  }
+  .breadcrumbs a {
+    color: #475569;
+    text-decoration: none;
+  }
+  .fav-toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    margin-left: 8px;
+    border: 1px solid var(--border, #dbe3ee);
+    border-radius: 999px;
+    background: #fff;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+  .fav-toggle .fav-star-icon {
+    font-size: 17px;
+    line-height: 1;
+    color: #94a3b8;
+  }
+  .fav-toggle.is-fav .fav-star-icon {
+    color: #f59e0b;
+  }
+  .fav-toggle:hover {
+    border-color: #f59e0b;
+  }
+</style>

@@ -1,5 +1,6 @@
 ---
 import DmvNavigation from "../components/tools/DmvNavigation.astro";
+import ToolBreadcrumbs from "../components/tools/ToolBreadcrumbs.astro";
 import BaseLayout from "./BaseLayout.astro";
 import ToolCard from "../components/tools/ToolCard.astro";
 import { relatedTools, type Tool } from "../data/tools";
@@ -60,16 +61,7 @@ const hasManifest = ["expense-record", "usd-rmb", "nyc-attractions"].includes(
     /></Fragment
   >
   <div class:list={["tool-shell", { "wide-tool": !!tool.bodyClass }]}>
-    <nav class="breadcrumbs" aria-label="面包屑">
-      <a href="/">全部工具</a><span> / {tool.name}</span><button
-        type="button"
-        class="fav-toggle"
-        data-fav-toggle={tool.id}
-        aria-pressed="false"
-        aria-label="收藏这个工具"
-        ><span class="fav-star-icon" aria-hidden="true">☆</span></button
-      >
-    </nav><article
+    <ToolBreadcrumbs tool={tool} /><article
       class:list={["tool-page", { "advanced-tool": !!tool.bodyClass }]}
     >
       {tool.category === "dmv" && <DmvNavigation current={tool.id} />}<slot />
