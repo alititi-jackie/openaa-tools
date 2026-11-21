@@ -239,21 +239,24 @@ function summary() {
   return `<h1>收支总览</h1>${picker()}<h2>${periodName()}收支</h2><dl class="panel balance">${pairs.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl><div class="controls"><button type="button" data-page="export">导出／分享</button></div>`;
 }
 function exportInfo() {
-  if (scope === "all")
+  const all = scope === "all";
+  const period = all ? "全部年份" : periodName();
+  const emptyPeriod = period === "全部" ? "全部年份" : period;
+  if (all || kind === "summary") {
+    const books = all ? readBooks() : periodBooks();
     return {
-      title: "全部年份收支总览",
-      pairs: balancePairs(readBooks(), "all"),
-      fileLabel: "全部记录",
+      title: period + "收支总览",
+      pairs: balancePairs(books, all ? "all" : filter().mode),
+      emptyMessage: Object.values(books).some(rows => rows.length)
+        ? "" : emptyPeriod + "暂无记录。",
+      fileLabel: all ? "全部记录" : "全部年份收支总览",
     };
-  if (kind === "summary")
-    return {
-      title: periodName() + "收支总览",
-      pairs: balancePairs(periodBooks(), filter().mode),
-      fileLabel: "全部年份收支总览",
-    };
+  }
+  const rows = selected(kind);
   return {
-    title: periodName() + names[kind] + "汇总",
-    pairs: stats(kind, selected(kind)),
+    title: period + names[kind] + "汇总",
+    pairs: stats(kind, rows),
+    emptyMessage: rows.length ? "" : emptyPeriod + "暂无" + names[kind] + "记录。",
     fileLabel: names[kind] + "记录",
   };
 }
@@ -266,7 +269,7 @@ function exportsPage() {
   const all = scope === "all",
     overview = kind === "summary";
   const current = overview ? "收支总览" : names[kind] + "记录";
-  const { title, fileLabel } = exportInfo();
+  const { title, emptyMessage, fileLabel } = exportInfo();
   const backupLabel = all ? "完整" : names[kind];
   const backupScope = all
     ? "包含开支、收入和汇款三个账本的全部年份。"
@@ -275,7 +278,7 @@ function exportsPage() {
   return `<h1>${overview ? "收支总览" : names[kind]}导出／分享</h1>
   ${safetyNote("数据保存说明", "数据仅保存在当前浏览器。Excel 可用于查看和分享。清除网站数据、换浏览器或换手机前，请先选择「全部记录」，下载完整数据备份（JSON），以便恢复账目。")}
   ${nav({ current, all: "全部记录" }, "scope", scope, "导出范围")}
-  <section class="panel"><h2>汇总文字</h2>${button("copy", "复制" + title)}</section>
+  <section class="panel"><h2>汇总文字</h2>${emptyMessage ? `<p>${escape(emptyMessage)}</p>` : button("copy", "复制" + escape(title))}</section>
   <section class="panel"><h2>Excel 表格</h2><p>${all ? "一份 Excel 包含开支、收入、汇款各自的汇总、明细、月度和年度汇总，以及收支总览、收支月度和年度汇总。" : overview ? "逐年列出收支和结余，末行列出全部年份合计。" : "包含本账本全部年份的总合计、逐笔明细、月度汇总和年度汇总。"}</p><div class="controls">${button("excel", "下载" + fileLabel + " Excel")}${button("shareExcel", "分享" + fileLabel + " Excel")}</div></section>
   ${all || !overview ? `<section class="panel"><h2>${backupLabel}备份</h2><p>${backupScope}清除网站数据、重装浏览器或换手机前，请下载 JSON 备份并确认文件已保存。</p><div class="controls">${button("backup", "下载" + backupLabel + "备份")}${button("shareBackup", "分享" + backupLabel + "备份")}</div></section>` : ""}
   <details class="panel import-fold" ${preview ? "open" : ""}><summary>导入备份</summary><label class="file">选择 JSON 备份文件<input type="file" name="file" accept=".json,application/json"></label>${preview ? importPanel() : ""}${restorableBooks().map(k => button("restore", "恢复" + names[k] + "导入前的记录", `data-restore="${k}"`)).join("")}</details>
@@ -595,7 +598,11 @@ root.addEventListener(
       return;
     }
     if (a === "copy") {
-      const { title, pairs } = exportInfo();
+      const { title, pairs, emptyMessage } = exportInfo();
+      if (emptyMessage) {
+        render();
+        return;
+      }
       const text = [title, ...pairs.map(([k, v]) => k + "　" + v)].join("\n");
       showCopyResult(await copyText(text), text, title);
       return;
