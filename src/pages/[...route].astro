@@ -2,7 +2,8 @@
 import { tools } from "../data/tools";
 import ToolLayout from "../layouts/ToolLayout.astro";
 export function getStaticPaths() {
-  return tools.map((tool) => ({
+  // The ledger has its own page, guide and installable offline experience.
+  return tools.filter((tool) => tool.id !== "life-ledger").map((tool) => ({
     params: { route: tool.path.replace(/^\//, "").replace(/\/$/, "") },
     props: { tool },
   }));

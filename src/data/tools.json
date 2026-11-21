@@ -746,6 +746,19 @@
     ]
   },
   {
+    "id": "life-ledger",
+    "name": "生活收支账本",
+    "heading": "OpenAA 生活收支账本",
+    "description": "记下每一笔开支、收入和美元汇款，按月或按年查看结余，导出 Excel 或备份账本。",
+    "icon": "📒",
+    "category": "usa",
+    "path": "/usa/life-ledger/",
+    "bodyClass": "usa-tool-page",
+    "calculator": "",
+    "modules": [],
+    "styles": []
+  },
+  {
     "id": "expense-record",
     "name": "生活开支记录",
     "heading": "生活开支记录",

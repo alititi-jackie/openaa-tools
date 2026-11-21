@@ -53,3 +53,7 @@ export function fxRoundingDifference(values) {
   const difference = Math.abs(Number(usd) * Number(rate) - Number(cny));
   return Number.isFinite(difference) ? roundFx(difference, 2) : 0;
 }
+
+export function rateNeedsReview(rate) {
+  return Number.isFinite(rate) && rate > 0 && (rate < 5 || rate > 9);
+}

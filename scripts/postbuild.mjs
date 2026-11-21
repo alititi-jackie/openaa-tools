@@ -20,6 +20,7 @@ const toolGuides = fs
 const urls = [
   "/",
   "/privacy/",
+  "/usa/life-ledger/guide/",
   ...tools.map((t) => t.path),
   ...guides.map((g) => `/usa/dmv/${g.slug}/`),
   ...toolGuides.map((g) => `/tools/${g.toolIds[0]}/${g.slug}/`),
@@ -42,13 +43,14 @@ fs.writeFileSync(
     "\n</urlset>\n",
 );
 // Per-tool scopes keep existing installed apps working. Precache each tool's actual bundles.
-for (const id of ["expense-record", "usd-rmb", "nyc-attractions"]) {
+for (const id of ["expense-record", "usd-rmb", "nyc-attractions", "life-ledger"]) {
   const scope = `/usa/${id}/`;
   const html = fs.readFileSync("dist" + scope + "index.html", "utf8");
   const assets = [
     ...new Set([
       scope,
       scope + "manifest.json",
+      ...(id === "life-ledger" ? [scope + "guide/"] : []),
       "/assets/openaa-logo.png",
       "/icons/icon-192.png",
       "/icons/icon-512.png",

@@ -1,0 +1,77 @@
+---
+import Header from "../../../../components/site/Header.astro";
+import "../../../../styles/ledger-header.css";
+import "../../../../styles/tools/life-ledger.css";
+import "../../../../styles/tools/life-ledger-guide.css";
+---
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="description" content="生活收支账本的记账、安装、备份和恢复说明。" /><link rel="canonical" href="https://tools.openaa.com/usa/life-ledger/guide/" />
+  <title>使用说明｜OpenAA 生活收支账本</title>
+  <link rel="icon" href="/assets/openaa-logo.png" />
+  <link rel="manifest" href="../manifest.json" />
+</head>
+<body>
+  <Header />
+  <main class="ledger-guide">
+    <a href="../">返回生活收支账本</a>
+    <h1>生活收支账本使用说明</h1>
+    <section>
+      <h2>记账与查看</h2>
+      <p>打开账本默认进入「开支」。选择「开支」「收入」或「汇款」，点「记一笔」，填好日期和金额后保存。补记以前的账时，先改日期。在「查看」里可以编辑或删除单笔记录。</p>
+      <p>收入和开支都用美元记账，可选择现金或银行卡。汇款时，美元、汇率、人民币填入其中两项，工具会算出第三项。请按实际汇出的美元和收到的人民币核对金额。</p>
+      <p>「月份」默认显示本月，「年度」默认显示今年，可以手动切换。「汇总」可查看当前账本历年的全部记录。</p>
+    </section>
+    <section>
+      <h2>怎样看结余</h2>
+      <p>点顶部的「汇总」，先看收入减开支后剩余多少美元，再看扣除汇款后的美元结余。人民币单列显示。每笔汇款只需在「汇款」记一次，重复记为开支会多扣一次。</p>
+      <p>例如本月收入 5,000 美元，开支 1,800 美元，还剩 3,200 美元。再汇出 1,000 美元，本月结余为 2,200 美元。若实际到账 7,200 元，人民币栏就显示 7,200 元。本月结余只计算本月记录；要看跨月累计，切换到「汇总」。</p>
+    </section>
+    <section>
+      <h2>添加到手机主屏幕</h2>
+      <p><strong>iPhone：</strong>用 Safari 打开账本首页，点「分享」，选择「添加到主屏幕」，再点「添加」。如果分享按钮收在菜单里，先点「更多」。</p>
+      <p><strong>安卓手机：</strong>用 Chrome 打开账本首页，点右上角菜单，选择「添加到主屏幕」或「安装应用」。不同浏览器的菜单名称可能略有差异。</p>
+      <p>如果在微信内打开，可以先从右上角菜单选择用系统浏览器打开。建议以后固定从同一个入口记账。首次联网打开并完成离线缓存后，可以离线记账和查看。</p>
+    </section>
+    <section>
+      <h2>数据保存与隐私</h2>
+      <p>账目保存在当前设备的浏览器中。日常记账无需注册，OpenAA 不收集您在本工具填写的收入、开支、汇款或备注，也不会把这些内容上传到 OpenAA 服务器。换手机、换浏览器或切换到主屏幕入口后，看到的记录可能不同。无痕浏览关闭后，记录也可能消失。</p>
+      <p>分享页面链接只会分享网址；分享 Excel、备份文件或复制的汇总文字，会将相应内容提供给你选择的接收人。</p>
+    </section>
+    <section>
+      <h2>备份、恢复与清理</h2>
+      <ol>
+        <li>保存所有账目时，从任一「导出／分享」切到「全部记录」，点「下载完整备份」，并在手机的文件目录中确认 JSON 文件已保存。这个文件包含三个账本的全部年份。</li>
+        <li>只备份一本时，保留默认选项，例如在「开支记录」点「下载开支备份」。换手机、重装浏览器或清除网站数据前，请先保存需要的备份。</li>
+        <li>恢复完整备份时，在「全部记录」选择「导入完整备份」，核对三个账本的笔数。合并会保留已有记录、跳过相同编号。覆盖会用备份内容替换三个账本，包括备份中为零笔的账本。单本备份在对应账本的默认选项下导入，可在该处恢复导入前的记录。</li>
+        <li>旧版开支备份可导入开支账本。导入旧版美元换人民币备份时，只勾选确实属于汇款的记录，旧版「减去」记录会自动排除。</li>
+      </ol>
+      <p>Excel 用于查阅与分享。开支、收入、汇款各自导出全部年份的明细、月度汇总、年度汇总和总合计。总览页的 Excel 逐年列出收支，末行显示全部年份合计；复制汇总文字时使用当前所选时段；「全部记录」的 Excel 在同一文件中保留三个账本各自的汇总、明细、月度和年度表，另附收支总览和收支月度、年度汇总。导入恢复请使用 JSON。</p>
+      <p>清空单本账请进入对应账本的「导出／分享」，在底部点「清空」并核对笔数。清空三个账本的入口只在「收支总览 → 导出／分享 → 全部记录」底部。清空会同时删除对应账本的导入前记录，随后只能用已保存的 JSON 备份恢复。确认窗口内可先下载备份，点「取消」即可退出。</p>
+    </section>
+    <section>
+      <h2>使用范围</h2>
+      <p>本工具用于个人记录和统计，汇率由你填写。核对实际收支、汇款到账金额及手续费时，请以银行流水、转账凭证或收据为准。账本中的结余取决于已录入的记录。清除网站数据后，如未提前保存备份，OpenAA 无法代为恢复账目。</p>
+    </section>
+    <a href="../">返回生活收支账本</a>
+  </main>
+  <output id="header-status" role="status" aria-live="polite"></output>
+  <script>
+    document.querySelector("[data-share]")?.addEventListener("click", async () => {
+      const url = location.href;
+      try {
+        if (navigator.share) { await navigator.share({ title: document.title, url }); return; }
+        await navigator.clipboard.writeText(url);
+        const status = document.querySelector("#header-status");
+        if (status) { status.textContent = "已复制使用说明链接"; setTimeout(() => status.textContent = "", 2500); }
+      } catch (error) {
+        if (!(error instanceof Error && error.name === "AbortError")) window.prompt("复制使用说明链接", url);
+      }
+    });
+    if (import.meta.env.PROD && "serviceWorker" in navigator) navigator.serviceWorker.register("../sw.js").catch(() => {});
+  </script>
+</body>
+</html>
