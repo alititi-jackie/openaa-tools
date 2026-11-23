@@ -112,12 +112,12 @@ function safetyNote(title, message) {
   return `<div class="expense-safety-note" role="note" aria-label="${title}"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg><div><strong>${title}</strong><p>${message}</p></div></div>`;
 }
 function modeSwitcher() {
-  return `<nav class="ledger-mode" aria-label="账本显示版本">${[
+  return `<div class="ledger-mode-section"><p class="ledger-mode-title">选择适合你的账本模式</p><p class="ledger-mode-description">如果只需记录某一类账目，可以选择对应版本，界面更简洁。所有版本共用同一份数据，随时可以切换。</p><nav class="ledger-mode" aria-label="账本显示版本">${[
     ["full", "完整账本"],
     ["expense", "开支版"],
     ["income", "收入版"],
     ["remittance", "汇款版"],
-  ].map(([value, label]) => `<button type="button" data-display-mode="${value}" aria-pressed="${displayMode === value}">${label}</button>`).join("")}</nav>`;
+  ].map(([value, label]) => `<button type="button" data-display-mode="${value}" aria-pressed="${displayMode === value}">${label}</button>`).join("")}</nav></div>`;
 }
 function ledgerFaq() {
   return `<section class="ledger-faq" aria-labelledby="ledger-faq-title">
