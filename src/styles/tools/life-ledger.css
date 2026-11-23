@@ -551,3 +551,48 @@ legend {
   text-decoration: underline;
   cursor: pointer;
 }
+
+
+/* Local-only display modes, positioned below the homepage storage note. */
+.ledger-mode {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  margin: 14px 0 26px;
+}
+.ledger-mode button {
+  min-width: 0;
+  padding: 11px 5px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  background: #fff;
+  color: #23405c;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ledger-mode button[aria-pressed="true"] {
+  background: #245dcc;
+  border-color: #245dcc;
+  color: #fff;
+}
+.ledger-mode button:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 2px;
+}
+.ledger-faq {
+  margin: 28px 0 20px;
+  padding: 20px 22px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+}
+.ledger-faq h2 { margin: 0 0 17px; font-size: 22px; }
+.ledger-faq h3 { margin: 19px 0 7px; font-size: 16px; line-height: 1.5; }
+.ledger-faq p { margin: 0; color: #475569; font-size: 14px; line-height: 1.8; }
+@media (max-width: 540px) {
+  .ledger-mode { gap: 6px; }
+  .ledger-mode button { padding: 11px 2px; font-size: 13px; }
+  .ledger-faq { padding: 16px 15px; }
+}
