@@ -50,8 +50,8 @@ const escape = (v) =>
       ],
   );
 const money = (n, p = "$") =>
-  p +
-  n.toLocaleString("en-US", {
+  (n < 0 ? "-" : "") + p +
+  Math.abs(n).toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
@@ -233,10 +233,10 @@ function balancePairs(books, mode) {
   const span = { month: "本月", year: "本年", all: "累计" }[mode];
   return [
     ["收入", money(income), "income"],
-    ["生活开支", "−" + money(expense), "expense"],
+    ["生活开支", money(-expense), "expense"],
     ["扣除开支后剩余", money(first), first < 0 ? "expense" : "neutral"],
-    ["汇出美元", "−" + money(usd)],
-    [span + "结余", money(net), net < 0 ? "expense" : "neutral"],
+    ["汇出美元", money(-usd)],
+    [span + "结余", money(net), net < 0 ? "expense" : net > 0 ? "income" : "zero"],
     ["汇款折合人民币", money(cny, "¥")],
   ];
 }

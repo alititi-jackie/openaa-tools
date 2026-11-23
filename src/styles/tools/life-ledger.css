@@ -539,6 +539,7 @@ legend {
 
 .ledger-content .amount-income { color: #067647; }
 .ledger-content .amount-expense { color: #b42318; }
+.ledger-content .amount-zero { color: #000; }
 .ledger-content .amount-neutral { color: #334155; }
 .month-empty { margin: 0 0 12px; }
 .month-add {
