@@ -138,3 +138,46 @@
     min-height: 76px;
   }
 }
+
+
+/* Quiet, shared referral card for legacy record tools. */
+.ledger-upgrade-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 12px;
+  padding: 15px 16px;
+  border: 1px solid #dbe5f2;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+.ledger-upgrade-card > div { flex: 1 1 240px; min-width: 0; }
+.ledger-upgrade-card h2 {
+  margin: 0 0 5px;
+  color: #334155;
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+.ledger-upgrade-card p {
+  margin: 0;
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.ledger-upgrade-card .ledger-upgrade-note {
+  color: #64748b;
+  margin-top: 6px;
+  font-size: 12px;
+}
+.ledger-upgrade-card > a {
+  color: #1d4ed8;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.ledger-upgrade-card > a:hover { text-decoration: underline; }
+.ledger-upgrade-card > a:focus-visible { outline: 3px solid #93c5fd; outline-offset: 3px; }
