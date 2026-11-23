@@ -1,6 +1,7 @@
 ---
 import introduction from "../../../features/life-ledger.html?raw";
 import ToolBreadcrumbs from "../../../components/tools/ToolBreadcrumbs.astro";
+import RelatedGuides from "../../../components/tools/RelatedGuides.astro";
 import { tools } from "../../../data/tools";
 const tool = tools.find(tool => tool.id === "life-ledger")!;
 import Header from "../../../components/site/Header.astro";
@@ -13,7 +14,7 @@ import "../../../styles/tools/life-ledger.css";
 <title>生活收支账本｜OpenAA 工具库</title><meta name="description" content="记下每一笔开支、收入和美元汇款，按月或按年查看结余，导出 Excel 或备份账本。" /><link rel="canonical" href="https://tools.openaa.com/usa/life-ledger/" />
 <meta name="theme-color" content="#2563eb"/><link rel="icon" href="/assets/openaa-logo.png"/>
 <meta name="apple-mobile-web-app-title" content="生活账本"/><link rel="manifest" href="./manifest.json"/><link rel="apple-touch-icon" href="/icons/icon-192.png"/>
-</head><body><Header/><div class="ledger-trail"><ToolBreadcrumbs tool={tool} /></div><main id="ledger" set:html={introduction}></main>
+</head><body><Header/><div class="ledger-trail"><ToolBreadcrumbs tool={tool} /></div><main id="ledger" set:html={introduction}></main><div class="ledger-related"><RelatedGuides toolId="life-ledger" /></div>
 <output id="header-status" role="status" aria-live="polite"></output>
 <script>
 import "../../../features/life-ledger.js";
@@ -38,7 +39,10 @@ if(import.meta.env.PROD && "serviceWorker" in navigator){
 }
 </script></body></html>
 <style>
+.ledger-related { max-width: 1000px; margin: 0 auto; padding: 0 20px 30px; }
+.ledger-related :global(.related-guides) { margin-top: 8px; }
+.ledger-related :global(.related-guides h2) { font-size: 22px; margin: 0 0 16px; }
 .ledger-trail { max-width: 1000px; margin: 0 auto; padding: 20px 20px 0; }
 .ledger-trail :global(.breadcrumbs) { margin: 0; }
-@media (max-width: 760px) { .ledger-trail { padding: 16px 14px 0; } }
+@media (max-width: 760px) { .ledger-trail { padding: 16px 14px 0; } .ledger-related { padding: 0 14px 26px; } }
 </style>
