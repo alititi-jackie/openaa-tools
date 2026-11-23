@@ -556,7 +556,7 @@ legend {
 /* Local-only display modes, positioned below the homepage storage note. */
 .ledger-mode {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 9px;
   margin: 14px 0 26px;
 }
@@ -592,7 +592,7 @@ legend {
 .ledger-faq h3 { margin: 19px 0 7px; font-size: 16px; line-height: 1.5; }
 .ledger-faq p { margin: 0; color: #475569; font-size: 14px; line-height: 1.8; }
 @media (max-width: 540px) {
-  .ledger-mode { gap: 6px; }
-  .ledger-mode button { padding: 11px 2px; font-size: 13px; }
+  .ledger-mode { gap: 5px; }
+  .ledger-mode button { padding: 11px 1px; font-size: 12px; white-space: nowrap; }
   .ledger-faq { padding: 16px 15px; }
 }
