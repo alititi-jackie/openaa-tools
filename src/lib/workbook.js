@@ -146,7 +146,7 @@ function sheetXmlAdvanced(rows) {
   return (
     '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
     '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">' +
-    '<cols><col min="1" max="1" width="15" customWidth="1"/><col min="2" max="2" width="14" customWidth="1"/><col min="3" max="3" width="14" customWidth="1"/><col min="4" max="4" width="14" customWidth="1"/><col min="5" max="5" width="24" customWidth="1"/></cols>' +
+    '<cols><col min="1" max="1" width="15" customWidth="1"/><col min="2" max="2" width="14" customWidth="1"/><col min="3" max="3" width="14" customWidth="1"/><col min="4" max="4" width="14" customWidth="1"/><col min="5" max="9" width="24" customWidth="1"/></cols>' +
     "<sheetData>" +
     rows
       .map(
@@ -166,8 +166,14 @@ export const sheetStyle = {
   total: 4, expenseTotal: 5, incomeTotal: 6, bold: 7,
   usdNegative: 8, usdPositive: 9, usdZero: 10, usdNeutral: 11,
   usdNegativeTotal: 12, usdPositiveTotal: 13, usdZeroTotal: 14, usdNeutralTotal: 15,
+  cnyNegative: 16, cnyPositive: 17, cnyZero: 18, cnyNeutral: 19,
+  cnyNegativeTotal: 20, cnyPositiveTotal: 21, cnyZeroTotal: 22, cnyNeutralTotal: 23, rate: 24,
 };
 
+export function currencyCell(value, currency, tone = "Neutral", total = false) {
+  if (tone === "Net") tone = value < 0 ? "Negative" : value > 0 ? "Positive" : "Zero";
+  return { v: value, s: sheetStyle[currency + tone + (total ? "Total" : "")] };
+}
 function xlsxStylesXml() {
   const font = (color, bold = false) =>
     `<font>${bold ? "<b/>" : ""}<sz val="11"/><name val="Calibri"/><color rgb="FF${color}"/></font>`;
@@ -178,12 +184,14 @@ function xlsxStylesXml() {
   // Style indexes follow sheetStyle. Fill 2 is the header and fill 3 marks totals.
   const formats = [[0,0], [1,2], [2,0], [3,0], [4,3], [5,3], [6,3], [4,0],
     [2,0,164], [3,0,164], [7,0,164], [0,0,164],
-    [5,3,164], [6,3,164], [8,3,164], [4,3,164]]
+    [5,3,164], [6,3,164], [8,3,164], [4,3,164],
+    [2,0,165], [3,0,165], [7,0,165], [0,0,165],
+    [5,3,165], [6,3,165], [8,3,165], [4,3,165], [0,0,166]]
     .map(([fontId, fillId, numFmtId = 0]) => `<xf numFmtId="${numFmtId}" applyNumberFormat="1" fontId="${fontId}" fillId="${fillId}" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/>`);
   return (
     '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
     '<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">' +
-    '<numFmts count="1"><numFmt numFmtId="164" formatCode="&quot;$&quot;#,##0.00;-&quot;$&quot;#,##0.00;&quot;$&quot;0.00"/></numFmts>' +
+    '<numFmts count="3"><numFmt numFmtId="164" formatCode="&quot;$&quot;#,##0.00;-&quot;$&quot;#,##0.00;&quot;$&quot;0.00"/><numFmt numFmtId="165" formatCode="&quot;¥&quot;#,##0.00;-&quot;¥&quot;#,##0.00;&quot;¥&quot;0.00"/><numFmt numFmtId="166" formatCode="0.000"/></numFmts>' +
     `<fonts count="${fonts.length}">${fonts.join("")}</fonts>` +
     '<fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF2563EB"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF1F5F9"/><bgColor indexed="64"/></patternFill></fill></fills>' +
     '<borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FFD1D5DB"/></left><right style="thin"><color rgb="FFD1D5DB"/></right><top style="thin"><color rgb="FFD1D5DB"/></top><bottom style="thin"><color rgb="FFD1D5DB"/></bottom><diagonal/></border></borders>' +

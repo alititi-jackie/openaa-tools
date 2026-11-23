@@ -1,6 +1,7 @@
-import { parseBackup, parseFullBackup } from "./ledger.js";
+import { parseBackup, parseFullBackup, mergeRows } from "./ledger.js";
 
 const MAX_RECORDS = 10000;
+export { mergeRows };
 export const MAX_BACKUP_BYTES = 5 * 1024 * 1024;
 export function validDate(value) {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value))
@@ -22,7 +23,7 @@ export function normalizeBackup(data, kind) {
     };
     if (!r || typeof r !== "object" || Array.isArray(r) || !validDate(r.date))
       return fail();
-    const id = r.id == null ? crypto.randomUUID() : String(r.id);
+    const id = r.id == null ? "legacy-auto-" + crypto.randomUUID() : String(r.id);
     if (
       !id ||
       id.length > 200 ||
@@ -51,7 +52,7 @@ export function normalizeBackup(data, kind) {
         !Number.isFinite(amount) ||
         amount < 0 ||
         !["现金", "银行卡"].includes(r.payment) ||
-        !["购物", "餐饮", "交通", "房屋", "账单", "其它"].includes(r.category)
+        (typeof r.category !== "string" || !r.category.trim() || r.category.length > 100)
       )
         return fail();
       return { ...base, amount, payment: r.payment, category: r.category };
@@ -68,15 +69,15 @@ export function normalizeBackup(data, kind) {
       !Number.isFinite(usd * rate) ||
       (hasCny &&
         (!Number.isFinite(cny) ||
-          (subtract && cny > 0) ||
+          (usd < 0 && cny > 0) ||
           (!subtract && cny < 0)))
     )
       return fail();
     return {
       ...base,
-      usd,
+      usd: subtract ? -Math.abs(usd) : usd,
       rate,
-      ...(hasCny ? { cny } : {}),
+      ...(hasCny ? { cny: subtract ? -Math.abs(cny) : cny } : {}),
       type: subtract ? "subtract" : "add",
     };
   });
@@ -125,7 +126,7 @@ export async function readBackupFile(file, kind) {
   }
   return normalizeBackup(data.map(row => kind === "expense"
     ? { ...row, payment: row.method === "cash" ? "现金" : "银行卡" }
-    : { ...row, usd: row.amount, type: "add" }), kind);
+    : { ...row, usd: row.amount, type: row.type || "add" }), kind);
 }
 // Retain a single pre-import snapshot. A failed snapshot write prevents replacement.
 export function saveImportedRecords(key, rows) {

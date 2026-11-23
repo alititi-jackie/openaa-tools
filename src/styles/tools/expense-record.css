@@ -480,3 +480,8 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+.copy-period { display: block; margin: 1rem 0; }
+.copy-period select { display: block; max-width: 100%; min-height: 44px; margin-top: .4rem; font: inherit; }
+.expense-stat strong, .expense-category-stat strong { color: #334155; }
+.expense-stat:first-child strong { color: #b42318; }

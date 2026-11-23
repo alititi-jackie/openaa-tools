@@ -70,6 +70,7 @@ test("expense copies the chosen month with categories and a clear confirmation",
   await page.locator("#expenseMonthPicker").fill("2026-10");
   await page.locator("[data-expense-goto=home]:visible").first().click();
   await page.locator("[data-expense-goto=export]").first().click();
+  await page.locator("#copyPeriod").selectOption("2026-10");
   await expect(page.locator("#expenseCopySummaryBtn")).toHaveText(
     /2026年10月汇总/,
   );
@@ -149,8 +150,14 @@ test("clipboard denial never claims success and offers manual text", async ({
     document.execCommand = () => false;
   });
   await page.goto("/usa/expense-record/");
+  await page.evaluate((key) => {
+    localStorage.setItem(key, JSON.stringify([{ id: "copy", date: "2026-10-01", amount: 10,
+      category: "购物", payment: "现金", note: "" }]));
+  }, expenseKey);
+  await page.reload();
   await page.waitForLoadState("networkidle");
   await page.locator("[data-expense-goto=export]").first().click();
+  await page.locator("#copyPeriod").selectOption("all");
   const dialog = await clickAndHandleDialog(
     page,
     "#expenseCopySummaryBtn",

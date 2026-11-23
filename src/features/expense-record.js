@@ -1,3 +1,4 @@
+import { makeWorkbook, sheetStyle, currencyCell } from "../lib/workbook.js";
 import {
   openDialog as openSheet,
   closeDialog as closeSheets,
@@ -11,6 +12,7 @@ import {
 import { shareFileOrDownload } from "../lib/share-file.js";
 import {
   readBackupFile,
+  mergeRows,
   saveImportedRecords,
   serializeBackup,
   clearRecords,
@@ -80,7 +82,7 @@ import {
     const card = rows
       .filter((r) => r.payment === "银行卡")
       .reduce((s, r) => s + num(r.amount), 0);
-    const byCategory = {};
+    const byCategory = Object.create(null);
     CATEGORIES.forEach((c) => (byCategory[c] = 0));
     rows.forEach((r) => {
       byCategory[r.category || "其它"] =
@@ -106,7 +108,7 @@ import {
       .join("");
   }
   function categorySummaryHtml(s) {
-    const items = CATEGORIES.map((c) => [c, s.byCategory[c] || 0]).filter(
+    const items = Object.entries(s.byCategory).filter(
       (x) => x[1] > 0,
     );
     if (!items.length) return '<div class="expense-empty">暂无分类数据</div>';
@@ -114,9 +116,9 @@ import {
       .map(
         ([c, v]) =>
           '<div class="expense-category-stat"><span>' +
-          CATEGORY_ICONS[c] +
+          (Object.hasOwn(CATEGORY_ICONS, c) ? CATEGORY_ICONS[c] : "📦") +
           " " +
-          c +
+          escapeText(c) +
           "</span><strong>" +
           money(v) +
           "</strong></div>",
@@ -150,15 +152,25 @@ import {
       ? rows.map(recordHtml).join("")
       : '<div class="expense-empty">' + emptyText + "</div>";
   }
+  function updateCopyPeriod(rows) {
+    const picker = $("copyPeriod");
+    const months = [...new Set([today().slice(0, 7), ...rows.map(r => r.date.slice(0, 7))])].sort().reverse();
+    const selected = picker.value || today().slice(0, 7);
+    picker.replaceChildren(new Option("全部记录", "all"), ...months.map(m => new Option(m.replace("-", "年") + "月", m)));
+    picker.value = months.includes(selected) || selected === "all" ? selected : today().slice(0, 7);
+    const all = picker.value === "all";
+    const label = all ? "全部" : picker.value.replace("-", "年") + "月";
+    const hasRows = rows.some(r => all || r.date.startsWith(picker.value));
+    const button = $("expenseCopySummaryBtn");
+    button.disabled = !hasRows;
+    button.textContent = hasRows ? "📋 复制" + label + "汇总" : all ? "暂无记录" : label + "暂无记录";
+  }
+  $("copyPeriod").addEventListener("change", () => updateCopyPeriod(sorted()));
+  $("backupBeforeClear").addEventListener("click", () => $("expenseDownloadBackupBtn").click());
   function render() {
     const rows = sorted();
+    updateCopyPeriod(rows);
     const month = $("expenseMonthPicker")?.value || monthNow();
-    const copyButton = $("expenseCopySummaryBtn");
-    if (copyButton)
-      copyButton.textContent =
-        month === monthNow()
-          ? "📋 复制本月汇总"
-          : "📋 复制" + month.replace("-", "年") + "月汇总";
     const monthRows = rows.filter(
       (r) => String(r.date || "").slice(0, 7) === month,
     );
@@ -257,238 +269,11 @@ import {
     goto("input");
   }
   function deleteRecord(id) {
-    if (!confirm("确定删除这条记录吗？")) return;
+    const r = load().find(item => item.id === id);
+    if (!r || !confirm("删除 " + r.date + " 的" + r.category + " " + money(r.amount) + "？")) return;
     save(load().filter((r) => r.id !== id));
     render();
     showToast("已删除");
-  }
-  function buildExportHtml() {
-    const rows = sorted();
-    const s = summarize(rows);
-    const trs = rows
-      .map(
-        (r) =>
-          "<tr><td>" +
-          escapeText(r.date) +
-          "</td><td>" +
-          escapeText(r.payment) +
-          "</td><td>" +
-          escapeText(r.category) +
-          '</td><td style="text-align:right">' +
-          money(r.amount) +
-          "</td><td>" +
-          escapeText(r.note || "") +
-          "</td></tr>",
-      )
-      .join("");
-    const cats = CATEGORIES.map(
-      (c) =>
-        "<tr><td>" +
-        c +
-        '</td><td style="text-align:right">' +
-        money(s.byCategory[c] || 0) +
-        "</td></tr>",
-    ).join("");
-    return (
-      '<html><head><meta charset="UTF-8"></head><body><table border="1"><tr><th colspan="5">生活开支记录</th></tr><tr><th>日期</th><th>支付方式</th><th>分类</th><th>金额</th><th>备注</th></tr>' +
-      trs +
-      '<tr></tr><tr><th>汇总</th><th colspan="4"></th></tr><tr><td>开支总金额</td><td style="text-align:right">' +
-      money(s.total) +
-      "</td></tr><tr><td>记录笔数</td><td>" +
-      s.count +
-      ' 笔</td></tr><tr><td>现金总额</td><td style="text-align:right">' +
-      money(s.cash) +
-      '</td></tr><tr><td>银行卡总额</td><td style="text-align:right">' +
-      money(s.card) +
-      "</td></tr><tr></tr><tr><th>分类</th><th>金额</th></tr>" +
-      cats +
-      "</table></body></html>"
-    );
-  }
-
-  function escapeXml(value) {
-    return String(value ?? "").replace(
-      /[<>&"']/g,
-      (ch) =>
-        ({
-          "<": "&lt;",
-          ">": "&gt;",
-          "&": "&amp;",
-          '"': "&quot;",
-          "'": "&apos;",
-        })[ch],
-    );
-  }
-  function utf8Bytes(str) {
-    return new TextEncoder().encode(str);
-  }
-  const EXPENSE_CRC_TABLE = (() => {
-    const table = new Uint32Array(256);
-    for (let n = 0; n < 256; n++) {
-      let c = n;
-      for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
-      table[n] = c >>> 0;
-    }
-    return table;
-  })();
-  function crc32(bytes) {
-    let c = 0xffffffff;
-    for (let i = 0; i < bytes.length; i++)
-      c = EXPENSE_CRC_TABLE[(c ^ bytes[i]) & 0xff] ^ (c >>> 8);
-    return (c ^ 0xffffffff) >>> 0;
-  }
-  function writeU16(arr, value) {
-    arr.push(value & 255, (value >>> 8) & 255);
-  }
-  function writeU32(arr, value) {
-    arr.push(
-      value & 255,
-      (value >>> 8) & 255,
-      (value >>> 16) & 255,
-      (value >>> 24) & 255,
-    );
-  }
-  function concatBytes(parts) {
-    const total = parts.reduce((sum, part) => sum + part.length, 0);
-    const out = new Uint8Array(total);
-    let offset = 0;
-    parts.forEach((part) => {
-      out.set(part, offset);
-      offset += part.length;
-    });
-    return out;
-  }
-  function makeZip(files) {
-    const localParts = [];
-    const centralParts = [];
-    let offset = 0;
-    files.forEach((file) => {
-      const nameBytes = utf8Bytes(file.name);
-      const dataBytes = utf8Bytes(file.content);
-      const crc = crc32(dataBytes);
-      const local = [];
-      writeU32(local, 0x04034b50);
-      writeU16(local, 20);
-      writeU16(local, 0x0800);
-      writeU16(local, 0);
-      writeU16(local, 0);
-      writeU16(local, 0);
-      writeU32(local, crc);
-      writeU32(local, dataBytes.length);
-      writeU32(local, dataBytes.length);
-      writeU16(local, nameBytes.length);
-      writeU16(local, 0);
-      const localBytes = concatBytes([
-        new Uint8Array(local),
-        nameBytes,
-        dataBytes,
-      ]);
-      localParts.push(localBytes);
-      const central = [];
-      writeU32(central, 0x02014b50);
-      writeU16(central, 20);
-      writeU16(central, 20);
-      writeU16(central, 0x0800);
-      writeU16(central, 0);
-      writeU16(central, 0);
-      writeU16(central, 0);
-      writeU32(central, crc);
-      writeU32(central, dataBytes.length);
-      writeU32(central, dataBytes.length);
-      writeU16(central, nameBytes.length);
-      writeU16(central, 0);
-      writeU16(central, 0);
-      writeU16(central, 0);
-      writeU16(central, 0);
-      writeU32(central, 0);
-      writeU32(central, offset);
-      centralParts.push(concatBytes([new Uint8Array(central), nameBytes]));
-      offset += localBytes.length;
-    });
-    const centralSize = centralParts.reduce(
-      (sum, part) => sum + part.length,
-      0,
-    );
-    const end = [];
-    writeU32(end, 0x06054b50);
-    writeU16(end, 0);
-    writeU16(end, 0);
-    writeU16(end, files.length);
-    writeU16(end, files.length);
-    writeU32(end, centralSize);
-    writeU32(end, offset);
-    writeU16(end, 0);
-    return concatBytes([...localParts, ...centralParts, new Uint8Array(end)]);
-  }
-  function excelCol(index) {
-    let col = "";
-    index += 1;
-    while (index > 0) {
-      const mod = (index - 1) % 26;
-      col = String.fromCharCode(65 + mod) + col;
-      index = Math.floor((index - mod) / 26);
-    }
-    return col;
-  }
-  function cellXml(cell, r, c) {
-    const obj =
-      cell && typeof cell === "object" && !Array.isArray(cell)
-        ? cell
-        : { v: cell };
-    const v = obj.v ?? "";
-    const style = obj.s ? ' s="' + obj.s + '"' : "";
-    const ref = excelCol(c) + r;
-    const isNumber = typeof v === "number" && isFinite(v);
-    if (v === "") return '<c r="' + ref + '"' + style + "/>";
-    return (
-      '<c r="' +
-      ref +
-      '"' +
-      style +
-      ' t="' +
-      (isNumber ? "n" : "inlineStr") +
-      '">' +
-      (isNumber ? "<v>" + v + "</v>" : "<is><t>" + escapeXml(v) + "</t></is>") +
-      "</c>"
-    );
-  }
-  function sheetXmlAdvanced(rows) {
-    return (
-      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
-      '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">' +
-      '<cols><col min="1" max="1" width="15" customWidth="1"/><col min="2" max="2" width="14" customWidth="1"/><col min="3" max="3" width="14" customWidth="1"/><col min="4" max="4" width="14" customWidth="1"/><col min="5" max="5" width="24" customWidth="1"/></cols>' +
-      "<sheetData>" +
-      rows
-        .map(
-          (row, rIdx) =>
-            '<row r="' +
-            (rIdx + 1) +
-            '">' +
-            row.map((cell, cIdx) => cellXml(cell, rIdx + 1, cIdx)).join("") +
-            "</row>",
-        )
-        .join("") +
-      "</sheetData></worksheet>"
-    );
-  }
-  function xlsxStylesXml() {
-    return (
-      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
-      '<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">' +
-      '<fonts count="5"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/><color rgb="FFFFFFFF"/></font><font><b/><sz val="16"/><name val="Calibri"/><color rgb="FF1D4ED8"/></font><font><b/><sz val="12"/><name val="Calibri"/><color rgb="FF334155"/></font><font><b/><sz val="15"/><name val="Calibri"/><color rgb="FFDC2626"/></font></fonts>' +
-      '<fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF2563EB"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFFF7ED"/><bgColor indexed="64"/></patternFill></fill></fills>' +
-      '<borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FFD1D5DB"/></left><right style="thin"><color rgb="FFD1D5DB"/></right><top style="thin"><color rgb="FFD1D5DB"/></top><bottom style="thin"><color rgb="FFD1D5DB"/></bottom><diagonal/></border></borders>' +
-      '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>' +
-      '<cellXfs count="6"><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="3" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/><xf numFmtId="0" fontId="4" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"><alignment horizontal="right"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1"><alignment horizontal="right"/></xf></cellXfs>' +
-      '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>' +
-      "</styleSheet>"
-    );
-  }
-  function fixedAmount(n) {
-    return Number(n || 0).toLocaleString("zh-CN", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
   }
   function headerRow(labels) {
     return labels.map((v) => ({ v, s: 1 }));
@@ -501,32 +286,32 @@ import {
       { v: r.date, s: 0 },
       { v: r.payment || "", s: 0 },
       { v: r.category || "", s: 0 },
-      { v: Number(num(r.amount).toFixed(2)), s: 5 },
+      currencyCell(num(r.amount), "usd"),
       { v: r.note || "", s: 0 },
     ];
   }
   function summaryRowsXlsx(title, rows) {
     const s = summarize(rows);
     const out = [
-      [{ v: title, s: 2 }, "", "", "", ""],
+      [{ v: title, s: sheetStyle.bold }, "", "", "", ""],
       [
-        { v: "开支总金额", s: 3 },
-        { v: Number(s.total.toFixed(2)), s: 4 },
+        { v: "开支总金额", s: sheetStyle.total },
+        currencyCell(Number(s.total.toFixed(2)), "usd", "Negative", true),
         "",
         "",
         "",
       ],
-      [{ v: "记录笔数", s: 3 }, { v: s.count + " 笔", s: 4 }, "", "", ""],
+      [{ v: "记录笔数", s: sheetStyle.total }, { v: s.count, s: sheetStyle.bold }, "", "", ""],
       [
-        { v: "现金总额", s: 3 },
-        { v: Number(s.cash.toFixed(2)), s: 4 },
+        { v: "现金总额", s: sheetStyle.total },
+        currencyCell(Number(s.cash.toFixed(2)), "usd", "Neutral", true),
         "",
         "",
         "",
       ],
       [
-        { v: "银行卡总额", s: 3 },
-        { v: Number(s.card.toFixed(2)), s: 4 },
+        { v: "银行卡总额", s: sheetStyle.total },
+        currencyCell(Number(s.card.toFixed(2)), "usd", "Neutral", true),
         "",
         "",
         "",
@@ -534,10 +319,10 @@ import {
       ["", "", "", "", ""],
       [{ v: "分类", s: 1 }, { v: "金额", s: 1 }, "", "", ""],
     ];
-    CATEGORIES.forEach((c) =>
+    Object.keys(s.byCategory).forEach((c) =>
       out.push([
-        { v: c, s: 3 },
-        { v: Number((s.byCategory[c] || 0).toFixed(2)), s: 4 },
+        { v: c, s: sheetStyle.total },
+        currencyCell(Number((s.byCategory[c] || 0).toFixed(2)), "usd"),
         "",
         "",
         "",
@@ -574,13 +359,13 @@ import {
     groups.forEach((g, idx) => {
       if (idx) out.push(blankRow());
       out.push(
-        [{ v: g.period + " 月度记录", s: 2 }, "", "", "", ""],
+        [{ v: g.period + " 月度记录", s: sheetStyle.bold }, "", "", "", ""],
         headerRow(["日期", "支付方式", "分类", "金额", "备注"]),
       );
       g.rows.forEach((r) => out.push(recordRowXlsx(r)));
       out.push(blankRow(), ...summaryRowsXlsx(g.period + " 汇总", g.rows));
     });
-    if (!out.length) out.push([{ v: "暂无记录", s: 2 }, "", "", "", ""]);
+    if (!out.length) out.push([{ v: "暂无记录", s: sheetStyle.bold }, "", "", "", ""]);
     return out;
   }
   function buildYearSheetRows(rows) {
@@ -592,10 +377,10 @@ import {
       const s = summarize(g.rows);
       out.push([
         { v: g.period, s: 0 },
-        { v: Number(s.total.toFixed(2)), s: 5 },
+        currencyCell(Number(s.total.toFixed(2)), "usd", "Negative", false),
         { v: s.count + " 笔", s: 0 },
-        { v: Number(s.cash.toFixed(2)), s: 5 },
-        { v: Number(s.card.toFixed(2)), s: 5 },
+        currencyCell(Number(s.cash.toFixed(2)), "usd", "Neutral", false),
+        currencyCell(Number(s.card.toFixed(2)), "usd", "Neutral", false),
       ]);
     });
     out.push(blankRow(), ...summaryRowsXlsx("年度/全部汇总", rows));
@@ -603,44 +388,11 @@ import {
   }
   function makeXlsxBlob() {
     const rows = sorted();
-    const files = [
-      {
-        name: "[Content_Types].xml",
-        content:
-          '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/worksheets/sheet3.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>',
-      },
-      {
-        name: "_rels/.rels",
-        content:
-          '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>',
-      },
-      {
-        name: "xl/workbook.xml",
-        content:
-          '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="全部记录" sheetId="1" r:id="rId1"/><sheet name="月度记录" sheetId="2" r:id="rId2"/><sheet name="年度记录" sheetId="3" r:id="rId3"/></sheets></workbook>',
-      },
-      {
-        name: "xl/_rels/workbook.xml.rels",
-        content:
-          '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet2.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet3.xml"/><Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>',
-      },
-      { name: "xl/styles.xml", content: xlsxStylesXml() },
-      {
-        name: "xl/worksheets/sheet1.xml",
-        content: sheetXmlAdvanced(buildAllSheetRows(rows)),
-      },
-      {
-        name: "xl/worksheets/sheet2.xml",
-        content: sheetXmlAdvanced(buildMonthSheetRows(rows)),
-      },
-      {
-        name: "xl/worksheets/sheet3.xml",
-        content: sheetXmlAdvanced(buildYearSheetRows(rows)),
-      },
-    ];
-    return new Blob([makeZip(files)], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
+    return makeWorkbook([
+      ["全部记录", buildAllSheetRows(rows)],
+      ["月度记录", buildMonthSheetRows(rows)],
+      ["年度记录", buildYearSheetRows(rows)],
+    ]);
   }
   function blob(name, content, type) {
     return new Blob([content], { type });
@@ -686,10 +438,7 @@ import {
         );
         if (choice === "1") saveImportedRecords(KEY, rows);
         else if (choice === "2")
-          saveImportedRecords(KEY, [
-            ...current,
-            ...rows.filter((r) => !current.some((x) => x.id === r.id)),
-          ]);
+          saveImportedRecords(KEY, mergeRows(current, rows));
         else return;
       } else {
         if (!confirm(`可导入 ${rows.length} 笔开支记录，确认导入吗？`)) return;
@@ -752,7 +501,7 @@ import {
       createdAt: new Date().toISOString(),
     };
     const idx = rows.findIndex((r) => r.id === id);
-    if (idx >= 0) rows[idx] = { ...rows[idx], ...row };
+    if (idx >= 0) rows[idx] = { ...rows[idx], ...row, createdAt: rows[idx].createdAt ?? "" };
     else rows.push(row);
     save(rows);
     resetForm();
@@ -810,7 +559,7 @@ import {
     e.target.value = "";
   });
   $("expenseClearBtn")?.addEventListener("click", () => {
-    if (confirm("确定清空全部数据吗？此操作不可恢复。")) {
+    if (confirm("确定清空全部 " + load().length + " 笔记录吗？如需保留，请取消并先下载备份。")) {
       try {
         clearRecords(KEY);
       } catch {
@@ -822,17 +571,16 @@ import {
     }
   });
   $("expenseCopySummaryBtn")?.addEventListener("click", async () => {
-    const month = $("expenseMonthPicker")?.value || monthNow();
-    const rows = sorted().filter(
-      (r) => String(r.date || "").slice(0, 7) === month,
-    );
+    const month = $("copyPeriod").value;
+    const label = month === "all" ? "全部" : month.replace("-", "年") + "月";
+    const rows = sorted().filter(r => month === "all" || r.date.startsWith(month));
     const s = summarize(rows);
-    const categories = CATEGORIES.filter((c) => s.byCategory[c] > 0)
+    const categories = Object.keys(s.byCategory).filter((c) => s.byCategory[c] > 0)
       .map((c) => c + "：" + money(s.byCategory[c]))
       .join("\n");
     const text =
-      month.replace("-", "年") +
-      "月生活开支汇总\n\n开支总金额：" +
+      label +
+      "生活开支汇总\n\n开支总金额：" +
       money(s.total) +
       "\n记录笔数：" +
       s.count +
@@ -842,7 +590,7 @@ import {
       money(s.card) +
       (categories ? "\n\n分类开支：\n" + categories : "");
     const copied = await copyText(text);
-    showCopyResult(copied, text, month.replace("-", "年") + "月汇总内容");
+    showCopyResult(copied, text, label + "汇总内容");
   });
   // Signal readiness only after import handlers and the rest of the UI are bound.
   $("expenseImportInput")?.setAttribute("data-ready", "true");

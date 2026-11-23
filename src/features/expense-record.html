@@ -340,6 +340,9 @@
               </p>
             </div>
           </div>
+          <label class="copy-period">复制汇总范围
+            <select id="copyPeriod"></select>
+          </label>
           <div class="expense-tools-grid">
             <button
               class="expense-primary-btn"
@@ -370,6 +373,7 @@
             >
               📱 安装到手机
             </button>
+            <button type="button" class="expense-small-btn" id="backupBeforeClear">清空前下载备份</button>
             <button
               class="expense-danger-btn"
               id="expenseClearBtn"
@@ -379,7 +383,7 @@
             </button>
           </div>
           <p class="expense-help">
-            复制汇总后，可直接到微信聊天框粘贴发送。默认复制本月；如果在“查看记录”里选了其他月份，则复制所选月份。
+            复制汇总后，可直接到微信聊天框粘贴发送。可直接选择要复制的月份或全部记录。
             Excel 适合查阅和分享；数据备份可以用于以后导入恢复。
           </p>
           <input

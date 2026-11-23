@@ -92,7 +92,7 @@ test("backup validation rejects malformed rows before saving", async () => {
     [null],
     [{ ...row, date: "2026-02-30" }],
     [{ ...row, amount: Infinity }],
-    [{ ...row, category: "unknown" }],
+    [{ ...row, category: "" }],
     [row, row],
   ])
     assert.throws(() => normalizeBackup(rows, "expense"));
@@ -174,5 +174,36 @@ test("extract only the matching records from full and single ledger backups", as
     }
     await assert.rejects(read(backup("income", books.income), target), /不包含/);
     assert.deepEqual(await read(fullBackup({ ...books, [source]: [] }), target), []);
+  }
+});
+
+test("both standalone tools round-trip signed and zero records through single and full ledger backups", async () => {
+  const { detectBackup, backup, fullBackup, balances, mergeRows } = await import("../src/lib/ledger.js");
+  const sample = { date: "2026-11-01", note: "保留备注", createdAt: "2026-11-01T15:07:00Z" };
+  const fx = [
+    { ...sample, id: "a", usd: 100, rate: 7.2345, cny: 723.41 },
+    { ...sample, id: "b", usd: 20, rate: 7, cny: -140, type: "subtract" },
+    { ...sample, id: "z", usd: 0, rate: 0 },
+  ];
+  const expenses = [{ ...sample, id: "e", amount: 25, payment: "现金", category: "停车" }];
+  const books = {
+    expense: detectBackup(serializeBackup(expenses, "expense")).rows,
+    income: [],
+    remittance: detectBackup(serializeBackup(fx, "fx")).rows,
+  };
+  assert.deepEqual(balances(books), [0, 25, -25, 80, -105, 583.41]);
+  for (const [kind, target] of [["expense", "expense"], ["remittance", "fx"]]) {
+    for (const archive of [backup(kind, books[kind]), fullBackup(books)]) {
+      const records = await readBackupFile(new Blob([JSON.stringify(archive)]), target);
+      const result = detectBackup(serializeBackup(records, target));
+      assert.deepEqual(result.rows, books[kind]);
+      assert.deepEqual(mergeRows(books[kind], result.rows), books[kind]);
+    }
+  }
+  for (const [kind, rows] of [["expense", expenses], ["fx", fx]]) {
+    const bare = rows.map(({ id, ...r }) => r);
+    const file = new Blob([JSON.stringify([...bare, bare[0]])]);
+    const first = await readBackupFile(file, kind);
+    assert.deepEqual(mergeRows(first, await readBackupFile(file, kind)), first);
   }
 });

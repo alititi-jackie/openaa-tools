@@ -502,7 +502,7 @@
   box-shadow: 0 6px 14px rgba(220, 38, 38, 0.18);
 }
 .fx-negative {
-  color: #dc2626 !important;
+  color: #b42318 !important;
 }
 .fx-type-badge {
   display: inline-flex;
@@ -651,3 +651,9 @@
 .fx-share-card:hover .fx-share-arrow {
   transform: translateX(2px);
 }
+
+.copy-period { display: block; margin: 1rem 0; }
+.copy-period select { display: block; max-width: 100%; min-height: 44px; margin-top: .4rem; font: inherit; }
+.fx-stat strong { color: #334155; }
+.fx-stat .fx-positive { color: #067647; }
+.fx-stat .fx-zero { color: #000; }

@@ -157,8 +157,9 @@ function form() {
     );
   return `<h1>${editing ? "编辑" : "记一笔"}${names[kind]}</h1><form class="panel">
  ${input("date", "日期", "date", r.date || today(), "required")}
- ${decimal("usd", "美元金额（USD）", r.amount ?? "", 0.01)}
- ${kind === "remittance" ? decimal("rate", "汇率（1 美元兑换人民币）", r.rate?.toFixed(3) ?? "", 0.001) + `<small id="rate-warning" aria-live="polite">${rateNeedsReview(r.rate) ? "⚠ 汇率可能有误，请核对。" : ""}</small>` + decimal("cny", "人民币金额（CNY）", r.cny ?? "", 0.01) + `<fieldset><legend>计算哪一项</legend><div class="calc">${FX_FIELDS.map((k) => button("target", fxNames[k], `data-field="${k}"`)).join("")}</div></fieldset>` : radios("method", kind === "income" ? "收款方式" : "支付方式", { cash: "现金", card: "银行卡" }, r.method)}
+ ${kind === "remittance" ? '<label>记录类型<select name="type"><option value="add">汇出</option><option value="subtract" ' + (r.type === "subtract" ? "selected" : "") + '>减去（冲正）</option></select></label>' : ""}
+ ${decimal("usd", "美元金额（USD）", r.amount == null ? "" : Math.abs(r.amount), 0.01)}
+ ${kind === "remittance" ? decimal("rate", "汇率（1 美元兑换人民币）", r.rate?.toFixed(3) ?? "", 0.001) + `<small id="rate-warning" aria-live="polite">${rateNeedsReview(r.rate) ? "⚠ 汇率可能有误，请核对。" : ""}</small>` + decimal("cny", "人民币金额（CNY）", r.cny == null ? "" : Math.abs(r.cny), 0.01) + `<fieldset><legend>计算哪一项</legend><div class="calc">${FX_FIELDS.map((k) => button("target", fxNames[k], `data-field="${k}"`)).join("")}</div></fieldset>` : radios("method", kind === "income" ? "收款方式" : "支付方式", { cash: "现金", card: "银行卡" }, r.method)}
  ${kind === "expense" ? radios("category", "开支分类", Object.fromEntries([...new Set([...categories, r.category].filter(Boolean))].map((x) => [x, x])), r.category) : ""}
  <label>备注（选填）<textarea name="note" maxlength="10000" rows="2">${escape(r.note)}</textarea></label>
  <div class="controls">${button("cancel", "取消")}<button class="primary" type="submit">保存</button></div></form>`;
@@ -189,12 +190,13 @@ function picker() {
         : "")
   );
 }
+const netTone = n => n < 0 ? "expense" : n > 0 ? "income" : "zero";
 function stats(k, rows) {
   const t = totals(k, rows);
   return k === "remittance"
     ? [
-        ["汇出美元", money(t.usd)],
-        ["折合人民币", money(t.cny, "¥")],
+        ["净汇出美元", money(t.usd), netTone(t.usd)],
+        ["折合人民币", money(t.cny, "¥"), netTone(t.cny)],
         ["平均汇率", t.count ? t.rate.toFixed(3) : "—"],
         ["汇款笔数", t.count + " 笔"],
       ]
@@ -213,7 +215,7 @@ function details(rows) {
   return rows
     .map(
       (r) =>
-        `<article class="record"><div><b>${escape(r.category || (kind === "remittance" ? "汇款" : r.method === "cash" ? "现金收入" : "银行卡收入"))}</b><span>${money(r.amount)}</span></div><small>${escape(r.date)} · ${kind === "remittance" ? money(r.cny, "¥") + " · 汇率 " + r.rate.toFixed(3) : r.method === "cash" ? "现金" : "银行卡"}</small>${r.note ? `<p>${escape(r.note)}</p>` : ""}<footer>${button("edit", "编辑", `data-id="${escape(r.id)}"`)}${button("delete", "删除", `data-id="${escape(r.id)}"`)}</footer></article>`,
+        `<article class="record"><div><b>${escape(r.category || (kind === "remittance" ? (r.type === "subtract" ? "汇款冲正" : "汇款") : r.method === "cash" ? "现金收入" : "银行卡收入"))}</b><span>${money(r.amount)}</span></div><small>${escape(r.date)} · ${kind === "remittance" ? money(r.cny, "¥") + " · 汇率 " + r.rate.toFixed(3) : r.method === "cash" ? "现金" : "银行卡"}</small>${r.note ? `<p>${escape(r.note)}</p>` : ""}<footer>${button("edit", "编辑", `data-id="${escape(r.id)}"`)}${button("delete", "删除", `data-id="${escape(r.id)}"`)}</footer></article>`,
     )
     .join("");
 }
@@ -236,7 +238,7 @@ function balancePairs(books, mode) {
     ["生活开支", money(-expense), "expense"],
     ["扣除开支后剩余", money(first), first < 0 ? "expense" : "neutral"],
     ["汇出美元", money(-usd)],
-    [span + "结余", money(net), net < 0 ? "expense" : net > 0 ? "income" : "zero"],
+    [span + "结余", money(net), netTone(net)],
     ["汇款折合人民币", money(cny, "¥")],
   ];
 }
@@ -292,7 +294,7 @@ function exportsPage() {
   <section class="panel"><h2>汇总文字</h2>${emptyMessage ? `<p>${escape(emptyMessage)}</p>` : button("copy", "复制" + escape(title))}</section>
   <section class="panel"><h2>Excel 表格</h2><p>${all ? "一份 Excel 包含开支、收入、汇款各自的汇总、明细、月度和年度汇总，以及收支总览、收支月度和年度汇总。" : overview ? "逐年列出收支和结余，末行列出全部年份合计。" : "包含本账本全部年份的总合计、逐笔明细、月度汇总和年度汇总。"}</p><div class="controls">${button("excel", "下载" + fileLabel + " Excel")}${button("shareExcel", "分享" + fileLabel + " Excel")}</div></section>
   ${all || !overview ? `<section class="panel"><h2>${backupLabel}备份</h2><p>${backupScope}清除网站数据、重装浏览器或换手机前，请下载 JSON 备份并确认文件已保存。</p><div class="controls">${button("backup", "下载" + backupLabel + "备份")}${button("shareBackup", "分享" + backupLabel + "备份")}</div></section>` : ""}
-  <details class="panel import-fold" ${preview ? "open" : ""}><summary>导入备份</summary><label class="file">选择 JSON 备份文件<input type="file" name="file" accept=".json,application/json"></label>${preview ? importPanel() : ""}${restorableBooks().map(k => button("restore", "恢复" + names[k] + "导入前的记录", `data-restore="${k}"`)).join("")}</details>
+  <details class="panel import-fold" ${preview ? "open" : ""}><summary>导入备份</summary><label class="file">选择 JSON 备份文件<input type="file" name="file" accept=".json,.backup,application/json"></label>${preview ? importPanel() : ""}${restorableBooks().map(k => button("restore", "恢复" + names[k] + "导入前的记录", `data-restore="${k}"`)).join("")}</details>
   ${!overview || all ? `<div class="clear-section">${button("clear", overview ? "清空三个账本" : "清空" + names[kind] + "记录", `data-clear="${clearTarget}" class="clear-entry"`)}</div>` : ""}`;
 }
 function backupFile(target) {
@@ -339,7 +341,11 @@ function importPanel() {
   if (preview.books)
     return `<section class="panel" id="import-preview"><h2>完整备份导入预览</h2><p>${escape(preview.filename)}</p><p>${counts(preview.books)}</p><p>合并会保留已有记录并跳过重复编号。覆盖会替换三个账本，包括备份中为零笔的账本。</p><div class="controls">${button("merge", "合并导入")}${button("replace", "覆盖三个账本")}${button("abort", "取消")}</div></section>`;
   const pick = preview.legacy && preview.kind === "remittance";
-  return `<section class="panel" id="import-preview"><h2>${names[preview.kind]}导入预览</h2><p>${escape(preview.filename)}</p><p>可导入 ${preview.rows.length} 笔。${preview.skipped ? "已排除 " + preview.skipped + " 笔减去记录。" : ""}</p>${pick ? "<p>勾选确实属于汇款的记录。</p>" : ""}<div class="preview-list">${preview.rows.map((r, i) => `<label>${pick ? `<input type="checkbox" data-import="${i}">` : ""}${escape(r.date)} · ${money(r.amount)} ${escape(r.note)}</label>`).join("")}</div><div class="controls">${button("merge", "合并导入")}${button("replace", "覆盖导入")}${button("abort", "取消")}</div></section>`;
+  const amounts = pick ? preview.rows.reduce((sum, row) => {
+    sum[row.type === "subtract" ? 1 : 0] += Math.round(row.amount * 100);
+    return sum;
+  }, [0, 0]) : [];
+  return `<section class="panel" id="import-preview"><h2>${names[preview.kind]}导入预览</h2><p>${escape(preview.filename)}</p><p>可导入 ${preview.rows.length} 笔。</p>${pick ? `<p>汇出 ${money(amounts[0] / 100)}，冲正 ${money(amounts[1] / 100)}。勾选要导入的记录。</p><p data-import-net aria-live="polite">已选 0 笔，净额 $0.00</p>` : ""}<div class="preview-list">${preview.rows.map((r, i) => `<label>${pick ? `<input type="checkbox" data-import="${i}">` : ""}${escape(r.date)} · ${money(r.amount)} ${escape(r.note)}</label>`).join("")}</div><div class="controls">${button("merge", "合并导入")}${button("replace", "覆盖导入")}${button("abort", "取消")}</div></section>`;
 }
 function render() {
   root.innerHTML =
@@ -480,6 +486,7 @@ root.addEventListener(
     const row = normalize(kind, {
       ...values,
       id: editing?.id,
+      createdAt: editing?.createdAt,
       amount: values.usd,
     });
     const unusualExpense =
@@ -488,7 +495,7 @@ root.addEventListener(
       return;
     if (kind === "remittance") {
       const warnings = [];
-      if (row.amount < 20 || row.amount > 100000)
+      if (Math.abs(row.amount) < 20 || Math.abs(row.amount) > 100000)
         warnings.push(`汇款金额为 ${money(row.amount)}，请核对金额。`);
       if (rateNeedsReview(row.rate))
         warnings.push(
@@ -515,6 +522,11 @@ root.addEventListener(
   "change",
   guarded(async (e) => {
     const field = e.target;
+    if (field.matches("[data-import]") && preview?.rows) {
+      const checked = [...root.querySelectorAll("[data-import]:checked")];
+      const cents = checked.reduce((sum, box) => sum + Math.round(preview.rows[Number(box.dataset.import)].amount * 100), 0);
+      root.querySelector("[data-import-net]").textContent = "已选 " + checked.length + " 笔，净额 " + money(cents / 100);
+    }
     if (["month", "year"].includes(field.name) && field.value) {
       filter()[field.name] = field.value;
       render();

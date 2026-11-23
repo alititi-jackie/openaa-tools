@@ -45,7 +45,7 @@ test("strict dates, cents, native routing and weighted exchange", () => {
     211547 / 30000,
   );
 });
-test("legacy currency conversion preserves actual CNY, omits deductions", () => {
+test("legacy currency conversion preserves actual CNY, includes deductions", () => {
   const parsed = parseBackup("remittance", {
     app: "OpenAA USD RMB Rate Records",
     records: [
@@ -54,10 +54,10 @@ test("legacy currency conversion preserves actual CNY, omits deductions", () => 
       { id: "c", date: expense.date, usd: 4, rate: 7 },
     ],
   });
-  assert.equal(parsed.skipped, 1);
+  assert.equal(parsed.skipped, 0);
   assert.deepEqual(
     parsed.rows.map((r) => r.cny),
-    [715.47, 28],
+    [715.47, -35, 28],
   );
   const old = { ...expense, payment: "银行卡" };
   assert.equal(parseBackup("expense", [old]).rows[0].method, "card");
@@ -171,7 +171,7 @@ test("year with remittances only has a negative USD balance in summary and full 
   for (const kind of ["summary", "all"]) {
     const xml = await reportXlsx(kind, books).text();
     assert.ok(xml.includes('<c r="F2" s="8" t="n"><v>-100</v>'));
-    assert.ok(xml.includes('<c r="G2" t="n"><v>715.47</v>'));
+    assert.ok(xml.includes('<c r="G2" s="19" t="n"><v>715.47</v>'));
   }
 });
 
