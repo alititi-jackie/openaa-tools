@@ -52,7 +52,12 @@ test("ledger tabs share a favorite with the tool library home", async ({ page })
   await page.goto(path);
   const star = page.locator('[data-fav-toggle="life-ledger"]');
   await page.setViewportSize({ width: 390, height: 500 });
-  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.evaluate(() => {
+    const ledger = document.querySelector("#ledger");
+    // The guide list follows the ledger. Scroll within the ledger itself:
+    // a sticky child should not remain pinned once its parent has ended.
+    window.scrollTo(0, ledger.getBoundingClientRect().top + window.scrollY + 350);
+  });
   await expect.poll(() => page.evaluate(() => {
     const bottom = document.querySelector(".site-header").getBoundingClientRect().bottom;
     const tabs = document.querySelector("#ledger .book").getBoundingClientRect();
