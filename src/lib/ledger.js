@@ -400,8 +400,14 @@ function amountCell(value, kind, total = false) {
 }
 function balanceRow(label, books, total = false) {
   const values = balances(books);
-  const roles = ["income", "expense", values[2] < 0 ? "expense" : "", "", values[4] < 0 ? "expense" : "", ""];
-  return [amountCell(label, "", total), ...values.map((value, index) => amountCell(value, roles[index], total))];
+  const [income, expense, remaining, remitted, net, cny] = values;
+  const usd = (value, tone) => cell(value, sheetStyle["usd" + tone + (total ? "Total" : "")]);
+  return [
+    amountCell(label, "", total), amountCell(income, "income", total),
+    amountCell(expense, "expense", total), usd(remaining, remaining < 0 ? "Negative" : "Neutral"),
+    amountCell(remitted, "", total), usd(net, net < 0 ? "Negative" : net > 0 ? "Positive" : "Zero"),
+    amountCell(cny, "", total),
+  ];
 }
 function balancePeriods(books, length) {
   const groups = new Map();
