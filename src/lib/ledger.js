@@ -120,7 +120,7 @@ export function backup(kind, rows) {
 }
 function validateImportedRates(kind, rows) {
   if (kind === "remittance") rows.forEach((row, i) => {
-    check(row.rate > 0, "汇款第 " + (i + 1) + " 笔的汇率必须大于零。");
+    check(row.rate > 0 || (row.amount === 0 && row.cny === 0), "汇款第 " + (i + 1) + " 笔的汇率必须大于零。");
   });
   return rows;
 }
