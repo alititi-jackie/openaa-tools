@@ -170,7 +170,7 @@ test("year with remittances only has a negative USD balance in summary and full 
   const books = { expense: [], income: [], remittance: [remit] };
   for (const kind of ["summary", "all"]) {
     const xml = await reportXlsx(kind, books).text();
-    assert.ok(xml.includes('<c r="F2" t="n"><v>-100</v>'));
+    assert.ok(xml.includes('<c r="F2" s="2" t="n"><v>-100</v>'));
     assert.ok(xml.includes('<c r="G2" t="n"><v>715.47</v>'));
   }
 });

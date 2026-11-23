@@ -120,10 +120,19 @@ function home() {
     )
     .join(
       "",
-    )}</div>${button("install", "添加到手机主屏幕", `class="install-entry" ${isInstalled() ? "hidden" : ""}`)}<small class="install-tip">添加后，使用「生活账本」就更方便。</small>${safetyNote("数据安全说明", "OpenAA 重视用户隐私与数据安全。本工具不会上传、存储或同步任何记录到服务器，所有数据仅保存在您当前使用的浏览器中。清理缓存、清除网站数据、重装浏览器或更换设备前，请先导出 Excel 或数据备份。")}<p class="storage-note">账目仅保存在当前浏览器。清除网站数据或换手机前，请先下载备份。 <a href="./guide/">使用说明</a></p>`;
+    )}</div>${button("install", "添加到手机主屏幕", `class="install-entry" ${isInstalled() ? "hidden" : ""}`)}<small class="install-tip">添加后，使用「生活账本」就更方便。</small>${currentMonthCard()}${safetyNote("数据安全说明", "OpenAA 重视用户隐私与数据安全。本工具不会上传、存储或同步任何记录到服务器，所有数据仅保存在您当前使用的浏览器中。清理缓存、清除网站数据、重装浏览器或更换设备前，请先导出 Excel 或数据备份。")}<p class="storage-note">账目仅保存在当前浏览器。清除网站数据或换手机前，请先下载备份。 <a href="./guide/">使用说明</a></p>`;
 }
 const input = (name, label, type, value, extra = "") =>
   `<label>${label}<input name="${name}" type="${type}" value="${escape(value)}" ${extra}></label>`;
+function currentMonthCard() {
+  const month = today().slice(0, 7);
+  const rows = load(kind).filter(row => row.date.startsWith(month));
+  const content = rows.length
+    ? statGrid(stats(kind, rows))
+    : '<p class="panel month-empty">本月暂无记录，<button type="button" class="month-add" data-action="month-add">去记一笔</button></p>';
+  return `<section><h2>本月数据</h2>${content}</section>`;
+}
+
 function radios(name, label, values, current) {
   return `<fieldset data-choice><legend>${label}</legend><div class="choices">${Object.entries(
     values,
@@ -190,14 +199,16 @@ function stats(k, rows) {
         ["汇款笔数", t.count + " 笔"],
       ]
     : [
-        [names[k] + "总额", money(t.usd)],
+        [names[k] + "总额", money(t.usd), k],
         ["现金", money(t.cash)],
         ["银行卡", money(t.card)],
         ["记录笔数", t.count + " 笔"],
       ];
 }
+const statItem = ([label, value, tone]) =>
+  `<div><dt>${label}</dt><dd${tone ? ` class="amount-${tone}"` : ""}>${value}</dd></div>`;
 const statGrid = (pairs) =>
-  `<dl class="stats">${pairs.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>`;
+  `<dl class="stats">${pairs.map(statItem).join("")}</dl>`;
 function details(rows) {
   return rows
     .map(
@@ -221,11 +232,11 @@ function balancePairs(books, mode) {
   const [income, expense, first, usd, net, cny] = balances(books);
   const span = { month: "本月", year: "本年", all: "累计" }[mode];
   return [
-    ["收入", money(income)],
-    ["生活开支", "−" + money(expense)],
-    ["扣除开支后剩余", money(first)],
+    ["收入", money(income), "income"],
+    ["生活开支", "−" + money(expense), "expense"],
+    ["扣除开支后剩余", money(first), first < 0 ? "expense" : "neutral"],
     ["汇出美元", "−" + money(usd)],
-    [span + "结余", money(net)],
+    [span + "结余", money(net), net < 0 ? "expense" : "neutral"],
     ["汇款折合人民币", money(cny, "¥")],
   ];
 }
@@ -236,7 +247,7 @@ function periodBooks() {
 }
 function summary() {
   const pairs = balancePairs(periodBooks(), filter().mode);
-  return `<h1>收支总览</h1>${picker()}<h2>${periodName()}收支</h2><dl class="panel balance">${pairs.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl><div class="controls"><button type="button" data-page="export">导出／分享</button></div>`;
+  return `<h1>收支总览</h1>${picker()}<h2>${periodName()}收支</h2><dl class="panel balance">${pairs.map(statItem).join("")}</dl><div class="controls"><button type="button" data-page="export">导出／分享</button></div>`;
 }
 function exportInfo() {
   const all = scope === "all";
@@ -556,11 +567,11 @@ root.addEventListener(
       render();
       return;
     }
-    if (b.dataset.page) {
+    if (b.dataset.page || b.dataset.action === "month-add") {
       editing = null;
       target = "cny";
       lastManual = "rate";
-      go(b.dataset.page);
+      go(b.dataset.page || "form");
       return;
     }
     const a = b.dataset.action,
@@ -675,6 +686,6 @@ root.addEventListener(
   }),
 );
 window.addEventListener("storage", () => {
-  if (kind === "summary" || page === "view") render();
+  if (kind === "summary" || page === "view" || page === "home") render();
 });
 render();

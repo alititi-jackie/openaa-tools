@@ -1,4 +1,4 @@
-import { makeWorkbook } from "./workbook.js";
+import { makeWorkbook, sheetStyle } from "./workbook.js";
 
 const kinds = ["expense", "income", "remittance"];
 const app = "OpenAA Life Ledger";
@@ -391,8 +391,18 @@ const balanceLabels = [
   "扣除汇款后结余（美元）",
   "汇款折合人民币",
 ];
-// Workbook style 4 is the bold red total amount style.
-const amountTotal = (value) => ({ v: value, s: 4 });
+const cell = (v, s) => ({ v, s });
+const headerRow = row => row.map(v => cell(v, sheetStyle.header));
+function amountCell(value, kind, total = false) {
+  if (kind === "income") return cell(value, total ? sheetStyle.incomeTotal : sheetStyle.income);
+  if (kind === "expense") return cell(value, total ? sheetStyle.expenseTotal : sheetStyle.expense);
+  return cell(value, total ? sheetStyle.total : sheetStyle.plain);
+}
+function balanceRow(label, books, total = false) {
+  const values = balances(books);
+  const roles = ["income", "expense", values[2] < 0 ? "expense" : "", "", values[4] < 0 ? "expense" : "", ""];
+  return [amountCell(label, "", total), ...values.map((value, index) => amountCell(value, roles[index], total))];
+}
 function balancePeriods(books, length) {
   const groups = new Map();
   for (const kind of kinds) {
@@ -402,11 +412,11 @@ function balancePeriods(books, length) {
       groups.get(period)[kind].push(row);
     }
   }
-  const rows = [[length === 4 ? "年度" : "月份", ...balanceLabels]];
+  const rows = [headerRow([length === 4 ? "年度" : "月份", ...balanceLabels])];
   for (const period of [...groups.keys()].sort().reverse()) {
-    rows.push([period, ...balances(groups.get(period))]);
+    rows.push(balanceRow(period, groups.get(period)));
   }
-  rows.push(["全部年份合计", ...balances(books).map(amountTotal)]);
+  rows.push(balanceRow("全部年份合计", books, true));
   return rows;
 }
 export function reportXlsx(kind, books) {
@@ -424,28 +434,32 @@ export function reportXlsx(kind, books) {
 }
 function bookSheets(kind, rows) {
   const t = totals(kind, rows);
+  const fx = kind === "remittance";
+  const bold = v => cell(v, sheetStyle.bold);
   const stats = [
     ["统计范围", "全部年份"],
     ["记录笔数", t.count],
-    ["美元合计", amountTotal(t.usd)],
-    ...(kind === "remittance"
-      ? [
-          ["人民币合计", amountTotal(t.cny)],
-          ["平均汇率", +t.rate.toFixed(3)],
-        ]
-      : [
-          ["现金", amountTotal(t.cash)],
-          ["银行卡", amountTotal(t.card)],
-        ]),
+    ["美元合计", amountCell(t.usd, kind, true)],
+    ...(fx
+      ? [["人民币合计", bold(t.cny)], ["平均汇率", +t.rate.toFixed(3)]]
+      : [["现金", t.cash], ["银行卡", t.card]]),
   ];
-  const fx = kind === "remittance";
   const details = table(kind, rows);
-  details.push(fx ? ["合计", amountTotal(t.usd), "", amountTotal(t.cny)] : ["合计", amountTotal(t.usd)]);
+  details[0] = headerRow(details[0]);
+  const totalRow = details[0].map((_, index) => {
+    if (index === 1) return amountCell(t.usd, kind, true);
+    const value = index === 0 ? "合计" : fx && index === 3 ? t.cny : "";
+    return cell(value, sheetStyle.total);
+  });
+  details.push(totalRow);
   function periods(length) {
-    return [...grouped(kind, rows, length), [
-      "合计", t.count, amountTotal(t.usd),
-      ...(fx ? [amountTotal(t.cny), Number(t.rate.toFixed(3))] : [amountTotal(t.cash), amountTotal(t.card)]),
-    ]];
+    const [header, ...data] = grouped(kind, rows, length);
+    const sums = [t.count, t.usd, ...(fx ? [t.cny, Number(t.rate.toFixed(3))] : [t.cash, t.card])];
+    return [
+      headerRow(header),
+      ...data.map(([period, count, usd, ...rest]) => [period, count, amountCell(usd, kind), ...rest]),
+      [cell("合计", sheetStyle.total), ...sums.map((v, index) => amountCell(v, index === 1 ? kind : "", true))],
+    ];
   }
   const name = bookNames[kind];
   return [

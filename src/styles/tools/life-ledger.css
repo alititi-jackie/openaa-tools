@@ -536,3 +536,17 @@ legend {
 }
 
 .ledger-title p { margin: 6px 0 0; font-size: 15px; line-height: 1.5; color: #526174; font-weight: 400; }
+
+.ledger-content .amount-income { color: #067647; }
+.ledger-content .amount-expense { color: #b42318; }
+.ledger-content .amount-neutral { color: #334155; }
+.month-empty { margin: 0 0 12px; }
+.month-add {
+  border: 0;
+  background: transparent;
+  color: var(--blue);
+  font: inherit;
+  padding: 4px 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
