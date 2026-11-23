@@ -16,6 +16,16 @@ const localizedToolNames: Record<string, { en: string; es: string }> = {
 const toolName =
   lang === "zh" ? tool.name : (localizedToolNames[tool.id]?.[lang] ?? tool.name);
 const isLedgerGuide = tool.id === "life-ledger";
+const isLegacyLedgerGuide = tool.id === "expense-record" || tool.id === "usd-rmb";
+const topGuideToolPath = isLegacyLedgerGuide ? "/usa/life-ledger/" : tool.path;
+const topGuideToolName = isLegacyLedgerGuide ? "生活收支账本" : toolName;
+const topGuideDescription = tool.id === "expense-record"
+  ? "免费记录日常开支，也可以管理收入和汇款，支持月度统计和数据备份。"
+  : tool.id === "usd-rmb"
+    ? "记录美元汇款、汇率和人民币金额，也能统一管理生活开支与收入。"
+    : isLedgerGuide
+      ? "先用生活收支账本记录开支、收入和汇款，再查看下面的记账方法与实例。"
+      : L.aside;
 const L = {
   zh: { crumbLabel: "面包屑", home: "工具库", allTools: "全部工具", guideWord: "攻略", aside: "先用工具检查自己的材料，再看下面的中文解释。", faq: "常见问题", check: "检查我的材料", usePrefix: "→ 使用", checkTail: "。按需要继续使用下面的相关工具。", sourcesTitle: "官方来源与适用范围", related: "相关文章" },
   en: { crumbLabel: "Breadcrumb", home: "Tools", allTools: "All tools", guideWord: "Guide", aside: "Try the free tool first, then read the explanation below.", faq: "Frequently asked questions", check: "Try it yourself", usePrefix: "→ Use the ", checkTail: ". Then browse the related tools below if you need more.", sourcesTitle: "Official sources and scope", related: "Related guides" },
@@ -126,8 +136,8 @@ const breadcrumb = {
   >
   <div class="guide-shell">
     <aside class="guide-tool">
-      <a href={tool.path}>→ {toolName}</a><p>
-        {isLedgerGuide ? "先用生活收支账本记录开支、收入和汇款，再查看下面的记账方法与实例。" : L.aside}
+      <a href={topGuideToolPath}>→ {topGuideToolName}</a><p>
+        {topGuideDescription}
       </p>
     </aside><nav class="guide-breadcrumb" aria-label={L.crumbLabel}>
       <a href="/">{L.allTools}</a> / <a href={tool.path}>{toolName}</a> / {L.guideWord}
