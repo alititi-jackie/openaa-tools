@@ -553,29 +553,49 @@ legend {
 }
 
 
-/* Local-only display modes, positioned below the homepage storage note. */
+/* Subtle ledger mode selector, shared across both ledger deployments. */
+.ledger-mode-section {
+  margin: 14px 0 26px;
+}
+.ledger-mode-title {
+  margin: 0 0 5px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #334155;
+}
+.ledger-mode-description {
+  margin: 0 0 12px;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.7;
+}
 .ledger-mode {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 9px;
-  margin: 14px 0 26px;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 10px;
+  background: #f1f5f9;
 }
 .ledger-mode button {
   min-width: 0;
-  padding: 11px 5px;
-  border: 1px solid #cbd5e1;
-  border-radius: 9px;
-  background: #fff;
-  color: #23405c;
+  padding: 8px 3px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: #64748b;
   font: inherit;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 400;
+  white-space: nowrap;
   cursor: pointer;
 }
 .ledger-mode button[aria-pressed="true"] {
-  background: #245dcc;
-  border-color: #245dcc;
-  color: #fff;
+  background: #fff;
+  border-color: #e2e8f0;
+  color: #334155;
+  font-weight: 600;
 }
 .ledger-mode button:focus-visible {
   outline: 3px solid #93c5fd;
@@ -592,7 +612,7 @@ legend {
 .ledger-faq h3 { margin: 19px 0 7px; font-size: 16px; line-height: 1.5; }
 .ledger-faq p { margin: 0; color: #475569; font-size: 14px; line-height: 1.8; }
 @media (max-width: 540px) {
-  .ledger-mode { gap: 5px; }
-  .ledger-mode button { padding: 11px 1px; font-size: 12px; white-space: nowrap; }
+  .ledger-mode { gap: 3px; padding: 3px; }
+  .ledger-mode button { padding: 8px 0; font-size: 12px; }
   .ledger-faq { padding: 16px 15px; }
 }
