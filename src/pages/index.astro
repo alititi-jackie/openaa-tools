@@ -77,6 +77,11 @@ const ecoCards = homeEcoCards();
       {
         categories.map((c) => {
           const items = tools.filter((t) => t.category === c.id);
+          if (c.id === "usa") {
+            // Legacy record tools stay visible but come after all other US-life tools.
+            const legacyIds = new Set(["expense-record", "usd-rmb"]);
+            items.sort((a, b) => Number(legacyIds.has(a.id)) - Number(legacyIds.has(b.id)));
+          }
           return (
             <section
               class="tool-group"
