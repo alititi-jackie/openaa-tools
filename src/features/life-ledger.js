@@ -63,7 +63,18 @@ const today = () => {
     String(d.getDate()).padStart(2, "0"),
   ].join("-");
 };
-let kind = "expense",
+const displayModeKey = "openaa_life_ledger_display_mode_v1";
+const validDisplayModes = ["full", "expense", "remittance"];
+function savedDisplayMode() {
+  try {
+    const value = localStorage.getItem(displayModeKey);
+    return validDisplayModes.includes(value) ? value : "full";
+  } catch {
+    return "full";
+  }
+}
+let displayMode = savedDisplayMode();
+let kind = displayMode === "remittance" ? "remittance" : "expense",
   page = "home",
   scope = "current",
   editing = null,
@@ -100,6 +111,28 @@ function nav(labels, attr, current, title) {
 function safetyNote(title, message) {
   return `<div class="expense-safety-note" role="note" aria-label="${title}"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg><div><strong>${title}</strong><p>${message}</p></div></div>`;
 }
+function modeSwitcher() {
+  return `<nav class="ledger-mode" aria-label="账本显示版本">${[
+    ["full", "完整账本"],
+    ["expense", "开支版"],
+    ["remittance", "汇款版"],
+  ].map(([value, label]) => `<button type="button" data-display-mode="${value}" aria-pressed="${displayMode === value}">${label}</button>`).join("")}</nav>`;
+}
+function ledgerFaq() {
+  return `<section class="ledger-faq" aria-labelledby="ledger-faq-title">
+    <h2 id="ledger-faq-title">常见问题</h2>
+    <h3>完整账本、开支版和汇款版有什么区别？</h3>
+    <p>三个版本使用同一份账目。完整账本可以切换开支、收入、汇款和汇总；开支版只显示开支功能；汇款版只显示汇款功能。切换版本不会删除其他账目。</p>
+    <h3>下次打开还会保留我选择的版本吗？</h3>
+    <p>会。同一浏览器保留网站数据时，会记住上次选择。清除网站数据或换设备后会恢复默认的完整账本。</p>
+    <h3>开支版可以导入含收入和汇款的完整备份吗？</h3>
+    <p>可以。导入时会显示开支、收入和汇款各自的笔数，合并或覆盖按原规则处理。覆盖三个账本会替换三本账的数据，包括备份里为零笔的账本；切回完整账本即可查看其他记录。</p>
+    <h3>数据会上传服务器或自动同步到其他手机吗？</h3>
+    <p>不会。记录只保存在当前浏览器，不能自动同步到其他设备或不同域名的网站。建议定期下载 JSON 备份；Excel 主要用于查看和分享。</p>
+    <h3>换手机或清除浏览器数据前怎么办？</h3>
+    <p>先在「导出／分享」选择「全部记录」，下载完整 JSON 备份并确认文件已保存；到新设备打开账本后再导入。仅保存 Excel 不能代替用于恢复数据的 JSON 备份。</p>
+  </section>`;
+}
 function home() {
   const subtitles = {
     form:
@@ -120,7 +153,7 @@ function home() {
     )
     .join(
       "",
-    )}</div>${button("install", "添加到手机主屏幕", `class="install-entry" ${isInstalled() ? "hidden" : ""}`)}<small class="install-tip">添加后，使用「生活账本」就更方便。</small>${currentMonthCard()}${safetyNote("数据安全说明", "OpenAA 重视用户隐私与数据安全。本工具不会上传、存储或同步任何记录到服务器，所有数据仅保存在您当前使用的浏览器中。清理缓存、清除网站数据、重装浏览器或更换设备前，请先导出 Excel 或数据备份。")}<p class="storage-note">账目仅保存在当前浏览器。清除网站数据或换手机前，请先下载备份。 <a href="./guide/">使用说明</a></p>`;
+    )}</div>${button("install", "添加到手机主屏幕", `class="install-entry" ${isInstalled() ? "hidden" : ""}`)}<small class="install-tip">添加后，使用「生活账本」就更方便。</small>${currentMonthCard()}${safetyNote("数据安全说明", "OpenAA 重视用户隐私与数据安全。本工具不会上传、存储或同步任何记录到服务器，所有数据仅保存在您当前使用的浏览器中。清理缓存、清除网站数据、重装浏览器或更换设备前，请先导出 Excel 或数据备份。")}<p class="storage-note">账目仅保存在当前浏览器。清除网站数据或换手机前，请先下载备份。 <a href="./guide/">使用说明</a></p>${modeSwitcher()}${ledgerFaq()}`;
 }
 const input = (name, label, type, value, extra = "") =>
   `<label>${label}<input name="${name}" type="${type}" value="${escape(value)}" ${extra}></label>`;
@@ -350,7 +383,7 @@ function importPanel() {
 function render() {
   root.innerHTML =
     '<div class="ledger-title">OpenAA 生活收支账本<p>记下每一笔收支和汇款，随时看看还剩多少。</p></div>' +
-    nav(names, "book", kind, "账本导航") +
+    (displayMode === "full" ? nav(names, "book", kind, "账本导航") : "") +
     `<div class="ledger-content">${page !== "home" ? button("back", kind === "summary" ? "‹ 返回收支总览" : "‹ 返回" + names[kind] + "账本", 'class="back"') : ""}${page === "export" ? exportsPage() : kind === "summary" ? summary() : { home, view, form, export: exportsPage }[page]()}</div><output id="site-status" role="status" aria-live="polite"></output>`;
   if (page === "form") markTarget();
 }
@@ -562,6 +595,19 @@ root.addEventListener(
   guarded(async (e) => {
     const b = e.target.closest("button");
     if (!b) return;
+    if (b.dataset.displayMode) {
+      const next = b.dataset.displayMode;
+      if (!validDisplayModes.includes(next)) return;
+      const previous = kind;
+      displayMode = next;
+      if (next !== "full") kind = next;
+      else if (previous === "expense" || previous === "remittance") kind = previous;
+      else kind = "expense";
+      editing = null;
+      try { localStorage.setItem(displayModeKey, displayMode); } catch { /* Browsers may block storage. */ }
+      go("home", false);
+      return;
+    }
     if (b.dataset.book) {
       kind = b.dataset.book;
       editing = null;
