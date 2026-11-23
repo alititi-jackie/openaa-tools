@@ -1,6 +1,6 @@
 import { installLedger, isInstalled } from "../lib/install-ledger.js";
 import {
-  normalize,
+  normalize, checkEdit, recoverBook,
   totals,
   backup,
   detectBackup,
@@ -154,7 +154,7 @@ function home() {
     )
     .join(
       "",
-    )}</div>${button("install", "添加到手机主屏幕", `class="install-entry" ${isInstalled() ? "hidden" : ""}`)}<small class="install-tip">添加后，使用「生活账本」就更方便。</small>${currentMonthCard()}${safetyNote("数据安全说明", "OpenAA 重视用户隐私与数据安全。本工具不会上传、存储或同步任何记录到服务器，所有数据仅保存在您当前使用的浏览器中。清理缓存、清除网站数据、重装浏览器或更换设备前，请先导出 Excel 或数据备份。")}<p class="storage-note">账目仅保存在当前浏览器。清除网站数据或换手机前，请先下载备份。 <a href="./guide/">使用说明</a></p>${modeSwitcher()}${ledgerFaq()}`;
+    )}</div>${button("install", "添加到手机主屏幕", `class="install-entry" ${isInstalled() ? "hidden" : ""}`)}<small class="install-tip">添加后，使用「生活账本」就更方便。</small>${currentMonthCard()}${safetyNote("数据安全说明", "OpenAA 重视用户隐私与数据安全。本工具不会上传、存储或同步任何记录到服务器，所有数据仅保存在您当前使用的浏览器中。清理缓存、清除网站数据、重装浏览器或更换设备前，请先下载 JSON 备份。Excel 用于查看和打印。")}<p class="storage-note">账目仅保存在当前浏览器。清除网站数据或换手机前，请先下载备份。 <a href="./guide/">使用说明</a></p>${modeSwitcher()}${ledgerFaq()}`;
 }
 const input = (name, label, type, value, extra = "") =>
   `<label>${label}<input name="${name}" type="${type}" value="${escape(value)}" ${extra}></label>`;
@@ -382,6 +382,31 @@ function importPanel() {
   return `<section class="panel" id="import-preview"><h2>${names[preview.kind]}导入预览</h2><p>${escape(preview.filename)}</p><p>可导入 ${preview.rows.length} 笔。</p>${pick ? `<p>汇出 ${money(amounts[0] / 100)}，冲正 ${money(amounts[1] / 100)}。勾选要导入的记录。</p><p data-import-net aria-live="polite">已选 0 笔，净额 $0.00</p>` : ""}<div class="preview-list">${preview.rows.map((r, i) => `<label>${pick ? `<input type="checkbox" data-import="${i}">` : ""}${escape(r.date)} · ${money(r.amount)} ${escape(r.note)}</label>`).join("")}</div><div class="controls">${button("merge", "合并导入")}${button("replace", "覆盖导入")}${button("abort", "取消")}</div></section>`;
 }
 function render() {
+  try {
+    renderLedger();
+  } catch (error) {
+    if (!error.kind && error.name !== "SecurityError") throw error;
+    if (!error.kind) {
+      root.textContent = "浏览器禁止访问本地存储。请允许此网站使用本地存储，然后刷新。";
+      return;
+    }
+    const label = names[error.kind];
+    root.innerHTML = `<section class="panel"><h1>${label}账本读取失败</h1><p>原始数据已保留。可以先下载原始数据，再选择 JSON 备份恢复这个账本。</p><button type="button" data-raw>下载原始数据</button><label>从 JSON 备份恢复<input type="file" accept=".json,.backup" data-recover></label></section>`;
+    root.querySelector("[data-raw]").onclick = () => download(new Blob([error.raw]), label + "-原始数据.json");
+    root.querySelector("[data-recover]").onchange = guarded(async event => {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (file.size > 16 * 1024 * 1024) throw Error("备份超过 16 MB。");
+      const parsed = detectBackup(await file.text());
+      const rows = parsed.books?.[error.kind] ?? (parsed.kind === error.kind ? parsed.rows : null);
+      if (!rows) throw Error("请选择包含" + label + "记录的备份。");
+      if (!confirm("确认用 " + rows.length + " 笔记录恢复" + label + "账本？")) return;
+      recoverBook(error.kind, error.raw, rows);
+      render();
+    });
+  }
+}
+function renderLedger() {
   root.innerHTML =
     '<div class="ledger-title">OpenAA 生活收支账本<p>记下每一笔收支和汇款，随时看看还剩多少。</p></div>' +
     (displayMode === "full" ? nav(names, "book", kind, "账本导航") : "") +
@@ -538,8 +563,7 @@ root.addEventListener(
       if (warnings.length && !(await confirmTransfer(warnings))) return;
     }
     const rows = load(kind);
-    if (editing && !rows.some((r) => r.id === editing.id))
-      throw new Error("此记录已删除，请重新打开查看。");
+    if (editing) checkEdit(editing, rows);
     save(
       kind,
       editing
@@ -719,10 +743,11 @@ root.addEventListener(
           !confirm(`确认用「${preview.filename}」覆盖三个账本？备份包含${counts(preview.books)}。`)
         )
           return;
-        importBooks(preview.books, a);
+        const before = JSON.stringify(readBooks());
+        const changed = JSON.stringify(importBooks(preview.books, a)) !== before;
         preview = null;
         render();
-        showFeedback("三个账本已完成导入");
+        showFeedback(changed ? "三个账本已完成导入" : "账目没有变化");
         return;
       }
       let rows = preview.rows;
@@ -737,10 +762,11 @@ root.addEventListener(
         !confirm(`确认用「${preview.filename}」的 ${rows.length} 笔记录覆盖全部${names[preview.kind]}记录？`)
       )
         return;
-      importRows(preview.kind, rows, a);
+      const before = JSON.stringify(load(preview.kind));
+      const changed = JSON.stringify(importRows(preview.kind, rows, a)) !== before;
       preview = null;
       render();
-      showFeedback("已完成导入");
+      showFeedback(changed ? "已完成导入" : "账目没有变化");
     }
   }),
 );

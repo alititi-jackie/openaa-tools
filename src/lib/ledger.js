@@ -118,6 +118,12 @@ export function backup(kind, rows) {
   check(new Blob([JSON.stringify(data)]).size <= maxBytes, "备份超过 5 MB。");
   return data;
 }
+function validateImportedRates(kind, rows) {
+  if (kind === "remittance") rows.forEach((row, i) => {
+    check(row.rate > 0, "汇款第 " + (i + 1) + " 笔的汇率必须大于零。");
+  });
+  return rows;
+}
 export function detectBackup(text) {
   let data;
   try { data = JSON.parse(text); }
@@ -144,7 +150,7 @@ export function parseBackup(kind, input) {
   const data = JSON.parse(text);
   if (data?.app === app) {
     check(data.kind === kind && data.version === 1, "备份账本或版本不匹配。");
-    return { rows: checked(kind, data.records), legacy: false, skipped: 0 };
+    return { rows: validateImportedRates(kind, checked(kind, data.records)), legacy: false, skipped: 0 };
   }
   const bare = Array.isArray(data);
   check(
@@ -175,7 +181,7 @@ export function parseBackup(kind, input) {
       });
     }
   }
-  return { rows: checked(kind, rows), legacy: true, skipped: 0 };
+  return { rows: validateImportedRates(kind, checked(kind, rows)), legacy: true, skipped: 0 };
 }
 export function mergeRows(existing, incoming) {
   const incomingIds = new Set(incoming.map((row) => row.id));
@@ -203,7 +209,11 @@ export function mergeRows(existing, incoming) {
 }
 export function load(kind) {
   const raw = localStorage.getItem(key(kind));
-  return raw === null ? [] : checked(kind, JSON.parse(raw));
+  try {
+    return raw === null ? [] : checked(kind, JSON.parse(raw));
+  } catch (cause) {
+    throw Object.assign(new Error("账本记录读取失败"), { kind, raw, cause });
+  }
 }
 export function save(kind, rows) {
   const records = backup(kind, rows).records;
@@ -215,6 +225,7 @@ export function importRows(kind, rows, mode = "merge") {
   const old = load(kind);
   const next = mode === "merge" ? mergeRows(old, rows) : rows;
   const normalized = backup(kind, next).records;
+  if (JSON.stringify(old) === JSON.stringify(normalized)) return old;
   const snap = key(kind) + "_before_import";
   const prior = localStorage.getItem(snap);
   localStorage.setItem(snap, JSON.stringify(old));
@@ -344,7 +355,9 @@ export function parseFullBackup(input) {
       data.books,
     "请选择整本账本备份。",
   );
-  return fullBackup(data.books).books;
+  const books = fullBackup(data.books).books;
+  validateImportedRates("remittance", books.remittance);
+  return books;
 }
 // Apply all validated writes together, restoring prior values if a quota error interrupts them.
 function commitStorage(changes) {
@@ -379,6 +392,7 @@ export function importBooks(books, mode = "merge") {
   );
   const changes = [];
   for (const kind of kinds) {
+    if (JSON.stringify(old[kind]) === JSON.stringify(next[kind])) continue;
     changes.push(
       [key(kind) + "_before_import", JSON.stringify(old[kind])],
       [key(kind), JSON.stringify(next[kind])],
@@ -495,4 +509,15 @@ function bookSheets(kind, rows) {
     [name + "汇总", stats], [name + "明细", details],
     [name + "月度汇总", periods(7)], [name + "年度汇总", periods(4)],
   ];
+}
+
+export function recoverBook(kind, expectedRaw, rows) {
+  const value = JSON.stringify(backup(kind, rows).records);
+  check(localStorage.getItem(key(kind)) === expectedRaw, "账目已变化，请刷新后重试。");
+  commitStorage([[key(kind) + "_damaged", expectedRaw], [key(kind), value]]);
+}
+export function checkEdit(original, rows) {
+  const current = rows.find(row => row.id === original.id);
+  check(current, "此记录已删除，请重新打开查看。");
+  check(JSON.stringify(current) === JSON.stringify(original), "此记录已在另一页面修改。请保留需要的内容，重新打开这笔记录后再编辑。");
 }

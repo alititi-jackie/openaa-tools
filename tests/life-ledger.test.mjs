@@ -186,3 +186,17 @@ test("import identifies the destination from the file", () => {
   assert.throws(() => detectBackup("[]"));
   assert.throws(() => detectBackup("{}"));
 });
+
+test("duplicate import preserves undo and stale edits are rejected", async () => {
+  const { checkEdit } = await import("../src/lib/ledger.js");
+  const data = new Map();
+  globalThis.localStorage = {getItem: k => data.get(k) ?? null, setItem: (k,v) => data.set(k,v), removeItem: k => data.delete(k)};
+  save("expense", [expense]);
+  const changed = {...expense, id: "second"};
+  importRows("expense", [changed]);
+  importRows("expense", [changed]);
+  importBooks(readBooks());
+  assert.deepEqual(restore("expense"), [normalize("expense", expense)]);
+  assert.throws(() => checkEdit(expense, [{...expense, amount: 60}]), /另一页面/);
+  assert.throws(() => parseBackup("remittance", backup("remittance", [{...remit, rate: 0}])), /第 1 笔/);
+});
