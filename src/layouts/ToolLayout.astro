@@ -5,13 +5,12 @@ import BaseLayout from "./BaseLayout.astro";
 import ToolCard from "../components/tools/ToolCard.astro";
 import { relatedTools, type Tool } from "../data/tools";
 import { ecoLinkFor } from "../data/eco-links";
-import { guidesForTool } from "../data/guides";
+import RelatedGuides from "../components/tools/RelatedGuides.astro";
 interface Props {
   tool: Tool;
 }
 const { tool } = Astro.props;
 const related = relatedTools(tool);
-const relatedGuides = guidesForTool(tool.id);
 const eco = ecoLinkFor(tool);
 const styles = import.meta.glob("../styles/tools/*.css", {
   query: "?url",
@@ -66,25 +65,7 @@ const hasManifest = ["expense-record", "usd-rmb", "nyc-attractions"].includes(
     >
       {tool.category === "dmv" && <DmvNavigation current={tool.id} />}<slot />
     </article>
-    {
-      relatedGuides.length > 0 && (
-        <section class="related-tools">
-          <>
-            <h2>相关攻略 / 常见问题</h2>
-            <div style="display:grid;gap:10px">
-              {relatedGuides.map((g) => (
-                <a
-                  style="display:block;padding:14px 16px;border:1px solid #e5e7eb;border-radius:12px;background:#fff"
-                  href={g.path}
-                >
-                  {g.title} →
-                </a>
-              ))}
-            </div>
-          </>
-        </section>
-      )
-    }
+    <RelatedGuides toolId={tool.id} />
     {
       related.length > 0 && (
         <section class="related-tools">
