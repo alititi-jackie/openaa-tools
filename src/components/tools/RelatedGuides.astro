@@ -1,0 +1,32 @@
+---
+import { guidesForTool } from "../../data/guides";
+interface Props { toolId: string; }
+const { toolId } = Astro.props;
+const relatedGuides = guidesForTool(toolId);
+---
+{relatedGuides.length > 0 && (
+  <section class="related-tools related-guides" aria-labelledby="related-guides-heading">
+    <h2 id="related-guides-heading">相关攻略 / 常见问题</h2>
+    <div class="related-guides-list">
+      {relatedGuides.map((g) => (
+        <a href={g.path}>{g.title} →</a>
+      ))}
+    </div>
+  </section>
+)}
+<style>
+  .related-guides-list { display: grid; gap: 10px; }
+  .related-guides-list a {
+    display: block;
+    padding: 14px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    color: #1d4ed8;
+    text-decoration: none;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+  .related-guides-list a:hover { border-color: #93c5fd; background: #f8fbff; }
+  .related-guides-list a:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+</style>
