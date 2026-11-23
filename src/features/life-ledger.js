@@ -64,7 +64,7 @@ const today = () => {
   ].join("-");
 };
 const displayModeKey = "openaa_life_ledger_display_mode_v1";
-const validDisplayModes = ["full", "expense", "remittance"];
+const validDisplayModes = ["full", "expense", "income", "remittance"];
 function savedDisplayMode() {
   try {
     const value = localStorage.getItem(displayModeKey);
@@ -74,7 +74,7 @@ function savedDisplayMode() {
   }
 }
 let displayMode = savedDisplayMode();
-let kind = displayMode === "remittance" ? "remittance" : "expense",
+let kind = displayMode !== "full" ? displayMode : "expense",
   page = "home",
   scope = "current",
   editing = null,
@@ -115,14 +115,15 @@ function modeSwitcher() {
   return `<nav class="ledger-mode" aria-label="账本显示版本">${[
     ["full", "完整账本"],
     ["expense", "开支版"],
+    ["income", "收入版"],
     ["remittance", "汇款版"],
   ].map(([value, label]) => `<button type="button" data-display-mode="${value}" aria-pressed="${displayMode === value}">${label}</button>`).join("")}</nav>`;
 }
 function ledgerFaq() {
   return `<section class="ledger-faq" aria-labelledby="ledger-faq-title">
     <h2 id="ledger-faq-title">常见问题</h2>
-    <h3>完整账本、开支版和汇款版有什么区别？</h3>
-    <p>三个版本使用同一份账目。完整账本可以切换开支、收入、汇款和汇总；开支版只显示开支功能；汇款版只显示汇款功能。切换版本不会删除其他账目。</p>
+    <h3>完整账本、开支版、收入版和汇款版有什么区别？</h3>
+    <p>四个版本使用同一份账目。完整账本可以切换开支、收入、汇款和汇总；开支版只显示开支功能；收入版只显示收入功能；汇款版只显示汇款功能。切换版本不会删除其他账目。</p>
     <h3>下次打开还会保留我选择的版本吗？</h3>
     <p>会。同一浏览器保留网站数据时，会记住上次选择。清除网站数据或换设备后会恢复默认的完整账本。</p>
     <h3>开支版可以导入含收入和汇款的完整备份吗？</h3>
@@ -601,7 +602,7 @@ root.addEventListener(
       const previous = kind;
       displayMode = next;
       if (next !== "full") kind = next;
-      else if (previous === "expense" || previous === "remittance") kind = previous;
+      else if (previous === "expense" || previous === "income" || previous === "remittance") kind = previous;
       else kind = "expense";
       editing = null;
       try { localStorage.setItem(displayModeKey, displayMode); } catch { /* Browsers may block storage. */ }
