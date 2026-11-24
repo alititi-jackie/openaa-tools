@@ -411,6 +411,11 @@ legend {
   white-space: pre-line;
   line-height: 1.6;
 }
+.ask-confirm .danger {
+  background: #fff5f5;
+  border-color: #dbb8bd;
+  color: #992c3a;
+}
 .install-entry {
   margin-top: 12px;
   min-height: 44px;
@@ -474,17 +479,61 @@ legend {
   padding-top: 18px;
   margin-top: 24px;
 }
-.clear-entry,
-.clear-dialog .danger {
+.clear-entry {
   background: white;
   border: 1px solid #dbb8bd;
   color: #992c3a;
   padding: 10px 14px;
   border-radius: 9px;
 }
-.clear-dialog .danger {
-  color: white;
-  background: #9b2937;
+/* Clear dialog mirrors the account ledger's: stacked layout, text-link
+   backup download, soft blue cancel and soft red confirm buttons. */
+.clear-dialog {
+  width: min(448px, 92vw);
+  border-radius: 16px;
+  padding: 20px;
+}
+.clear-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+.clear-dialog > * + * {
+  margin-top: 16px;
+}
+.clear-dialog p {
+  margin: 0;
+}
+.clear-dialog [role="status"]:empty {
+  display: none;
+}
+.clear-dialog .clear-download {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: #1d4ed8;
+  text-decoration: underline;
+  font-size: 15px;
+  cursor: pointer;
+}
+.clear-dialog .clear-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.clear-dialog .clear-actions button {
+  min-height: 44px;
+  padding: 10px 14px;
+  border-radius: 9px;
+  font-size: 15px;
+}
+.clear-dialog .clear-cancel {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+}
+.clear-dialog .clear-confirm {
+  background: #fff5f5;
+  border: 1px solid #dbb8bd;
+  color: #992c3a;
 }
 
 .expense-safety-note {

@@ -1,11 +1,8 @@
-import { makeWorkbook, sheetStyle, currencyCell } from "./workbook.js";
+import { makeWorkbook, ST } from "./ledger-workbook.js";
+import { readXlsxSheets } from "./xlsx-read.js";
 
 const kinds = ["expense", "income", "remittance"];
 const app = "OpenAA Life Ledger";
-const legacyApps = {
-  expense: "OpenAA Expense Records",
-  remittance: "OpenAA USD RMB Rate Records",
-};
 const maxBytes = 5 * 1024 * 1024;
 function check(ok, message) {
   if (!ok) throw new Error(message);
@@ -118,70 +115,8 @@ export function backup(kind, rows) {
   check(new Blob([JSON.stringify(data)]).size <= maxBytes, "备份超过 5 MB。");
   return data;
 }
-function validateImportedRates(kind, rows) {
-  if (kind === "remittance") rows.forEach((row, i) => {
-    check(row.rate > 0 || (row.amount === 0 && row.cny === 0), "汇款第 " + (i + 1) + " 笔的汇率必须大于零。");
-  });
-  return rows;
-}
-export function detectBackup(text) {
-  let data;
-  try { data = JSON.parse(text); }
-  catch { throw new Error("文件不是有效的 JSON 备份。"); }
-  if (data?.app === app && data.kind === "all")
-    return { kind: "all", books: parseFullBackup(text) };
-  let kind;
-  if (data?.app === app) kind = data.kind;
-  else if (Array.isArray(data) && data.length) {
-    const expense = data.every(r => r?.payment != null && r.category != null && r.amount != null);
-    const remit = data.every(r => r?.usd != null && r.rate != null);
-    if (expense !== remit) kind = expense ? "expense" : "remittance";
-  } else kind = Object.keys(legacyApps).find(k => legacyApps[k] === data?.app);
-  check(kinds.includes(kind), "无法识别备份类型，请选择账本导出的 JSON 文件。");
-  return { kind, ...parseBackup(kind, text) };
-}
 export function restorableBooks() {
   return kinds.filter(k => localStorage.getItem(key(k) + "_before_import") !== null);
-}
-export function parseBackup(kind, input) {
-  key(kind);
-  const text = typeof input === "string" ? input : JSON.stringify(input);
-  check(new Blob([text]).size <= maxBytes, "备份超过 5 MB。");
-  const data = JSON.parse(text);
-  if (data?.app === app) {
-    check(data.kind === kind && data.version === 1, "备份账本或版本不匹配。");
-    return { rows: validateImportedRates(kind, checked(kind, data.records)), legacy: false, skipped: 0 };
-  }
-  const bare = Array.isArray(data);
-  check(
-    kind !== "income" && (bare || data?.app === legacyApps[kind]),
-    "请选择当前账本的备份。",
-  );
-  const records = bare ? data : data.records;
-  check(Array.isArray(records) && records.length <= 10000, "备份格式无效。");
-  
-  const rows = [];
-  for (const r of records) {
-    check(r && typeof r === "object", "旧记录格式无效。");
-    const id = r.id ?? "legacy-auto-" + crypto.randomUUID();
-    if (kind === "expense") {
-      rows.push({
-        ...r,
-        id,
-        method: { 现金: "cash", 银行卡: "card" }[r.payment],
-      });
-    } else {
-      check(r.usd != null && r.rate != null, "请选择汇款备份。");
-
-      rows.push({
-        ...r,
-        id,
-        amount: r.usd,
-        cny: r.cny ?? Number(r.usd) * Number(r.rate),
-      });
-    }
-  }
-  return { rows: validateImportedRates(kind, checked(kind, rows)), legacy: true, skipped: 0 };
 }
 export function mergeRows(existing, incoming) {
   const incomingIds = new Set(incoming.map((row) => row.id));
@@ -245,76 +180,6 @@ export function restore(kind) {
   localStorage.removeItem(snap);
   return result;
 }
-function table(kind, rows) {
-  const fx = kind === "remittance",
-    expense = kind === "expense";
-  return [
-    fx
-      ? ["日期", "美元", "汇率", "人民币", "备注"]
-      : ["日期", "美元", "收付方式", ...(expense ? ["分类"] : []), "备注"],
-    ...[...rows]
-      .sort((a, b) => b.date.localeCompare(a.date))
-      .map((r) =>
-        fx
-          ? [r.date, r.amount, r.rate, r.cny, r.note]
-          : [
-              r.date,
-              r.amount,
-              r.method === "cash" ? "现金" : "银行卡",
-              ...(expense ? [r.category] : []),
-              r.note,
-            ],
-      ),
-  ];
-}
-function grouped(kind, rows, length) {
-  const groups = new Map();
-  for (const row of rows) {
-    const period = row.date.slice(0, length);
-    if (!groups.has(period)) groups.set(period, []);
-    groups.get(period).push(row);
-  }
-  const fx = kind === "remittance";
-  const sheets = [
-    [
-      length === 7 ? "月份" : "年度",
-      "笔数",
-      "美元",
-      ...(fx ? ["人民币", "平均汇率"] : ["现金", "银行卡"]),
-    ],
-  ];
-  for (const period of [...groups.keys()].sort().reverse()) {
-    const t = totals(kind, groups.get(period));
-    sheets.push([
-      period,
-      t.count,
-      t.usd,
-      ...(fx ? [t.cny, Number(t.rate.toFixed(3))] : [t.cash, t.card]),
-    ]);
-  }
-  return sheets;
-}
-export function xlsx(kind, rows) {
-  return makeWorkbook([
-    ["全部记录", table(kind, rows)],
-    ["月度记录", grouped(kind, rows, 7)],
-    ["年度记录", grouped(kind, rows, 4)],
-  ]);
-}
-export function csv(kind, rows) {
-  function escape(value) {
-    let s = String(value);
-    if (typeof value === "string" && /^[=+@\-\t\r]/.test(s)) s = "'" + s;
-    return '"' + s.replaceAll('"', '""') + '"';
-  }
-  return (
-    "\uFEFF" +
-    table(kind, rows)
-      .map((row) => row.map(escape).join(","))
-      .join("\r\n")
-  );
-}
-
 function mapBooks(fn) {
   return Object.fromEntries(kinds.map((kind) => [kind, fn(kind)]));
 }
@@ -335,30 +200,6 @@ export function balances(books) {
     remittance.cny,
   ];
 }
-export function fullBackup(books) {
-  return {
-    app,
-    version: 1,
-    kind: "all",
-    exportedAt: new Date().toISOString(),
-    books: mapBooks((kind) => backup(kind, books[kind]).records),
-  };
-}
-export function parseFullBackup(input) {
-  const text = typeof input === "string" ? input : JSON.stringify(input);
-  check(new Blob([text]).size <= 3 * maxBytes + 1024, "整本备份文件过大。");
-  const data = JSON.parse(text);
-  check(
-    data?.app === app &&
-      data.kind === "all" &&
-      data.version === 1 &&
-      data.books,
-    "请选择整本账本备份。",
-  );
-  const books = fullBackup(data.books).books;
-  validateImportedRates("remittance", books.remittance);
-  return books;
-}
 // Apply all validated writes together, restoring prior values if a quota error interrupts them.
 function commitStorage(changes) {
   const undo = [];
@@ -377,30 +218,6 @@ function commitStorage(changes) {
     throw error;
   }
 }
-export function importBooks(books, mode = "merge") {
-  check(["merge", "replace"].includes(mode), "请选择合并或覆盖。");
-  const normalized = fullBackup(books).books;
-  const old = readBooks();
-  const next = mapBooks(
-    (kind) =>
-      backup(
-        kind,
-        mode === "merge"
-          ? mergeRows(old[kind], normalized[kind])
-          : normalized[kind],
-      ).records,
-  );
-  const changes = [];
-  for (const kind of kinds) {
-    if (JSON.stringify(old[kind]) === JSON.stringify(next[kind])) continue;
-    changes.push(
-      [key(kind) + "_before_import", JSON.stringify(old[kind])],
-      [key(kind), JSON.stringify(next[kind])],
-    );
-  }
-  commitStorage(changes);
-  return next;
-}
 export function clearBooks(selected) {
   check(Array.isArray(selected) && selected.length > 0, "请选择要清除的账本。");
   const changes = [];
@@ -409,108 +226,6 @@ export function clearBooks(selected) {
   }
   commitStorage(changes);
 }
-const bookNames = { expense: "开支", income: "收入", remittance: "汇款" };
-const balanceLabels = [
-  "收入（美元）",
-  "开支（美元）",
-  "扣除开支后剩余（美元）",
-  "汇出（美元）",
-  "扣除汇款后结余（美元）",
-  "汇款折合人民币",
-];
-const cell = (v, s) => ({ v, s });
-const headerRow = row => row.map(v => cell(v, sheetStyle.header));
-function amountCell(value, kind, total = false) {
-  if (kind === "remittance") return currencyCell(value, "usd", "Net", total);
-  if (kind === "income") return cell(value, total ? sheetStyle.incomeTotal : sheetStyle.income);
-  if (kind === "expense") return cell(value, total ? sheetStyle.expenseTotal : sheetStyle.expense);
-  return cell(value, total ? sheetStyle.total : sheetStyle.plain);
-}
-function balanceRow(label, books, total = false) {
-  const values = balances(books);
-  const [income, expense, remaining, remitted, net, cny] = values;
-  const usd = (value, tone) => cell(value, sheetStyle["usd" + tone + (total ? "Total" : "")]);
-  return [
-    amountCell(label, "", total), amountCell(income, "income", total),
-    amountCell(expense, "expense", total), usd(remaining, remaining < 0 ? "Negative" : "Neutral"),
-    currencyCell(remitted, "usd", "Neutral", total), usd(net, net < 0 ? "Negative" : net > 0 ? "Positive" : "Zero"),
-    currencyCell(cny, "cny", "Neutral", total),
-  ];
-}
-function balancePeriods(books, length) {
-  const groups = new Map();
-  for (const kind of kinds) {
-    for (const row of books[kind]) {
-      const period = row.date.slice(0, length);
-      if (!groups.has(period)) groups.set(period, mapBooks(() => []));
-      groups.get(period)[kind].push(row);
-    }
-  }
-  const rows = [headerRow([length === 4 ? "年度" : "月份", ...balanceLabels])];
-  for (const period of [...groups.keys()].sort().reverse()) {
-    rows.push(balanceRow(period, groups.get(period)));
-  }
-  rows.push(balanceRow("全部年份合计", books, true));
-  return rows;
-}
-export function reportXlsx(kind, books) {
-  if (kind === "summary")
-    return makeWorkbook([["收支汇总", balancePeriods(books, 4)]]);
-  if (kind === "all") {
-    const annual = balancePeriods(books, 4);
-    const sheets = [["收支总览", annual]];
-    for (const k of kinds) sheets.push(...bookSheets(k, books[k]));
-    sheets.push(["收支月度汇总", balancePeriods(books, 7)], ["收支年度汇总", annual]);
-    return makeWorkbook(sheets);
-  }
-  key(kind);
-  return makeWorkbook(bookSheets(kind, books[kind]));
-}
-function bookSheets(kind, rows) {
-  const t = totals(kind, rows);
-  const fx = kind === "remittance";
-
-  const stats = [
-    ["统计范围", "全部年份"],
-    ["记录笔数", t.count],
-    ["美元合计", amountCell(t.usd, kind, true)],
-    ...(fx
-      ? [["人民币合计", currencyCell(t.cny, "cny", "Net", true)], ["平均汇率", +t.rate.toFixed(3)]]
-      : [["现金", t.cash], ["银行卡", t.card]]),
-  ];
-  const details = table(kind, rows);
-  for (const row of details.slice(1)) {
-    const tone = fx && row[1] < 0 ? "Negative" : "Neutral";
-    row[1] = currencyCell(row[1], "usd", tone);
-    if (fx) {
-      row[2] = cell(row[2], sheetStyle.rate);
-      row[3] = currencyCell(row[3], "cny", tone);
-    }
-  }
-  details[0] = headerRow(details[0]);
-  const totalRow = details[0].map((_, index) => {
-    if (fx && index === 3) return currencyCell(t.cny, "cny", "Net", true);
-    if (index === 1) return amountCell(t.usd, kind, true);
-    const value = index === 0 ? "合计" : fx && index === 3 ? t.cny : "";
-    return cell(value, sheetStyle.total);
-  });
-  details.push(totalRow);
-  function periods(length) {
-    const [header, ...data] = grouped(kind, rows, length);
-    const sums = [t.count, t.usd, ...(fx ? [t.cny, Number(t.rate.toFixed(3))] : [t.cash, t.card])];
-    return [
-      headerRow(header),
-      ...data.map(([period, count, usd, ...rest]) => [period, count, amountCell(usd, kind), ...(fx ? [currencyCell(rest[0], "cny", "Net"), {v: rest[1], s: sheetStyle.rate}] : rest)]),
-      [cell("合计", sheetStyle.total), ...sums.map((v, index) => fx && index === 2 ? currencyCell(v, "cny", "Net", true) : amountCell(v, index === 1 ? kind : "", true))],
-    ];
-  }
-  const name = bookNames[kind];
-  return [
-    [name + "汇总", stats], [name + "明细", details],
-    [name + "月度汇总", periods(7)], [name + "年度汇总", periods(4)],
-  ];
-}
-
 export function recoverBook(kind, expectedRaw, rows) {
   const value = JSON.stringify(backup(kind, rows).records);
   check(localStorage.getItem(key(kind)) === expectedRaw, "账目已变化，请刷新后重试。");
@@ -520,4 +235,471 @@ export function checkEdit(original, rows) {
   const current = rows.find(row => row.id === original.id);
   check(current, "此记录已删除，请重新打开查看。");
   check(JSON.stringify(current) === JSON.stringify(original), "此记录已在另一页面修改。请保留需要的内容，重新打开这笔记录后再编辑。");
+}
+
+// ---------- Excel export, unified with the account ledger format ----------
+const bookNames = { expense: "开支", income: "收入", remittance: "汇款" };
+const categories = ["购物", "餐饮", "交通", "房屋", "账单", "其它"];
+const DETAIL_HEADER = ["日期", "美元", "收付方式", "分类", "汇款类型", "汇率", "人民币", "备注", "记录编号", "版本"];
+const cell = (v, s) => ({ v, s });
+// Same total-coloring rule as the account export: expenses red, income blue,
+// net values colored by sign (negative red, positive blue, zero black), bold.
+function paint(role, value) {
+  if (typeof value !== "number") return value;
+  if (role === "expense") return cell(value, ST.boldRed);
+  if (role === "income") return cell(value, ST.boldBlue);
+  return cell(value, value < 0 ? ST.boldRed : value > 0 ? ST.boldBlue : ST.boldBlack);
+}
+function detailSheets(kind, rows) {
+  const fx = kind === "remittance";
+  // Newest first: by date, then by reverse storage order (records are
+  // appended in creation order and carry no creation timestamp).
+  const sorted = rows
+    .map((row, index) => [row, index])
+    .sort((a, b) => b[0].date.localeCompare(a[0].date) || b[1] - a[1])
+    .map(([row]) => row);
+  const sheets = [];
+  for (let offset = 0; offset < Math.max(1, sorted.length); offset += 10000) {
+    const suffix = offset ? "-" + (1 + offset / 10000) : "";
+    const data = sorted.slice(offset, offset + 10000).map((r) => [
+      cell(r.date, ST.date),
+      Math.abs(r.amount),
+      fx ? "" : r.method === "cash" ? "现金" : "银行卡",
+      kind === "expense" ? r.category : "",
+      fx ? (r.type === "subtract" || r.amount < 0 ? "冲正" : "汇出") : "",
+      fx ? r.rate : "",
+      fx ? Math.abs(r.cny) : "",
+      r.note,
+      r.id,
+      "",
+    ]);
+    sheets.push({
+      name: bookNames[kind] + "明细" + suffix,
+      rows: [DETAIL_HEADER.map((v) => cell(v, ST.header)), ...data],
+      cols: DETAIL_HEADER.map((_, i) => ({
+        width: i === 7 ? 32 : 16,
+        hidden:
+          i >= 8 ||
+          (fx
+            ? i === 2 || i === 3
+            : i === 4 || i === 5 || i === 6 || (kind === "income" && i === 3)),
+      })),
+      freeze: true,
+      validations: fx
+        ? [{ ref: "E2:E10001", values: ["汇出", "冲正"] }]
+        : kind === "expense"
+          ? [
+              { ref: "C2:C10001", values: ["现金", "银行卡"] },
+              { ref: "D2:D10001", values: categories },
+            ]
+          : [{ ref: "C2:C10001", values: ["现金", "银行卡"] }],
+    });
+  }
+  return sheets;
+}
+function groupSums(kind, rows, size) {
+  const groups = new Map();
+  for (const r of rows) {
+    const period = size ? r.date.slice(0, size) : "全部年份";
+    const v = groups.get(period) ?? [0, 0, 0, 0, 0];
+    v[0]++;
+    v[1] += Math.round(r.amount * 100);
+    if (kind === "remittance") {
+      v[2] += Math.round((r.cny ?? 0) * 100);
+      v[3] += Math.abs(r.cny ?? 0);
+      v[4] += Math.abs(r.amount);
+    } else {
+      v[r.method === "cash" ? 2 : 3] += Math.round(r.amount * 100);
+    }
+    groups.set(period, v);
+  }
+  return groups;
+}
+function statsSheet(kind, rows, suffix, size) {
+  const fx = kind === "remittance";
+  const out = [
+    ["期间", "笔数", "美元合计", ...(fx ? ["人民币合计", "平均汇率"] : ["现金", "银行卡"])],
+  ];
+  for (const [period, v] of [...groupSums(kind, rows, size)].sort().reverse())
+    out.push([
+      period,
+      v[0],
+      paint(fx ? "net" : kind, v[1] / 100),
+      fx ? paint("net", v[2] / 100) : v[2] / 100,
+      fx ? (v[4] ? v[3] / v[4] : 0) : v[3] / 100,
+    ]);
+  return { name: bookNames[kind] + suffix, rows: out };
+}
+function overviewSheet(books) {
+  const rows = [["账本", "笔数", "美元合计", "人民币合计"]];
+  const sums = {};
+  for (const kind of kinds) {
+    const list = books[kind];
+    const usd = list.reduce((n, r) => n + Math.round(r.amount * 100), 0) / 100;
+    sums[kind] = usd;
+    rows.push([
+      bookNames[kind],
+      list.length,
+      paint(kind === "remittance" ? "net" : kind, usd),
+      kind === "remittance"
+        ? paint("net", list.reduce((n, r) => n + Math.round((r.cny ?? 0) * 100), 0) / 100)
+        : "",
+    ]);
+  }
+  rows.push([
+    "汇款后结余",
+    "",
+    paint("net", Math.round((sums.income - sums.expense - sums.remittance) * 100) / 100),
+  ]);
+  return { name: "收支汇总", rows };
+}
+function periodOverview(books, title, size) {
+  const periods = new Map();
+  for (const kind of kinds)
+    for (const r of books[kind]) {
+      const period = r.date.slice(0, size);
+      const group = periods.get(period) ?? { expense: 0, income: 0, remittance: 0 };
+      group[kind] += Math.round(r.amount * 100);
+      periods.set(period, group);
+    }
+  const rows = [["期间", "收入", "开支", "净汇出美元", "汇款后结余"]];
+  for (const [period, s] of [...periods].sort(([a], [b]) => b.localeCompare(a)))
+    rows.push([
+      period,
+      paint("income", s.income / 100),
+      paint("expense", s.expense / 100),
+      paint("net", s.remittance / 100),
+      paint("net", (s.income - s.expense - s.remittance) / 100),
+    ]);
+  return { name: title, rows };
+}
+function summaryScopeSheet(books) {
+  const groups = new Map();
+  const total = [0, 0, 0, 0];
+  for (const kind of kinds)
+    for (const r of books[kind]) {
+      const year = r.date.slice(0, 4);
+      const sums = groups.get(year) ?? [0, 0, 0, 0];
+      const cents = Math.round(r.amount * 100);
+      const cny = Math.round((r.cny ?? 0) * 100);
+      sums[kinds.indexOf(kind)] += cents;
+      total[kinds.indexOf(kind)] += cents;
+      sums[3] += cny;
+      total[3] += cny;
+      groups.set(year, sums);
+    }
+  groups.set("全部年份合计", total);
+  const rows = [
+    ["年度", "收入", "生活开支", "扣除开支后剩余", "净汇出美元", "汇款后结余", "汇款折合人民币"],
+  ];
+  const sorted = [...groups].sort(([a], [b]) =>
+    a === "全部年份合计" ? 1 : b === "全部年份合计" ? -1 : b.localeCompare(a),
+  );
+  for (const [year, [e, i, rm, cny]] of sorted)
+    rows.push([
+      year,
+      paint("income", i / 100),
+      paint("expense", e / 100),
+      paint("net", (i - e) / 100),
+      paint("net", rm / 100),
+      paint("net", (i - e - rm) / 100),
+      paint("net", cny / 100),
+    ]);
+  return {
+    name: "收支汇总",
+    rows,
+    cols: Array.from({ length: 7 }, () => ({ width: 20 })),
+  };
+}
+export function reportXlsx(scope, books) {
+  if (scope === "summary") return makeWorkbook([summaryScopeSheet(books)]);
+  const sheets = [];
+  if (scope === "all")
+    sheets.push(
+      overviewSheet(books),
+      periodOverview(books, "月度汇总", 7),
+      periodOverview(books, "年度汇总", 4),
+    );
+  for (const kind of scope === "all" ? kinds : [scope])
+    sheets.push(
+      statsSheet(kind, books[kind], "汇总", 0),
+      statsSheet(kind, books[kind], "月度汇总", 7),
+      statsSheet(kind, books[kind], "年度汇总", 4),
+      ...detailSheets(kind, books[kind]),
+    );
+  return makeWorkbook(sheets);
+}
+const GUIDE_LINES = [
+  "这份模板用来在 Excel 里记账，填好后回 OpenAA 账本的「导出／分享 → 导入 Excel」选这个文件导入。",
+  "日期：按 2026-11-23 这样写（年-月-日），一行一笔，从每张表的第二行开始填。",
+  "美元：只填正数数字，不要带 $ 符号。",
+  "收付方式：只能填「现金」或「银行卡」，单元格有下拉可直接选。",
+  "分类（仅开支表）：购物、餐饮、交通、房屋、账单、其它，下拉里选。",
+  "汇款表：「汇款类型」必填「汇出」或「冲正」；美元和人民币都填正数，方向由汇款类型决定；汇率按实际填，如 7.200；人民币留空的话，会按美元 × 汇率自动算。",
+  "备注：可填可不填。",
+  "「记录编号」和「版本」两列是系统用的：不要填、不要删，新记的账留空就行，导入时系统自动处理。",
+  "不要改工作表的名字，也不要改第一行表头，否则会导入失败。",
+  "开支、收入、汇款分别填进对应的明细表；用不到的表可以空着。",
+];
+export function templateXlsx() {
+  const guide = {
+    name: "填写说明",
+    rows: [[cell("填写说明", ST.title)], ...GUIDE_LINES.map((line) => [line])],
+    cols: [{ width: 110 }],
+  };
+  return makeWorkbook([
+    guide,
+    ...kinds.flatMap((kind) => detailSheets(kind, [])),
+  ]);
+}
+
+// ---------- Excel import (account format) ----------
+const nameToKind = { 开支: "expense", 收入: "income", 汇款: "remittance" };
+export async function parseLedgerXlsx(input) {
+  const sheets = await readXlsxSheets(input);
+  const partial = sheets.has("分卷说明");
+  const books = {};
+  const blankIds = new Set();
+  const seen = new Set();
+  let found = false;
+  for (const [name, rows] of sheets) {
+    const match = /^(.+?)明细(?:-\d+)?$/.exec(name);
+    const kind = match ? nameToKind[match[1]] : undefined;
+    if (!kind) continue;
+    found = true;
+    const list = (books[kind] ??= []);
+    const header = rows[0] ?? [];
+    const col = {};
+    header.forEach((value, i) => {
+      if (typeof value === "string") col[value.trim()] = i;
+    });
+    check("日期" in col && "美元" in col, name + "缺少日期或美元列");
+    const get = (row, title) => {
+      const value = col[title] == null ? null : row[col[title]];
+      return value === "" ? null : (value ?? null);
+    };
+    rows.forEach((row, index) => {
+      if (index === 0) return;
+      const where = name + "第 " + (index + 1) + " 行";
+      if (get(row, "日期") === "合计") return;
+      if (
+        ["日期", "美元", "备注", "人民币", "分类", "收付方式"].every((title) => {
+          const value = get(row, title);
+          return value == null || String(value).trim() === "";
+        })
+      )
+        return;
+      try {
+        const fx = kind === "remittance";
+        const direction = String(get(row, "汇款类型") ?? "").trim();
+        if (fx)
+          check(
+            direction === "汇出" || direction === "冲正",
+            "汇款类型请选择「汇出」或「冲正」",
+          );
+        const usd = Number(get(row, "美元"));
+        check(Number.isFinite(usd), "金额或汇率缺失或无效");
+        const rate = fx ? Number(get(row, "汇率")) : null;
+        if (fx) {
+          check(Number.isFinite(rate), "金额或汇率缺失或无效");
+          check(usd >= 0, "金额请填正数，并用汇款类型指定方向");
+          const rawCny = get(row, "人民币");
+          if (rawCny != null)
+            check(Number(rawCny) >= 0, "金额请填正数，并用汇款类型指定方向");
+        }
+        const sign = fx && direction === "冲正" ? -1 : 1;
+        const rawCny = fx ? get(row, "人民币") : null;
+        const cny = fx
+          ? rawCny == null
+            ? Math.abs(usd) * rate
+            : Number(rawCny)
+          : null;
+        const rawId = get(row, "记录编号");
+        const id =
+          rawId == null || String(rawId).trim() === ""
+            ? crypto.randomUUID()
+            : String(rawId);
+        if (rawId == null || String(rawId).trim() === "") blankIds.add(id);
+        check(!seen.has(kind + ":" + id), "文件内含重复记录编号，请核对");
+        seen.add(kind + ":" + id);
+        const record = normalize(kind, {
+          id,
+          date: String(get(row, "日期") ?? "").trim(),
+          amount: fx ? sign * Math.abs(usd) : usd,
+          method: fx
+            ? undefined
+            : { 现金: "cash", 银行卡: "card" }[
+                String(get(row, "收付方式") ?? "").trim()
+              ],
+          category:
+            kind === "expense" ? String(get(row, "分类") ?? "") : undefined,
+          rate: fx ? rate : undefined,
+          cny: fx ? sign * Math.abs(cny) : undefined,
+          type: fx && sign < 0 ? "subtract" : undefined,
+          note: String(get(row, "备注") ?? ""),
+        });
+        if (fx)
+          check(
+            record.rate > 0 || (record.amount === 0 && record.cny === 0),
+            "汇款汇率必须大于零",
+          );
+        list.push(record);
+      } catch (error) {
+        throw new Error(where + "：" + error.message);
+      }
+    });
+  }
+  check(
+    found,
+    "文件没有账本明细表。收支总览仅供查看，请导入含明细的账本 Excel。",
+  );
+  for (const kind of Object.keys(books)) books[kind] = checked(kind, books[kind]);
+  return { books, blankIds, partial };
+}
+// Merge/replace only the books contained in the file. In merge mode, rows
+// whose id was generated during parsing (blank in the file) are skipped when
+// an identical record already exists, so re-importing a filled template
+// does not duplicate entries.
+export function importExcelBooks(books, mode = "merge", blankIds = new Set()) {
+  check(["merge", "replace"].includes(mode), "请选择合并或覆盖。");
+  const included = kinds.filter((kind) => books[kind]);
+  check(included.length > 0, "文件没有可导入的账本。");
+  const fingerprint = (r) =>
+    JSON.stringify([
+      r.date, r.amount, r.method ?? null, r.category ?? null,
+      r.cny ?? null, r.rate ?? null, r.note, r.type ?? null,
+    ]);
+  const old = readBooks();
+  const changes = [];
+  const next = {};
+  for (const kind of included) {
+    const incoming = backup(kind, books[kind]).records;
+    let merged = incoming;
+    if (mode === "merge") {
+      let pool = incoming;
+      if (blankIds.size) {
+        const counts = new Map();
+        for (const row of old[kind]) {
+          const print = fingerprint(row);
+          counts.set(print, (counts.get(print) ?? 0) + 1);
+        }
+        pool = incoming.filter((row) => {
+          if (!blankIds.has(row.id)) return true;
+          const print = fingerprint(row);
+          const left = counts.get(print) ?? 0;
+          if (!left) return true;
+          counts.set(print, left - 1);
+          return false;
+        });
+      }
+      merged = mergeRows(old[kind], pool);
+    }
+    const normalized = backup(kind, merged).records;
+    next[kind] = normalized;
+    if (JSON.stringify(old[kind]) === JSON.stringify(normalized)) continue;
+    changes.push(
+      [key(kind) + "_before_import", JSON.stringify(old[kind])],
+      [key(kind), JSON.stringify(normalized)],
+    );
+  }
+  commitStorage(changes);
+  return next;
+}
+
+// Legacy JSON backup parsing, kept only for lib/backup.js: the
+// expense-record and usd-rmb tools use it to import old Life Ledger JSON
+// backups. The ledger app itself imports and exports Excel only.
+const legacyApps = {
+  expense: "OpenAA Expense Records",
+  remittance: "OpenAA USD RMB Rate Records",
+};
+function validateImportedRates(kind, rows) {
+  if (kind === "remittance") rows.forEach((row, i) => {
+    check(row.rate > 0 || (row.amount === 0 && row.cny === 0), "汇款第 " + (i + 1) + " 笔的汇率必须大于零。");
+  });
+  return rows;
+}
+
+export function parseBackup(kind, input) {
+  key(kind);
+  const text = typeof input === "string" ? input : JSON.stringify(input);
+  check(new Blob([text]).size <= maxBytes, "备份超过 5 MB。");
+  const data = JSON.parse(text);
+  if (data?.app === app) {
+    check(data.kind === kind && data.version === 1, "备份账本或版本不匹配。");
+    return { rows: validateImportedRates(kind, checked(kind, data.records)), legacy: false, skipped: 0 };
+  }
+  const bare = Array.isArray(data);
+  check(
+    kind !== "income" && (bare || data?.app === legacyApps[kind]),
+    "请选择当前账本的备份。",
+  );
+  const records = bare ? data : data.records;
+  check(Array.isArray(records) && records.length <= 10000, "备份格式无效。");
+  
+  const rows = [];
+  for (const r of records) {
+    check(r && typeof r === "object", "旧记录格式无效。");
+    const id = r.id ?? "legacy-auto-" + crypto.randomUUID();
+    if (kind === "expense") {
+      rows.push({
+        ...r,
+        id,
+        method: { 现金: "cash", 银行卡: "card" }[r.payment],
+      });
+    } else {
+      check(r.usd != null && r.rate != null, "请选择汇款备份。");
+
+      rows.push({
+        ...r,
+        id,
+        amount: r.usd,
+        cny: r.cny ?? Number(r.usd) * Number(r.rate),
+      });
+    }
+  }
+  return { rows: validateImportedRates(kind, checked(kind, rows)), legacy: true, skipped: 0 };
+}
+
+export function fullBackup(books) {
+  return {
+    app,
+    version: 1,
+    kind: "all",
+    exportedAt: new Date().toISOString(),
+    books: mapBooks((kind) => backup(kind, books[kind]).records),
+  };
+}
+
+export function parseFullBackup(input) {
+  const text = typeof input === "string" ? input : JSON.stringify(input);
+  check(new Blob([text]).size <= 3 * maxBytes + 1024, "整本备份文件过大。");
+  const data = JSON.parse(text);
+  check(
+    data?.app === app &&
+      data.kind === "all" &&
+      data.version === 1 &&
+      data.books,
+    "请选择整本账本备份。",
+  );
+  const books = fullBackup(data.books).books;
+  validateImportedRates("remittance", books.remittance);
+  return books;
+}
+
+export function detectBackup(text) {
+  let data;
+  try { data = JSON.parse(text); }
+  catch { throw new Error("文件不是有效的 JSON 备份。"); }
+  if (data?.app === app && data.kind === "all")
+    return { kind: "all", books: parseFullBackup(text) };
+  let kind;
+  if (data?.app === app) kind = data.kind;
+  else if (Array.isArray(data) && data.length) {
+    const expense = data.every(r => r?.payment != null && r.category != null && r.amount != null);
+    const remit = data.every(r => r?.usd != null && r.rate != null);
+    if (expense !== remit) kind = expense ? "expense" : "remittance";
+  } else kind = Object.keys(legacyApps).find(k => legacyApps[k] === data?.app);
+  check(kinds.includes(kind), "无法识别备份类型，请选择账本导出的 JSON 文件。");
+  return { kind, ...parseBackup(kind, text) };
 }

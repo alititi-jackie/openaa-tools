@@ -2,19 +2,17 @@ import { installLedger, isInstalled } from "../lib/install-ledger.js";
 import {
   normalize, checkEdit, recoverBook,
   totals,
-  backup,
-  detectBackup,
   restorableBooks,
   load,
   save,
-  importRows,
   restore,
   readBooks,
   balances,
-  fullBackup,
-  importBooks,
   clearBooks,
   reportXlsx,
+  templateXlsx,
+  parseLedgerXlsx,
+  importExcelBooks,
 } from "../lib/ledger.js";
 import {
   FX_FIELDS,
@@ -127,11 +125,11 @@ function ledgerFaq() {
     <h3>下次打开还会保留我选择的版本吗？</h3>
     <p>会。同一浏览器保留网站数据时，会记住上次选择。清除网站数据或换设备后会恢复默认的完整账本。</p>
     <h3>开支版可以导入含收入和汇款的完整备份吗？</h3>
-    <p>可以。导入时会显示开支、收入和汇款各自的笔数，合并或覆盖按原规则处理。覆盖三个账本会替换三本账的数据，包括备份里为零笔的账本；切回完整账本即可查看其他记录。</p>
+    <p>可以。导入时会显示文件中包含的开支、收入和汇款各自的笔数。合并按记录编号跳过重复，覆盖只替换文件中包含的账本，其他账本不动；切回完整账本即可查看其他记录。</p>
     <h3>数据会上传服务器或自动同步到其他手机吗？</h3>
-    <p>不会。记录只保存在当前浏览器，不能自动同步到其他设备或不同域名的网站。建议定期下载 JSON 备份；Excel 主要用于查看和分享。</p>
+    <p>不会。记录只保存在当前浏览器，不能自动同步到其他设备或不同域名的网站。建议定期下载「全部记录」的 Excel 备份；Excel 既可查看、分享，也可导回恢复账目。</p>
     <h3>换手机或清除浏览器数据前怎么办？</h3>
-    <p>先在「导出／分享」选择「全部记录」，下载完整 JSON 备份并确认文件已保存；到新设备打开账本后再导入。仅保存 Excel 不能代替用于恢复数据的 JSON 备份。</p>
+    <p>先在「导出／分享」选择「全部记录」，下载完整账本 Excel 并确认文件已保存；到新设备打开账本后，再从「导入备份」选择这个文件导入恢复。</p>
   </section>`;
 }
 function home() {
@@ -154,17 +152,21 @@ function home() {
     )
     .join(
       "",
-    )}</div>${button("install", "添加到手机主屏幕", `class="install-entry" ${isInstalled() ? "hidden" : ""}`)}<small class="install-tip">添加后，使用「生活账本」就更方便。</small>${currentMonthCard()}${safetyNote("数据安全说明", "OpenAA 重视用户隐私与数据安全。本工具不会上传、存储或同步任何记录到服务器，所有数据仅保存在您当前使用的浏览器中。清理缓存、清除网站数据、重装浏览器或更换设备前，请先下载 JSON 备份。Excel 用于查看和打印。")}<p class="storage-note">账目仅保存在当前浏览器。清除网站数据或换手机前，请先下载备份。 <a href="./guide/">使用说明</a></p>${modeSwitcher()}${ledgerFaq()}`;
+    )}</div>${button("install", "添加到手机主屏幕", `class="install-entry" ${isInstalled() ? "hidden" : ""}`)}<small class="install-tip">添加后，使用「生活账本」就更方便。</small>${currentMonthCard()}${safetyNote("数据安全说明", "OpenAA 重视用户隐私与数据安全。本工具不会上传、存储或同步任何记录到服务器，所有数据仅保存在您当前使用的浏览器中。清理缓存、清除网站数据、重装浏览器或更换设备前，请先下载 Excel 备份。Excel 用于查看、打印和恢复账目。")}<p class="storage-note">账目仅保存在当前浏览器。清除网站数据或换手机前，请先下载备份。 <a href="./guide/">使用说明</a></p>${modeSwitcher()}${ledgerFaq()}`;
 }
 const input = (name, label, type, value, extra = "") =>
   `<label>${label}<input name="${name}" type="${type}" value="${escape(value)}" ${extra}></label>`;
 function currentMonthCard() {
   const month = today().slice(0, 7);
   const rows = load(kind).filter(row => row.date.startsWith(month));
-  const content = rows.length
-    ? statGrid(stats(kind, rows))
-    : '<p class="panel month-empty">本月暂无记录，<button type="button" class="month-add" data-action="month-add">去记一笔</button></p>';
-  return `<section><h2>本月数据</h2>${content}</section>`;
+  if (!rows.length)
+    return `<section><h2>本月数据</h2><p class="panel month-empty">本月暂无记录，<button type="button" class="month-add" data-action="month-add">去记一笔</button></p></section>`;
+  const recent = rows
+    .map((row, index) => [row, index])
+    .sort((a, b) => b[0].date.localeCompare(a[0].date) || b[1] - a[1])
+    .slice(0, 3)
+    .map(([row]) => row);
+  return `<section><h2>本月数据</h2>${statGrid(stats(kind, rows))}<h3>本月最近三笔</h3><section class="panel list">${details(recent, false)}</section></section>`;
 }
 
 function radios(name, label, values, current) {
@@ -245,11 +247,11 @@ const statItem = ([label, value, tone]) =>
   `<div><dt>${label}</dt><dd${tone ? ` class="amount-${tone}"` : ""}>${value}</dd></div>`;
 const statGrid = (pairs) =>
   `<dl class="stats">${pairs.map(statItem).join("")}</dl>`;
-function details(rows) {
+function details(rows, withActions = true) {
   return rows
     .map(
       (r) =>
-        `<article class="record"><div><b>${escape(r.category || (kind === "remittance" ? (r.type === "subtract" ? "汇款冲正" : "汇款") : r.method === "cash" ? "现金收入" : "银行卡收入"))}</b><span>${money(r.amount)}</span></div><small>${escape(r.date)} · ${kind === "remittance" ? money(r.cny, "¥") + " · 汇率 " + r.rate.toFixed(3) : r.method === "cash" ? "现金" : "银行卡"}</small>${r.note ? `<p>${escape(r.note)}</p>` : ""}<footer>${button("edit", "编辑", `data-id="${escape(r.id)}"`)}${button("delete", "删除", `data-id="${escape(r.id)}"`)}</footer></article>`,
+        `<article class="record"><div><b>${escape(r.category || (kind === "remittance" ? (r.type === "subtract" ? "汇款冲正" : "汇款") : r.method === "cash" ? "现金收入" : "银行卡收入"))}</b><span>${money(r.amount)}</span></div><small>${escape(r.date)} · ${kind === "remittance" ? money(r.cny, "¥") + " · 汇率 " + r.rate.toFixed(3) : r.method === "cash" ? "现金" : "银行卡"}</small>${r.note ? `<p>${escape(r.note)}</p>` : ""}${withActions ? `<footer>${button("edit", "编辑", `data-id="${escape(r.id)}"`)}${button("delete", "删除", `data-id="${escape(r.id)}"`)}</footer>` : ""}</article>`,
     )
     .join("");
 }
@@ -317,24 +319,26 @@ function exportsPage() {
     overview = kind === "summary";
   const current = overview ? "收支总览" : names[kind] + "记录";
   const { title, emptyMessage, fileLabel } = exportInfo();
-  const backupLabel = all ? "完整" : names[kind];
-  const backupScope = all
-    ? "包含开支、收入和汇款三个账本的全部年份。"
-    : "包含全部年份的" + names[kind] + "记录。";
   const clearTarget = overview ? "all" : kind;
   return `<h1>${overview ? "收支总览" : names[kind]}导出／分享</h1>
-  ${safetyNote("数据保存说明", "数据仅保存在当前浏览器。Excel 可用于查看和分享。清除网站数据、换浏览器或换手机前，请先选择「全部记录」，下载完整数据备份（JSON），以便恢复账目。")}
+  ${safetyNote("数据保存说明", "数据仅保存在当前浏览器。清除网站数据、换浏览器或换手机前，请先选择「全部记录」，下载完整账本 Excel，以便恢复账目。")}
   ${nav({ current, all: "全部记录" }, "scope", scope, "导出范围")}
   <section class="panel"><h2>汇总文字</h2>${emptyMessage ? `<p>${escape(emptyMessage)}</p>` : button("copy", "复制" + escape(title))}</section>
-  <section class="panel"><h2>Excel 表格</h2><p>${all ? "一份 Excel 包含开支、收入、汇款各自的汇总、明细、月度和年度汇总，以及收支总览、收支月度和年度汇总。" : overview ? "逐年列出收支和结余，末行列出全部年份合计。" : "包含本账本全部年份的总合计、逐笔明细、月度汇总和年度汇总。"}</p><div class="controls">${button("excel", "下载" + fileLabel + " Excel")}${button("shareExcel", "分享" + fileLabel + " Excel")}</div></section>
-  ${all || !overview ? `<section class="panel"><h2>${backupLabel}备份</h2><p>${backupScope}清除网站数据、重装浏览器或换手机前，请下载 JSON 备份并确认文件已保存。</p><div class="controls">${button("backup", "下载" + backupLabel + "备份")}${button("shareBackup", "分享" + backupLabel + "备份")}</div></section>` : ""}
-  <details class="panel import-fold" ${preview ? "open" : ""}><summary>导入备份</summary><label class="file">选择 JSON 备份文件<input type="file" name="file" accept=".json,.backup,application/json"></label>${preview ? importPanel() : ""}${restorableBooks().map(k => button("restore", "恢复" + names[k] + "导入前的记录", `data-restore="${k}"`)).join("")}</details>
+  <section class="panel"><h2>Excel 表格</h2><p>${all ? "一份 Excel 包含收支汇总、月度汇总、年度汇总，以及开支、收入、汇款各自的汇总、明细、月度和年度汇总，与 OpenAA 账号版账本格式相同，可互相导入。" : overview ? "逐年列出收支和结余，末行列出全部年份合计。" : "包含本账本全部年份的汇总、逐笔明细、月度汇总和年度汇总。"}</p><div class="controls">${button("excel", "下载" + fileLabel + " Excel")}${button("shareExcel", "分享" + fileLabel + " Excel")}</div></section>
+  <section class="panel"><h2>Excel 记账模板</h2><p>空白模板，第一张表是填写说明。在 Excel 里填好后，回到这里展开「导入备份」，选择填好的文件即可导入。</p><div class="controls">${button("template", "下载记账模板")}${button("shareTemplate", "分享记账模板")}</div></section>
+  <details class="panel import-fold" ${preview ? "open" : ""}><summary>导入备份</summary><label class="file">选择 Excel 文件<input type="file" name="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></label>${preview ? importPanel() : ""}${restorableBooks().map(k => button("restore", "恢复" + names[k] + "导入前的记录", `data-restore="${k}"`)).join("")}</details>
   ${!overview || all ? `<div class="clear-section">${button("clear", overview ? "清空三个账本" : "清空" + names[kind] + "记录", `data-clear="${clearTarget}" class="clear-entry"`)}</div>` : ""}`;
 }
-function backupFile(target) {
-  const data =
-    target === "all" ? fullBackup(readBooks()) : backup(target, load(target));
-  return new Blob([JSON.stringify(data)], { type: "application/json" });
+function showNotice({ title, body }) {
+  const dialog = document.createElement("dialog");
+  dialog.className = "transfer-confirm ask-confirm";
+  dialog.setAttribute("aria-labelledby", "notice-title");
+  dialog.innerHTML = `<h2 id="notice-title"></h2><p></p><form method="dialog" class="controls"><button value="ok" class="primary" style="flex:1" autofocus>知道了</button></form>`;
+  dialog.querySelector("h2").textContent = title;
+  dialog.querySelector("p").textContent = body;
+  document.body.append(dialog);
+  dialog.addEventListener("close", () => dialog.remove(), { once: true });
+  dialog.showModal();
 }
 function confirmClear(target) {
   const kinds =
@@ -345,11 +349,25 @@ function confirmClear(target) {
   dialog.className = "transfer-confirm clear-dialog";
   const label = bookLabel(target);
   dialog.setAttribute("aria-labelledby", "clear-title");
-  dialog.innerHTML = `<h2 id="clear-title">清空${label}${target === "all" ? "" : "全部记录"}？</h2><p>将删除此浏览器中全部年份的记录（${counts(initial)}），以及对应账本的导入前记录。${target === "all" ? "" : "其他账本保留。"}收支总览会重新计算。</p><p>如需以后恢复，请先下载 JSON 备份，并确认文件已保存。</p><div class="controls"><button type="button" data-download>下载${target === "all" ? "完整" : label}备份</button></div><p role="status"></p><form method="dialog" class="controls"><button autofocus value="cancel">取消</button><button class="danger" value="clear">确认清空${label}</button></form>`;
+  const totalCount = kinds.reduce((n, k) => n + initial[k].length, 0);
+  if (!totalCount) {
+    showNotice({
+      title: "暂无" + (target === "all" ? "记录" : names[target] + "记录"),
+      body: "当前没有任何记录，无需清空。",
+    });
+    return;
+  }
+  dialog.innerHTML = `<h2 id="clear-title">清空${target === "all" ? "三个账本" : names[target] + "记录"}？</h2><p>${target === "all" ? `将删除此浏览器中全部年份的记录，共 ${totalCount} 笔（${counts(initial)}）。` : `将删除此浏览器中全部年份的${names[target]}记录，共 ${initial[target].length} 笔。其他账本保留。`}对应的导入前记录也会删除。清空后无法撤销。建议先下载 Excel 备份，并确认文件已保存。</p><button type="button" class="clear-download" data-download>下载备份</button><p role="status"></p><form method="dialog" class="clear-actions"><button autofocus value="cancel" class="clear-cancel">取消</button><button class="clear-confirm" value="clear">确认清空</button></form>`;
   dialog.querySelector("[data-download]").onclick = guarded(() => {
     download(
-      backupFile(target),
-      "OpenAA-" + label + "备份-" + today() + ".json",
+      target === "all"
+        ? reportXlsx("all", readBooks())
+        : reportXlsx(target, { [target]: load(target) }),
+      "OpenAA-" +
+        (target === "all" ? "完整账本" : names[target] + "记录") +
+        "-" +
+        today() +
+        ".xlsx",
     );
     dialog.querySelector("[role=status]").textContent =
       "已请求下载，请确认文件已保存。";
@@ -372,14 +390,7 @@ function confirmClear(target) {
   dialog.showModal();
 }
 function importPanel() {
-  if (preview.books)
-    return `<section class="panel" id="import-preview"><h2>完整备份导入预览</h2><p>${escape(preview.filename)}</p><p>${counts(preview.books)}</p><p>合并会保留已有记录并跳过重复编号。覆盖会替换三个账本，包括备份中为零笔的账本。</p><div class="controls">${button("merge", "合并导入")}${button("replace", "覆盖三个账本")}${button("abort", "取消")}</div></section>`;
-  const pick = preview.legacy && preview.kind === "remittance";
-  const amounts = pick ? preview.rows.reduce((sum, row) => {
-    sum[row.type === "subtract" ? 1 : 0] += Math.round(row.amount * 100);
-    return sum;
-  }, [0, 0]) : [];
-  return `<section class="panel" id="import-preview"><h2>${names[preview.kind]}导入预览</h2><p>${escape(preview.filename)}</p><p>可导入 ${preview.rows.length} 笔。</p>${pick ? `<p>汇出 ${money(amounts[0] / 100)}，冲正 ${money(amounts[1] / 100)}。勾选要导入的记录。</p><p data-import-net aria-live="polite">已选 0 笔，净额 $0.00</p>` : ""}<div class="preview-list">${preview.rows.map((r, i) => `<label>${pick ? `<input type="checkbox" data-import="${i}">` : ""}${escape(r.date)} · ${money(r.amount)} ${escape(r.note)}</label>`).join("")}</div><div class="controls">${button("merge", "合并导入")}${button("replace", "覆盖导入")}${button("abort", "取消")}</div></section>`;
+  return `<section class="panel" id="import-preview"><h2>Excel 导入预览</h2><p>${escape(preview.filename)}</p><p>${counts(preview.books)}</p><p>合并会保留已有记录，并按记录编号跳过重复；覆盖只替换文件中包含的账本，其他账本不动。${preview.partial ? "这是分卷文件，请逐个用合并导入。" : ""}</p><div class="controls">${button("merge", "合并导入")}${button("replace", "覆盖导入")}${button("abort", "取消")}</div></section>`;
 }
 function render() {
   try {
@@ -391,16 +402,24 @@ function render() {
       return;
     }
     const label = names[error.kind];
-    root.innerHTML = `<section class="panel"><h1>${label}账本读取失败</h1><p>原始数据已保留。可以先下载原始数据，再选择 JSON 备份恢复这个账本。</p><button type="button" data-raw>下载原始数据</button><label>从 JSON 备份恢复<input type="file" accept=".json,.backup" data-recover></label></section>`;
+    root.innerHTML = `<section class="panel"><h1>${label}账本读取失败</h1><p>原始数据已保留。可以先下载原始数据，再选择 Excel 备份恢复这个账本。</p><button type="button" data-raw>下载原始数据</button><label>从 Excel 备份恢复<input type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" data-recover></label></section>`;
     root.querySelector("[data-raw]").onclick = () => download(new Blob([error.raw]), label + "-原始数据.json");
     root.querySelector("[data-recover]").onchange = guarded(async event => {
       const file = event.target.files[0];
       if (!file) return;
-      if (file.size > 16 * 1024 * 1024) throw Error("备份超过 16 MB。");
-      const parsed = detectBackup(await file.text());
-      const rows = parsed.books?.[error.kind] ?? (parsed.kind === error.kind ? parsed.rows : null);
-      if (!rows) throw Error("请选择包含" + label + "记录的备份。");
-      if (!confirm("确认用 " + rows.length + " 笔记录恢复" + label + "账本？")) return;
+      if (file.size > 16 * 1024 * 1024) throw Error("文件超过 16 MB。");
+      const parsed = await parseLedgerXlsx(await file.arrayBuffer());
+      const rows = parsed.books[error.kind];
+      if (!rows) throw Error("请选择包含" + label + "记录的 Excel 文件。");
+      if (
+        !(await askConfirm({
+          title: "恢复" + label + "账本？",
+          body: "将用文件中的 " + rows.length + " 笔记录替换当前" + label + "账本。",
+          confirmLabel: "恢复",
+          danger: true,
+        }))
+      )
+        return;
       recoverBook(error.kind, error.raw, rows);
       render();
     });
@@ -537,6 +556,28 @@ function confirmTransfer(messages) {
     dialog.showModal();
   });
 }
+function askConfirm({ title, body, confirmLabel, danger = false }) {
+  const dialog = document.createElement("dialog");
+  dialog.className = "transfer-confirm ask-confirm";
+  dialog.setAttribute("aria-labelledby", "ask-confirm-title");
+  dialog.innerHTML = `<h2 id="ask-confirm-title"></h2><p></p><form method="dialog" class="controls"><button value="cancel" autofocus>取消</button><button value="ok" class="${danger ? "danger" : "primary"}"></button></form>`;
+  dialog.querySelector("h2").textContent = title;
+  dialog.querySelector("p").textContent = body;
+  dialog.querySelector('[value="ok"]').textContent = confirmLabel;
+  document.body.append(dialog);
+  return new Promise((resolve) => {
+    dialog.addEventListener(
+      "close",
+      () => {
+        const accepted = dialog.returnValue === "ok";
+        dialog.remove();
+        resolve(accepted);
+      },
+      { once: true },
+    );
+    dialog.showModal();
+  });
+}
 root.addEventListener(
   "submit",
   guarded(async (e) => {
@@ -550,7 +591,14 @@ root.addEventListener(
     });
     const unusualExpense =
       kind === "expense" && (row.amount < 1 || row.amount > 10000);
-    if (unusualExpense && !confirm("金额或汇率超出常用范围，是否仍然保存？"))
+    if (
+      unusualExpense &&
+      !(await askConfirm({
+        title: "金额超出常用范围",
+        body: "金额或汇率超出常用范围，是否仍然保存？",
+        confirmLabel: "仍然保存",
+      }))
+    )
       return;
     if (kind === "remittance") {
       const warnings = [];
@@ -580,11 +628,6 @@ root.addEventListener(
   "change",
   guarded(async (e) => {
     const field = e.target;
-    if (field.matches("[data-import]") && preview?.rows) {
-      const checked = [...root.querySelectorAll("[data-import]:checked")];
-      const cents = checked.reduce((sum, box) => sum + Math.round(preview.rows[Number(box.dataset.import)].amount * 100), 0);
-      root.querySelector("[data-import-net]").textContent = "已选 " + checked.length + " 笔，净额 " + money(cents / 100);
-    }
     if (["month", "year"].includes(field.name) && field.value) {
       filter()[field.name] = field.value;
       render();
@@ -598,8 +641,8 @@ root.addEventListener(
         file = field.files[0];
       const limit = 16;
       if (file.size > limit * 1024 * 1024)
-        throw new Error("备份超过 " + limit + " MB。");
-      const contents = await file.text();
+        throw new Error("文件超过 " + limit + " MB。");
+      const parsed = await parseLedgerXlsx(await file.arrayBuffer());
       if (
         current !== kind ||
         scope !== initialScope ||
@@ -608,7 +651,6 @@ root.addEventListener(
         !field.isConnected
       )
         return;
-      const parsed = detectBackup(contents);
       preview = { ...parsed, filename: file.name };
       render();
       root.querySelector("#import-preview").scrollIntoView();
@@ -678,7 +720,28 @@ root.addEventListener(
       go("form");
       return;
     }
-    if (a === "delete" && confirm("删除这笔" + names[kind] + "？")) {
+    if (a === "delete") {
+      const row = load(kind).find((r) => r.id === id);
+      const tag =
+        kind === "remittance"
+          ? row?.type === "subtract"
+            ? "冲正"
+            : "汇出"
+          : row?.category || "";
+      const summary = row
+        ? [row.date, money(Math.abs(row.amount)), tag, row.note || ""]
+            .filter(Boolean)
+            .join(" · ")
+        : "";
+      if (
+        !(await askConfirm({
+          title: "删除这笔" + names[kind] + "？",
+          body: (summary ? summary + "。" : "") + "删除后无法撤销。",
+          confirmLabel: "删除",
+          danger: true,
+        }))
+      )
+        return;
       save(
         kind,
         load(kind).filter((r) => r.id !== id),
@@ -701,29 +764,42 @@ root.addEventListener(
       showCopyResult(await copyText(text), text, title);
       return;
     }
-    if (["excel", "backup", "shareExcel", "shareBackup"].includes(a)) {
-      const sheet = a.toLowerCase().includes("excel"),
+    if (["excel", "shareExcel", "template", "shareTemplate"].includes(a)) {
+      const isTemplate = a.toLowerCase().includes("template"),
         target = scope === "all" ? "all" : kind;
       const { fileLabel } = exportInfo();
-      const blob = sheet
-        ? reportXlsx(target, target === "all" || target === "summary" ? readBooks() : { [target]: load(target) })
-        : backupFile(target);
-      const filename =
-        "OpenAA-" +
-        fileLabel +
-        (sheet ? "" : "备份") +
-        "-" +
-        today() +
-        (sheet ? ".xlsx" : ".json");
+      const blob = isTemplate
+        ? templateXlsx()
+        : reportXlsx(target, target === "all" || target === "summary" ? readBooks() : { [target]: load(target) });
+      const filename = isTemplate
+        ? "OpenAA-记账模板-" + today() + ".xlsx"
+        : "OpenAA-" +
+          (target === "all"
+            ? "完整账本"
+            : target === "summary"
+              ? "收支总览"
+              : names[target] + "记录") +
+          "-" +
+          today() +
+          ".xlsx";
       if (a.startsWith("share"))
-        await shareFileOrDownload(blob, filename, fileLabel, download);
+        await shareFileOrDownload(blob, filename, isTemplate ? "记账模板" : fileLabel, download);
       else {
         download(blob, filename);
         showFeedback("已开始下载");
       }
       return;
     }
-    if (a === "restore" && confirm("将" + names[b.dataset.restore] + "账本恢复到上次导入前？")) {
+    if (a === "restore") {
+      if (
+        !(await askConfirm({
+          title: "恢复" + names[b.dataset.restore] + "账本？",
+          body: "将把" + names[b.dataset.restore] + "账本恢复到上次导入前的状态，导入后新增或修改的记录会被替换。",
+          confirmLabel: "恢复",
+          danger: true,
+        }))
+      )
+        return;
       restore(b.dataset.restore);
       preview = null;
       render();
@@ -737,33 +813,21 @@ root.addEventListener(
     }
     if (a === "merge" || a === "replace") {
       if (!preview) return;
-      if (preview.books) {
-        if (
-          a === "replace" &&
-          !confirm(`确认用「${preview.filename}」覆盖三个账本？备份包含${counts(preview.books)}。`)
-        )
-          return;
-        const before = JSON.stringify(readBooks());
-        const changed = JSON.stringify(importBooks(preview.books, a)) !== before;
-        preview = null;
-        render();
-        showFeedback(changed ? "三个账本已完成导入" : "账目没有变化");
-        return;
-      }
-      let rows = preview.rows;
-      if (preview.legacy && preview.kind === "remittance") {
-        rows = [...root.querySelectorAll("[data-import]:checked")].map(
-          (c) => rows[Number(c.dataset.import)],
-        );
-        if (!rows.length) throw new Error("请先勾选要导入的汇款。");
-      }
+      if (preview.partial && a === "replace")
+        throw new Error("分卷文件请用合并导入。");
       if (
         a === "replace" &&
-        !confirm(`确认用「${preview.filename}」的 ${rows.length} 笔记录覆盖全部${names[preview.kind]}记录？`)
+        !(await askConfirm({
+          title: "覆盖导入？",
+          body: `将用「${preview.filename}」覆盖文件中包含的账本（${counts(preview.books)}）。覆盖后无法撤销。`,
+          confirmLabel: "覆盖导入",
+          danger: true,
+        }))
       )
         return;
-      const before = JSON.stringify(load(preview.kind));
-      const changed = JSON.stringify(importRows(preview.kind, rows, a)) !== before;
+      const before = JSON.stringify(readBooks());
+      importExcelBooks(preview.books, a, preview.blankIds);
+      const changed = JSON.stringify(readBooks()) !== before;
       preview = null;
       render();
       showFeedback(changed ? "已完成导入" : "账目没有变化");
