@@ -260,7 +260,10 @@ img {
   padding: 30px 16px;
   border-top: 1px solid #cbd5e1;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei",
+    "Segoe UI", sans-serif;
 }
 .site-footer p {
   margin: 0 0 9px;
@@ -269,7 +272,7 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 6px 20px;
   flex-wrap: wrap;
   margin: 0 0 12px;
 }
