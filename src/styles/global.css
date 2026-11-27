@@ -261,6 +261,7 @@ img {
   border-top: 1px solid #cbd5e1;
   color: var(--muted);
   font-size: 14px;
+  line-height: 1.75;
   font-family:
     -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei",
     "Segoe UI", sans-serif;
