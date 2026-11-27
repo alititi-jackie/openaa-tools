@@ -20,6 +20,7 @@ const toolGuides = fs
 const urls = [
   "/",
   "/privacy/",
+  "/about/",
   "/usa/life-ledger/guide/",
   ...tools.map((t) => t.path),
   ...guides.map((g) => `/usa/dmv/${g.slug}/`),
